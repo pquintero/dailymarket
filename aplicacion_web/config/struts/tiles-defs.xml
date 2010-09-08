@@ -1,0 +1,400 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+
+ <!DOCTYPE tiles-definitions PUBLIC
+       "-//Apache Software Foundation//DTD Tiles Configuration 1.1//EN"
+       "http://jakarta.apache.org/struts/dtds/tiles-config_1_1.dtd">
+<tiles-definitions>
+    <!-- ============================================================== -->
+    <!-- Layouts                                                        -->
+    <!-- ============================================================== -->
+    <definition name=".mainLayout" path="/layouts/mainLayout.jsp">
+        <put name="title"       value="" />
+        <put name="header"      value="/common/header.jsp" />
+        <put name="footer"      value="/common/footer.jsp" />
+        <put name="body"        value=".portal.body" />
+    </definition>	
+
+    <definition name=".errorLayout" path="/layouts/errorLayout.jsp">
+        <put name="title"       value="" />
+        <put name="body"        value=".portal.body" />
+		<put name="buttons"     value=".error.buttons"/>
+    </definition>
+
+    <definition name=".locatorLayout" path="/layouts/locatorLayout.jsp">
+        <put name="title"       value="" />
+        <put name="body"        value=".portal.body" />
+    </definition>
+
+	<definition name=".homeLayout" path="/layouts/homeLayout.jsp">
+        <put name="tabs"        value=".home.tabs"/>
+        <put name="body"        value=".home.body"/>         
+    </definition>
+    
+    <definition name=".homeLayoutTab" path="/layouts/homeLayoutTab.jsp">
+        <put name="tabs"        value=".home.fuel.tabs"/>
+        <put name="body"        value=".home.fuel.body"/>         
+    </definition>
+	
+	<definition name=".editLayout" path="/layouts/editLayout.jsp">
+        <put name="title"       value="Edit"/>
+        <put name="action"      value=".detail.action"/>
+        <put name="tabs"        value=".detail.tabs"/>
+        <put name="body"        value=".detail.body"/>
+        <put name="buttons"     value=".detail.buttons"/>
+    </definition>
+
+    <definition name=".newLayout" path="/layouts/newLayout.jsp">
+        <put name="title"       value="Edit"/>
+        <put name="action"      value=".detail.action"/>
+        <put name="body"        value=".detail.body"/>
+        <put name="buttons"     value=".detail.buttons"/>
+    </definition>   
+
+    <definition name=".msgLayout" path="/layouts/msgLayout.jsp">
+        <put name="title"       value="Edit"/>
+        <put name="action"      value=".detail.action"/>
+        <put name="body"        value=".detail.body"/>
+        <put name="buttons"     value=".detail.buttons"/>
+    </definition>    	
+	
+    <definition name=".searchLayout" path="/layouts/searchLayout.jsp">
+        <put name="title"       value="Search"/>
+        <put name="action"      value=".search.action"/>
+        <put name="criteria"    value=".search.criteria" />
+        <put name="buttons"     value=".search.buttons"/>
+        <put name="result"      value=".search.result" />
+    </definition>  
+
+    <definition name=".resultLayout" path="/layouts/resultLayout.jsp">
+        <put name="title"       value="Results"/>
+        <put name="action"      value=".result.action"/>
+        <put name="buttons"     value=".result.buttons"/>
+        <put name="list"		value=".result.list" />
+    </definition>
+
+    <definition name=".tabsLayout" path="/layouts/tabsLayout.jsp">
+        <put name="selectedIndex"   value="0" />
+        <put name="parameterName"   value="selected" />
+        <putList name="tabList"/>
+    </definition>
+	
+	<definition name=".subTabsLayout" path="/layouts/subTabsLayout.jsp">
+        <put name="selectedIndex"   value="0" />
+        <put name="parameterName"   value="selected" />
+        <putList name="tabList"/>
+    </definition>
+
+    <definition name=".buttonsLayout" path="/layouts/buttonsLayout.jsp">
+        <putList name="buttonList"/>
+    </definition>   
+
+	<definition name=".searchLayoutTab" path="/layouts/searchLayoutTab.jsp">
+        <put name="title"       value="Search"/>
+        <put name="action"      value=".search.action"/>
+        <put name="criteria"    value=".search.criteria" />
+        <put name="buttons"     value=".search.buttons"/>
+        <put name="tabs"   		value=".search.tabs"/>
+        <put name="result"      value=".search.result" />
+    </definition>
+    
+	<!-- ============================================================== -->
+    <!-- Generics                                                       -->
+    <!-- ============================================================== -->
+    <definition name=".menuButtonsLayout" path="/layouts/menuButtonsLayout.jsp">
+        <put name="menu"   value=""/>
+    </definition>	
+	
+	<definition name="tiles.commons.menu.buttons.detail" extends=".menuButtonsLayout">
+        <put name="menu"   value="menu.commons.buttons.detail" />
+    </definition>
+	<definition name="tiles.commons.menu.buttons.new" extends=".menuButtonsLayout">
+        <put name="menu"   value="menu.commons.buttons.new" />
+    </definition>
+     <definition name="tiles.fuel.menu.buttons.new" extends=".menuButtonsLayout">
+        <put name="menu"   value="menu.fuel.buttons.new" />
+    </definition>
+	<definition name="tiles.commons.menu.buttons.tab" extends=".menuButtonsLayout">
+        <put name="menu"   value="menu.commons.buttons.tab" />
+    </definition>
+	<definition name="tiles.commons.menu.buttons.filter" extends=".menuButtonsLayout">
+        <put name="menu"   value="menu.commons.buttons.filter" />
+    </definition>                           			
+	
+	<definition name="tiles.commons.locator" extends=".locatorLayout">
+        <put name="title"   value="baseClass.title.search" />
+        <put name="body"    value="tiles.commons.locator.body" />
+    </definition>    
+    <definition name="tiles.commons.locator.body" extends=".searchLayout">
+        <put name="title"       value="baseClass.title"/>
+        <put name="action"      value="locateBaseClass"/>
+        <put name="criteria"    value="/pages/baseClass/filter.jsp" />
+        <put name="result"      value="/pages/baseClass/list.jsp" />
+        <put name="buttons"     value="tiles.commons.menu.buttons.tab.filter" />
+    </definition>
+	
+	<definition name="tiles.commons.tab.list" extends=".mainLayout">
+        <put name="title"   value="baseClass.collectionNames" />
+        <put name="body"    value="tiles.commons.tab.list.body" />
+    </definition>
+    <definition name="tiles.commons.tab.list.body" extends=".editLayout">
+        <put name="title"   value="baseClass.title" />
+        <put name="action"  value="baseClass"/>
+    	<put name="tabs"    value="tiles.commons.tabs"/>
+        <put name="body"    value="/pages/collectionName/list.jsp" />
+        <put name="buttons" value="tiles.commons.menu.buttons.tab" />
+    </definition>
+
+    <!-- ============================================================== -->
+    <!-- Commons                                                        -->
+    <!-- ============================================================== -->
+    <definition name="tiles.common.buttons.new" extends=".buttonsLayout">
+        <putList name="buttonList">
+            <item value="common.button.back" link="stepBack" classtype="org.apache.struts.tiles.beans.SimpleMenuItem"/>
+            <item value="common.button.save" link="saveAndBackToCheckPoint" classtype="org.apache.struts.tiles.beans.SimpleMenuItem"/>
+        </putList>
+    </definition>
+    <definition name="tiles.common.buttons.detail" extends=".buttonsLayout">
+        <putList name="buttonList">
+            <item value="common.button.back" link="stepBack" classtype="org.apache.struts.tiles.beans.SimpleMenuItem"/>
+            <item value="common.button.save" link="update" classtype="org.apache.struts.tiles.beans.SimpleMenuItem"/>
+        </putList>
+    </definition>        
+    <definition name="tiles.common.buttons.filter" extends=".buttonsLayout">
+        <putList name="buttonList">
+			<item value="common.button.new" link="redirectCreate" classtype="org.apache.struts.tiles.beans.SimpleMenuItem"/>
+            <item value="common.button.search" link="executeFilter" classtype="org.apache.struts.tiles.beans.SimpleMenuItem"/>
+        </putList>
+    </definition>	     
+    <definition name="tiles.common.buttons.locator" extends=".buttonsLayout">
+        <putList name="buttonList">
+            <item value="common.button.search" link="executeQuery" classtype="org.apache.struts.tiles.beans.SimpleMenuItem"/>
+        </putList>
+    </definition>        
+	<definition name="tiles.simulator.buttons" extends=".buttonsLayout">
+        <putList name="buttonList">
+            <item value="common.button.back" link="doHome" classtype="org.apache.struts.tiles.beans.SimpleMenuItem"/>
+            <item value="common.button.save" link="saveAndBackToCheckPoint" classtype="org.apache.struts.tiles.beans.SimpleMenuItem"/>
+            <item value="common.button.execute" link="executeSimulator" classtype="org.apache.struts.tiles.beans.SimpleMenuItem"/>
+        </putList>
+    </definition>	
+    <!-- ============================================================== -->
+    <!-- Home                                                           -->
+    <!-- ============================================================== -->
+	<definition name="tiles.home.admin" extends=".mainLayout">
+        <put name="title"   value="Menu.home" />
+        <put name="body"    value="tiles.home.admin.body" />
+    </definition>
+    <definition name="tiles.home.admin.body" extends=".homeLayout">
+   		<put name="title"  value="Menu.home" />
+        <put name="action"  value="home"/>
+        <put name="tabs" value="tiles.home.admin.tabs" />
+        <put name="body"  value="/pages/home/admin.jsp" />
+        <put name="buttons"  value="" />
+    </definition>
+	<definition name="tiles.home.admin.tabs" extends=".tabsLayout">
+        <put name="tab"   value="TabHome" />
+    </definition>
+    
+    <!-- ============================================================== -->
+    <!-- User                                                           -->
+    <!-- ============================================================== -->
+    <definition name="tiles.user.filter" extends=".mainLayout">
+        <put name="title"   value="user.title.search" />
+        <put name="body"    value="tiles.user.filter.body" />
+    </definition>    
+	<definition name="tiles.user.filter.body" extends=".searchLayout">
+        <put name="title"       value=""/>
+        <put name="action"      value="filterUser"/>
+        <put name="criteria"    value="/pages/user/filter.jsp" />
+        <put name="result"      value="/pages/user/list.jsp" />
+        <put name="buttons"     value="tiles.common.buttons.filter" />               
+    </definition> 
+    
+    <definition name="tiles.user.new" extends=".mainLayout">
+        <put name="title"   value="user.title.new" />
+        <put name="body"    value="tiles.user.new.body" />
+    </definition>    
+	<definition name="tiles.user.new.body" extends=".newLayout">
+        <put name="title"   value="user.title" />
+        <put name="action"  value="user" />
+        <put name="body"    value="/pages/user/detail.jsp" />
+        <put name="buttons" value="tiles.common.buttons.new" />                    
+    </definition>  
+    
+    <definition name="tiles.user.detail" extends=".mainLayout">
+        <put name="title"   value="user.title.detail" />
+        <put name="body"    value="tiles.user.detail.body" />
+    </definition>
+    <definition name="tiles.user.detail.body" extends=".editLayout">
+        <put name="title"   value="user.title" />
+        <put name="action"  value="user" />
+		<put name="tabs"    value=""/>        
+        <put name="body"    value="/pages/user/detail.jsp" />
+        <put name="buttons" value="tiles.common.buttons.detail" />
+    </definition> 
+
+	<!-- ============================================================== -->
+    <!-- GroupUser                                                      -->
+    <!-- ============================================================== -->
+    <definition name="tiles.groupUser.filter" extends=".mainLayout">
+        <put name="title"   value="groupUser.title.search" />
+        <put name="body"    value="tiles.groupUser.filter.body" />
+    </definition>    
+	<definition name="tiles.groupUser.filter.body" extends=".searchLayout">
+        <put name="title"       value=""/>
+        <put name="action"      value="filterGroupUser"/>
+        <put name="criteria"    value="/pages/groupUser/filter.jsp" />
+        <put name="result"      value="/pages/groupUser/list.jsp" />
+        <put name="buttons"     value="tiles.common.buttons.filter" />              
+    </definition> 
+    
+    <definition name="tiles.groupUser.new" extends=".mainLayout">
+        <put name="title"   value="groupUser.title.new" />
+        <put name="body"    value="tiles.groupUser.new.body" />
+    </definition>    
+	<definition name="tiles.groupUser.new.body" extends=".newLayout">
+        <put name="title"   value="groupUser.title" />
+        <put name="action"  value="groupUser" />
+        <put name="body"    value="/pages/groupUser/detail.jsp" />
+        <put name="buttons" value="tiles.common.buttons.new" />                    
+    </definition>
+    
+    <definition name="tiles.groupUser.detail" extends=".mainLayout">
+        <put name="title"   value="groupUser.title.detail" />
+        <put name="body"    value="tiles.groupUser.detail.body" />
+    </definition>
+    <definition name="tiles.groupUser.detail.body" extends=".editLayout">
+        <put name="title"   value="groupUser.title" />
+        <put name="action"  value="groupUser" />
+		<put name="tabs"    value=""/>        
+        <put name="body"    value="/pages/groupUser/detail.jsp" />
+        <put name="buttons" value="tiles.common.buttons.detail" />
+    </definition>         
+    
+    <!-- ============================================================== -->
+    <!-- Product                                                           -->
+    <!-- ============================================================== -->    
+    <definition name="tiles.product.filter" extends=".mainLayout">
+        <put name="title"   value="product.title.search" />
+        <put name="body"    value="tiles.product.filter.body" />
+    </definition>    
+	<definition name="tiles.product.filter.body" extends=".searchLayout">
+        <put name="title"       value=""/>
+        <put name="action"      value="filterProduct"/>
+        <put name="criteria"    value="/pages/product/filter.jsp" />
+        <put name="result"      value="/pages/product/list.jsp" />
+        <put name="buttons"     value="tiles.common.buttons.filter" />                
+    </definition> 
+    
+    <definition name="tiles.product.new" extends=".mainLayout">
+        <put name="title"   value="product.title.new" />
+        <put name="body"    value="tiles.product.new.body" />
+    </definition>    
+	<definition name="tiles.product.new.body" extends=".newLayout">
+        <put name="title"   value="product.title" />
+        <put name="action"  value="product" />
+        <put name="body"    value="/pages/product/detail.jsp" />
+        <put name="buttons" value="tiles.common.buttons.new" />                    
+    </definition>
+    
+    <definition name="tiles.product.detail" extends=".mainLayout">
+        <put name="title"   value="product.title.detail" />
+        <put name="body"    value="tiles.product.detail.body" />
+    </definition>
+    <definition name="tiles.product.detail.body" extends=".editLayout">
+        <put name="title"   value="product.title" />
+        <put name="action"  value="product" />
+		<put name="tabs"    value=""/>        
+        <put name="body"    value="/pages/product/detail.jsp" />
+        <put name="buttons" value="tiles.common.buttons.detail" />
+    </definition>      
+    <!-- ============================================================== -->
+    <!-- GroupProduct                                                   -->
+    <!-- ============================================================== -->
+    <definition name="tiles.groupProduct.filter" extends=".mainLayout">
+        <put name="title"   value="groupProduct.title.search" />
+        <put name="body"    value="tiles.groupProduct.filter.body" />
+    </definition>    
+	<definition name="tiles.groupProduct.filter.body" extends=".searchLayout">
+        <put name="title"       value=""/>
+        <put name="action"      value="filterGroupProduct"/>
+        <put name="criteria"    value="/pages/groupProduct/filter.jsp" />
+        <put name="result"      value="/pages/groupProduct/list.jsp" />
+        <put name="buttons"     value="tiles.common.buttons.filter" />                
+    </definition> 
+    
+    <definition name="tiles.groupProduct.new" extends=".mainLayout">
+        <put name="title"   value="groupProduct.title.new" />
+        <put name="body"    value="tiles.groupProduct.new.body" />
+    </definition>    
+	<definition name="tiles.groupProduct.new.body" extends=".newLayout">
+        <put name="title"   value="groupProduct.title" />
+        <put name="action"  value="groupProduct" />
+        <put name="body"    value="/pages/groupProduct/detail.jsp" />
+        <put name="buttons" value="tiles.common.buttons.new" />                    
+    </definition>
+    
+    <definition name="tiles.groupProduct.detail" extends=".mainLayout">
+        <put name="title"   value="groupProduct.title.detail" />
+        <put name="body"    value="tiles.groupProduct.detail.body" />
+    </definition>
+    <definition name="tiles.groupProduct.detail.body" extends=".editLayout">
+        <put name="title"   value="groupProduct.title" />
+        <put name="action"  value="groupProduct" />
+		<put name="tabs"    value=""/>        
+        <put name="body"    value="/pages/groupProduct/detail.jsp" />
+        <put name="buttons" value="tiles.common.buttons.detail" />
+    </definition>
+	<!-- ============================================================== -->
+    <!-- HourlyBand                                                   -->
+    <!-- ============================================================== -->
+    <definition name="tiles.hourlyBand.filter" extends=".mainLayout">
+        <put name="title"   value="hourlyBand.title.search" />
+        <put name="body"    value="tiles.hourlyBand.filter.body" />
+    </definition>    
+	<definition name="tiles.hourlyBand.filter.body" extends=".searchLayout">
+        <put name="title"       value=""/>
+        <put name="action"      value="filterHourlyBand"/>
+        <put name="criteria"    value="/pages/hourlyBand/filter.jsp" />
+        <put name="result"      value="/pages/hourlyBand/list.jsp" />
+        <put name="buttons"     value="tiles.common.buttons.filter" />            
+    </definition> 
+    
+    <definition name="tiles.hourlyBand.new" extends=".mainLayout">
+        <put name="title"   value="hourlyBand.title.new" />
+        <put name="body"    value="tiles.hourlyBand.new.body" />
+    </definition>    
+	<definition name="tiles.hourlyBand.new.body" extends=".newLayout">
+        <put name="title"   value="hourlyBand.title" />
+        <put name="action"  value="hourlyBand" />
+        <put name="body"    value="/pages/hourlyBand/detail.jsp" />
+        <put name="buttons" value="tiles.common.buttons.new" />                    
+    </definition>        
+	
+	<definition name="tiles.hourlyBand.detail" extends=".mainLayout">
+        <put name="title"   value="hourlyBand.title.detail" />
+        <put name="body"    value="tiles.hourlyBand.detail.body" />
+    </definition>
+    <definition name="tiles.hourlyBand.detail.body" extends=".editLayout">
+        <put name="title"   value="hourlyBand.title" />
+        <put name="action"  value="hourlyBand" />
+		<put name="tabs"    value=""/>        
+        <put name="body"    value="/pages/hourlyBand/detail.jsp" />
+        <put name="buttons" value="tiles.common.buttons.detail" />
+    </definition> 
+	<!-- ============================================================== -->
+    <!-- Simulator                                                   -->
+    <!-- ============================================================== -->    
+    <definition name="tiles.simulator.execute" extends=".mainLayout">
+        <put name="title"   value="simulator.title.new" />
+        <put name="body"    value="tiles.simulator.body" />
+    </definition>    
+	<definition name="tiles.simulator.body" extends=".editLayout">
+        <put name="title"   value="simulator.title" />
+        <put name="action"  value="simulator" />
+        <put name="tabs"    value=""/>
+        <put name="body"    value="/pages/simulator/detail.jsp" />
+        <put name="buttons" value="tiles.simulator.buttons" />                    
+    </definition>       
+    
+</tiles-definitions>

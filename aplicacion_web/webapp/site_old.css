@@ -1,0 +1,820 @@
+/* ***************************************************************************
+	HTML 
+*************************************************************************** */
+BODY {
+	
+	padding:0 0 0 0; 
+    margin:0 0 0 0; 
+	font-family: Verdana, Arial;
+	font-size: 11px; 
+	background-color:#FFFFFF;
+	 
+}
+
+TABLE {
+	
+	BORDER-RIGHT:0px; 
+    BORDER-TOP: 0px; 
+    BORDER-LEFT: 0px; 
+    BORDER-BOTTOM: 0px;
+}
+
+A{
+	COLOR: #999999 ;
+	TEXT-DECORATION: none;
+}
+
+A:hover {
+	COLOR: #ffffff;
+	TEXT-DECORATION: none;
+}
+
+/* ***************************************************************************
+	Layout
+*************************************************************************** */
+
+DIV.contenedor {
+	align:center;
+	margin-left:10px;
+	height: 100%;
+}
+
+DIV.contenedor_locator {
+	align:center;
+	width: 100%;
+	height: 100%;
+}
+
+DIV.contenedor .contenido {
+	
+	width: 100%;
+}
+
+DIV.contenedor_locator .contenido {
+	
+	width: 100%;
+}
+
+TABLE.main_layout {
+	
+	width: 100%;
+	height: 60%;
+}
+
+TABLE.locator_layout {
+	
+	width: 100%;
+	height: 100%;
+}
+
+TABLE.body {
+	width: 98%;
+}
+
+/* ***************************************************************************
+	Login 
+*************************************************************************** */
+TABLE.cont_login {
+}
+
+TABLE.cont_login TD.tit_login {
+	color: #CCCCCC;
+	font-size:12px;
+	text-align: left;
+}
+
+TABLE.cont_login TD.msg_login {
+	
+	color: #990000;
+	font-size:10px;
+	text-align: center;
+}
+
+TABLE.cont_login TD.loginText {
+    color: #998e6a; 
+    text-decoration: none;
+    font-weight: bold;
+    font-size: 9px;
+    text-align: right;
+}
+
+TABLE.cont_login TD.INPUT {
+	font-family: Tahoma, Verdana, Arial;
+	font-size: 10px;
+	color: #000000;
+	text-decoration: none;
+	text-align: left;
+}
+
+.login {
+         height:19px;
+		 font-family:Arial, Helvetica, sans-serif;
+		 font-size:11px;
+		 width:120px;
+		 color:#666666;
+		 padding-left:3px;
+		 background-color:#dcedf8;
+		 border:1px solid #ffffff;
+		 }
+	   
+.user {
+       background-color:#bedcf1;
+	   font-family:Verdana, Arial, Helvetica, sans-serif;
+	   font-size:11px;
+	   color:3aa5db;
+	   padding-left:5px;
+	   }
+      
+
+/* ***************************************************************************
+	Header y footer 
+*************************************************************************** */
+.linksHeader, .linksHeader A{
+	
+	font-weight: bold;
+	font-size: 10px;
+    color:#003466;
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	text-decoration: none;
+	text-align: right;
+	vertical-align:top;
+	padding-top:2px;
+	
+}
+
+.linksHeader A:hover {
+    color:#FF6600;   
+    text-decoration: none;
+    text-align: right;
+}
+
+.footer {
+        text-align:right;
+		font-family:Arial, Helvetica, sans-serif;
+		font-size:9px;
+		color:#0b92d3;
+		letter-spacing:1px;
+		padding-right:73px;
+		padding-top:11px;
+		vertical-align:middle;
+		}
+		
+/* ***************************************************************************
+	Menu
+*************************************************************************** */
+
+.borderMenu {
+            border:1px solid #9ECAEB;
+			}
+
+
+TABLE.menu TH {
+	FONT-SIZE:9px; 
+    COLOR:#0b92d3; 
+    font-weight:300;
+	FONT-FAMILY: Verdana, Arial, Helvetica, sans-serif; 
+    TEXT-DECORATION: none;
+	text-align: left;
+	padding-left:5px;
+	margin-left:5px;
+	/*background-image: url(images/menu/tit_menu_bg1.jpg);*/
+}
+
+TABLE.menu TD.item{
+	FONT-SIZE:10px; 
+	COLOR:#999999; 
+    FONT-FAMILY: Arial, Helvetica, sans-serif; 
+    TEXT-DECORATION: none;
+	padding-left:10px;
+	
+}
+
+TABLE.menu TD.item A{
+	FONT-SIZE:10px; 
+    COLOR:#999999; 
+    FONT-FAMILY:Verdana, Arial; 
+    TEXT-DECORATION:none;
+}
+
+TABLE.menu TD.item A:hover{
+	COLOR:#0b92d3; 
+    TEXT-DECORATION:none;
+}
+
+/* ***************************************************************************
+	Tabs
+*************************************************************************** */
+
+TABLE.tabs,{
+	
+	/* Tab seleccionado*/
+	width: 100%;
+	FONT-SIZE:9px; 
+	color: #FFFFFF;
+    letter-spacing: 0.5px;
+	FONT-FAMILY: sans-serif; 
+    text-transform: uppercase;
+	TEXT-DECORATION: none;
+}
+
+TABLE.sub_tabs {
+	font-family:Verdana, Arial;
+	font-size:11px;
+	color:#c5c5c5;
+	width:750px;              
+}
+
+TABLE.sub_tabs A, TABLE.tabs A {
+  color:#666666;
+  text-decoration:none;
+}
+
+
+
+TABLE.sub_tabs{
+	/*padding-top:8px;*/
+	width:800px;
+	border:none;
+}
+
+TABLE.tabs A{
+/*
+Titulo de solapas
+*/
+    padding-top:2px;
+	width: 100%;
+	FONT-SIZE: 9px; 
+	letter-spacing: 0.5px;
+	color:#003466;
+    FONT-FAMILY: sans-serif; 
+    TEXT-DECORATION: none;
+}
+
+TABLE.sub_tabs A{
+	width:100%;
+}
+
+TD.acompaña {
+	background-color:#deedf8;
+	border-bottom:1px solid #c5c5c5;
+	}
+
+TD.borde1 {
+            background-image: url(images/tabs/sub_pix.gif);
+			background-position:right;
+			background-repeat:repeat-y;
+			width:1px; 
+			background-color:#deedf8;
+			min-height:10px;
+			color:#FFFFFF;
+			}
+
+TD.borde2 {
+            background-image: url(images/tabs/sub_pix.gif);
+			background-position:left;
+			background-repeat:repeat-y;
+			width:1px; 
+			background-color:#deedf8;
+			min-height:10px;
+			color:#FFFFFF;
+		   }
+		   
+		   
+TD.borde3 {
+			width:10px; 
+			background-color:#f7f7f7;
+			color:#FFFFFF; 
+}
+
+TABLE.tabs A:hover{
+	COLOR: #999999; 
+    TEXT-DECORATION: none;
+	cursor: pointer;
+}
+
+TABLE.tabs TH.inact {
+	height: 16px;
+	background-image: url(images/tabs/solap_inact_px.gif);
+}
+
+TABLE.sub_tabs A:hover{
+	COLOR:#0a91d3; 
+    TEXT-DECORATION:none;
+	cursor:pointer;
+    }
+    
+TABLE.sub_tabs TH.sub_inact {
+	background-image:url(images/tabs/sub_solap_inact_px.gif);
+	background-color:#deedf8;
+	font-weight:100;
+    }
+
+TABLE.sub_tabs TD.sub_inact_der {
+	width: 5px;
+	background-image: url(images/tabs/sub_solap_inact_der.gif);
+	background-color:#deedf8;
+    }
+    
+TABLE.sub_tabs TD.sub_inact_izq {
+	width: 5px;
+	background-image: url(images/tabs/sub_solap_inact_izq.gif);
+	background-color:#deedf8;
+    }
+
+TABLE.sub_tabs TH.sub_act {
+    color:#3ca4d8;
+	font-weight:100;
+	padding-top:2px;
+	background-image: url(images/tabs/sub_solap_act_px.gif);
+	background-color:#deedf8;
+	}
+	
+TABLE.sub_tabs TD.sub_act_der {
+	width: 5px;
+	background-image: url(images/tabs/sub_solap_act_der.gif);
+	background-color:#deedf8;
+	
+}
+
+TABLE.sub_tabs TD.sub_act_izq {
+	width: 5px;
+	background-image: url(images/tabs/sub_solap_act_izq.gif);
+	background-color:#deedf8;
+}
+
+TABLE.tabs TD.inact_der {
+	width: 5px;
+	height: 16px;
+}
+
+TABLE.tabs TD.inact_izq {
+	width: 5px;
+	height: 16px;	
+}
+
+TABLE.tabs TH.act {
+    widht:5px;
+	height: 16px;    
+	background-image: url(images/tabs/solap_act_px.gif);
+}
+
+TABLE.tabs TD.act_der {
+	width: 5px;
+	height: 16px;	
+}
+
+TABLE.tabs TD.act_izq {
+	width: 5px;
+	height: 16px;
+}
+
+
+/* ***************************************************************************
+	Button
+*************************************************************************** */
+TABLE.buttons {
+	align:right;
+	width:100%;
+	background-color:#deedf8;
+	border-color:#000000;
+	margin-top:10px;
+	margin-bottom:10px;
+	border:none;
+	
+}
+/* Botones de abajo */
+.btn {
+	height:20px;
+	font-family: Verdana, Arial;
+	/*background-image: url(images/common/buton.gif);*/
+	background-color:#deedf8;
+	border-left: 1px solid #ffffff;
+	border-right: 1px solid #deedf8;
+	border-top: 1px solid #deedf8;
+	border-bottom: 1px solid #deedf8;
+	font-size: 10px;
+	text-align:left;
+	text-decoration: none;
+	margin-right:2px;
+	margin-left:5px;
+	color:#3aa5db;
+	/*border:none;*/
+	padding-top:3px;
+	padding-left:8px;
+	font-weight:200px;	
+	cursor:pointer;
+}
+
+.btn a:hover {
+              text-decoration:none;
+			  color:#999999;
+		     }
+
+.language {
+           font-family:Arial, Helvetica, sans-serif;
+		   font-size:11px;
+		   font-weight:300;
+		   padding-left:5px;
+		   color:#3aa5db;
+		   }
+		   
+.language a:hover {
+           text-decoration:none;
+		   color:#666666;
+		   }
+		   
+
+/* ***************************************************************************
+	Forms
+	color: #091d5a;
+*************************************************************************** */
+H3.errors {
+	color: red;
+	font-size: 13px;
+}
+
+UL.errors LI {
+	color: red;
+	font-size: 12px;
+}
+
+H1.formtitle {
+	
+	/* Solapa de la solicitud*/
+	font-size:11px;
+	color: #FFFFFF;
+	FONT-FAMILY: Verdana, Arial, Helvetica, sans-serif;
+	letter-spacing:0px;
+	TEXT-DECORATION: none;
+	background-image:url(images/tabs/bullet_menu1.gif);
+	background-position:center left;
+	margin-left:20px;
+	background-repeat: no-repeat;
+	vertical-align:middle;
+	padding-left:30px;
+	background-color:#3aa5db;
+	height:15px;
+	padding-top:3px;
+	height:20px;
+	font-weight: bold;
+	margin:0px;
+
+}
+
+H2.formtitle {
+	
+	height:18px;
+	font-size:11px;
+	color:#FF6600;
+    FONT-FAMILY:Verdana, Arial, Helvetica, sans-serif ;
+	TEXT-DECORATION: none;
+	background-color: #FFFFFF;
+	padding-left:16px;
+	padding-top:2px;
+	font-weight:bold;
+	margin:0px;
+	border-bottom: 1px solid #FF6600;
+}
+
+
+TABLE.form {
+	width: 100%;
+	background-color:#f6f6f6;
+	border:0px solid #deedf8;
+	
+}
+
+TABLE.form TH.required, TD.fileHeader  {
+	text-align: right;
+	font-family: Arial, Tahoma, Verdana;
+	font-size: 11px;
+	font-weight: bold;
+	color: #999999;
+	text-decoration: none;
+	line-height: 13px;
+	
+	
+}
+
+TABLE.form TH.redFont {
+	text-align: right;
+	font-family: Arial, Tahoma, Verdana;
+	font-size: 11px;
+	color: #FF0000;
+	text-decoration: none;
+	line-height: 13px;
+}
+
+TABLE.form TH  {
+	text-align: right;
+	font-family: Arial, Tahoma, Verdana;
+	font-size: 11px;
+	font-weight: normal;
+	color: #999999;
+    text-decoration: none;
+	line-height: 13px;
+	
+}
+
+TABLE.form TD, TABLE.form TD SELECT,  {
+	font-family: Tahoma, Verdana, Arial;
+	font-size: 11px;
+	color:#666666;
+	text-decoration: none;
+	text-align: left;
+	border:none;
+	
+}
+
+
+TABLE.form TD INPUT{
+                     background-color:#ffffff;
+					 font-family:Arial, Helvetica, sans-serif;
+					 font-size:11px;
+					 color: #666666;
+					 border:1px solid #cccccc;
+					 }
+					 
+TABLE.form TD TEXTAREA{
+    font-family: Tahoma, Verdana, Arial;
+	font-size: 11px;
+	color: #666666;
+	text-decoration: none;
+	text-align: left;
+						}
+
+TD.files {
+	background-image: url(images/tableBorder.gif);
+}
+
+.imput {
+	font-family: Tahoma, Verdana, Arial;
+	font-size: 11px;
+	color:#000000;
+	text-decoration: none;
+	
+}
+
+.campoForm {
+	font-family: Tahoma, Verdana;
+	font-size: 11px;
+	font-weight: bold;
+	color: #999999;
+	text-decoration: none;
+	line-height: 13px;
+	
+}
+
+.hintForm {
+	font-family: Verdana, Arial;
+	font-size: 10px;
+	text-decoration: none;
+	color:#000000;
+	font-weight: normal;
+	
+	
+}
+
+/* ***************************************************************************
+	DisplayTag 
+*************************************************************************** */
+.pagebanner {
+    color: #000000; 
+	width: 100%;
+	margin: -1px 0 0 0;
+	padding: 5px 10px 0 0;
+	font-size: 11px; 
+    font-family: Verdana, Arial; 
+    text-decoration: none;
+	border: solid #CCCCCC ;
+    border-width: 1px; 
+	border-bottom: none;
+	display: block;
+}
+.bannerselect {
+    color:#CCCCCC; 
+	padding: 0px 10px 5px 550px;
+	font-size: 11px; 
+    font-family: Verdana, Arial; 
+    text-decoration: none;
+	border: solid #cecbe0;
+    border-width:1px; 
+	border-top:none;
+	display: block;
+	valign: middle;
+	align:right;
+	
+}
+
+.bannerselect A:hover {
+	color:#CCCCCC; 
+	text-decoration: none;
+}
+
+.pagelinks {
+    color: #666666; 
+	width: 100%;
+	margin: 0 0 0 0;
+	padding: 0 10px 5px 0;
+	font-weight: bold; 
+    font-size: 11px; 
+    font-family: Verdana, Arial; 
+    text-decoration: none;
+	border: solid #CCCCCC;
+    border-width: 1px; 
+	border-top: none;
+	display: block;
+}
+
+.pagelinks A:hover {
+    color: #CCCCCC; 
+	
+}
+
+.list {
+    color:#666666;
+    width: 100%;
+	font-size: 11px; 
+    font-family: Verdana, Arial; 
+    text-decoration: none;
+	border: solid #666666/#666666; 
+    border-collapse: collapse;
+    border-width: 1px;
+	
+	 
+}
+
+.groupingList {
+    color:#666666;
+    width: 100%;
+	font-size: 11px; 
+    font-family: Verdana, Arial; 
+    text-decoration: none;
+	border: solid #666666/#666666; 
+    border-collapse: collapse;
+    border-width:1px;
+	margin-top:8px; 
+}
+
+.list A:hover{
+    color: #CCCCCC ; 
+    
+}
+.listTitle,  {
+	color:#0b92d3;
+	height: 20px;
+	font-size: 11px;
+	font-family: Verdana, Arial;
+	text-align:left;
+	text-decoration: none;
+	background-color: #ffffff/#666666/#666666/;
+    border-bottom: 0px solid #666666;
+	border: 0;
+	word-spacing: 0px;
+	letter-spacing: 0px;
+	white-space: 3 ;
+}
+
+TABLE.groupingList TR.odd, TABLE.groupingList TR.even {
+    color:#333333; 
+	font-size: 11px; 
+    font-family: Verdana, Arial; 
+    text-decoration: none;
+    background-color: #ffffff;	
+}
+
+TABLE.groupingList TD.groupTitle {
+	vertical-align: middle;
+	color:#999999;
+	height:20px;
+	font-size: 11px;
+	margin-bottom: 12px;
+	font-weight:bold;
+	font-family: Verdana, Arial;
+	text-decoration: none;
+	background-color:#deedf8;
+    border: 0;
+	word-spacing: 0px;
+	letter-spacing: 0px;
+	white-space: 3 ;
+}
+
+A.groupLink {
+	color:#3aa5db;
+	text-decoration: none;
+}
+
+A.groupLink:hover {
+	color:#999999;
+	text-decoration: none;
+}
+
+/* Direcciones */
+TABLE.list TR.odd {
+    color: #ob9213; 
+	font-size: 11px; 
+    font-family: Verdana, Arial; 
+    text-decoration: none;
+    background-color: #F5F5F5;
+	
+	
+}
+TABLE.list TR.even {
+    color:#3aa5db; 
+	font-size: 11px; 
+    font-family: Verdana, Arial; 
+    text-decoration: none;
+    background-color:#ffffff;
+}
+.oddDue {
+    color: #FF0000; 
+	font-size: 11px; 
+    font-family: Verdana, Arial; 
+    text-decoration: none;
+    background-color: #F5F5F5;
+}
+
+.oddDue A:hover{
+    color: #990000; 
+	font-size: 11px; 
+    font-family: Verdana, Arial; 
+    text-decoration: none;
+   
+}
+.evenDue {
+    color: #FF0000; 
+	font-size: 11px; 
+    font-family: Verdana, Arial; 
+    text-decoration: none;
+    background-color: #ffffff;
+}
+
+.evenDue A:hover{
+    color: #990000; 
+	font-size: 11px; 
+    font-family: Verdana, Arial; 
+    text-decoration: none;
+    
+}
+.oddInvalid {
+    color: #999999; 
+	font-size: 11px; 
+    font-family: Verdana, Arial; 
+    text-decoration: line-through;
+    background-color: #F5F5F5;    
+}
+.oddInvalid A:hover{
+    color: #003466; 
+}
+.evenInvalid {
+    color: #999999; 
+	font-size: 11px; 
+    font-family: Verdana, Arial; 
+    text-decoration: line-through;
+    background-color: #ffffff;
+}
+.evenInvalid A:hover {
+    color: #0053A6; 
+	
+}
+.exportlinks {
+    width: 100%;
+	margin: -1px 0 5px 0;
+	padding: 5px 0 5px 0 0;
+	font-size: 11px; 
+    font-family: Verdana, Arial; 
+    text-decoration: none;
+	color: #666666;
+	padding-left:3px;
+	border: solid #CCCCCC;
+    border-width: 1px; 
+    background-color: #ffffff;
+}
+.exportlinks A:hover{
+    color: #CCCCCC ; 
+	
+}
+
+/* ***************************************************************************
+	Common 
+*************************************************************************** */
+.separador {
+	font-size: 4px;
+	height: 4px;
+}
+
+/* ***************************************************************************
+	Forbidden
+*************************************************************************** */
+
+TABLE.body TD.forbidden  {
+	text-align: left;
+	font-family: Arial, Tahoma, Verdana;
+	font-size: 13px;
+	
+	color: #666666;
+	text-decoration: none;
+	line-height: 15px;
+	
+	
+}
