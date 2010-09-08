@@ -1,15 +1,15 @@
-<Context path="/resourceMgr" reloadable="false" docBase="D:\Proyectos\resourcemanager\webapp">
+<Context path="/dailyMarket" reloadable="false" docBase="C:\workspace\aplicacion_web\webapp">
 	<Logger className="org.apache.catalina.logger.SystemOutLogger" verbosity="4" timestamp="true"/>
 
-	<Environment name="init-schema" value="create" type="java.lang.String" override="true"/>			
+	<!-- <Environment name="init-schema" value="create" type="java.lang.String" override="true"/>  -->			
 	
-    <Resource   name="jdbc/dccsoftcrm" 
+    <Resource   name="jdbc/dailyMarket" 
                 scope="Shareable" 
                 type="javax.sql.DataSource" 
                 factory="org.apache.commons.dbcp.BasicDataSourceFactory" 
-                url="jdbc:mysql://localhost/resourcemanager?autoReconnect=true" 
+                url="jdbc:mysql://localhost/dailyMarket?autoReconnect=true" 
                 driverClassName="com.mysql.jdbc.Driver" 
-                username="root" password="" maxWait="10000" 
+                username="root" password="root" maxWait="10000" 
                 maxIdle="30" maxActive="100" 
                 removeAbandoned="true" 
                 removeAbandonedTimeout="60"/>	
