@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<providers>
+	<provider name="filterOperators" className="ar.com.koalas.providers.FixedProvider">
+		<set-property	property="keyName"		value="key"/>
+		<set-property	property="description"	value="val"/>
+		<value className="ar.com.dccsoft.resourceMgr.model.FixedProvider" key="START"      val="common.filter.begins.with"/>
+		<value className="ar.com.dccsoft.resourceMgr.model.FixedProvider" key="END"        val="common.filter.finishes.with"/>
+		<value className="ar.com.dccsoft.resourceMgr.model.FixedProvider" key="ANYWHERE"   val="common.filter.contains"/>
+		<value className="ar.com.dccsoft.resourceMgr.model.FixedProvider" key="EXACT"      val="common.filter.equals"/>
+	</provider>
+
+	<provider name="Percent" className="ar.com.koalas.providers.FixedProvider">
+		<set-property	property="keyName"		value="key"/>
+		<set-property	property="description"	value="val"/>
+		<value className="ar.com.dccsoft.resourceMgr.model.FixedProvider" key="0" val="0"/>
+		<value className="ar.com.dccsoft.resourceMgr.model.FixedProvider" key="10" val="10"/>
+		<value className="ar.com.dccsoft.resourceMgr.model.FixedProvider" key="20" val="20"/>
+		<value className="ar.com.dccsoft.resourceMgr.model.FixedProvider" key="30" val="30"/>
+		<value className="ar.com.dccsoft.resourceMgr.model.FixedProvider" key="40" val="40"/>
+		<value className="ar.com.dccsoft.resourceMgr.model.FixedProvider" key="50" val="50"/>
+		<value className="ar.com.dccsoft.resourceMgr.model.FixedProvider" key="60" val="60"/>
+		<value className="ar.com.dccsoft.resourceMgr.model.FixedProvider" key="70" val="70"/>
+		<value className="ar.com.dccsoft.resourceMgr.model.FixedProvider" key="80" val="80"/>
+		<value className="ar.com.dccsoft.resourceMgr.model.FixedProvider" key="90" val="90"/>
+		<value className="ar.com.dccsoft.resourceMgr.model.FixedProvider" key="100" val="100"/>
+	</provider>
+
+	<provider name="userGroups" className="ar.com.koalas.providers.JDBCProvider">
+		<set-property	property="jndi"			value="jdbc/dccsoftcrm"/>
+		<set-property	property="keyName"		value="mykey"/>
+		<set-property	property="description"	value="groupname"/>
+		<set-property property="initialContext" value="java:comp/env"/>		
+		<param>
+			<param-name>query</param-name>
+			<param-value>
+				select dcckey as groupname, dccgroupname as mykey                 
+                from dcc_group 
+                order by dccgroupname
+			</param-value>
+		</param>
+	</provider>
+		
+	<provider name="regions" className="ar.com.koalas.providers.JDBCProvider">
+		<set-property	property="jndi"			value="jdbc/dccsoftcrm"/>
+		<set-property	property="keyName"		value="id"/>
+		<set-property	property="description"	value="mykey"/>
+		<set-property 	property="initialContext" value="java:comp/env"/>		
+		<param>
+			<param-name>query</param-name>
+			<param-value>
+				select dccregionid as id, concat( repeat('.', length(dccposition)), dccname) as name, dcckey as mykey  
+				from dcc_region 
+				order by dccposition, dccname
+			</param-value>
+		</param>
+	</provider>
+	<provider name="provinces" className="ar.com.koalas.providers.JDBCProvider">
+		<set-property	property="jndi"			value="jdbc/dccsoftcrm"/>
+		<set-property	property="keyName"		value="id"/>
+		<set-property	property="description"	value="dcckey"/>
+		<set-property 	property="initialContext" value="java:comp/env"/>		
+		<param>
+			<param-name>query</param-name>
+			<param-value>
+                select dccprovinceid as id, dccname as name, dcckey as mykey 
+                from dcc_province
+                order by dccname
+			</param-value>
+		</param>
+	</provider>
+		
+	<provider name="rol" className="ar.com.koalas.providers.JDBCProvider">
+		<set-property	property="jndi"			value="jdbc/dccsoftcrm"/>
+		<set-property	property="keyName"		value="mykey"/>
+		<set-property	property="description"	value="value"/>
+		<set-property 	property="initialContext" value="java:comp/env"/>		
+		<param>
+			<param-name>query</param-name>
+			<param-value>
+				select cg.dcccodegroup as name, c.dcccode as code, c.dccvalue as value, c.dcckey as mykey
+				from dcc_code_group cg, dcc_code c
+				where cg.dcccodegroupid = c.dcccodegroupid and
+					  c.dccactive = 1 and 
+					  cg.dcccodegroup= 'Contact Rol'
+				order by c.dccorder, c.dccvalue
+			</param-value>
+		</param>
+	</provider>	
+
+	<provider name="territories" className="ar.com.koalas.providers.JDBCProvider">
+		<set-property	property="jndi"			value="jdbc/dccsoftcrm"/>
+		<set-property   property="initialContext" value="java:comp/env"/>
+		<set-property	property="keyName"		value="id"/>
+		<set-property	property="description"	value="name"/>
+		<set-property property="initialContext" value="java:comp/env"/>		
+		<param>
+			<param-name>query</param-name>
+			<param-value>
+				select dccterritoryid as id, dccname as name 
+                from dcc_territory 
+                order by dccposition 
+			</param-value>
+		</param>
+	</provider>			
+
+	<provider name="projects" className="ar.com.koalas.providers.JDBCProvider">
+		<set-property	property="jndi"			value="jdbc/dccsoftcrm"/>
+		<set-property	property="keyName"		value="id"/>
+		<set-property	property="description"	value="name"/>
+		<set-property property="initialContext" value="java:comp/env"/>		
+		<param>
+			<param-name>query</param-name>
+			<param-value>
+				select dccprojectid as id, dccname as name
+				from dcc_project			
+				order by name
+			</param-value>
+		</param>
+	</provider>	
+	
+	<provider name="mallas" className="ar.com.koalas.providers.JDBCProvider">
+		<set-property	property="jndi"			value="jdbc/dccsoftcrm"/>
+		<set-property	property="keyName"		value="id"/>
+		<set-property	property="description"	value="name"/>
+		<set-property property="initialContext" value="java:comp/env"/>		
+		<param>
+			<param-name>query</param-name>
+			<param-value>
+				select dccmallaid as id, dccname as name
+				from dcc_malla			
+				order by name
+			</param-value>
+		</param>
+	</provider>
+	
+	<provider name="person" className="ar.com.koalas.providers.JDBCProvider">
+		<set-property	property="jndi"			value="jdbc/dccsoftcrm"/>
+		<set-property	property="keyName"		value="mykey"/>
+		<set-property	property="description"	value="name"/>
+		<set-property 	property="initialContext" value="java:comp/env"/>		
+		<param>
+			<param-name>query</param-name>
+			<param-value>
+				select e.dccpersonid as mykey, concat(e.dcclastname, concat(', ', e.dccfirstname)) as name
+				from dcc_person e
+				order by e.dcclastname, e.dccfirstname
+			</param-value>
+		</param>
+	</provider>	
+</providers>

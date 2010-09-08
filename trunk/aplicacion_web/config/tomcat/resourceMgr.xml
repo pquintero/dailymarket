@@ -1,0 +1,16 @@
+<Context path="/resourceMgr" reloadable="false" docBase="D:\Proyectos\resourcemanager\webapp">
+	<Logger className="org.apache.catalina.logger.SystemOutLogger" verbosity="4" timestamp="true"/>
+
+	<Environment name="init-schema" value="create" type="java.lang.String" override="true"/>			
+	
+    <Resource   name="jdbc/dccsoftcrm" 
+                scope="Shareable" 
+                type="javax.sql.DataSource" 
+                factory="org.apache.commons.dbcp.BasicDataSourceFactory" 
+                url="jdbc:mysql://localhost/resourcemanager?autoReconnect=true" 
+                driverClassName="com.mysql.jdbc.Driver" 
+                username="root" password="" maxWait="10000" 
+                maxIdle="30" maxActive="100" 
+                removeAbandoned="true" 
+                removeAbandonedTimeout="60"/>	
+</Context>	
