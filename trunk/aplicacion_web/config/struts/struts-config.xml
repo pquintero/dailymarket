@@ -41,6 +41,9 @@
 			<form-property name="active" type="java.lang.Integer"/>
 			<form-property name="queryDispatchName" type="java.lang.String" initial=""/>
 			<form-property name="collectionName" type="java.lang.String" initial="" />
+			
+			<!--	Momentaneo para el login CAMBIAR a LOGINACTION	-->
+			<form-property name="user" type="java.lang.String" />
 		</form-bean>
 		
 		<form-bean name="FilterUserForm" type="org.apache.struts.action.DynaActionForm">
@@ -248,7 +251,8 @@
 			
 			<set-property property="initMethod" value="initAction"/>
 			
-			<forward name="showHome" path="tiles.home.admin"/>			
+			<forward name="showAdminHome" path="tiles.home.admin"/>
+			<forward name="showManagerHome" path="tiles.home.manager"/>
 		</action>				
 		
 		<action 

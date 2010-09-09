@@ -13,7 +13,14 @@
         <put name="footer"      value="/common/footer.jsp" />
         <put name="body"        value=".portal.body" />
     </definition>	
-
+	
+	<definition name=".managerHomeLayout" path="/layouts/mainLayout.jsp">
+        <put name="title"       value="" />
+        <put name="header"      value="/common/managerHeader.jsp" />
+        <put name="footer"      value="/common/footer.jsp" />
+        <put name="body"        value=".portal.body" />
+    </definition>	
+	
     <definition name=".errorLayout" path="/layouts/errorLayout.jsp">
         <put name="title"       value="" />
         <put name="body"        value=".portal.body" />
@@ -194,6 +201,19 @@
 	<definition name="tiles.home.admin.tabs" extends=".tabsLayout">
         <put name="tab"   value="TabHome" />
     </definition>
+    
+    <definition name="tiles.home.manager" extends=".managerHomeLayout">
+        <put name="title"   value="Menu.home" />
+        <put name="body"    value="tiles.home.manager.body" />
+    </definition>
+    <definition name="tiles.home.manager.body" extends=".homeLayout">
+   		<put name="title"  value="Menu.home" />
+        <put name="action"  value="home"/>
+        <put name="tabs" value="tiles.home.admin.tabs" />
+        <put name="body"  value="/pages/home/manager.jsp" />
+        <put name="buttons"  value="" />
+    </definition>
+	
     
     <!-- ============================================================== -->
     <!-- User                                                           -->

@@ -8,6 +8,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
+import org.apache.struts.action.DynaActionForm;
 
 public class HomeAction extends BaseAction {             
 	
@@ -18,7 +19,7 @@ public class HomeAction extends BaseAction {
         request.getRemoteHost();
         request.getRemoteAddr();  
         setLocale(request, new Locale(request.getParameter("lang")));           	    	
-        return mapping.findForward("showHome");       
+        return mapping.findForward("showAdminHome");       
     }                             
     
     public ActionForward doError (ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
@@ -28,6 +29,10 @@ public class HomeAction extends BaseAction {
     public ActionForward initAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) {
     	//preguntar por el tipo de usuario y dependiendo, por ahora mandarlo a una pagina u a otra    	
     	//return executeNext("doHome", "showHome", mapping, form, request, response);
-    	return mapping.findForward("showHome");
+    	String user = (String)((DynaActionForm)form).get("user");
+    	if("admin".equals(user)) {
+    		return mapping.findForward("showAdminHome");
+    	}
+    	return mapping.findForward("showManagerHome");
     }        
 }
