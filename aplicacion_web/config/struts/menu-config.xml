@@ -21,7 +21,8 @@
 
   <Menus>
 	<Menu name="TabHome" title="" description="TabHome">
-		<Item name="TabAdmin" title="Tabs.home.admin" location="doHome" description="doHome" roles="Admin"/>				
+		<Item name="TabAdmin" title="Tabs.home.admin" location="doHome" description="doHome" roles="Admin"/>
+		<Item name="TabManagerAdmin" title="Tabs.home.manager" location="doHome" description="doHome" roles="Manager"/>
 	</Menu>	
 	
 	<Menu name="menu.commons.buttons.detail">

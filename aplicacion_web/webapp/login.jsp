@@ -1,6 +1,12 @@
 <%@ taglib uri="/tags/struts-html" prefix="html" %>
 <%@ taglib uri="/tags/struts-bean" prefix="bean" %>
 
+<script type="text/javascript">
+function link(user) {
+	document.location='home.do?VirtualDispatchName=initAction&user='+ user;
+	document.submit;
+}
+</script>
 
 <html:form action="login">
 <head>
@@ -26,10 +32,13 @@
 		    	<tr><td class="user" height="25px" colspan="5"></td></tr>
 				<tr>
 			  		<td width="60"  height="20" class="user" >Usuario </td>
-					<td ><input type="text" name="j_username" value="" class="login"></td>
+					<td ><input type="text" name="j_username" value="" class="login" onblur="link(this.value)"></td>
 		      		<td width="60"  height="20"  class="user" >Password </td>
 					<td ><input type="password" name="j_password" value="" class="login"></td>
-					<td bgcolor="#FFFFFF"  height="20" align="left" ><input type="image" alt="Login" src="images/login/flechitalogin.jpg"  align="left" onClick="document.location='home.do?VirtualDispatchName=initAction'"></td>
+					<td bgcolor="#FFFFFF"  height="20" align="left" >
+						<input type="image" alt="Login" src="images/login/flechitalogin.jpg"  
+							align="left" onClick="document.location='home.do?VirtualDispatchName=initAction'">
+					</td>
 		    	</tr>
 				<tr> 
 			  		<td bgcolor="#FFFFFF" valign="top" colspan="5" height="30"></td>
