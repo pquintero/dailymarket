@@ -1,17 +1,14 @@
 package ar.com.dailyMarket.services;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.DynaActionForm;
 import org.hibernate.Criteria;
-import org.hibernate.criterion.MatchMode;
 import org.hibernate.criterion.Restrictions;
 
 import ar.com.dailyMarket.model.HourlyBand;
-import ar.com.dailyMarket.model.User;
 
 public class HourlyBandService {
 	

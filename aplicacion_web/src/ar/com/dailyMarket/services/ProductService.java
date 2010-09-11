@@ -1,6 +1,7 @@
 package ar.com.dailyMarket.services;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import org.apache.struts.action.ActionForm;
@@ -22,6 +23,7 @@ public class ProductService {
 		product.setSizeOfPurchase((Integer)form.get("sizeOfPurchase"));
 		GroupProductService groupProductService = new GroupProductService();
 		product.setGroupProduct(groupProductService.getProductByPK((Long)form.get("groupProductId")));
+		product.setRepositionStock((Integer)form.get("repositionStock"));
 	}
 	
 	public void save (ActionForm form) {	
@@ -69,5 +71,20 @@ public class ProductService {
 		}
 		List products = (List)c.list();		
 		return products.isEmpty() ? new ArrayList() : products;
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List<Product> getProductWithoutStock() {		
+		Criteria c = HibernateHelper.currentSession().createCriteria(Product.class);
+		//c.add(Restrictions.le("actualStock", "repositionStock"));
+		//ver por que no me anda con esto, xq quedaria mejor
+		List<Product> products = new ArrayList<Product>();
+		for (Iterator<Product> it = c.list().iterator(); it.hasNext(); ) {
+			Product product = it.next();
+			if (product.getActualStock() <= product.getRepositionStock()) {
+				products.add(product);
+			}
+		}		
+		return products;
 	}
 }

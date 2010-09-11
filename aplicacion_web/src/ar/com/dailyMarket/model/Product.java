@@ -1,5 +1,7 @@
 package ar.com.dailyMarket.model;
 
+import java.util.Date;
+
 public class Product {
 	
 	private Long id;
@@ -10,6 +12,9 @@ public class Product {
 	private Integer sizeOfPurchase;
 	private String code;
 	private GroupProduct groupProduct;
+	private String state;
+	private Integer repositionStock;
+	private Date dateWithoutStock; //fecha última en q se quedo sin stock
 	
 	public Long getId() {
 		return id;
@@ -58,5 +63,23 @@ public class Product {
 	}
 	public void setGroupProduct(GroupProduct groupProduct) {
 		this.groupProduct = groupProduct;
+	}
+	public String getState() {
+		return state;
+	}
+	public void setState(String state) {
+		this.state = state;
+	}
+	public Date getDateWithoutStock() {
+		return dateWithoutStock;
+	}
+	public void setDateWithoutStock(Date dateWithoutStock) {
+		this.dateWithoutStock = dateWithoutStock;
+	}
+	public Integer getRepositionStock() {
+		return repositionStock;
+	}
+	public void setRepositionStock(Integer repositionStock) {
+		this.repositionStock = repositionStock;
 	}	
 }

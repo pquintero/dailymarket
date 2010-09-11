@@ -10,7 +10,6 @@ import org.hibernate.criterion.MatchMode;
 import org.hibernate.criterion.Restrictions;
 
 import ar.com.dailyMarket.model.GroupUser;
-import ar.com.dailyMarket.model.User;
 
 public class GroupUserService {
 	

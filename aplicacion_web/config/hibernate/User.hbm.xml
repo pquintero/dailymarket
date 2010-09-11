@@ -12,7 +12,9 @@
 		<property column="lastname" name="lastName"  type="java.lang.String"/>
 		<property column="dni" name="dni"  type="java.lang.String"/>
         <property column="password" name="password"  type="java.lang.String"/>
-        <property column="datecreated" name="dateCreated"  type="java.util.Date"/>	   
+        <property column="datecreated" name="dateCreated"  type="java.util.Date"/>
+        <property column="email" name="email"  type="java.lang.String"/>
+        <property column="receivenotifications" name="receiveNotifications"  type="java.lang.Boolean"/>	   
         
         <many-to-one name="groupUser" column="groupuserid" class="ar.com.dailyMarket.model.GroupUser"/>
     </class>   

@@ -6,7 +6,6 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
 
-import ar.com.dccsoft.skeleton.error.SkeletonError;
 
 public class HibernateHelper {
 	private static Logger log = Logger.getLogger(HibernateHelper.class.getName());
@@ -20,15 +19,17 @@ public class HibernateHelper {
                 sessionFactory = new Configuration().configure(HibernateHelper.class.getResource("/hibernate/hibernate.cfg.xml")).buildSessionFactory();
             } catch (HibernateException ex) {
                 log.fatal("No se pudo configurar el hibernate: " + ex.toString());
-                throw new SkeletonError(ex);
+                throw new Error(ex);
             }
             log.debug("Hibernate Configurado.");
         }
     }
 
-    public static final ThreadLocal session = new ThreadLocal();
+    @SuppressWarnings("unchecked")
+	public static final ThreadLocal session = new ThreadLocal();
 
-    public static Session currentSession() throws HibernateException {
+    @SuppressWarnings("unchecked")
+	public static Session currentSession() throws HibernateException {
         Session s = (Session) session.get();
         // Open a new Session, if this Thread has none yet
         if (s == null) {
@@ -39,7 +40,8 @@ public class HibernateHelper {
         return s;
     }
 
-    public static void closeSession() throws HibernateException {
+    @SuppressWarnings("unchecked")
+	public static void closeSession() throws HibernateException {
         Session s = (Session) session.get();
         session.set(null);
         if (s != null) {

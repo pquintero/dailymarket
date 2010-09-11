@@ -417,4 +417,18 @@
         <put name="buttons" value="tiles.simulator.buttons" />                    
     </definition>       
     
+    <!-- ============================================================== -->
+    <!-- Configuration                                                   -->
+    <!-- ============================================================== -->    
+    <definition name="tiles.showConfiguration" extends=".mainLayout">
+        <put name="title"   value="configuration.title" />
+        <put name="body"    value="tiles.showConfiguration.body" />
+    </definition>    
+	<definition name="tiles.showConfiguration.body" extends=".editLayout">
+        <put name="title"   value="configuration.title" />
+        <put name="action"  value="configuration" />
+        <put name="tabs"    value=""/>
+        <put name="body"    value="/pages/configuration/configuration.jsp" />
+        <put name="buttons" value="" />                    
+    </definition>
 </tiles-definitions>

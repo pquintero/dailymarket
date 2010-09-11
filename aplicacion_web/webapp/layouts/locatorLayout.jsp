@@ -19,7 +19,7 @@
 			} catch (Exception e) {
 				retVal = title;
 			}%>
-    <TITLE>.:: DataGen :: <%=retVal%> ::.</TITLE>
+    <TITLE>.:: DAILYMARKET :: <%=retVal%> ::.</TITLE>
 
     <META HTTP-EQUIV="Content-Type" content="text/html; charset=iso-8859-1"/>
     <META HTTP-EQUIV="Expires" CONTENT="-1">

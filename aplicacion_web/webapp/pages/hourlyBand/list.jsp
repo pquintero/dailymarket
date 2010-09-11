@@ -10,12 +10,18 @@
         <ds:column titleKey="HourlyBandForm.description" headerClass="listTitle" sortable="true" property="description"/>
         <ds:column titleKey="HourlyBandForm.initHour" headerClass="listTitle" sortable="true" property="initBand"/>
         <ds:column titleKey="HourlyBandForm.endHour" headerClass="listTitle" sortable="true" property="endBand"/>
-        <ds:column headerClass="listTitle">
-	    	<table class="buttons">
-				<tr>
-					<td><a class="btn" href="#" onclick="document.location='hourlyBand.do?VirtualDispatchName=findByPK&id=<%=((HourlyBand)row).getId()%>'" 
-	            		style="cursor: pointer;">Ver</a></td>
-				</tr>
-			</table>
-		</ds:column>
+        <ds:column headerClass="listTitle"  title="&nbsp;">
+			<img 
+				src="images/common/editar.gif" 
+				onclick="document.location='hourlyBand.do?VirtualDispatchName=findByPK&id=<%=((HourlyBand)row).getId()%>'" 
+				alt='<bean:message key="common.edit"/>'
+				style="cursor: pointer;"/>
+    	</ds:column>
+    	<ds:column headerClass="listTitle"  title="&nbsp;">
+			<img 
+				src="images/common/eliminar.gif" 
+				onclick="document.location='hourlyBand.do?VirtualDispatchName=findByPK&id=<%=((HourlyBand)row).getId()%>'" 
+				alt='<bean:message key="common.edit"/>'
+				style="cursor: pointer;"/>
+    	</ds:column>        
 </ds:table>

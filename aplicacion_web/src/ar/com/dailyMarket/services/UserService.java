@@ -2,6 +2,7 @@ package ar.com.dailyMarket.services;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
 
 import org.apache.struts.action.ActionForm;
@@ -12,6 +13,7 @@ import org.hibernate.criterion.Restrictions;
 
 import ar.com.dailyMarket.model.GroupUser;
 import ar.com.dailyMarket.model.User;
+import ar.com.dccsoft.skeleton.services.HibernateHelper;
 
 public class UserService {
 	
@@ -25,6 +27,7 @@ public class UserService {
 		user.setDateCreated(new Date());
 		GroupUserService groupUserService = new GroupUserService();
 		user.setGroupUser(groupUserService.getUserByPK((Long)form.get("groupUserId")));
+		user.setReceiveNotifications(new Boolean(false));
 	}
 	
 	public void save (ActionForm form) {	
@@ -45,6 +48,12 @@ public class UserService {
 	
 	public User getUserByPK (Long id) {
 		return (User)HibernateHelper.currentSession().load(User.class, id);
+	}
+	
+	public User getUser (String user) {
+		Criteria c = HibernateHelper.currentSession().createCriteria(User.class);
+		c.add(Restrictions.eq("user", user));
+		return (User)c.uniqueResult();
 	}
 	
 	@SuppressWarnings("unchecked")
@@ -77,5 +86,40 @@ public class UserService {
 		}
 		List users = (List)c.list();		
 		return users.isEmpty() ? new ArrayList() : users;
+	}			
+	
+	public String getRoleInUser(String user) {
+		Criteria c = HibernateHelper.currentSession().createCriteria(User.class);
+		c.add(Restrictions.eq("user", user));
+		return ((User)c.uniqueResult()).getGroupUser().getName();
+	}	
+	
+	@SuppressWarnings("unchecked")
+	public List<User> getUserToNotifications(Boolean value) {
+		String[] listRestrictions = new String[3];
+		listRestrictions[0] = GroupUser.ROLE_ADMIN;
+		listRestrictions[1] = GroupUser.ROLE_MANAGER;
+		listRestrictions[2] = GroupUser.ROLE_SUPERVISOR;
+		
+		Criteria c = HibernateHelper.currentSession().createCriteria(User.class);
+		c.add(Restrictions.eq("receiveNotifications", value));
+		c.createCriteria("groupUser").add(Restrictions.in("name", listRestrictions));
+		return c.list();
+	}
+	
+	public void addNotificationInUser(Long idUser) {
+		User user = getUserByPK(idUser);
+		user.setReceiveNotifications(new Boolean(true));
+		save(user);
+	}
+	
+	public String[] getEmailsToNotifications() {
+		List<User> users = getUserToNotifications(true);
+		String[] emails = new String[users.size()];
+		int i = 0;
+		for (Iterator<User> it = users.iterator(); it.hasNext(); i++) {
+			emails[i] = it.next().getEmail();
+		}
+		return emails;
 	}
 }

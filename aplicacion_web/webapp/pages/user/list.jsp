@@ -11,12 +11,18 @@
         <ds:column titleKey="UserForm.lastName" headerClass="listTitle" sortable="true" property="lastName"/>
         <ds:column titleKey="UserForm.dni" headerClass="listTitle" sortable="true" property="dni"/>
         <ds:column titleKey="UserForm.groupUser" headerClass="listTitle" sortable="true" property="groupUser.name"/>
-        <ds:column headerClass="listTitle">
-	    	<table class="buttons">
-				<tr>
-					<td><a class="btn" href="#" onclick="document.location='user.do?VirtualDispatchName=findByPK&id=<%=((User)row).getId()%>'" 
-	            		style="cursor: pointer;">Ver</a></td>
-				</tr>
-			</table>
-		</ds:column>
+        <ds:column headerClass="listTitle"  title="&nbsp;">
+			<img 
+				src="images/common/editar.gif" 
+				onclick="document.location='user.do?VirtualDispatchName=findByPK&id=<%=((User)row).getId()%>'" 
+				alt='<bean:message key="common.edit"/>'
+				style="cursor: pointer;"/>
+    	</ds:column>
+    	<ds:column headerClass="listTitle"  title="&nbsp;">
+			<img 
+				src="images/common/eliminar.gif" 
+				onclick="document.location='user.do?VirtualDispatchName=findByPK&id=<%=((User)row).getId()%>'" 
+				alt='<bean:message key="common.delete"/>'
+				style="cursor: pointer;"/>
+    	</ds:column>        
 </ds:table>

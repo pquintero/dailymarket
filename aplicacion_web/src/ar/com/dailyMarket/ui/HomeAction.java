@@ -8,7 +8,9 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
-import org.apache.struts.action.DynaActionForm;
+
+import ar.com.dailyMarket.model.GroupUser;
+import ar.com.dailyMarket.services.UserService;
 
 public class HomeAction extends BaseAction {             
 	
@@ -26,11 +28,12 @@ public class HomeAction extends BaseAction {
     	return mapping.findForward("showError");    	
     }    
     
-    public ActionForward initAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) {
-    	//preguntar por el tipo de usuario y dependiendo, por ahora mandarlo a una pagina u a otra    	
-    	//return executeNext("doHome", "showHome", mapping, form, request, response);
-    	String user = (String)((DynaActionForm)form).get("user");
-    	if("admin".equals(user)) {
+    public ActionForward initAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) {	
+    	String user = request.getRemoteUser();
+    	UserService userService = new UserService();
+    	String role = userService.getRoleInUser(user);
+    	
+    	if(GroupUser.ROLE_ADMIN.equals(role)) {
     		return mapping.findForward("showAdminHome");
     	}
     	return mapping.findForward("showManagerHome");

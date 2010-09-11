@@ -8,12 +8,18 @@
 
         <ds:column titleKey="GroupUserForm.name" headerClass="listTitle" sortable="true" property="name"/>
         <ds:column titleKey="GroupUserForm.description" headerClass="listTitle" sortable="true" property="description"/>
-        <ds:column headerClass="listTitle">
-	    	<table class="buttons">
-				<tr>
-					<td><a class="btn" href="#" onclick="document.location='groupUser.do?VirtualDispatchName=findByPK&id=<%=((GroupUser)row).getId()%>'" 
-	            		style="cursor: pointer;">Ver</a></td>
-				</tr>
-			</table>
-		</ds:column>
+        <ds:column headerClass="listTitle"  title="&nbsp;">
+			<img 
+				src="images/common/editar.gif" 
+				onclick="document.location='groupUser.do?VirtualDispatchName=findByPK&id=<%=((GroupUser)row).getId()%>'" 
+				alt='<bean:message key="common.edit"/>'
+				style="cursor: pointer;"/>
+    	</ds:column>
+    	<ds:column headerClass="listTitle"  title="&nbsp;">
+			<img 
+				src="images/common/eliminar.gif" 
+				onclick="document.location='groupUser.do?VirtualDispatchName=findByPK&id=<%=((GroupUser)row).getId()%>'" 
+				alt='<bean:message key="common.delete"/>'
+				style="cursor: pointer;"/>
+    	</ds:column>        
 </ds:table>

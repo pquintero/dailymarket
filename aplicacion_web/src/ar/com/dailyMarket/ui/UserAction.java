@@ -52,6 +52,7 @@ public class UserAction extends BaseAction {
     	form.set("dni", "");
     	form.set("user", "");
     	form.set("idStr", "");
+    	form.set("groupUserId", null);
     }
     
     private void setFormProperties(DynaActionForm form, User user) {
