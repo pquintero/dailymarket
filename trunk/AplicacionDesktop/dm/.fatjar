@@ -1,0 +1,14 @@
+#Fat Jar Configuration File
+#Tue Aug 24 19:21:42 ART 2010
+onejar.license.required=true
+manifest.classpath=
+manifest.removesigners=true
+onejar.checkbox=false
+jarname=dailyMarket_fat.jar
+manifest.mergeall=true
+manifest.mainclass=componentes.InitDailyMarketFrame
+manifest.file=<createnew>
+jarname.isextern=false
+onejar.expand=
+excludes=<jar|mysql-connector-java-5.0.4-bin.jar>
+includes=
