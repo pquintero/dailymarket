@@ -1,0 +1,10 @@
+2010-08-26 09:15:30,428 org.hibernate.tool.hbm2ddl.SchemaUpdate ERROR - could not complete schema update
+org.hibernate.MappingException: An association from the table tea_call_approvable refers to an unmapped class: ar.com.tsoluciones.emergencies.server.businesslogic.core.model.StreetByDistrict
+	at org.hibernate.cfg.Configuration.secondPassCompileForeignKeys(Configuration.java:1252)
+	at org.hibernate.cfg.Configuration.secondPassCompile(Configuration.java:1170)
+	at org.hibernate.cfg.Configuration.generateSchemaUpdateScript(Configuration.java:936)
+	at org.hibernate.tool.hbm2ddl.SchemaUpdate.execute(SchemaUpdate.java:140)
+	at ar.com.tsoluciones.arcom.hibernate.SchemaUpdate.executeUpdate(SchemaUpdate.java:48)
+	at ar.com.tsoluciones.arcom.hibernate.SchemaUpdate.execute(SchemaUpdate.java:31)
+	at ar.com.tsoluciones.arcom.hibernate.SchemaUpdate.doScript(SchemaUpdate.java:21)
+	at ar.com.tsoluciones.arcom.hibernate.SchemaUpdate.main(SchemaUpdate.java:13)
