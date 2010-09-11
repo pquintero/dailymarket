@@ -56,7 +56,7 @@ CREATE TABLE `groupuser` (
   `name` varchar(45) default NULL,
   `description` varchar(45) default NULL,
   PRIMARY KEY  (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `groupuser`
@@ -65,7 +65,8 @@ CREATE TABLE `groupuser` (
 /*!40000 ALTER TABLE `groupuser` DISABLE KEYS */;
 INSERT INTO `groupuser` (`id`,`name`,`description`) VALUES 
  (1,'Admin','Administrador'),
- (2,'Manager','Manager');
+ (2,'Manager','Manager'),
+ (3,'Cajero','Cajero');
 /*!40000 ALTER TABLE `groupuser` ENABLE KEYS */;
 
 
@@ -110,6 +111,8 @@ CREATE TABLE `product` (
   `actualstock` int(10) unsigned default NULL,
   `code` varchar(45) default NULL,
   `groupproductid` int(10) unsigned default NULL,
+  `repositionstock` int(11) default NULL,
+  `datewithoutstock` datetime default NULL,
   PRIMARY KEY  (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=latin1;
 
@@ -118,10 +121,10 @@ CREATE TABLE `product` (
 --
 
 /*!40000 ALTER TABLE `product` DISABLE KEYS */;
-INSERT INTO `product` (`id`,`name`,`description`,`sizeofpurchase`,`price`,`actualstock`,`code`,`groupproductid`) VALUES 
- (1,'Yerba','Yerba mate',34,12.3,12,'1',4),
- (2,'Alfajor jorgito','Alfajor jorgito',20,2,12,'2',3),
- (3,'Queso rallado la serenisima','Queso rallado la serenima',45,12,23,'3',2);
+INSERT INTO `product` (`id`,`name`,`description`,`sizeofpurchase`,`price`,`actualstock`,`code`,`groupproductid`,`repositionstock`,`datewithoutstock`) VALUES 
+ (1,'Yerba','Yerba mate',34,12.3,12,'1',4,15,NULL),
+ (2,'Alfajor jorgito','Alfajor jorgito',20,2,12,'2',3,11,NULL),
+ (3,'Queso rallado la serenisima','Queso rallado la serenima',100,12,23,'3',2,30,NULL);
 /*!40000 ALTER TABLE `product` ENABLE KEYS */;
 
 
@@ -139,17 +142,20 @@ CREATE TABLE `user` (
   `dni` varchar(20) default NULL,
   `datecreated` datetime default NULL,
   `groupuserid` int(10) unsigned default NULL,
+  `email` varchar(50) default NULL,
+  `receiveNotifications` tinyint(1) default '0',
   PRIMARY KEY  (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `user`
 --
 
 /*!40000 ALTER TABLE `user` DISABLE KEYS */;
-INSERT INTO `user` (`id`,`name`,`lastname`,`user`,`password`,`dni`,`datecreated`,`groupuserid`) VALUES 
- (1,'Juan','Melo','jmelo','123456','30862616','2010-09-05 12:20:49',2),
- (2,'Ezequiel','Pallich','admin','qweeqwq','30129121','2010-09-05 15:26:05',1);
+INSERT INTO `user` (`id`,`name`,`lastname`,`user`,`password`,`dni`,`datecreated`,`groupuserid`,`email`,`receiveNotifications`) VALUES 
+ (1,'Juan','Melo','jmelo','a','30862616','2010-09-05 12:20:49',1,'juanmelo25@hotmail.com',1),
+ (2,'Ezequiel','Pallich','eze','a','30129121','2010-09-13 16:52:00',2,'epallich@gmail.com',0),
+ (3,'Abelardo','Pallich','apallich','a','123456','2010-09-09 20:21:56',3,NULL,0);
 /*!40000 ALTER TABLE `user` ENABLE KEYS */;
 
 

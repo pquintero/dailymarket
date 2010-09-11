@@ -7,6 +7,10 @@ import java.util.Map;
 import org.apache.log4j.Logger;
 import org.securityfilter.realm.SimpleSecurityRealmBase;
 
+import ar.com.dailyMarket.model.GroupUser;
+import ar.com.dailyMarket.model.User;
+import ar.com.dailyMarket.services.UserService;
+
 public class DailyMarketSecurity extends SimpleSecurityRealmBase {
 	
 	private static Map roleCache = new Hashtable(); 
@@ -14,16 +18,16 @@ public class DailyMarketSecurity extends SimpleSecurityRealmBase {
     private Logger log = Logger.getLogger(getClass().getName());
 
     public boolean booleanAuthenticate(String arg0, String arg1) {
-        /*if (arg0 == null || arg0.trim().equals("")) {
+        if (arg0 == null || arg0.trim().equals("")) {
             log.info("booleanAuthenticate: usuario no ingresado");
             return false;
         }
 
         try {
-            UserService service = (UserService) ServiceLocator.getInstance().getService("user");
-            User user = service.getUser(arg0);
+            UserService service = new UserService();
+            User user = service.getUser((String)arg0);
 
-            if (user == null || user.getPassword() == null || !user.getPassword().equals(arg1) || user.getDateRemoved() != null) {
+            if (user == null || user.getPassword() == null || !user.getPassword().equals(arg1)) {
                 log.info("booleanAuthenticate: usuario inválido");
                 return false;
             }
@@ -32,28 +36,28 @@ public class DailyMarketSecurity extends SimpleSecurityRealmBase {
         } catch (Exception e) {
             log.info("booleanAuthenticate: " + e.toString());
             return false;
-        }*/
+        }
         return true;
     }
     
     public boolean isUserInRole(Principal arg0, String arg1) {
-        /*try {
+        try {
             User user = (User) roleCache.get(arg0);
             if (user == null) {
                	
-            	UserService service = (UserService) ServiceLocator.getInstance().getService("user");
+            	UserService service = new UserService();
                	user = service.getUser(arg0.getName());
                	roleCache.put(arg0,user);
             } 
-            if (user.getGroup() != null && user.getGroup().hasRole(arg1)) {
-            		return true;       	
+            GroupUser groupUser = user.getGroupUser();            
+            if (groupUser != null && (groupUser.getName().equals("Admin") || groupUser.getName().equals("Manager"))) {            	
+            	return true;       	
             }
         } catch (Exception e) {
             log.info("isUserInRole: " + e.toString());
             return false;
         }
 	
-        return false;*/
-    	return true;
+        return false;
     }
 }

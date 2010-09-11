@@ -133,6 +133,7 @@
 			<form-property name="groupProductId" type="java.lang.Long"/>
 			<form-property name="groupProductStr" type="java.lang.String"/>		
 			<form-property name="code" type="java.lang.String"/>
+			<form-property name="repositionStock" type="java.lang.Integer"/>
 			
 			<form-property name="dsTable" type="java.lang.String" />
 			<form-property name="collectionName" type="java.lang.String" initial="" />
@@ -193,6 +194,17 @@
 			<form-property name="dsTable" type="java.lang.String" />
 			<form-property name="collectionName" type="java.lang.String" initial="" />
 		</form-bean>
+		
+		<form-bean name="ConfigurationForm" type="org.apache.struts.action.DynaActionForm">
+            <form-property name="VirtualDispatchName" type="java.lang.String"/>
+            <form-property name="id" type="java.lang.Long" />
+            <form-property name="timer" type="java.lang.Integer" />
+            <form-property name="userId" type="java.lang.Long" />
+            
+            <form-property name="saveToken" type="java.lang.String"/>			
+			<form-property name="dsTable" type="java.lang.String" />
+			<form-property name="collectionName" type="java.lang.String" initial="" />
+		</form-bean>				
     </form-beans>
 
 
@@ -405,6 +417,20 @@
 			<forward name="doHome" path="/home.do"/>
 			<forward name="showSimulator" path="tiles.simulator.execute"/>			
 		</action>
+		
+		<action 
+            path="/configuration" 
+            type="ar.com.dailyMarket.ui.ConfigurationAction" 
+            validate="false"
+            parameter="VirtualDispatchName"
+            scope="request"
+            name="ConfigurationForm">
+			
+			<set-property property="initMethod" value="initAction"/>
+			
+			<forward name="showConfiguration" path="tiles.showConfiguration"/>								
+		</action>
+		
 		</action-mappings>
 <!-- ===================================== Controller Configuration -->
     <controller processorClass="org.apache.struts.tiles.TilesRequestProcessor"/>

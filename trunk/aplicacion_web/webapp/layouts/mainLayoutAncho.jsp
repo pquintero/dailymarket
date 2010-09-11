@@ -19,7 +19,7 @@
 				retVal = title;
 			}%>
 <HEAD>
-    <TITLE>.:: DataGen :: <%=retVal%> ::.</TITLE>
+    <TITLE>.:: DAILYMARKET :: <%=retVal%> ::.</TITLE>
     <META HTTP-EQUIV="Content-Type" content="text/html; charset=iso-8859-1"/>
     <LINK href="site2.css" type="text/css" rel="stylesheet">
     <LINK href="dcc_calendar.css" type="text/css" rel="stylesheet">

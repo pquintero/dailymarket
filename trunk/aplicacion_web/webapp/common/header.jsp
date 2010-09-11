@@ -85,7 +85,7 @@ function MM_swapImage() { //v3.0
 				
 					<td width="25"></td>
 					<td class="inciarOrdenLeft"> 
-						<a href="simulator.do?VirtualDispatchName=initAction">Simulador</a>
+						<a href="configuration.do?VirtualDispatchName=initAction">Configuraciones</a>
 					</td>	
 					
 				</tr>				

@@ -4,7 +4,7 @@
 
 <html:form action="login">
 <head>
-<title> Login .:: DCC Soft IT ::. </title>
+<title> Login .:: TECNO-SOLUTIONS ::. </title>
 <meta http-equiv="Content-Type" content="text/html;">
 <!--Fireworks MX 2004 Dreamweaver MX 2004 target.  Created Wed Jan 03 14:25:43 GMT-0300 2007-->
 <link href="site.css" rel="stylesheet" type="text/css">
@@ -13,7 +13,7 @@
 <table align="center" bgcolor="#FFFFFF" cellpadding="0" cellspacing="0" border="0" width="98%">
   <tr>
     <!-- header -->
-    <td colspan="3" align="center" background="images/login/pixelHead.jpg"><img src="images/login/logoMazda.jpg" name="undefined_2"></td>
+    <td colspan="3" align="center" background="images/login/pixelHead.jpg"><img src="images/login/logoDailyMarket.jpg" name="undefined_2"></td>
   </tr>
   <tr>
     <!-- title -->

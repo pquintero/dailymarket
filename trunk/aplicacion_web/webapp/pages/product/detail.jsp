@@ -34,6 +34,10 @@
 	<TD><html:text property="actualStock" size="30"  maxlength="20"/></TD>	
 </TR>
 <TR> 
+	<TH class="required"><bean:message key="ProductForm.repositionStock"/></TH>
+	<TD><html:text property="repositionStock" size="30"  maxlength="20"/></TD>	
+</TR>
+<TR> 
 	<TH class="required"><bean:message key="ProductForm.sizePurchase"/></TH>
 	<TD><html:text property="sizeOfPurchase" size="30"  maxlength="20"/></TD>	
 </TR>

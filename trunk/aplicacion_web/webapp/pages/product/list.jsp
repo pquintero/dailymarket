@@ -11,13 +11,20 @@
         <ds:column titleKey="ProductForm.description" headerClass="listTitle" sortable="true" property="description"/>
         <ds:column titleKey="ProductForm.price" headerClass="listTitle" sortable="true" property="price"/>
         <ds:column titleKey="ProductForm.actualStock" headerClass="listTitle" sortable="true" property="actualStock"/>
+        <ds:column titleKey="ProductForm.repositionStock" headerClass="listTitle" sortable="true" property="repositionStock"/>
         <ds:column titleKey="ProductForm.groupProduct" headerClass="listTitle" sortable="true" property="groupProduct.name"/>
-        <ds:column headerClass="listTitle">
-	    	<table class="buttons">
-				<tr>
-					<td><a class="btn" href="#" onclick="document.location='product.do?VirtualDispatchName=findByPK&id=<%=((Product)row).getId()%>'" 
-	            		style="cursor: pointer;">Ver</a></td>
-				</tr>
-			</table>
-		</ds:column>
+        <ds:column headerClass="listTitle"  title="&nbsp;">
+			<img 
+				src="images/common/editar.gif" 
+				onclick="document.location='product.do?VirtualDispatchName=findByPK&id=<%=((Product)row).getId()%>'" 
+				alt='<bean:message key="common.edit"/>'
+				style="cursor: pointer;"/>
+    	</ds:column>
+    	<ds:column headerClass="listTitle"  title="&nbsp;">
+			<img 
+				src="images/common/eliminar.gif" 
+				onclick="document.location='product.do?VirtualDispatchName=findByPK&id=<%=((Product)row).getId()%>'" 
+				alt='<bean:message key="common.delete"/>'
+				style="cursor: pointer;"/>
+    	</ds:column>
 </ds:table>

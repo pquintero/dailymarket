@@ -13,6 +13,8 @@ public class User {
 	private String dni;
 	private Date dateCreated;
 	private GroupUser groupUser;
+	private String email;
+	private boolean receiveNotifications;
 	
 	public Long getId() {
 		return id;
@@ -67,5 +69,20 @@ public class User {
 	}
 	public void setDateCreated(Date dateCreated) {
 		this.dateCreated = dateCreated;
-	}			
+	}
+	public String getEmail() {
+		return email;
+	}
+	public void setEmail(String email) {
+		this.email = email;
+	}
+	public String getDescUser() {
+		return getLastName() + ", " + getName() + " - " + getEmail();
+	}
+	public boolean isReceiveNotifications() {
+		return receiveNotifications;
+	}
+	public void setReceiveNotifications(boolean receiveNotifications) {
+		this.receiveNotifications = receiveNotifications;
+	}	
 }

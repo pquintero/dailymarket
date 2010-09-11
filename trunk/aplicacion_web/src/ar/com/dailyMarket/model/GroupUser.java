@@ -1,6 +1,10 @@
 package ar.com.dailyMarket.model;
 
 public class GroupUser {
+	public static final String ROLE_ADMIN = "Admin";
+	public static final String ROLE_MANAGER = "Manager";
+	public static final String ROLE_SUPERVISOR = "Supervisor";
+	public static final String ROLE_CAJERO = "Cajero";
 	
 	private Long id;
 	private String name;

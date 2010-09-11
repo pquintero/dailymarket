@@ -12,7 +12,9 @@
 		<property column="code" name="code"  type="java.lang.String"/>
 		<property column="price" name="price"  type="java.lang.Double"/>
         <property column="sizeofpurchase" name="sizeOfPurchase"  type="java.lang.Integer"/>
-        <property column="actualstock" name="actualStock"  type="java.lang.Integer"/>	 
+        <property column="actualstock" name="actualStock"  type="java.lang.Integer"/>
+        <property column="datewithoutstock" name="dateWithoutStock"  type="java.util.Date"/>	 
+        <property column="repositionstock" name="repositionStock"  type="java.lang.Integer"/>
         
         <many-to-one name="groupProduct" column="groupproductid" class="ar.com.dailyMarket.model.GroupProduct"/>   	    			 
     </class>   

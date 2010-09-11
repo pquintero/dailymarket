@@ -5,6 +5,8 @@ import java.util.Locale;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.struts.action.ActionError;
+import org.apache.struts.action.ActionErrors;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
@@ -18,8 +20,9 @@ public class LoginAction extends BaseAction {
     }
 
     public ActionForward doError(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
-        mapping.setForward("error");
-        return execute(mapping, form, request, response);
+        ActionErrors error = new ActionErrors();
+        error.add("", new ActionError("Usuario o Password Inválido"));
+    	return mapping.findForward("error");
     }
 
     public ActionForward doLogout(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {

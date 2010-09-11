@@ -50,6 +50,7 @@ public class ProductAction extends BaseAction {
     	form.set("name", "");
     	form.set("description", "");
     	form.set("code", "");
+    	form.set("groupProductId", null);
     }
     
     private void setFormProperties(DynaActionForm form, Product product) {
@@ -61,6 +62,7 @@ public class ProductAction extends BaseAction {
     	form.set("code", product.getCode());
     	form.set("description", product.getDescription());
     	form.set("groupProductId", product.getGroupProduct() != null ? product.getGroupProduct().getId() : null);
+    	form.set("repositionStock", product.getRepositionStock() != null ? product.getRepositionStock() : null);
     }
     
     private void setGroupUserRequest (HttpServletRequest request) {
