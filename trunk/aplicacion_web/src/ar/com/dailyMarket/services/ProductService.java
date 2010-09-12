@@ -17,11 +17,12 @@ import org.hibernate.Criteria;
 import org.hibernate.criterion.MatchMode;
 import org.hibernate.criterion.Restrictions;
 
+import ar.com.dailyMarket.model.Configuration;
 import ar.com.dailyMarket.model.Product;
 
 import com.mysql.jdbc.Statement;
 
-public class ProductService {
+public class ProductService extends MailService{
 	
 	public void copyProperties(Object obj, DynaActionForm form) {			
 		Product product = (Product)obj;
@@ -38,8 +39,8 @@ public class ProductService {
 	public void save (ActionForm form) {	
 		Product product = new Product();
 		copyProperties(product, (DynaActionForm)form);
-		save(product);
-		//aca armo el codigo del producto, ver de armar algun patron para q por ejemplo diga 0000000id
+		save(product);	
+		//poner el codigo ingresado x el lector o usuario
 		product.setCode(product.getId().toString());
 		save(product);
 	}	
@@ -122,11 +123,35 @@ public class ProductService {
 	}
 	
 	public void sendOrder(Long[] ids) {
+		//Actualizo estado
+		List<Product> products = new ArrayList<Product>();
 		for (int i = 0; i < ids.length; i++) {
 			Product product = getProductByPK((Long)ids[i]);
 			product.setState(Product.PRODUCT_STATE_SEND);
 			save(product);
+			products.add(product);
 		}
-		//aca enviar email a deposito con los pedidos de los productos
+		//Envío emal a deposito con el pedido
+		ConfigurationService configurationService = new ConfigurationService();
+		String[] emailTo = new String[1];
+		Configuration conf = configurationService.getConfiguration();
+		if (conf != null) {
+			emailTo[0] = conf.getEmailDeposito();
+			super.sendMail(emailTo, createMessage(products));
+		}		 	
+	}
+	
+	public StringBuffer createMessage (List<Product> products) {
+		StringBuffer message = new StringBuffer();		
+		
+		if (!products.isEmpty()) {
+			message.append("Pedido de Mercadería: \n\n");
+			for (Iterator<Product> it = products.iterator(); it.hasNext();) {
+				Product product = it.next();
+				message.append("\tCódigo: " + product.getCode() + " - Producto: " + product.getName() + " - Tamaño de Pedido: " + product.getSizeOfPurchase() + "\n");
+			}
+			message.append(" \n");
+		}								
+		return message;
 	}
 }

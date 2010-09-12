@@ -121,4 +121,10 @@ public class UserService {
 		}
 		return emails;
 	}
+	
+	public void deleteNotificationInUser(Long idUser) {
+		User user = getUserByPK(idUser);
+		user.setReceiveNotifications(new Boolean(false));
+		save(user);
+	}	
 }

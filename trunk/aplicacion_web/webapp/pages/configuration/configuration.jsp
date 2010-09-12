@@ -5,6 +5,8 @@
 <%@ taglib uri="/tags/struts-logic" prefix="logic" %>
 <%@ taglib uri="/tags/displaytag" prefix="ds" %>
 
+<%@ page import="ar.com.dailyMarket.model.User" %>
+
 <TABLE class="form" cellSpacing="0" cellPadding="0" border="0">
 	<TR> 
 		<TD colspan="3"> 
@@ -19,7 +21,19 @@
 	<tr><TD colspan="3">&nbsp;</TD></tr>
 	<TR> 
 		<TH><bean:message key="ConfigurationForm.period"/></TH>
-		<TD colspan="2"><html:text property="timer" size="30"  maxlength="20"/></TD>	
+		<TD colspan="2"><html:text property="timer" size="30"  maxlength="20"/></TD>
+	</TR>
+	<tr><TD colspan="3">&nbsp;</TD></tr>
+	<tr><TD colspan="3">&nbsp;</TD></tr>
+	<TR> 
+		<TD colspan="3">
+			<h1 class="formtitle"><bean:message key="ConfigrationForm.emailDeposito"/></h1>
+		</TD>		
+	</TR>
+	<tr><TD colspan="3">&nbsp;</TD></tr>
+	<TR> 
+		<TH><bean:message key="UserForm.email"/></TH>
+		<TD colspan="2"><html:text property="emailDeposito" size="30"  maxlength="20"/></TD>
 	</TR>
 	<tr><TD colspan="3">&nbsp;</TD></tr>
 	<tr><TD colspan="3">&nbsp;</TD></tr>
@@ -52,9 +66,16 @@
 </TABLE>	
 
 <ds:table name="items" sort="list"  prop="formDisplaytag" export="false" id="row" pagesize="40" class="list"  cellspacing="0" cellpadding="3">	
-<ds:column titleKey="UserForm.user" headerClass="listTitle" sortable="true" property="user"/>
-<ds:column titleKey="UserForm.name" headerClass="listTitle" sortable="true" property="name"/>
-<ds:column titleKey="UserForm.lastName" headerClass="listTitle" sortable="true" property="lastName"/>
-<ds:column titleKey="UserForm.groupUser" headerClass="listTitle" sortable="true" property="groupUser.name"/>
-<ds:column titleKey="UserForm.email" headerClass="listTitle" sortable="true" property="email"/>		
+	<ds:column titleKey="UserForm.user" headerClass="listTitle" sortable="true" property="user"/>
+	<ds:column titleKey="UserForm.name" headerClass="listTitle" sortable="true" property="name"/>
+	<ds:column titleKey="UserForm.lastName" headerClass="listTitle" sortable="true" property="lastName"/>
+	<ds:column titleKey="UserForm.groupUser" headerClass="listTitle" sortable="true" property="groupUser.name"/>
+	<ds:column titleKey="UserForm.email" headerClass="listTitle" sortable="true" property="email"/>
+	<ds:column headerClass="listTitle"  title="&nbsp;">
+		<img 
+			src="images/common/eliminar.gif" 
+			onclick="document.location='configuration.do?VirtualDispatchName=deleteSendNotiication&userId=<%=((User)row).getId()%>'" 
+			alt='<bean:message key="common.delete"/>'
+			style="cursor: pointer;"/>
+    </ds:column> 		
 </ds:table>
