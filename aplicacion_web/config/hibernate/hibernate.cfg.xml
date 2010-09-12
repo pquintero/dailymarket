@@ -17,6 +17,7 @@
 		<mapping resource="/hibernate/GroupUser.hbm.xml"/>
 		<mapping resource="/hibernate/GroupProduct.hbm.xml"/>
 		<mapping resource="/hibernate/Product.hbm.xml"/>
-		<mapping resource="/hibernate/HourlyBand.hbm.xml"/>		
+		<mapping resource="/hibernate/HourlyBand.hbm.xml"/>
+		<mapping resource="/hibernate/Configuration.hbm.xml"/>			
     </session-factory>
 </hibernate-configuration>

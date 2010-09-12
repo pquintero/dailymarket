@@ -4,6 +4,8 @@ public class Configuration {
 	
 	private Long id;
 	private Integer timer;
+	private String emailDeposito;
+	
 	public Long getId() {
 		return id;
 	}
@@ -15,5 +17,11 @@ public class Configuration {
 	}
 	public void setTimer(Integer timer) {
 		this.timer = timer;
-	}		
+	}
+	public String getEmailDeposito() {
+		return emailDeposito;
+	}
+	public void setEmailDeposito(String emailDeposito) {
+		this.emailDeposito = emailDeposito;
+	}	
 }

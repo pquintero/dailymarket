@@ -19,9 +19,12 @@ import ar.com.dailyMarket.ui.BaseAction;
 
 public class MailService {
 	
-	public void sendMail(String[] emailTo, String msg) {
+	public void sendMail(String[] emailTo, StringBuffer message) {
+		if ((message == null) || (message.toString().equals(""))) {
+	    	return;
+	    }
 		try {
-			initSendMail(emailTo, msg);
+			initSendMail(emailTo, message.toString());
 		} catch (InvalidPropertiesFormatException e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
@@ -51,7 +54,7 @@ public class MailService {
     	this.sendMail(props, emailTo, subject, msg, from);
 	}
 	
-	public void sendMail(Properties props, String recipients[], String subject, String message, String from) throws MessagingException {
+	private void sendMail(Properties props, String recipients[], String subject, String message, String from) throws MessagingException {
 		final String user = (String) props.get("user");
 		final String password = (String) props.get("password"); 
 		
