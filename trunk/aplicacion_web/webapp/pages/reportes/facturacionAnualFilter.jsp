@@ -22,7 +22,9 @@
 	<tr>
 		<td >
 			<table width="100%" align="left" cellpadding="0"  cellspacing="0" border="0">			
-				<tr><td>manager.jsp = lo que queres poner aca iria en initAction del managerAction</td></tr>
+				<tr align="center">
+					<td>FILTROS PARA REALIZAR UN REPORTE DE FACTURACION ANUAL</td>
+				</tr>
 			</table>
 		</td>
 	</tr>

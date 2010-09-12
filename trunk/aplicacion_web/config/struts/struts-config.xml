@@ -41,9 +41,18 @@
 			<form-property name="active" type="java.lang.Integer"/>
 			<form-property name="queryDispatchName" type="java.lang.String" initial=""/>
 			<form-property name="collectionName" type="java.lang.String" initial="" />
+		</form-bean>
+		
+		<form-bean name="ManagerForm" type="org.apache.struts.action.DynaActionForm">
+            <form-property name="VirtualDispatchName" type="java.lang.String"/>
+            <form-property name="saveToken" type="java.lang.String"/>
 			
-			<!--	Momentaneo para el login CAMBIAR a LOGINACTION	-->
-			<form-property name="user" type="java.lang.String" />
+			<form-property name="id" type="java.lang.Long" initial="-1"/>
+			<form-property name="dsTable" type="java.lang.String" />
+			<form-property name="dsTableArray" type="java.lang.String[]" />
+			
+			<form-property name="queryDispatchName" type="java.lang.String" initial=""/>
+			<form-property name="collectionName" type="java.lang.String" initial="" />
 		</form-bean>
 		
 		<form-bean name="FilterUserForm" type="org.apache.struts.action.DynaActionForm">
@@ -139,6 +148,7 @@
 			<form-property name="dsTable" type="java.lang.String" />
 			<form-property name="collectionName" type="java.lang.String" initial="" />
 		</form-bean>
+		
 		<form-bean name="FilterGroupUserForm" type="org.apache.struts.action.DynaActionForm">
             <form-property name="VirtualDispatchName" type="java.lang.String"/>
 			<form-property name="name" type="java.lang.String"/>
@@ -193,6 +203,26 @@
 			<form-property name="groupProductId" type="java.lang.Long"/>
 			
 			<form-property name="dsTable" type="java.lang.String" />
+			<form-property name="collectionName" type="java.lang.String" initial="" />
+		</form-bean>
+		
+		<form-bean name="ReportesForm" type="org.apache.struts.action.DynaActionForm">
+            <form-property name="VirtualDispatchName" type="java.lang.String"/>
+            <form-property name="saveToken" type="java.lang.String"/>
+			
+			<form-property name="id" type="java.lang.Long" initial="-1"/>
+			<form-property name="dsTable" type="java.lang.String" />
+			<form-property name="dsTableArray" type="java.lang.String[]" />
+			
+			<!--	VENTAS ANUALES	-->
+			<form-property name="yearFrom" type="java.lang.String" initial=""/>
+			<form-property name="yearTo" type="java.lang.String" initial=""/>
+			<form-property name="productGroup" type="java.lang.String" initial=""/>
+			<form-property name="product" type="java.lang.String" initial=""/>
+			<form-property name="bandaHoraria" type="java.lang.String" initial=""/>
+			
+			
+			<form-property name="queryDispatchName" type="java.lang.String" initial=""/>
 			<form-property name="collectionName" type="java.lang.String" initial="" />
 		</form-bean>
 		
@@ -266,8 +296,43 @@
 			<set-property property="initMethod" value="initAction"/>
 			
 			<forward name="showAdminHome" path="tiles.home.admin"/>
+			<forward name="showManagerHome" path="/manager.do"/>
+		</action>
+		
+		<action 
+            path="/manager" 
+            type="ar.com.dailyMarket.ui.ManagerAction" 
+            parameter="VirtualDispatchName"
+            scope="request" 
+            validate="false"
+            name="ManagerForm">
+			
+			<set-property property="initMethod" value="initAction"/>
+			
 			<forward name="showManagerHome" path="tiles.home.manager"/>
-		</action>				
+			<forward name="showEstadisticasHome" path="tiles.home.manager.estadisticas"/>
+			<forward name="showIndicadoresHome" path="tiles.home.manager.indicadores"/>
+			<forward name="showReportesHome" path="/reportes.do"/>
+		</action>
+		
+		<action 
+            path="/reportes" 
+            type="ar.com.dailyMarket.ui.ReportesAction" 
+            parameter="VirtualDispatchName"
+            scope="request" 
+            validate="false"
+            name="ReportesForm">
+			
+			<set-property property="initMethod" value="initAction"/>
+			
+			<forward name="showReportesHome" path="tiles.home.manager.reportes"/>
+			<forward name="showReporteVentasAnualesFilter" path="tiles.reportes.ventasAnualesFilter"/>
+			<forward name="showReporteVentasMensualesFilter" path="tiles.reportes.ventasMensualesFilter"/>
+			<forward name="showReporteFacturacionAnualFilter" path="tiles.reportes.facturacionAnualFilter"/>
+			<forward name="showReporteFacturacionMensualFilter" path="tiles.reportes.facturacionMensualFilter"/>
+			<forward name="showReporteListadoPreciosFilter" path="tiles.reportes.listadoPreciosFilter"/>
+			<forward name="showReporteListadoCodigosFilter" path="tiles.reportes.listadoCodigosFilter"/>
+		</action>
 		
 		<action 
             path="/user" 
@@ -406,8 +471,9 @@
 			<forward name="showNew" path="tiles.hourlyBand.new"/>
 			<forward name="showDetail" path="tiles.hourlyBand.detail"/>
 			<forward name="redirectFilter" path="/filterHourlyBand.do"/>			
-		</action>		
-		<action 
+		</action>
+		
+		<action
             path="/simulator" 
             type="ar.com.dailyMarket.ui.SimulatorAction" 
             validate="false"

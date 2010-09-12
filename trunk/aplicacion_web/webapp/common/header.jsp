@@ -43,7 +43,7 @@ function MM_swapImage() { //v3.0
 			<table cellpadding="0" class="bullets" cellspacing="0" border="0" align="right">
     			<tr>
        				<td>
-						<a href="home.do?VirtualDispatchName=initAction" /><img src="images/header/home.jpg"   name="home"  border="0" alt="Ir a Inicio"></a></td>
+						<a href="home.do?VirtualDispatchName=initAction" ><img src="images/header/home.jpg"   name="home"  border="0" alt="Ir a Inicio"></a></td>
 					<td>&nbsp;</td>
 	   				<td><a href="logout.do?VirtualDispatchName=doLogout" ><img src="images/header/exit.jpg" name="boton3" border="0" alt="Salir"></a></td>
     			</tr>
