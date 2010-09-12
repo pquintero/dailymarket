@@ -15,6 +15,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JSeparator;
 
+@SuppressWarnings("serial")
 public class CajaFrame  extends DailyMarketFrame{
 	
 	public JButton aperturaCajaButton = new JButton("Apertura de Caja");

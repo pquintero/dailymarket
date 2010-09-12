@@ -58,10 +58,7 @@ public class InitDailyMarketFrame extends DailyMarketFrame{
 	 dailyMarket.setFont(new Font("Serif", Font.BOLD, 25));
 	 dailyMarketPanel.setBackground(Color.WHITE);
 	 
-	 //iniciandoLabel.setText("Iniciando ...");
-
-	 
-	  
+	 iniciandoLabel.setText("Iniciando ...");
 	 
 	 
 	 dailyMarketPanel.add(iniciandoLabel);
