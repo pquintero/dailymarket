@@ -1,5 +1,6 @@
 package ar.com.dailyMarket.services;
 
+import java.sql.SQLException;
 import java.util.Iterator;
 import java.util.List;
 
@@ -11,7 +12,7 @@ import ar.com.dailyMarket.model.Product;
 
 public class AlarmService extends MailService {
 	
-	public void sendMail() {
+	public void sendMail() throws ClassNotFoundException, SQLException {
 		ProductService productService = new ProductService();
 		UserService userService = new UserService();
 		String time = getTime();

@@ -13,7 +13,6 @@ import org.hibernate.criterion.Restrictions;
 
 import ar.com.dailyMarket.model.GroupUser;
 import ar.com.dailyMarket.model.User;
-import ar.com.dccsoft.skeleton.services.HibernateHelper;
 
 public class UserService {
 	

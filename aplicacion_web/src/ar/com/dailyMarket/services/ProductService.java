@@ -1,8 +1,15 @@
 package ar.com.dailyMarket.services;
 
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+
+import javax.naming.Context;
+import javax.naming.InitialContext;
+import javax.naming.NamingException;
 
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.DynaActionForm;
@@ -11,6 +18,8 @@ import org.hibernate.criterion.MatchMode;
 import org.hibernate.criterion.Restrictions;
 
 import ar.com.dailyMarket.model.Product;
+
+import com.mysql.jdbc.Statement;
 
 public class ProductService {
 	
@@ -74,17 +83,50 @@ public class ProductService {
 	}
 	
 	@SuppressWarnings("unchecked")
-	public List<Product> getProductWithoutStock() {		
+	public List<Product> getProductWithoutStock() {					
+		/* actualizo el estado antes de verlo
+		*  lo tengo q hacer xq NO tengo forma de saber cuando recibi mercaderia
+		*/				
+		try {
+			Context initCtx = new InitialContext();
+			Context envCtx = (Context)initCtx.lookup("java:comp/env");
+		    String url = (String) envCtx.lookup("urlDataBase"); //obtengo del contexto la url de la base
+		    String usr = (String) envCtx.lookup("usrDataBase");
+		    String pass = (String) envCtx.lookup("passDataBase");
+		    
+			Class.forName("com.mysql.jdbc.Driver");
+			Connection con = DriverManager.getConnection(url, usr,pass);
+			Statement stmt = (Statement) con.createStatement();
+			stmt.executeUpdate("update product set state = \"" + Product.PRODUCT_STATE_STOCK + "\" where actualstock >= repositionstock;");
+		} catch (SQLException e) {			
+			e.printStackTrace();
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		} catch (NamingException e) {
+			e.printStackTrace();
+		} 						
 		Criteria c = HibernateHelper.currentSession().createCriteria(Product.class);
-		//c.add(Restrictions.le("actualStock", "repositionStock"));
-		//ver por que no me anda con esto, xq quedaria mejor
-		List<Product> products = new ArrayList<Product>();
-		for (Iterator<Product> it = c.list().iterator(); it.hasNext(); ) {
-			Product product = it.next();
-			if (product.getActualStock() <= product.getRepositionStock()) {
-				products.add(product);
-			}
-		}		
-		return products;
+		c.add(Restrictions.leProperty("actualStock", "repositionStock"));
+		return c.list();
+	}
+	
+	public Long[] getProductsIdsArray() {
+		List <Product> list = getProductWithoutStock();
+		Long[] vector = new Long[list.size()];
+		int i = 0;
+		
+		for (Iterator<Product> iterator = list.iterator(); iterator.hasNext();i++) {
+			vector[i]= iterator.next().getId();
+		}
+		return vector;
+	}
+	
+	public void sendOrder(Long[] ids) {
+		for (int i = 0; i < ids.length; i++) {
+			Product product = getProductByPK((Long)ids[i]);
+			product.setState(Product.PRODUCT_STATE_SEND);
+			save(product);
+		}
+		//aca enviar email a deposito con los pedidos de los productos
 	}
 }
