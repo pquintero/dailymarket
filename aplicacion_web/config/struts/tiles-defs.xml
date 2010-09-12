@@ -213,19 +213,63 @@
         <put name="tab"   value="TabHome" />
     </definition>
     
+    <!-- ============================================================== -->
+    <!-- MANAGER                                                           -->
+    <!-- ============================================================== -->
+    
     <definition name="tiles.home.manager" extends=".managerHomeLayout">
-        <put name="title"   value="Menu.home" />
+        <put name="title"   value="Menu.managerHome" />
         <put name="body"    value="tiles.home.manager.body" />
     </definition>
     <definition name="tiles.home.manager.body" extends=".homeLayout">
-   		<put name="title"  value="Menu.home" />
-        <put name="action"  value="home"/>
-        <put name="tabs" value="tiles.home.admin.tabs" />
+   		<put name="title"  value="Menu.managerHome" />
+        <put name="action"  value="manager"/>
+        <put name="tabs" value="" />
         <put name="body"  value="/pages/home/manager.jsp" />
         <put name="buttons"  value="" />
     </definition>
 	
+    <definition name="tiles.home.manager.estadisticas" extends=".managerHomeLayout">
+        <put name="title"   value="estadisticas.home" />
+        <put name="body"    value="tiles.home.manager.estadisticas.body" />
+    </definition>
+	<definition name="tiles.home.manager.estadisticas.body" extends=".homeLayout">
+        <put name="title"   value="estadisticas.home" />
+        <put name="action"  value="manager" />
+        <put name="tabs"    value=""/>
+        <put name="body"    value="/pages/manager/estadisticas.jsp" />
+        <put name="buttons" value="tiles.home.manager.buttons" />                    
+    </definition>
     
+    <definition name="tiles.home.manager.indicadores" extends=".managerHomeLayout">
+        <put name="title"   value="indicadores.home" />
+        <put name="body"    value="tiles.home.manager.indicadores.body" />
+    </definition>
+	<definition name="tiles.home.manager.indicadores.body" extends=".homeLayout">
+        <put name="title"   value="indicadores.home" />
+        <put name="action"  value="manager" />
+        <put name="tabs"    value=""/>
+        <put name="body"    value="/pages/manager/indicadores.jsp" />
+        <put name="buttons" value="tiles.home.manager.buttons" />                    
+    </definition>
+    
+    <definition name="tiles.home.manager.reportes" extends=".managerHomeLayout">
+        <put name="title"   value="reportes.home" />
+        <put name="body"    value="tiles.home.manager.reportes.body" />
+    </definition>
+	<definition name="tiles.home.manager.reportes.body" extends=".homeLayout">
+        <put name="title"   value="reportes.home" />
+        <put name="action"  value="manager" />
+        <put name="tabs"    value=""/>
+        <put name="body"    value="/pages/manager/reportes.jsp" />
+        <put name="buttons" value="tiles.home.manager.buttons" />                    
+    </definition>
+    
+	<definition name="tiles.home.manager.buttons" extends=".buttonsLayout">
+        <putList name="buttonList">
+            <item value="common.button.back" link="initAction" classtype="org.apache.struts.tiles.beans.SimpleMenuItem"/>
+        </putList>
+    </definition>
     <!-- ============================================================== -->
     <!-- User                                                           -->
     <!-- ============================================================== -->
@@ -458,4 +502,80 @@
         <put name="buttons" value="button.manager.ordersPending" />                    
     </definition>
     
+    
+    <!-- ============================================================== -->
+    <!-- REPORTES                                                   -->
+    <!-- ============================================================== -->  
+    
+    <definition name="tiles.reportes.ventasAnualesFilter" extends=".managerHomeLayout">
+        <put name="title"   value="reportes.ventasAnualesFilter" />
+        <put name="body"    value="tiles.reportes.ventasAnualesFilter.body" />
+    </definition>
+	<definition name="tiles.reportes.ventasAnualesFilter.body" extends=".homeLayout">
+        <put name="title"   value="reportes.ventasAnualesFilter" />
+        <put name="action"  value="reportes" />
+        <put name="tabs"    value=""/>
+        <put name="body"    value="/pages/reportes/ventasAnualesFilter.jsp" />
+        <put name="buttons" value="" />                    
+    </definition>
+    
+    <definition name="tiles.reportes.ventasMensualesFilter" extends=".managerHomeLayout">
+        <put name="title"   value="reportes.ventasMensualesFilter" />
+        <put name="body"    value="tiles.reportes.ventasMensualesFilter.body" />
+    </definition>
+	<definition name="tiles.reportes.ventasMensualesFilter.body" extends=".homeLayout">
+        <put name="title"   value="reportes.ventasMensualesFilter" />
+        <put name="action"  value="reportes" />
+        <put name="tabs"    value=""/>
+        <put name="body"    value="/pages/reportes/ventasMensualesFilter.jsp" />
+        <put name="buttons" value="" />                    
+    </definition>
+    
+    <definition name="tiles.reportes.facturacionAnualFilter" extends=".managerHomeLayout">
+        <put name="title"   value="reportes.facturacionAnualFilter" />
+        <put name="body"    value="tiles.reportes.facturacionAnualFilter.body" />
+    </definition>
+	<definition name="tiles.reportes.facturacionAnualFilter.body" extends=".homeLayout">
+        <put name="title"   value="reportes.facturacionAnualFilter" />
+        <put name="action"  value="reportes" />
+        <put name="tabs"    value=""/>
+        <put name="body"    value="/pages/reportes/facturacionAnualFilter.jsp" />
+        <put name="buttons" value="" />                    
+    </definition>
+    
+    <definition name="tiles.reportes.facturacionMensualFilter" extends=".managerHomeLayout">
+        <put name="title"   value="reportes.facturacionMensualFilter" />
+        <put name="body"    value="tiles.reportes.facturacionMensualFilter.body" />
+    </definition>
+	<definition name="tiles.reportes.facturacionMensualFilter.body" extends=".homeLayout">
+        <put name="title"   value="reportes.facturacionMensualFilter" />
+        <put name="action"  value="reportes" />
+        <put name="tabs"    value=""/>
+        <put name="body"    value="/pages/reportes/facturacionMensualFilter.jsp" />
+        <put name="buttons" value="" />                    
+    </definition>
+    
+    <definition name="tiles.reportes.listadoPreciosFilter" extends=".managerHomeLayout">
+        <put name="title"   value="reportes.listadoPreciosFilter" />
+        <put name="body"    value="tiles.reportes.listadoPreciosFilter.body" />
+    </definition>
+	<definition name="tiles.reportes.listadoPreciosFilter.body" extends=".homeLayout">
+        <put name="title"   value="reportes.listadoPreciosFilter" />
+        <put name="action"  value="reportes" />
+        <put name="tabs"    value=""/>
+        <put name="body"    value="/pages/reportes/listadoPreciosFilter.jsp" />
+        <put name="buttons" value="" />                    
+    </definition>
+    
+    <definition name="tiles.reportes.listadoCodigosFilter" extends=".managerHomeLayout">
+        <put name="title"   value="reportes.listadoCodigosFilter" />
+        <put name="body"    value="tiles.reportes.listadoCodigosFilter.body" />
+    </definition>
+	<definition name="tiles.reportes.listadoCodigosFilter.body" extends=".homeLayout">
+        <put name="title"   value="reportes.listadoCodigosFilter" />
+        <put name="action"  value="reportes" />
+        <put name="tabs"    value=""/>
+        <put name="body"    value="/pages/reportes/listadoCodigosFilter.jsp" />
+        <put name="buttons" value="" />                    
+    </definition>
 </tiles-definitions>

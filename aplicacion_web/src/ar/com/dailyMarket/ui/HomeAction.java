@@ -37,5 +37,5 @@ public class HomeAction extends BaseAction {
     		return mapping.findForward("showAdminHome");
     	}
     	return mapping.findForward("showManagerHome");
-    }        
+    }
 }

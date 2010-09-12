@@ -1,13 +1,6 @@
 <%@ taglib uri="/tags/struts-html" prefix="html" %>
 <%@ taglib uri="/tags/struts-bean" prefix="bean" %>
 
-<script type="text/javascript">
-function link(user) {
-	document.location='home.do?VirtualDispatchName=initAction&user='+ user;
-	document.submit;
-}
-</script>
-
 <html:form action="login">
 <head>
 <title> Login .:: DAILYMARKET ::. </title>
@@ -32,7 +25,7 @@ function link(user) {
 		    	<tr><td class="user" height="25px" colspan="5"></td></tr>
 				<tr>
 			  		<td width="60"  height="20" class="user" >Usuario </td>
-					<td ><input type="text" name="j_username" value="" class="login" onblur="link(this.value)"></td>
+					<td ><input type="text" name="j_username" value="" class="login"></td>
 		      		<td width="60"  height="20"  class="user" >Password </td>
 					<td ><input type="password" name="j_password" value="" class="login"></td>
 					<td bgcolor="#FFFFFF"  height="20" align="left" >
