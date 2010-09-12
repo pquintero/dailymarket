@@ -1,4 +1,4 @@
-package componentes;
+package dailymarket.swing.ui;
 
 import javax.swing.JLabel;
 import javax.swing.JPanel;

@@ -1,4 +1,4 @@
-package componentes;
+package dailymarket.swing.ui;
 
 import java.awt.Color;
 import java.awt.Dimension;
@@ -18,6 +18,8 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.border.LineBorder;
 import javax.swing.border.TitledBorder;
+
+import dailymarket.lectorDeHuellas.UtilLectorHuellasSingleton;
 
 
 @SuppressWarnings("serial")

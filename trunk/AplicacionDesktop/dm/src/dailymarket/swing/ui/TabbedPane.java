@@ -1,6 +1,4 @@
-package componentes;
-
-
+package dailymarket.swing.ui;
 import javax.swing.JButton;
 import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
@@ -38,9 +36,9 @@ public class TabbedPane extends JPanel {
         JTabbedPane tabbedPane = new JTabbedPane();
         tabbedPane.setPreferredSize(new Dimension(600, 200));
         
-        JComponent panel1 = makeCancelarProductosPanel("Hacer un metodo q me cree el panel con la lista", tableModelProducts);
+        JComponent panel1 = makeCancelarProductosPanel("", tableModelProducts);
         tabbedPane.addTab("Cancelar Productos", null, panel1,
-                "Canceleacion de los pedidos seleccionados por el cajero");
+                "Cancelacion de los pedidos seleccionados por el cajero");
         tabbedPane.setMnemonicAt(0, KeyEvent.VK_1);
         
         JComponent panel2 = makeDescuentosPanel("");

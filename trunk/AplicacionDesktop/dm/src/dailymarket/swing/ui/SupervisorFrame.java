@@ -1,4 +1,4 @@
-package componentes;
+package dailymarket.swing.ui;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -13,13 +13,14 @@ import javax.swing.JPanel;
 import javax.swing.border.TitledBorder;
 import javax.swing.table.DefaultTableModel;
 
+
 public class SupervisorFrame extends JDialog {
 	JFrame parentFrame ;
 
 	public SupervisorFrame(DefaultTableModel tableModelProducts, JFrame frame){
 		super(frame,true);
 		parentFrame = frame;
-		TabbedPane solicitudesTabbedPane = new TabbedPane(tableModelProducts, this);
+		TabbedPane solicitudesTabbedPane =/* new TabbedPane(tableModelProducts, this)*/ new TabbedPane(tableModelProducts, this);
         
         add(solicitudesTabbedPane, BorderLayout.CENTER);
         setBounds(100,100,650,370);

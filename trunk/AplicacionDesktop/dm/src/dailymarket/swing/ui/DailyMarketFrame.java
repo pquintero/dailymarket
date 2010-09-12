@@ -1,8 +1,10 @@
-package componentes;
+package dailymarket.swing.ui;
 
 import java.awt.event.WindowAdapter;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
+
+
 
 @SuppressWarnings("serial")
 public class DailyMarketFrame extends JFrame {
@@ -21,7 +23,7 @@ public class DailyMarketFrame extends JFrame {
 		setResizable(false);
 		setVisible(true);
 		
-		java.net.URL imgURL = InitDailyMarketFrame.class.getResource("images/dm.ico");
+		java.net.URL imgURL = InitDailyMarketFrame.class.getResource("dm.ico");
 		ImageIcon logoImg = new ImageIcon(imgURL);
 		this.setIconImage(logoImg.getImage());
 	 

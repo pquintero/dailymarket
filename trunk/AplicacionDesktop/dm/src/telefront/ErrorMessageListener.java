@@ -5,7 +5,7 @@ import java.awt.event.WindowEvent;
 
 import logging.Logger;
 
-import componentes.LargeDetailDialog;
+import dailymarket.swing.ui.LargeDetailDialog;
 
 /**
  * Tratamiento estandar de errores de telefront

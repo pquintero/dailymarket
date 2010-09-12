@@ -1,4 +1,4 @@
-package componentes;
+package dailymarket.swing.ui;
 
 import java.awt.BorderLayout;
 import java.awt.Color;

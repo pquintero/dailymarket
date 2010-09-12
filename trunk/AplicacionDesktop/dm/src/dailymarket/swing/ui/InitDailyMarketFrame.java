@@ -1,11 +1,9 @@
-package componentes;
+package dailymarket.swing.ui;
 
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
 import java.awt.image.BufferedImage;
 
 import java.io.File;
@@ -21,8 +19,6 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JProgressBar;
 import javax.swing.JSeparator;
-
-
 
 public class InitDailyMarketFrame extends DailyMarketFrame{
 	
@@ -44,7 +40,7 @@ public class InitDailyMarketFrame extends DailyMarketFrame{
      dmLogoPanel.setPreferredSize(new Dimension(600, 200));
 	 dmLogoPanel.setBackground(Color.white);
 	
-	 java.net.URL imgURL = InitDailyMarketFrame.class.getResource("images/dm.ico");
+	 java.net.URL imgURL = InitDailyMarketFrame.class.getResource("dm.ico");
 	 ImageIcon logoImg = new ImageIcon(imgURL);
 				
 	 JLabel logoPicLabel = new JLabel(logoImg);
@@ -140,36 +136,11 @@ public  static void main(String arg[]){
 					iniciandoLabel.setText("eeeeeerrror1");
 					e.printStackTrace();
 				} catch (URISyntaxException e) {
-					// TODO Auto-generated catch block
 					iniciandoLabel.setText("eeeeeerrror1w2");
 				}
 	
 		return logoPic;
 		
 	}
-
-// 	public void keyPressed(KeyEvent evento) {
-//	
-//		if( evento.getKeyCode() == 10){
-//			
-//			String [] disabledButtons = new String[2];
-//			disabledButtons[0] = DailyMarketFrame.CERRAR_CAJA;
-//			disabledButtons[1] = DailyMarketFrame.NUEVA_SESION;
-//			
-//			(new CajaFrame()).deshabilitarBotones(disabledButtons);
-//			dispose();
-//		}
-//		
-//	}
-//		public void keyReleased(KeyEvent arg0) {
-//			// TODO Auto-generated method stub
-//		
-//		}
-//	
-//		public void keyTyped(KeyEvent arg0) {
-//			// TODO Auto-generated method stub
-//		
-//		}
-	 
 	
 }

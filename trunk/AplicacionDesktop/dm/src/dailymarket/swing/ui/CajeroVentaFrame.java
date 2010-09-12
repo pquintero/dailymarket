@@ -1,4 +1,4 @@
-package componentes;
+package dailymarket.swing.ui;
 
 import java.awt.Color;
 import java.awt.Dimension;
@@ -45,6 +45,7 @@ import dailymarket.model.Cajero;
 import dailymarket.model.LineaTicket;
 import dailymarket.model.Sucursal;
 import dailymarket.model.Ticket;
+
 public class CajeroVentaFrame extends DailyMarketFrame {
 	
 	protected static final int COLUMNA_CHECK_BOX = 0;
@@ -354,7 +355,7 @@ public class CajeroVentaFrame extends DailyMarketFrame {
 		
 		//======VENDEDORPANEL
 		
-		java.net.URL imgURL = InitDailyMarketFrame.class.getResource("images/vendedor.jpg");
+		java.net.URL imgURL = InitDailyMarketFrame.class.getResource("vendedor.jpg");
 		ImageIcon vendedorImg = new ImageIcon(imgURL);
 		JLabel vendedorPicLabel = new JLabel(new ImageIcon(vendedorImg.getImage().getScaledInstance(60, 60, Image.SCALE_SMOOTH)));
  
@@ -409,7 +410,7 @@ public class CajeroVentaFrame extends DailyMarketFrame {
 		mainPanel.add(ventaProductoPanel);
 		mainPanel.add(footerPanel);
 
-		java.net.URL imgURLprod = InitDailyMarketFrame.class.getResource("images/pepsi.jpg");
+		java.net.URL imgURLprod = InitDailyMarketFrame.class.getResource("pepsi.jpg");
 		ImageIcon productoImg = new ImageIcon(imgURLprod);
 				
 		JLabel picLabel = new JLabel(new ImageIcon(productoImg.getImage().getScaledInstance(180, 140, Image.SCALE_SMOOTH)));
