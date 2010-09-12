@@ -1,7 +1,10 @@
 <Context path="/dailyMarket" reloadable="false" docBase="C:\workspace\aplicacion_web\webapp">
 	<Logger className="org.apache.catalina.logger.SystemOutLogger" verbosity="4" timestamp="true"/>
 
-	<Environment name="timer" value="5" type="java.lang.String" override="true"/> <!-- CANTIDAD DE DIAS Q UN PRODUCTO PUEDE ESTAR CON ST <= SR SIN EMITIR PEDIDO -->			
+	<!-- URL de donde se encuentra la base, necesaria para un update, actualzar al momento de cambiarla -->
+	<Environment name="urlDataBase" value="jdbc:mysql://localhost/dailyMarket" type="java.lang.String" override="true"/>
+	<Environment name="usrDataBase" value="root" type="java.lang.String" override="true"/>
+	<Environment name="passDataBase" value="root" type="java.lang.String" override="true"/> 			
 	
     <Resource   name="jdbc/dailyMarket" 
                 scope="Shareable" 

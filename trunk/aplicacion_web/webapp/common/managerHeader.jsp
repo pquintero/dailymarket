@@ -61,6 +61,11 @@ function MM_swapImage() { //v3.0
 				<TR>
 					<td width="25"></td>
 					<TD class="inciarOrdenLeft"> 
+						<a href="product.do?VirtualDispatchName=showOrdersPending">Emisión</a>
+					</TD>
+					
+					<td width="25"></td>
+					<TD class="inciarOrdenLeft"> 
 						<a href="filterReport.do?VirtualDispatchName=showFilter">Reportes</a>
 					</TD>
 				 

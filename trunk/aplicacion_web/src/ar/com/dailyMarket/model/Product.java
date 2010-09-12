@@ -4,6 +4,10 @@ import java.util.Date;
 
 public class Product {
 	
+	public static final String PRODUCT_STATE_STOCK = "product.state.stock";
+	public static final String PRODUCT_STATE_PENDING = "product.state.pending";
+	public static final String PRODUCT_STATE_SEND = "product.state.send";	
+	
 	private Long id;
 	private String name;
 	private String description;

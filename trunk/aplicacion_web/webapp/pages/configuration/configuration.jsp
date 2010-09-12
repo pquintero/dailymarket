@@ -12,7 +12,9 @@
 		</TD>
 	</TR> 
 	<TR> 
-		<TD class="title" colspan="3"><bean:message key="ConfigrationForm.timerAlarm"/></TD>		
+		<TD colspan="3">
+			<h1 class="formtitle"><bean:message key="ConfigrationForm.timerAlarm"/></h1>
+		</TD>		
 	</TR>
 	<tr><TD colspan="3">&nbsp;</TD></tr>
 	<TR> 
@@ -22,7 +24,9 @@
 	<tr><TD colspan="3">&nbsp;</TD></tr>
 	<tr><TD colspan="3">&nbsp;</TD></tr>
 	<TR> 
-		<TD class="title" colspan="3"><bean:message key="ConfigurationForm.sendNotifications"/></TD>
+		<TD colspan="3">
+			<h1 class="formtitle"><bean:message key="ConfigurationForm.sendNotifications"/></h1>
+		</TD>
 	</TR>
 	<tr><TD colspan="3">&nbsp;</TD></tr>	
 	<TR>

@@ -1,5 +1,7 @@
 package ar.com.dailyMarket.ui;
 
+import java.sql.SQLException;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -75,4 +77,18 @@ public class ProductAction extends BaseAction {
     	setGroupUserRequest(request);
     	return super.redirectCreate(mapping, form, request, response);
     }
+    
+    public ActionForward showOrdersPending(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws ClassNotFoundException, SQLException {
+    	ProductService productService = new ProductService();
+    	request.setAttribute("products", productService.getProductWithoutStock());    	
+    	((DynaActionForm)form).set("productsIds", productService.getProductsIdsArray());
+    	return mapping.findForward("showOrdersPending");
+    }
+    
+    public ActionForward sendOrder(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws ClassNotFoundException, SQLException {
+    	ProductService productService = new ProductService();
+    	productService.sendOrder((Long[])((DynaActionForm)form).get("productsIds")); //desde aca enviar email al deposito con el pedido    	
+    	return showOrdersPending(mapping, form, request, response);
+    }
+    
 }

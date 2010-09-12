@@ -134,6 +134,7 @@
 			<form-property name="groupProductStr" type="java.lang.String"/>		
 			<form-property name="code" type="java.lang.String"/>
 			<form-property name="repositionStock" type="java.lang.Integer"/>
+			<form-property name="productsIds" type="java.lang.Long[]"/>
 			
 			<form-property name="dsTable" type="java.lang.String" />
 			<form-property name="collectionName" type="java.lang.String" initial="" />
@@ -375,7 +376,8 @@
 			
 			<forward name="showNew" path="tiles.product.new"/>
 			<forward name="showDetail" path="tiles.product.detail"/>
-			<forward name="redirectFilter" path="/filterProduct.do"/>			
+			<forward name="redirectFilter" path="/filterProduct.do"/>
+			<forward name="showOrdersPending" path="tiles.manager.ordersPending"/>									
 		</action>
 		<action 
             path="/filterHourlyBand" 

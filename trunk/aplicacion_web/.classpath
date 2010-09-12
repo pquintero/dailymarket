@@ -55,6 +55,5 @@
 	<classpathentry kind="lib" path="webapp/WEB-INF/lib/xml-apis.jar"/>
 	<classpathentry kind="lib" path="webapp/WEB-INF/lib/dcc-tiles.jar"/>
 	<classpathentry kind="lib" path="webapp/WEB-INF/lib/quartz-all-1.6.0.jar"/>
-	<classpathentry kind="lib" path="webapp/WEB-INF/lib/skeleton-2.1.jar"/>
 	<classpathentry kind="output" path="webapp/WEB-INF/classes"/>
 </classpath>
