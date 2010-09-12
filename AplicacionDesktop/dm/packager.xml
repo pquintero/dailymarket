@@ -1,0 +1,64 @@
+<project default="package" name="F911 Packager" basedir=".">
+
+    <property file="./server/deploy/packager/packager.properties"/>
+    <property name="deploy.outdir" value=".\F911"/>
+    <property name="deploy.outdir.server" value="${deploy.outdir}\server"/>
+    <property name="deploy.outdir.client" value="${deploy.outdir}\client"/>
+
+	<target name="init">
+    	<mkdir dir="${deploy.outdir}"/>
+    	<mkdir dir="${deploy.outdir.server}"/>
+    	<mkdir dir="${deploy.outdir.client}"/>
+	</target>
+
+	<target name="packager-server">
+		<!-- Empaquetar el Server-->
+		<ant antfile="./server/deploy/packager/packager.xml" target="package" inheritall="false"/>
+		<copy todir="${deploy.outdir.server}">
+			<fileset dir="./server/deploy">
+				<!-- Excluir la carpeta packager y los .svn -->
+				<include name="**/*.*"/>
+				<exclude name="**/packager/*.*"/>
+				<exclude name="**/.svn"/>
+			</fileset>
+		</copy>
+	</target>
+
+	<target name="packager-client">
+		<!-- Empaquetar el Cliente -->
+		<ant antfile="./client/deploy/packager/packager.xml" target="package" inheritall="false"/>
+		<copy todir="${deploy.outdir.client}">
+			<fileset dir="./client/deploy">
+				<!-- Excluir la carpeta packager y los .svn -->
+				<include name="**/*.*"/>
+				<exclude name="./client/deploy/packager/*.*"/>
+				<exclude name="**/.svn"/>
+			</fileset>
+		</copy>
+	</target>
+
+    <target name="package" depends="clean, init, packager-server, packager-client">
+
+        <!-- Empaquetar todo en un zip -->
+        <zip destfile=".\F911 - ${version}.zip" compress="true">
+            <fileset dir="${deploy.outdir}">
+                <include name="**/*.*"/>
+            </fileset>
+        </zip>
+
+        <!-- Borrar archivos -->
+        <delete>
+            <fileset dir="${deploy.outdir}">
+                <include name="**/*.*"/>
+            </fileset>
+        </delete>
+        <delete dir="${deploy.outdir}" failonerror="yes"/>
+
+		<echo message="ATENCION: Recuerde actualizar la version en el archivo packager.properties del server"/>
+    </target>
+
+    <target name="clean">
+        <delete dir="${deploy.outdir}" failonerror="yes"/>
+    </target>
+
+</project>
