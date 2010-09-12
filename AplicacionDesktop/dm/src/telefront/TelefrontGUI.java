@@ -17,11 +17,11 @@ import logging.Logger;
 
 import org.dom4j.Document;
 
-import componentes.Configuration;
 
 import dailymarket.model.JComboBoxItem;
 import dailymarket.model.JRadioButtonExtended;
 import dailymarket.model.Text;
+import dailymarket.swing.ui.Configuration;
 
 
 

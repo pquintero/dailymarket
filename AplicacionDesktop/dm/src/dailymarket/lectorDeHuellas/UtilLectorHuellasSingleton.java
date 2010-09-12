@@ -1,4 +1,4 @@
-package componentes;
+package dailymarket.lectorDeHuellas;
 
 import java.awt.Font;
 import java.awt.GridBagConstraints;
@@ -30,6 +30,7 @@ import com.digitalpersona.onetouch.processing.DPFPFeatureExtraction;
 import com.digitalpersona.onetouch.verification.DPFPVerification;
 import com.digitalpersona.onetouch.verification.DPFPVerificationResult;
 
+import dailymarket.swing.ui.HuellaDigitalInterface;
 import dbMySql.DBConnection;
 
 public class UtilLectorHuellasSingleton {

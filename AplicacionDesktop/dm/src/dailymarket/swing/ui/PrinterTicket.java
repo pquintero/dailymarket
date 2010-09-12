@@ -1,4 +1,4 @@
-package componentes;
+package dailymarket.swing.ui;
 
 import java.awt.BasicStroke;
 import java.awt.Color;
