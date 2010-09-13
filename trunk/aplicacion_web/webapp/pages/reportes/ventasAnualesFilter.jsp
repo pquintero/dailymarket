@@ -99,6 +99,9 @@
 						<input type="button" value="Ejecutar" readonly="readonly" onclick="alert('VentasAnuales.pdf')">
 					</td>
 				</tr>
+				<tr align="left">
+					<td>&nbsp;</td>
+				</tr>
 			</table>
 		</td>
 	</tr>

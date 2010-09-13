@@ -80,7 +80,7 @@ function MM_swapImage() { //v3.0
 				
 					<td width="25"></td>
 					<TD class="inciarOrdenLeft"> 
-						<a href="buySimulator.do?VirtualDispatchName=initAction">Simulador de Compras</a>
+						<a href="manager.do?VirtualDispatchName=doHomeSimulador">Simulador de Compras</a>
 					</TD> 	
 				</tr>				
 			</table>

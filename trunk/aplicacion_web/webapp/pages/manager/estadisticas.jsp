@@ -25,25 +25,11 @@
 				<tr align="center">
 					<td>&nbsp;</td>
 					<td>
-						<a href="document.location='estadisticas.do?VirtualDispatchName=doVentasMensuales'">Ventas Mensuales</a>
+						<a href="estadisticas.do?VirtualDispatchName=doEstadisticasVentasMensuales">Ventas Mensuales</a>
 					</td>
 					<td>&nbsp;</td>
 					<td>
-						<a href="document.location='estadisticas.do?VirtualDispatchName=doVentasAnuales'">Ventas Anuales</a>
-					</td>
-					<td>&nbsp;</td>
-				</tr>
-				<tr align="center">
-					<td colspan="5">&nbsp;</td>
-				</tr>
-				<tr align="center">
-					<td>&nbsp;</td>
-					<td>
-						<a href="document.location='estadisticas.do?VirtualDispatchName=doVentasMensaualesPorProducto'">Ventas Mensauales<br/>Por Producto</a>
-					</td>
-					<td>&nbsp;</td>
-					<td>
-						<a href="document.location='estadisticas.do?VirtualDispatchName=doVentasAnualesPorProducto'">Ventas Anuales<br/>Por Producto</a>
+						<a href="estadisticas.do?VirtualDispatchName=doEstadisticasVentasAnuales">Ventas Anuales</a>
 					</td>
 					<td>&nbsp;</td>
 				</tr>
@@ -53,11 +39,25 @@
 				<tr align="center">
 					<td>&nbsp;</td>
 					<td>
-						<a href="document.location='estadisticas.do?VirtualDispatchName=doVentasMensualesPorGrupoDeProducto'">Ventas Mensuales<br/>Por Grupo de Producto</a>
+						<a href="estadisticas.do?VirtualDispatchName=doEstadisticasVentasMensualesPorProducto">Ventas Mensuales<br/>Por Producto</a>
 					</td>
 					<td>&nbsp;</td>
 					<td>
-						<a href="document.location='estadisticas.do?VirtualDispatchName=doVentasMensualesPorGrupoDeProducto'">Ventas Anuales<br/>Por Grupo de Producto</a>
+						<a href="estadisticas.do?VirtualDispatchName=doEstadisticasVentasAnualesPorProducto">Ventas Anuales<br/>Por Producto</a>
+					</td>
+					<td>&nbsp;</td>
+				</tr>
+				<tr align="center">
+					<td colspan="5">&nbsp;</td>
+				</tr>
+				<tr align="center">
+					<td>&nbsp;</td>
+					<td>
+						<a href="estadisticas.do?VirtualDispatchName=doEstadisticasVentasMensualesPorGrupoDeProducto">Ventas Mensuales<br/>Por Grupo de Producto</a>
+					</td>
+					<td>&nbsp;</td>
+					<td>
+						<a href="estadisticas.do?VirtualDispatchName=doEstadisticasVentasAnualesPorGrupoDeProducto">Ventas Anuales<br/>Por Grupo de Producto</a>
 					</td>
 					<td>&nbsp;</td>
 				</tr>

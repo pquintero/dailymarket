@@ -54,9 +54,7 @@
 	<script type="text/javascript" src="yui/calendar/calendar-min.js"></script>
 	<script type="text/javascript" src="dcc_calendar.js"></script>
 
-	<script type="text/javascript">
-		setApplicationContext('<%=request.getRequestURL().substring(0,request.getRequestURL().indexOf(":")+3)%>' + '<%= request.getServerName() %>' + ":" + '<%= request.getServerPort()%>' +'<%= request.getRequestURI().substring(request.getRequestURI().indexOf("/") , request.getRequestURI().indexOf("l") )%>');
-	</script>
+	
 	
 </HEAD>
 

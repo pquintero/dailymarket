@@ -226,6 +226,36 @@
 			<form-property name="collectionName" type="java.lang.String" initial="" />
 		</form-bean>
 		
+		<form-bean name="EstadisticasForm" type="org.apache.struts.action.DynaActionForm">
+            <form-property name="VirtualDispatchName" type="java.lang.String"/>
+            <form-property name="saveToken" type="java.lang.String"/>
+			
+			<form-property name="id" type="java.lang.Long" initial="-1"/>
+			<form-property name="dsTable" type="java.lang.String" />
+			<form-property name="dsTableArray" type="java.lang.String[]" />
+			
+			<!--	ESTADISTICA XXX	-->
+			<form-property name="xxx" type="java.lang.String" initial=""/>
+			
+			<form-property name="queryDispatchName" type="java.lang.String" initial=""/>
+			<form-property name="collectionName" type="java.lang.String" initial="" />
+		</form-bean>
+		
+		<form-bean name="IndicadoresForm" type="org.apache.struts.action.DynaActionForm">
+            <form-property name="VirtualDispatchName" type="java.lang.String"/>
+            <form-property name="saveToken" type="java.lang.String"/>
+			
+			<form-property name="id" type="java.lang.Long" initial="-1"/>
+			<form-property name="dsTable" type="java.lang.String" />
+			<form-property name="dsTableArray" type="java.lang.String[]" />
+			
+			<!--	INDICADOR XXX	-->
+			<form-property name="xxx" type="java.lang.String" initial=""/>
+			
+			<form-property name="queryDispatchName" type="java.lang.String" initial=""/>
+			<form-property name="collectionName" type="java.lang.String" initial="" />
+		</form-bean>
+		
 		<form-bean name="ConfigurationForm" type="org.apache.struts.action.DynaActionForm">
             <form-property name="VirtualDispatchName" type="java.lang.String"/>
             <form-property name="id" type="java.lang.Long" />
@@ -310,8 +340,8 @@
 			<set-property property="initMethod" value="initAction"/>
 			
 			<forward name="showManagerHome" path="tiles.home.manager"/>
-			<forward name="showEstadisticasHome" path="tiles.home.manager.estadisticas"/>
-			<forward name="showIndicadoresHome" path="tiles.home.manager.indicadores"/>
+			<forward name="showEstadisticasHome" path="/estadisticas.do"/>
+			<forward name="showIndicadoresHome" path="/indicadores.do"/>
 			<forward name="showReportesHome" path="/reportes.do"/>
 		</action>
 		
@@ -332,6 +362,42 @@
 			<forward name="showReporteFacturacionMensualFilter" path="tiles.reportes.facturacionMensualFilter"/>
 			<forward name="showReporteListadoPreciosFilter" path="tiles.reportes.listadoPreciosFilter"/>
 			<forward name="showReporteListadoCodigosFilter" path="tiles.reportes.listadoCodigosFilter"/>
+		</action>
+		
+		<action 
+            path="/estadisticas" 
+            type="ar.com.dailyMarket.ui.EstadisticasAction" 
+            parameter="VirtualDispatchName"
+            scope="request" 
+            validate="false"
+            name="EstadisticasForm">
+			
+			<set-property property="initMethod" value="initAction"/>
+			
+			<forward name="showEstadisticasHome" path="tiles.home.manager.estadisticas"/>
+			<forward name="showEstadisticasVentasMensualesFilter" path="tiles.estadisticas.ventasMensualesFilter"/>
+			<forward name="showEstadisticasVentasAnualesFilter" path="tiles.estadisticas.ventasAnualesFilter"/>
+			<forward name="showEstadisticasVentasMensualesPorProductoFilter" path="tiles.estadisticas.ventasMensualesPorProductoFilter"/>
+			<forward name="showEstadisticasVentasAnualesPorProductoFilter" path="tiles.estadisticas.ventasAnualesPorProductoFilter"/>
+			<forward name="showEstadisticasVentasMensualesPorGrupoDeProductoFilter" path="tiles.estadisticas.ventasMensualesPorGrupoDeProductoFilter"/>
+			<forward name="showEstadisticasVentasAnualesPorGrupoDeProductoFilter" path="tiles.estadisticas.ventasAnualesPorGrupoDeProductoFilter"/>
+		</action>
+		
+		<action 
+            path="/indicadores" 
+            type="ar.com.dailyMarket.ui.IndicadoresAction" 
+            parameter="VirtualDispatchName"
+            scope="request" 
+            validate="false"
+            name="IndicadoresForm">
+			
+			<set-property property="initMethod" value="initAction"/>
+			
+			<forward name="showIndicadoresHome" path="tiles.home.manager.indicadores"/>
+			<forward name="showIndicadoresVentasPorCajeroMensualFilter" path="tiles.indicadores.ventasPorCajeroMensualFilter"/>
+			<forward name="showIndicadoresVentasPorCajeroAnualFilter" path="tiles.indicadores.ventasPorCajeroAnualFilter"/>
+			<forward name="showIndicadoresComparativaDeVentasPorCajeroMensualFilter" path="tiles.indicadores.comparativaDeVentasPorCajeroMensualFilter"/>
+			<forward name="showIndicadoresComparativaDeVentasPorCajeroAnualFilter" path="tiles.indicadores.comparativaDeVentasPorCajeroAnualFilter"/>
 		</action>
 		
 		<action 
