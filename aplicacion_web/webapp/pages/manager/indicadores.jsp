@@ -25,11 +25,11 @@
 				<tr align="center">
 					<td>&nbsp;</td>
 					<td>
-						<a href="document.location='indicadores.do?VirtualDispatchName=doVentasPorCajeroMensual'">Indicador Mensual de<br/>Ventas Por Cajero</a>
+						<a href="indicadores.do?VirtualDispatchName=doIndicadoresVentasPorCajeroMensual">Indicador Mensual de<br/>Ventas Por Cajero</a>
 					</td>
 					<td>&nbsp;</td>
 					<td>
-						<a href="document.location='indicadores.do?VirtualDispatchName=doVentasPorCajeroAnual'">Indicador Anual de<br/>Ventas Por Cajero</a>
+						<a href="indicadores.do?VirtualDispatchName=doIndicadoresVentasPorCajeroAnual">Indicador Anual de<br/>Ventas Por Cajero</a>
 					</td>
 					<td>&nbsp;</td>
 				</tr>
@@ -39,11 +39,11 @@
 				<tr align="center">
 					<td>&nbsp;</td>
 					<td>
-						<a href="document.location='indicadores.do?VirtualDispatchName=doComparaticaDeVentasPorCajeroMensual'">Indicador Mensual Comparativo<br/>de Ventas Por Cajero</a>
+						<a href="indicadores.do?VirtualDispatchName=doIndicadoresComparativaDeVentasPorCajeroMensual">Indicador Mensual Comparativo<br/>de Ventas Por Cajero</a>
 					</td>
 					<td>&nbsp;</td>
 					<td>
-						<a href="document.location='indicadores.do?VirtualDispatchName=doComparaticaDeVentasPorCajeroAnual'">Indicador Anual Comparativo<br/>de Ventas Por Cajero</a>
+						<a href="indicadores.do?VirtualDispatchName=doIndicadoresComparativaDeVentasPorCajeroAnual">Indicador Anual Comparativo<br/>de Ventas Por Cajero</a>
 					</td>
 					<td>&nbsp;</td>
 				</tr>
