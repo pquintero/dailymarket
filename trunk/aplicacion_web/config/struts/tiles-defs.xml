@@ -14,7 +14,7 @@
         <put name="body"        value=".portal.body" />
     </definition>	
 	
-	<definition name=".managerHomeLayout" path="/layouts/mainLayout.jsp">
+	<definition name=".managerMainLayout" path="/layouts/mainLayout.jsp">
         <put name="title"       value="" />
         <put name="header"      value="/common/managerHeader.jsp" />
         <put name="footer"      value="/common/footer.jsp" />
@@ -217,7 +217,7 @@
     <!-- MANAGER                                                           -->
     <!-- ============================================================== -->
     
-    <definition name="tiles.home.manager" extends=".managerHomeLayout">
+    <definition name="tiles.home.manager" extends=".managerMainLayout">
         <put name="title"   value="Menu.managerHome" />
         <put name="body"    value="tiles.home.manager.body" />
     </definition>
@@ -229,7 +229,7 @@
         <put name="buttons"  value="" />
     </definition>
 	
-    <definition name="tiles.home.manager.estadisticas" extends=".managerHomeLayout">
+    <definition name="tiles.home.manager.estadisticas" extends=".managerMainLayout">
         <put name="title"   value="estadisticas.home" />
         <put name="body"    value="tiles.home.manager.estadisticas.body" />
     </definition>
@@ -241,7 +241,7 @@
         <put name="buttons" value="tiles.home.manager.buttons" />                    
     </definition>
     
-    <definition name="tiles.home.manager.indicadores" extends=".managerHomeLayout">
+    <definition name="tiles.home.manager.indicadores" extends=".managerMainLayout">
         <put name="title"   value="indicadores.home" />
         <put name="body"    value="tiles.home.manager.indicadores.body" />
     </definition>
@@ -253,7 +253,7 @@
         <put name="buttons" value="tiles.home.manager.buttons" />                    
     </definition>
     
-    <definition name="tiles.home.manager.reportes" extends=".managerHomeLayout">
+    <definition name="tiles.home.manager.reportes" extends=".managerMainLayout">
         <put name="title"   value="reportes.home" />
         <put name="body"    value="tiles.home.manager.reportes.body" />
     </definition>
@@ -490,7 +490,7 @@
     <!-- ============================================================== -->
     <!-- Manager                                                   -->
     <!-- ============================================================== -->    
-    <definition name="tiles.manager.ordersPending" extends=".managerHomeLayout">
+    <definition name="tiles.manager.ordersPending" extends=".managerMainLayout">
         <put name="title"   value="ordersPending.title" />
         <put name="body"    value="tiles.manager.ordersPending.body" />
     </definition>    
@@ -507,7 +507,7 @@
     <!-- REPORTES                                                   -->
     <!-- ============================================================== -->  
     
-    <definition name="tiles.reportes.ventasAnualesFilter" extends=".managerHomeLayout">
+    <definition name="tiles.reportes.ventasAnualesFilter" extends=".managerMainLayout">
         <put name="title"   value="reportes.ventasAnualesFilter" />
         <put name="body"    value="tiles.reportes.ventasAnualesFilter.body" />
     </definition>
@@ -519,7 +519,7 @@
         <put name="buttons" value="" />                    
     </definition>
     
-    <definition name="tiles.reportes.ventasMensualesFilter" extends=".managerHomeLayout">
+    <definition name="tiles.reportes.ventasMensualesFilter" extends=".managerMainLayout">
         <put name="title"   value="reportes.ventasMensualesFilter" />
         <put name="body"    value="tiles.reportes.ventasMensualesFilter.body" />
     </definition>
@@ -531,7 +531,7 @@
         <put name="buttons" value="" />                    
     </definition>
     
-    <definition name="tiles.reportes.facturacionAnualFilter" extends=".managerHomeLayout">
+    <definition name="tiles.reportes.facturacionAnualFilter" extends=".managerMainLayout">
         <put name="title"   value="reportes.facturacionAnualFilter" />
         <put name="body"    value="tiles.reportes.facturacionAnualFilter.body" />
     </definition>
@@ -543,7 +543,7 @@
         <put name="buttons" value="" />                    
     </definition>
     
-    <definition name="tiles.reportes.facturacionMensualFilter" extends=".managerHomeLayout">
+    <definition name="tiles.reportes.facturacionMensualFilter" extends=".managerMainLayout">
         <put name="title"   value="reportes.facturacionMensualFilter" />
         <put name="body"    value="tiles.reportes.facturacionMensualFilter.body" />
     </definition>
@@ -555,7 +555,7 @@
         <put name="buttons" value="" />                    
     </definition>
     
-    <definition name="tiles.reportes.listadoPreciosFilter" extends=".managerHomeLayout">
+    <definition name="tiles.reportes.listadoPreciosFilter" extends=".managerMainLayout">
         <put name="title"   value="reportes.listadoPreciosFilter" />
         <put name="body"    value="tiles.reportes.listadoPreciosFilter.body" />
     </definition>
@@ -567,7 +567,7 @@
         <put name="buttons" value="" />                    
     </definition>
     
-    <definition name="tiles.reportes.listadoCodigosFilter" extends=".managerHomeLayout">
+    <definition name="tiles.reportes.listadoCodigosFilter" extends=".managerMainLayout">
         <put name="title"   value="reportes.listadoCodigosFilter" />
         <put name="body"    value="tiles.reportes.listadoCodigosFilter.body" />
     </definition>
