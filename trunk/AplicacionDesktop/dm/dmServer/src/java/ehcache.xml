@@ -1,0 +1,199 @@
+<ehcache>
+    <defaultCache maxElementsInMemory="100" eternal="false" timeToIdleSeconds="1800" timeToLiveSeconds="1800" overflowToDisk="false"
+        diskPersistent="false" diskExpiryThreadIntervalSeconds="120" memoryStoreEvictionPolicy="LRU"/>
+
+    <cache name="ar.com.tsoluciones.emergencies.server.businesslogic.core.model.Workstation" timeToLiveSeconds="1800" maxElementsInMemory="100"/>
+
+    <cache name="ar.com.tsoluciones.emergencies.server.businesslogic.core.model.Agency" eternal="true" maxElementsInMemory="100"/>
+    <cache name="ar.com.tsoluciones.emergencies.server.businesslogic.core.model.Agency.agenciesToDerivation" eternal="true" maxElementsInMemory="100"/>
+    <cache name="ar.com.tsoluciones.emergencies.server.businesslogic.core.model.Agency.traceAgencies" eternal="true" maxElementsInMemory="100"/>
+    <cache name="ar.com.tsoluciones.emergencies.server.businesslogic.core.model.Agency.districts" eternal="true" maxElementsInMemory="100"/>    
+    <cache name="ar.com.tsoluciones.emergencies.server.businesslogic.core.model.AgencyDerivationLink" eternal="false" maxElementsInMemory="100"/>
+    <cache name="ar.com.tsoluciones.emergencies.server.businesslogic.core.model.AgencyDerivationLink.roles" eternal="false" maxElementsInMemory="100"/>
+    
+    <cache name="ar.com.tsoluciones.emergencies.server.businesslogic.resources.Attribute" timeToLiveSeconds="1800" eternal="false"
+        maxElementsInMemory="100"/>
+    <cache name="ar.com.tsoluciones.emergencies.server.businesslogic.resources.ResourceType" timeToLiveSeconds="1800" eternal="false"
+        maxElementsInMemory="100"/>
+    <cache name="ar.com.tsoluciones.emergencies.server.businesslogic.resources.ResourceType.incidentSubtype" timeToLiveSeconds="1800" eternal="false"
+        maxElementsInMemory="100"/>
+    <cache name="ar.com.tsoluciones.emergencies.server.businesslogic.resources.ResourceType.attributeKeys" timeToLiveSeconds="1800" eternal="false"
+        maxElementsInMemory="100"/>
+    <cache name="ar.com.tsoluciones.emergencies.server.businesslogic.core.model.Queue" timeToLiveSeconds="1800" eternal="false"
+        maxElementsInMemory="100"/>
+    <cache name="ar.com.tsoluciones.emergencies.server.businesslogic.core.model.Queue.derivedQueues" timeToLiveSeconds="1800" eternal="false"
+        maxElementsInMemory="100"/>
+    <cache name="ar.com.tsoluciones.emergencies.server.businesslogic.core.model.Question" timeToLiveSeconds="1800" eternal="false"
+        maxElementsInMemory="100"/>
+    <cache name="ar.com.tsoluciones.emergencies.server.businesslogic.core.model.DerivationUnit" timeToLiveSeconds="1800" eternal="false"
+        maxElementsInMemory="100"/>
+    <cache name="ar.com.tsoluciones.emergencies.server.businesslogic.core.model.District" timeToLiveSeconds="1800" eternal="false"
+        maxElementsInMemory="200"/>
+    <cache name="ar.com.tsoluciones.emergencies.server.businesslogic.gis.model.GeoZone" timeToLiveSeconds="1800" eternal="false"
+        maxElementsInMemory="200"/>
+    <cache name="ar.com.tsoluciones.emergencies.server.businesslogic.gis.model.GeoZoneType" timeToLiveSeconds="1800" eternal="false"
+        maxElementsInMemory="200"/>
+    <!-- Este es el triste nombre que tiene la entidad Reference -->
+    <cache name="mobile" timeToLiveSeconds="1800" eternal="false"
+        maxElementsInMemory="200"/>
+    <cache name="ar.com.tsoluciones.emergencies.server.businesslogic.core.model.IncidentType" timeToLiveSeconds="1800" eternal="false"
+        maxElementsInMemory="1000"/>
+    <cache name="ar.com.tsoluciones.emergencies.server.businesslogic.core.model.IncidentSubtype" timeToLiveSeconds="1800" eternal="false"
+        maxElementsInMemory="1000"/>
+    <cache name="ar.com.tsoluciones.emergencies.server.businesslogic.core.model.IncidentSubtype.agencies" timeToLiveSeconds="1800" eternal="false"
+        maxElementsInMemory="500"/>
+    <cache name="ar.com.tsoluciones.emergencies.server.businesslogic.core.model.Town" timeToLiveSeconds="1800" eternal="false"
+        maxElementsInMemory="2500"/>
+    <cache name="ar.com.tsoluciones.emergencies.server.businesslogic.core.model.News" timeToLiveSeconds="1800" eternal="false"
+        maxElementsInMemory="100"/>
+    <cache name="ar.com.tsoluciones.emergencies.server.businesslogic.core.model.MenuItem" timeToLiveSeconds="1800" eternal="false"
+        maxElementsInMemory="100"/>
+    <cache name="ar.com.tsoluciones.emergencies.server.businesslogic.core.model.Priority" timeToLiveSeconds="1800" eternal="false"
+        maxElementsInMemory="100"/>
+    <cache name="ar.com.tsoluciones.emergencies.server.businesslogic.core.model.StreetType" timeToLiveSeconds="1800" eternal="false"
+        maxElementsInMemory="100"/>
+    <cache name="ar.com.tsoluciones.emergencies.server.businesslogic.core.model.Street" timeToLiveSeconds="1800" eternal="false"
+        maxElementsInMemory="500"/>
+    <cache name="ar.com.tsoluciones.arcom.security.User" timeToLiveSeconds="1800" eternal="false" maxElementsInMemory="10000"/>
+    <cache name="ar.com.tsoluciones.emergencies.server.businesslogic.core.model.CallMotive" timeToLiveSeconds="1800" eternal="false"
+        maxElementsInMemory="100"/>
+    <cache name="ar.com.tsoluciones.arcom.security.Role" timeToLiveSeconds="3600" eternal="false" maxElementsInMemory="100"/>
+    <cache name="ar.com.tsoluciones.arcom.enterprise.DocType" timeToLiveSeconds="3600" eternal="false" maxElementsInMemory="10"/>
+
+	<cache name="ar.com.tsoluciones.emergencies.server.businesslogic.core.mode.GeoJurisdictionZone" timeToLiveSeconds="3600" eternal="false" maxElementsInMemory="200"/>
+
+    <cache name="org.hibernate.cache.StandardQueryCache" maxElementsInMemory="100" eternal="false" timeToLiveSeconds="120" overflowToDisk="false"/>
+
+    <cache name="org.hibernate.cache.UpdateTimestampsCache" maxElementsInMemory="5000" eternal="true" overflowToDisk="false"/>
+
+
+    <!-- QUERYS -->
+    <cache name="ar.com.tsoluciones.emergencies.server.businesslogic.core.model.CallMotive.getAll" maxElementsInMemory="10" eternal="false"
+        timeToLiveSeconds="1800"/>
+    <cache name="ar.com.tsoluciones.emergencies.server.businesslogic.core.model.Priority.getAll" maxElementsInMemory="10" eternal="false"
+        timeToLiveSeconds="1800"/>
+    <cache name="ar.com.tsoluciones.emergencies.server.businesslogic.core.model.DocType.getAll" maxElementsInMemory="100" eternal="false"
+        timeToLiveSeconds="1800"/>
+    <cache name="ar.com.tsoluciones.emergencies.server.businesslogic.core.model.IncidentSubtype.getAll" maxElementsInMemory="500" eternal="false"
+        timeToLiveSeconds="1800"/>
+    <cache name="ar.com.tsoluciones.emergencies.server.businesslogic.core.model.IncidentType.getAll" maxElementsInMemory="500" eternal="false"
+        timeToLiveSeconds="1800"/>
+    <cache name="ar.com.tsoluciones.emergencies.server.businesslogic.core.model.District.getAll" maxElementsInMemory="200" eternal="false"
+        timeToLiveSeconds="3600"/>
+    <cache name="ar.com.tsoluciones.emergencies.server.businesslogic.core.model.Town.getAll" maxElementsInMemory="2500" eternal="false"
+        timeToLiveSeconds="3600"/>
+    <cache name="ar.com.tsoluciones.emergencies.server.businesslogic.core.model.ClassReference.getClassReference" maxElementsInMemory="200"
+        eternal="true"/>
+    <!--cache name="ar.com.tsoluciones.emergencies.server.alerts.DomainReference.getAllDomainReference"
+        maxElementsInMemory="2500" eternal="false" timeToLiveSeconds="3600"/-->
+
+    <cache name="ar.com.tsoluciones.emergencies.server.alerts.DomainReference" maxElementsInMemory="10000" eternal="false" timeToLiveSeconds="3600"/>
+
+    <cache name="ar.com.tsoluciones.emergencies.server.alerts.AlertConfig" eternal="true" maxElementsInMemory="100"/>
+    <cache name="ar.com.tsoluciones.emergencies.server.alerts.AlertConfig.roles" eternal="true" maxElementsInMemory="100"/>
+    <cache name="ar.com.tsoluciones.emergencies.server.alerts.AlertConfig.agencies" eternal="true" maxElementsInMemory="100"/>
+
+
+    <!-- Definición de regiones de caché para CallApprovable y sus entidades asociadas -->
+    <cache name="ar.com.tsoluciones.emergencies.server.businesslogic.core.model.CallApprovable" maxElementsInMemory="500" timeToLiveSeconds="1800"
+        overflowToDisk="false"/>
+
+    <cache name="com.opensymphony.workflow.spi.hibernate.HibernateWorkflowEntry" maxElementsInMemory="500" eternal="false"/>
+
+    <cache name="ar.com.tsoluciones.emergencies.server.businesslogic.core.model.CallManagement" maxElementsInMemory="500" timeToLiveSeconds="1800"
+        overflowToDisk="false"/>
+
+    <cache name="ar.com.tsoluciones.emergencies.server.businesslogic.core.model.CallApprovable.managements" maxElementsInMemory="500"
+        timeToLiveSeconds="1800" overflowToDisk="false"/>
+
+    <cache name="ar.com.tsoluciones.emergencies.server.businesslogic.core.model.CallManagement.associatedCall" maxElementsInMemory="500"
+        timeToLiveSeconds="1800" overflowToDisk="false"/>
+
+
+    <cache name="ar.com.tsoluciones.emergencies.server.businesslogic.core.model.CallManagement.comments" maxElementsInMemory="500"
+        timeToLiveSeconds="1800" overflowToDisk="false"/>
+
+    <cache name="ar.com.tsoluciones.emergencies.server.businesslogic.core.model.CallApprovable.questionAnswers" maxElementsInMemory="500"
+        timeToLiveSeconds="1800" overflowToDisk="false"/>
+
+    <!--cache name="ar.com.tsoluciones.emergencies.server.businesslogic.core.model.CallApprovable.associatedCallsToThis"
+        maxElementsInMemory="500" timeToLiveSeconds="1800" overflowToDisk="false"/-->
+
+    <cache name="ar.com.tsoluciones.emergencies.server.businesslogic.core.model.CallApprovable.resource" maxElementsInMemory="500"
+        timeToLiveSeconds="1800" overflowToDisk="false"/>
+
+    <cache name="ar.com.tsoluciones.emergencies.server.businesslogic.core.model.CallApprovableComment" maxElementsInMemory="500"
+        timeToLiveSeconds="1800" overflowToDisk="false"/>
+
+    <cache name="ar.com.tsoluciones.emergencies.server.businesslogic.resources.Resource" maxElementsInMemory="500" timeToLiveSeconds="1800"
+        overflowToDisk="false"/>
+
+    <cache name="ar.com.tsoluciones.emergencies.server.businesslogic.core.model.Company" maxElementsInMemory="500" timeToLiveSeconds="1800"
+        overflowToDisk="false"/>
+    <!-- Fin definición de regiones para CallApprovable -->
+
+
+    <!-- <diskStore> Sets the path to the directory where cache .data files are created.
+
+			 If the path is a Java System Property it is replaced by
+			 its value in the running VM.
+
+			 The following properties are translated:
+			 user.home - User's home directory
+			 user.dir - User's current working directory
+			 java.io.tmpdir - Default temp file path -->
+
+    <!-- <cache> Predefined caches.  Add your cache configuration settings here.
+        If you do not have a configuration for your cache a WARNING will be issued when the
+        CacheManager starts
+
+        The following attributes are required for defaultCache:
+
+        name              - Sets the name of the cache. This is used to identify the cache. It must be unique.
+        maxInMemory       - Sets the maximum number of objects that will be created in memory
+        eternal           - Sets whether elements are eternal. If eternal,  timeouts are ignored and the element
+                            is never expired.
+        timeToIdleSeconds - Sets the time to idle for an element before it expires.
+                            i.e. The maximum amount of time between accesses before an element expires
+                            Is only used if the element is not eternal.
+                            Optional attribute. A value of 0 means that an Element can idle for infinity
+        timeToLiveSeconds - Sets the time to live for an element before it expires.
+                            i.e. The maximum time between creation time and when an element expires.
+                            Is only used if the element is not eternal.
+                            Optional attribute. A value of 0 means that an Element can live for infinity
+        overflowToDisk    - Sets whether elements can overflow to disk when the in-memory cache
+                            has reached the maxInMemory limit.
+
+        -->
+
+    <!-- Sample cache named sampleCache1
+        This cache contains a maximum in memory of 10000 elements, and will expire
+        an element if it is idle for more than 5 minutes and lives for more than
+        10 minutes.
+
+        If there are more than 10000 elements it will overflow to the
+        disk cache, which in this configuration will go to wherever java.io.tmp is
+        defined on your system. On a standard Linux system this will be /tmp"
+        -->
+
+    <!--Default Cache configuration. These will applied to caches programmatically created through
+        the CacheManager.
+
+        The following attributes are required for defaultCache:
+
+        maxInMemory       - Sets the maximum number of objects that will be created in memory
+        eternal           - Sets whether elements are eternal. If eternal,  timeouts are ignored and the element
+                            is never expired.
+        timeToIdleSeconds - Sets the time to idle for an element before it expires.
+                            i.e. The maximum amount of time between accesses before an element expires
+                            Is only used if the element is not eternal.
+                            Optional attribute. A value of 0 means that an Element can idle for infinity
+        timeToLiveSeconds - Sets the time to live for an element before it expires.
+                            i.e. The maximum time between creation time and when an element expires.
+                            Is only used if the element is not eternal.
+                            Optional attribute. A value of 0 means that and Element can live for infinity
+        overflowToDisk    - Sets whether elements can overflow to disk when the in-memory cache
+                            has reached the maxInMemory limit.
+
+        -->
+</ehcache>

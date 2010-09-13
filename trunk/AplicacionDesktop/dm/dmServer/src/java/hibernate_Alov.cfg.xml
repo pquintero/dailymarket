@@ -1,0 +1,59 @@
+<!DOCTYPE hibernate-configuration PUBLIC
+        "-//Hibernate/Hibernate Configuration DTD 3.0//EN"
+        "http://hibernate.sourceforge.net/hibernate-configuration-3.0.dtd">
+
+<hibernate-configuration>
+	<session-factory>
+		<!-- Base de datos -->
+		<property name="hibernate.dialect">
+			org.hibernate.dialect.SQLServerDialect
+		</property>
+	  <property name="hibernate.connection.driver_class">com.jnetdirect.jsql.JSQLDriver</property>
+		<!-- property name="hibernate.connection.driver_class">com.p6spy.engine.spy.P6SpyDriver</property -->
+		<property name="hibernate.connection.url">jdbc:JSQLConnect://TD01586/database=alovbase-lp/user=sa/asciiStringParameters=true/disableStatementPooling=true</property>
+		<property name="hibernate.connection.username">sa</property>
+		<property name="hibernate.connection.password">Proyecto911</property>
+		<!-- Pool de conexiones -->
+		<property name="hibernate.connection.provider_class">ar.com.tsoluciones.emergencies.server.hibernate.C3P0ConnectionProvider</property>
+		<property name="hibernate.c3p0.max_size">25</property>
+		<property name="hibernate.c3p0.min_size">5</property>
+		<property name="hibernate.c3p0.timeout">10000</property>
+		<property name="hibernate.c3p0.max_statements">100</property>
+		<property name="hibernate.c3p0.idle_test_period">3000</property>
+		<property name="hibernate.c3p0.acquire_increment">2</property>
+		<property name="hibernate.c3p0.validate">true</property>
+		<!-- Isolation -->
+		<property name="hibernate.connection.isolation">2</property>
+		<!-- Configuracion JDBC -->
+		<property name="hibernate.jdbc.batch_size">0</property>
+		<property name="hibernate.jdbc.use_streams_for_binary">true</property>
+		<!-- Usar outer joins ? -->
+		<property name="hibernate.use_outer_join">true</property>
+		<property name="hibernate.max_fetch_depth">3</property>
+		<!-- Optimizadores de performance -->
+		<property name="hibernate.bytecode.use_reflection_optimizer">true</property>
+
+		<!-- Debug -->
+		<property name="hibernate.show_sql">false</property>
+		<!-- Alovbase -->
+		<!-- IMPORTANTE: Se utiliza AlovNamingStrategy de la siguiente manera:
+			+ Si se indican las propiedades name y table, toma el valor de table y le agrega el subfijo
+			correspondiente a la instancia de implementacion de GIS
+			+ Si no se indica table, entonces toma el nombre de la clase, y lo usa como table (sin subfijo)
+		-->
+		<mapping resource="ar/com/tsoluciones/emergencies/server/businesslogic/gis/model/GeoMobile.hbm.xml" />
+		<mapping resource="ar/com/tsoluciones/emergencies/server/businesslogic/gis/model/GeoAgency.hbm.xml" />
+		<mapping resource="ar/com/tsoluciones/emergencies/server/businesslogic/gis/model/GeoDREMobile.hbm.xml" />
+		<mapping resource="ar/com/tsoluciones/emergencies/server/businesslogic/gis/model/Shape.hbm.xml" />
+		<mapping resource="ar/com/tsoluciones/emergencies/server/businesslogic/gis/model/MilestoneDTO.hbm.xml" />
+		<mapping resource="ar/com/tsoluciones/emergencies/server/businesslogic/gis/util/Draw.hbm.xml" />
+		<mapping resource="ar/com/tsoluciones/emergencies/server/businesslogic/gis/model/GeoPoint.hbm.xml" />
+		<mapping resource="ar/com/tsoluciones/emergencies/server/businesslogic/gis/model/Hito.hbm.xml" />
+		<mapping resource="ar/com/tsoluciones/emergencies/server/businesslogic/gis/model/DataSet.hbm.xml" />
+		<mapping resource="ar/com/tsoluciones/emergencies/server/businesslogic/gis/model/Instance.hbm.xml" />
+		<mapping resource="ar/com/tsoluciones/emergencies/server/businesslogic/gis/model/GeoCounter.hbm.xml" />
+		<mapping resource="ar/com/tsoluciones/emergencies/server/businesslogic/gis/model/Camera.hbm.xml" />
+		<mapping resource="ar/com/tsoluciones/emergencies/server/businesslogic/gis/model/GeoPointZone.hbm.xml" />
+		<mapping resource="ar/com/tsoluciones/emergencies/server/businesslogic/gis/model/GeoInfluenceZone.hbm.xml" />
+	</session-factory>
+</hibernate-configuration>

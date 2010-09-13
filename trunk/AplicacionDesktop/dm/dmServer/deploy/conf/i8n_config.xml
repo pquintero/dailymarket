@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+
+<properties>
+
+  <category name="i8n">
+    <property name="instancia" value="%center.name%"/>
+    <property name="municipio" value="Municipio"/>
+    <property name="localidad" value="Localidad"/>
+    <property name="recurso" value="Recurso"/>
+    <property name="recursos" value="Recursos"/>
+    <property name="resource" value="Recurso"/>
+    <property name="resources" value="Recursos"/>
+    <property name="afectado" value="Afectado a"/>
+    <!-- Pantalla de login -->
+    <property name="usuario" value="Usuario"/>
+    <property name="contraseña" value="Contraseña"/>
+    <property name="guardia" value="Guardia"/>
+    <property name="turno" value="Turno"/>
+    <property name="conPedido" value="C/ Pedido Captura"/>
+    <property name="sinEfecto" value="C/ Pedido s/ efecto"/>
+
+    <!-- Pantalla de despacho -->
+	<property name="grupo_despacho" value="Centro de Despacho"/>
+
+	<!-- radioestacion_R y cria son el mismo campo, ambos deben tener el mismo valor: Cria. o R., porque en algunos lugares levanta uno y en otros el otro, debería haber uno solo!!! -->
+	<property name="radioestacion_R" value="CD."/>
+    <property name="radioestacion" value="Radioestación"/>
+    <property name="comisaria" value="Comisaría"/>
+	<property name="cria" value="CD."/>
+
+
+
+    <!-- Mensajes para reportes de auditoria (ejemplo: audit_method_nombreMetodo) -->
+    <property name="audit_method_derivateToDerivationUnit" value="Carta de llamada derivada a grupo de despacho"/>
+    <property name="audit_method_derivateToSpecialist" value="Carta de llamada derivada a especialista"/>
+    <property name="audit_method_derivateToSupervisor" value="Carta de llamada derivada a supervisor"/>
+    <property name="audit_method_closeIncident" value="Carta de llamada cerrada"/>
+    <property name="audit_method_closeAlreadyReported" value="Carta de llamada ya reportada"/>
+    <property name="audit_method_closeIrrelevantCall" value="Carta de llamada cerrada (llamada interna)"/>
+    <property name="audit_method_update" value="Carta de llamada actualizada"/>
+    <property name="audit_method_save" value="Carta de llamada creada"/>
+    <property name="audit_method_openAction" value="Carta de llamada vuelve a estado abierta"/>
+    <property name="audit_method_waitToCloseIncident" value="Carta de llamada a espera de cierre"/>
+    <property name="audit_method_lock" value="Carta de llamada bloqueada"/>
+    <property name="audit_method_unlock" value="Carta de llamada desbloqueada"/>
+    <property name="audit_method_addComment" value="Comentario agregado a la carta de llamada"/>
+    <property name="audit_Recursos" value="Manejo de Recursos"/>
+    <property name="audit_method_dispatchUpdate" value="Recursos"/>
+  </category>
+
+</properties>

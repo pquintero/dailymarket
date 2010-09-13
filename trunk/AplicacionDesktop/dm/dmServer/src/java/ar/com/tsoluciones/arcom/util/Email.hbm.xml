@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+	"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+	"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+	<!-- ar.com.tsoluciones.arcom.util.Email root -->
+	<class name="ar.com.tsoluciones.arcom.util.Email" table="Email">
+		<id name="id" type="long" column="id">
+			<generator class="native"/>
+		</id>
+		<property name="deleted" column="deleted" type="boolean"/>
+		<property name="email" column="email" type="string"/>
+		<property name="name" column="name" type="string"/>
+	</class>
+</hibernate-mapping>

@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+	"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+	"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+
+	<class name="ar.com.tsoluciones.arcom.security.Security" table="Security">
+		<id name="username" type="string" length="100">
+			<generator class="org.hibernate.id.GUIDGenerator"/>
+		</id>
+		<property name="password" column="password" type="string" length="100" not-null="true"/>
+	</class>
+
+</hibernate-mapping>

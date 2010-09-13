@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+	"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+	"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping default-lazy="false" package="ar.com.tsoluciones.emergencies.server.businesslogic.core.model">
+    <class name="Agency">
+
+        <id name="id">
+            <generator class="native"/>
+        </id>
+        <property name="code" length="5"/>
+        <property name="name" length="100"/>
+        <property name="deleted" type="boolean">
+         	<column name="deleted" default="0" not-null="true"/>       
+        </property>
+		<property name="GISModule" type="boolean"/>
+		<property name="CTIModule" type="boolean"/>
+        <property name="reducedReporting" type="boolean">
+           	<column name="reducedReporting" default="0" not-null="true"/>       
+        </property>
+        <property name="resourceModule" type="boolean">
+        	<column name="resourceModule" default="0" not-null="true"/>
+        </property>
+        <property name="masterAgency" type="boolean">
+  	     	<column name="masterAgency" default="0" not-null="true"/>
+        </property>
+        <property name="derivationAlert"/>
+		<property name="phone" length="32"/>
+		<property name="sendAlerts" type="boolean"/>
+        
+        
+        <set name="districts" table="agency_district" cascade="none">
+            <key column="agency"/>
+            <many-to-many
+                class="ar.com.tsoluciones.emergencies.server.businesslogic.core.model.District">
+                <column name="district" not-null="true"/>
+            </many-to-many>
+        </set>
+
+        <set name="incidentSubtype" table="incident_subtype_agency" lazy="true" cascade="none" sort="natural">
+            <key column="agency"/>
+            <many-to-many class="IncidentSubtype">
+                <column name="incident_subtype" not-null="true"/>
+            </many-to-many>
+        </set>
+        
+        <set name="recommendSubtype" table="recommend_subtype_agency" lazy="true" cascade="none" sort="natural">
+            <key column="agency"/>
+            <many-to-many class="IncidentSubtype">
+                <column name="recommend_subtype" not-null="true"/>
+            </many-to-many>
+        </set>
+        
+        <set name="resource" table="agency_resource" lazy="true" cascade="none">
+            <key column="agency"/>
+            <many-to-many
+                class="ar.com.tsoluciones.emergencies.server.businesslogic.resources.Resource">
+                <column name="resource" not-null="true"/>
+            </many-to-many>
+        </set>
+
+        <set name="traceAgencies" table="agency_trace" cascade="none">
+            <key column="agency_id"/>
+            <many-to-many class="Agency">
+                <column name="trace_agency" not-null="true"/>
+            </many-to-many>
+        </set>
+
+        <set name="agenciesToDerivation" cascade="all-delete-orphan">
+            <key column="parent"/>
+            <one-to-many class="AgencyDerivationLink"/>
+        </set>
+        
+		<many-to-one name="robotUser" class="ar.com.tsoluciones.arcom.security.User" cascade="none" lazy="false"/>
+
+        <set name="CTIQueues" lazy="true">
+            <key column="agency"/>
+            <one-to-many class="ar.com.tsoluciones.emergencies.server.businesslogic.core.model.Queue"/>
+        </set>
+
+    </class>
+</hibernate-mapping>

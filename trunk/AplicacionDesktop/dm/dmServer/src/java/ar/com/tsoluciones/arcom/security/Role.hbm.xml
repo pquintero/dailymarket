@@ -1,0 +1,32 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping default-lazy="false" package="ar.com.tsoluciones.arcom.security" default-cascade="save-update">
+	<!-- ar.com.tsoluciones.arcom.security.Role root -->
+	<class name="Role" table="Role">
+
+		<id name="id" type="long" column="id" unsaved-value="null">
+			<generator class="native"/>
+		</id>
+
+		<property name="deleted" column="deleted" type="boolean"/>
+		<property name="name" column="name" type="string" unique="true" not-null="true"/>
+		<property name="description" column="description" type="string"/>
+
+		<set name="permissions" table="role_permissions" lazy="true">
+			<key column="role_id" foreign-key="FK_role_permission_role_id" />
+			<many-to-many class="ar.com.tsoluciones.arcom.security.Permission" foreign-key="FK_permission_role_permission_id">
+				<column name="permission_id" not-null="true"/>
+			</many-to-many>
+		</set>
+
+		<set name="users" table="user_roles" lazy="true">
+			<key column="role_id" foreign-key="FK_role_user_role_id" />
+			<many-to-many class="ar.com.tsoluciones.arcom.security.User" foreign-key="FK_user_role_user_id">
+				<column name="user_id" not-null="true"/>
+			</many-to-many>
+		</set>
+
+	</class>
+
+</hibernate-mapping>

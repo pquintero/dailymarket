@@ -1,0 +1,234 @@
+<project name="F911 server deployer" default="deploy" basedir=".">
+
+	<property file="deployer.properties"/>
+
+	<!--======================================================================= -->
+	<!-- Publico 																-->
+	<!-- Utilice el ant solo mediante estos target publicos 					-->
+	<!--======================================================================= -->
+
+	<property name="temp.dir" value="temp"/>
+	<property name="F911.dir" value="${temp.dir}\${context.F911}"/>
+	<property name="alov.dir" value="${temp.dir}\${context.alov}"/>
+
+	<!-- Destino del deploy -->
+	<property environment="env"/>
+	<property name="catalina.home" value="${env.CATALINA_HOME}"/>
+	<property name="webapps.dir" value="${catalina.home}\webapps"/>
+	<property name="F911.dest" value="${webapps.dir}\${context.F911}" />
+	<property name="alov.dest" value="${webapps.dir}\${context.alov}" />
+	<property name="persistence.dest" value="${catalina.home}\server\classes" />
+	<property name="persistence.package" value="ar\com\tsoluciones\emergencies\server\tomcat" />
+	<property name="persistence.dir" value="${persistence.dest}\${persistence.package}" />
+	<property name="persistence.context.dir" value="${catalina.home}\conf\Catalina\localhost" />
+	<property name="persistence.util.dir" value="ar\com\tsoluciones\util" />
+	
+	<!-- Fecha -->
+	<tstamp>
+		<format property="today" pattern="yyyyMMddHHmmss" locale="es"/>
+	</tstamp>
+
+	<target name="clean">
+		<delete dir="${temp.dir}" />
+	</target>
+
+	<!-- Deploys -->
+	<target name="deploy" depends="clean">
+
+		<mkdir dir="${F911.dir}"/>
+		<mkdir dir="${alov.dir}"/>
+		<mkdir dir="${persistence.dir}"/>
+
+		<!--unzip src="../package/F911.zip" dest="${F911.dir}"/-->
+
+		<copy overwrite="true" todir="${F911.dir}">
+			<fileset dir="../package/F911">
+				<include name="**/*.*"/>
+			</fileset>
+		</copy>
+		<unzip src="../package/alovmap.zip" dest="${alov.dir}"/>
+
+		
+		<!-- Reemplazos de configuracion -->
+		<antcall target="procesar-filtros">
+			<param name="dir-classes" value="${F911.dir}"/>
+		</antcall>
+
+
+		<!-- Backup de previos paquetes, si existen -->
+		<available file="${F911.dest}" type="dir" property="previous.F911.exists"/>
+		<available file="${alov.dest}" type="dir" property="previous.alov.exists"/>
+
+		<antcall target="F911.backup" />
+		<antcall target="alov.backup" />
+
+		<!-- Vaciar previas aplicaciones -->
+		<delete dir="${F911.dest}" />
+		<delete dir="${alov.dest}" />
+
+		<!-- Recrear directorios -->
+		<mkdir dir="${F911.dest}" />
+		<mkdir dir="${alov.dest}" />
+
+		<!-- Copiar paquetes parametrizados -->
+		<move file="${F911.dir}" todir="${webapps.dir}" />
+		<move file="${alov.dir}" todir="${webapps.dir}" />
+		<copy overwrite="true" todir="${persistence.dest}\${persistence.package}">
+			<fileset dir="${F911.dest}\WEB-INF\classes\${persistence.package}">
+				<include name="**/*.*"/>
+			</fileset>
+		</copy>
+		
+		<copy overwrite="true" todir="${persistence.dest}\${persistence.util.dir}">
+			<fileset dir="${F911.dest}\WEB-INF\classes\${persistence.util.dir}">
+				<include name="Cast.class"/>
+			</fileset>
+		</copy>
+		
+		<copy overwrite="true" todir="${persistence.context.dir}">
+			<fileset dir="../conf/tomcat/conf/Catalina/localhost">
+				<include name="**/*.*"/>
+			</fileset>
+		</copy>
+		<antcall target="alov.projects.restore"/>
+		<antcall target="alov.checker"/>
+		<antcall target="clean" />
+	</target>
+
+	<target name="F911.backup" if="previous.F911.exists">
+		<zip destfile="${webapps.dir}\${today}-${context.F911}.zip">
+			<fileset dir="${F911.dest}">
+				<include name="**/*.*"/>
+			</fileset>
+		</zip>
+	</target>
+
+	<target name="alov.backup" if="previous.alov.exists">
+		<zip destfile="${webapps.dir}\${today}-${context.alov}.zip">
+			<fileset dir="${alov.dest}">
+				<include name="**/*.*"/>
+			</fileset>
+		</zip>
+		<antcall target="alov.projects.backup"></antcall>
+	</target>
+
+	<target name="alov.projects.backup">
+		<mkdir dir="${webapps.dir}/alovtemp"/>
+		<copy overwrite="true" todir="${webapps.dir}/alovtemp" verbose="true">
+					<fileset dir="${alov.dest}">
+						<include name="${app.code}_*.xml"/>
+					</fileset>
+		</copy>	
+	</target>
+	
+	<target name="alov.checker">
+		<java
+				dir="${F911.dest}/WEB-INF/classes" 
+				classname="ar.com.tsoluciones.emergencies.server.gui.gis.telefront.AlovChecker"
+				fork="true"
+				>
+			<classpath>
+			      <fileset dir="${F911.dest}/WEB-INF/lib">
+			        <include name="**/*.jar"/>
+			      </fileset>
+			      <pathelement location="${F911.dest}/WEB-INF/classes"/>
+		    </classpath>
+			<arg value="${alov.dest}"/>
+		</java>
+	</target>
+	
+	<target name="alov.projects.restore" if="previous.alov.exists">
+		<copy todir="${alov.dest}" verbose="true">
+					<fileset dir="${webapps.dir}/alovtemp">
+						<include name="*.*"/>
+					</fileset>
+		</copy>	
+		<delete dir="${webapps.dir}/alovtemp"/>
+	</target>
+	
+	<target name="procesar-filtros">
+		<!-- Reemplazos de configuracion -->
+		<replace dir="${alov.dir}" summary="true" includes="**/*.html,**/*.properties,**/*.xml">
+			<exclude name="**/*.class" />
+			<exclude name="**/*.jasper" />
+
+			<replacefilter token="%gis.implementation.code%" value="${app.code}"/>
+			<replacefilter token="%sql.server%" value="${sql.server}"/>
+			<replacefilter token="%sql.gisDatabase%" value="${sql.gisDatabase}"/>
+			<replacefilter token="%sql.username%" value="${sql.username}"/>
+			<replacefilter token="%sql.password%" value="${sql.password}"/>
+			
+			<replacefilter token="%gis.log%" value="${catalina.home}\logs\${context.alov}.log"/>
+		</replace>
+
+		<replace dir="${dir-classes}" summary="true">
+			<exclude name="**/*.class" />
+			<exclude name="**/*.jasper" />
+
+			<replacefilter token="%app.version%" value="${app.version}"/>
+			<replacefilter token="%messaging.host%" value="${messaging.server}"/>
+			<replacefilter token="%messaging.port%" value="${messaging.port}"/>
+			<replacefilter token="%messaging.protocol%" value="${messaging.protocol}"/>
+			<replacefilter token="%messaging.internalProtocol%" value="${messaging.internalProtocol}"/>
+			<replacefilter token="%messaging.externalBroker%" value="${messaging.externalBroker}"/>
+
+			<replacefilter token="%sql.server%" value="${sql.server}"/>
+			<replacefilter token="%sql.emergenciesDatabase%" value="${sql.emergenciesDatabase}"/>
+			<replacefilter token="%sql.username%" value="${sql.username}"/>
+			<replacefilter token="%sql.password%" value="${sql.password}"/>
+			<replacefilter token="%sql.gisDatabase%" value="${sql.gisDatabase}"/>
+
+			<replacefilter token="%geo.server%" value="${geo.server}"/>
+			<replacefilter token="%geo.database%" value="${geo.database}"/>
+			<replacefilter token="%geo.username%" value="${geo.username}"/>
+			<replacefilter token="%geo.password%" value="${geo.password}"/>
+
+			<replacefilter token="%audit.server%" value="${audit.server}"/>
+			<replacefilter token="%audit.database%" value="${audit.database}"/>
+			<replacefilter token="%audit.username%" value="${audit.username}"/>
+			<replacefilter token="%audit.password%" value="${audit.password}"/>
+
+			<replacefilter token="%audithistory.server%" value="${audithistory.server}"/>
+			<replacefilter token="%audithistory.database%" value="${audithistory.database}"/>
+			<replacefilter token="%audithistory.username%" value="${audithistory.username}"/>
+			<replacefilter token="%audithistory.password%" value="${audithistory.password}"/>
+
+			<replacefilter token="%avl.server%" value="${avl.server}"/>
+			<replacefilter token="%avl.database%" value="${avl.database}"/>
+			<replacefilter token="%avl.username%" value="${avl.username}"/>
+			<replacefilter token="%avl.password%" value="${avl.password}"/>
+
+	    	<replacefilter token="%avlhistory.server%" value="${avlhistory.server}"/>
+	        <replacefilter token="%avlhistory.database%" value="${avlhistory.database}"/>
+	        <replacefilter token="%avlhistory.username%" value="${avlhistory.username}"/>
+	        <replacefilter token="%avlhistory.password%" value="${avlhistory.password}"/>
+			
+			<replacefilter token="%context.name%" value="${context.F911}"/>
+
+			<replacefilter token="%gis.implementation.code%" value="${app.code}"/>
+			<replacefilter token="%gis.alovmap.context%" value="${context.alov}"/>
+
+			<replacefilter token="%emergencies.log%" value="${catalina.home}\logs\${context.F911}.log"/>
+			<replacefilter token="%hibernate.log%" value="${catalina.home}\logs\${context.F911}-hibernate.log"/>
+			<replacefilter token="%cache.log%" value="${catalina.home}\logs\${context.F911}-cache.log"/>
+			<replacefilter token="%sql.log%" value="${catalina.home}\logs\${context.F911}-sql.log"/>
+			<replacefilter token="%exceededOperations.log%" value="${catalina.home}\logs\${context.F911}-exceededOperations.log"/>
+			
+			<replacefilter token="%interop.code%" value="${interop.code}"/>
+			<replacefilter token="%interop.name%" value="${interop.name}"/>
+			<replacefilter token="%interop.url%" value="${interop.url}"/>
+			
+			<replacefilter token="%center.name%" value="${center.name}"/>
+		</replace>
+
+		<!-- Escapar en log4j.properties las barras -->
+		<replace dir="${dir-classes}" summary="true" includes="**\log4j.properties">
+			<replacefilter token="\" value="/"/>
+		</replace>
+		
+		<replace dir="../conf/tomcat/conf/Catalina/localhost" summary="true" includes="**\context.xml">
+			<replacefilter token="version" value="${context.F911}"/>
+		</replace>
+	</target>
+
+</project>

@@ -1,0 +1,338 @@
+﻿<!DOCTYPE hibernate-configuration PUBLIC
+  "-//Hibernate/Hibernate Configuration DTD//EN"
+  "http://hibernate.sourceforge.net/hibernate-configuration-3.0.dtd">
+
+<hibernate-configuration>
+
+	<session-factory>
+		<!-- Base de datos -->
+		<property name="hibernate.dialect">org.hibernate.dialect.SQLServerDialect</property>
+		<property name="hibernate.connection.driver_class">com.jnetdirect.jsql.JSQLDriver</property>
+		<property name="hibernate.connection.url">
+			jdbc:JSQLConnect://%sql.server%/database=%sql.emergenciesDatabase%/user=%sql.username%/asciiStringParameters=true/disableStatementPooling=true </property>
+		<property name="hibernate.connection.username">%sql.username%</property>
+		<property name="hibernate.connection.password">%sql.password%</property>
+
+		<property name="hibernate.current_session_context_class">thread</property>
+
+		<!-- Pool de conexiones -->
+		<property name="hibernate.connection.provider_class">
+			ar.com.tsoluciones.emergencies.server.hibernate.C3P0ConnectionProvider </property>
+		<property name="hibernate.c3p0.max_size">1000</property>
+		<property name="hibernate.c3p0.min_size">50</property>
+		<property name="hibernate.c3p0.timeout">5000</property>
+		<property name="hibernate.c3p0.max_statements">100</property>
+		<property name="hibernate.c3p0.idle_test_period">3000</property>
+		<property name="hibernate.c3p0.acquire_increment">3</property>
+		<property name="hibernate.c3p0.validate">true</property>
+
+		<!-- Isolation -->
+		<property name="hibernate.connection.isolation">2</property>
+
+		<!-- Configuracion JDBC -->
+		<property name="hibernate.jdbc.batch_size">0</property>
+		<property name="hibernate.jdbc.use_streams_for_binary">false</property>
+
+		<!-- Usar outer joins ? -->
+		<property name="hibernate.use_outer_join">true</property>
+		<property name="hibernate.max_fetch_depth">3</property>
+
+		<!-- Optimizadores de performance -->
+		<property name="hibernate.bytecode.use_reflection_optimizer">true</property>
+		<property name="hibernate.cache.use_query_cache">true</property>
+		<property name="hibernate.cache.provider_class">org.hibernate.cache.EhCacheProvider</property>
+
+		<!-- Debug -->
+		<property name="hibernate.show_sql">false</property>
+
+		<property name="hibernate.search.default.directory_provider">org.hibernate.search.store.FSDirectoryProvider</property>
+		<property name="hibernate.search.default.indexBase">/etc/index/f911</property>
+
+		<!-- Open Symphony -->
+		<mapping jar="osworkflow-2.8.0.jar"
+			resource="com/opensymphony/workflow/spi/hibernate3/HibernateWorkflowEntry.hbm.xml"/>
+		<mapping jar="osworkflow-2.8.0.jar"
+			resource="com/opensymphony/workflow/spi/hibernate3/HibernateCurrentStep.hbm.xml"/>
+		<mapping jar="osworkflow-2.8.0.jar"
+			resource="com/opensymphony/workflow/spi/hibernate3/HibernateHistoryStep.hbm.xml"/>
+
+		<!-- Arcom -->
+		<mapping resource="ar/com/tsoluciones/arcom/security/User.hbm.xml"/>
+		<mapping resource="ar/com/tsoluciones/arcom/security/Security.hbm.xml"/>
+		<mapping resource="ar/com/tsoluciones/arcom/security/Role.hbm.xml"/>
+		<mapping resource="ar/com/tsoluciones/arcom/security/Group.hbm.xml"/>
+		<mapping resource="ar/com/tsoluciones/arcom/security/Permission.hbm.xml"/>
+		<mapping resource="ar/com/tsoluciones/arcom/util/Phone.hbm.xml"/>
+		<mapping resource="ar/com/tsoluciones/arcom/util/Email.hbm.xml"/>
+		<mapping resource="ar/com/tsoluciones/arcom/util/Address.hbm.xml"/>
+		<mapping resource="ar/com/tsoluciones/arcom/util/Comment.hbm.xml"/>
+		<mapping resource="ar/com/tsoluciones/arcom/enterprise/DocType.hbm.xml"/>
+
+		<!-- Core -->
+		<mapping resource="ar/com/tsoluciones/emergencies/server/businesslogic/core/model/VehicleType.hbm.xml"/>
+		<mapping resource="ar/com/tsoluciones/emergencies/server/businesslogic/core/model/LicenseHistory.hbm.xml"/>
+		<mapping resource="ar/com/tsoluciones/emergencies/server/businesslogic/core/model/Court.hbm.xml"/>
+		<mapping resource="ar/com/tsoluciones/emergencies/server/businesslogic/core/model/CallApprovable.hbm.xml"/>
+		<mapping resource="ar/com/tsoluciones/emergencies/server/businesslogic/core/model/CallManagement.hbm.xml"/>
+		<mapping resource="ar/com/tsoluciones/emergencies/server/businesslogic/core/model/VictimReport.hbm.xml"/>
+		<mapping resource="ar/com/tsoluciones/emergencies/server/businesslogic/core/model/Agency.hbm.xml"/>
+		<mapping resource="ar/com/tsoluciones/emergencies/server/businesslogic/core/model/AgencyDerivationLink.hbm.xml"/>
+		<mapping resource="ar/com/tsoluciones/emergencies/server/businesslogic/core/model/CallApprovableComment.hbm.xml"/>
+		<mapping resource="ar/com/tsoluciones/emergencies/server/businesslogic/core/model/Question.hbm.xml"/>
+		<mapping resource="ar/com/tsoluciones/emergencies/server/businesslogic/core/model/Queue.hbm.xml"/>
+		<mapping resource="ar/com/tsoluciones/emergencies/server/businesslogic/core/model/QuestionAnswer.hbm.xml"/>
+		<mapping resource="ar/com/tsoluciones/emergencies/server/businesslogic/core/model/Answer.hbm.xml"/>
+		<mapping resource="ar/com/tsoluciones/emergencies/server/businesslogic/core/model/DerivationUnit.hbm.xml"/>
+		<mapping resource="ar/com/tsoluciones/emergencies/server/businesslogic/core/model/District.hbm.xml"/>
+		<mapping resource="ar/com/tsoluciones/emergencies/server/businesslogic/core/model/PoliceStation.hbm.xml"/>
+		<mapping resource="ar/com/tsoluciones/emergencies/server/businesslogic/core/model/Grid.hbm.xml"/>
+		<mapping resource="ar/com/tsoluciones/emergencies/server/businesslogic/core/model/IncidentType.hbm.xml"/>
+		<mapping resource="ar/com/tsoluciones/emergencies/server/businesslogic/core/model/IncidentSubtype.hbm.xml"/>
+		<mapping resource="ar/com/tsoluciones/emergencies/server/businesslogic/core/model/Town.hbm.xml"/>
+		<mapping resource="ar/com/tsoluciones/emergencies/server/businesslogic/core/model/News.hbm.xml"/>
+		<mapping resource="ar/com/tsoluciones/emergencies/server/businesslogic/core/model/Priority.hbm.xml"/>
+		<mapping resource="ar/com/tsoluciones/emergencies/server/businesslogic/core/model/StreetType.hbm.xml"/>
+		<mapping resource="ar/com/tsoluciones/emergencies/server/businesslogic/core/model/Street.hbm.xml"/>
+		<mapping resource="ar/com/tsoluciones/emergencies/server/businesslogic/core/model/Route.hbm.xml"/>
+		<mapping resource="ar/com/tsoluciones/emergencies/server/businesslogic/core/model/Alias.hbm.xml"/>
+		<mapping resource="ar/com/tsoluciones/emergencies/server/businesslogic/core/model/StreetByDistrict.hbm.xml"/>
+		<mapping resource="ar/com/tsoluciones/emergencies/server/businesslogic/core/model/Milestone.hbm.xml"/>
+		<mapping resource="ar/com/tsoluciones/emergencies/server/businesslogic/core/model/DerivationUnitAction.hbm.xml"/>
+		<mapping
+			resource="ar/com/tsoluciones/emergencies/server/businesslogic/core/model/DerivationUnitActionDetail.hbm.xml"/>
+		<mapping resource="ar/com/tsoluciones/emergencies/server/businesslogic/core/model/DisplacementDetail.hbm.xml"/>
+		<mapping resource="ar/com/tsoluciones/emergencies/server/businesslogic/core/model/Workstation.hbm.xml"/>
+		<mapping resource="ar/com/tsoluciones/emergencies/server/businesslogic/core/model/WorkstationGroup.hbm.xml"/>
+		<mapping resource="ar/com/tsoluciones/emergencies/server/businesslogic/core/model/WorkstationUser.hbm.xml"/>
+		<mapping
+			resource="ar/com/tsoluciones/emergencies/server/businesslogic/core/model/SpecialistTypeIncidentSubtype.hbm.xml"/>
+		<mapping resource="ar/com/tsoluciones/emergencies/server/businesslogic/core/model/SpecialistType.hbm.xml"/>
+		<mapping resource="ar/com/tsoluciones/emergencies/server/businesslogic/core/model/SpecialistTypeUser.hbm.xml"/>
+		<mapping resource="ar/com/tsoluciones/emergencies/server/businesslogic/core/model/GeoJurisdictionZone.hbm.xml"/>
+		<mapping resource="ar/com/tsoluciones/emergencies/server/businesslogic/core/model/GeoJurisdictionTable.hbm.xml"/>
+		<mapping resource="ar/com/tsoluciones/emergencies/server/businesslogic/core/model/CallMotive.hbm.xml"/>
+		<mapping resource="ar/com/tsoluciones/emergencies/server/businesslogic/core/model/CloseIncidentMotive.hbm.xml"/>
+		<mapping resource="ar/com/tsoluciones/emergencies/server/businesslogic/core/model/LogHistory.hbm.xml"/>
+		<mapping resource="ar/com/tsoluciones/emergencies/server/businesslogic/core/model/Duty.hbm.xml"/>
+		<mapping resource="ar/com/tsoluciones/emergencies/server/businesslogic/core/model/Company.hbm.xml"/>
+		<mapping resource="ar/com/tsoluciones/emergencies/server/businesslogic/core/model/CompanyPhones.hbm.xml"/>
+		<mapping resource="ar/com/tsoluciones/emergencies/server/businesslogic/core/model/DispatchedResource.hbm.xml"/>
+		<mapping resource="ar/com/tsoluciones/emergencies/server/businesslogic/core/model/Symptom.hbm.xml"/>
+		<mapping resource="ar/com/tsoluciones/emergencies/server/businesslogic/core/model/Center.hbm.xml"/>
+		<mapping
+			resource="ar/com/tsoluciones/emergencies/server/businesslogic/core/model/CallApprovableReference.hbm.xml"/>
+		<mapping resource="ar/com/tsoluciones/emergencies/server/businesslogic/core/model/DerivationCenterEvent.hbm.xml"/>
+		<mapping resource="ar/com/tsoluciones/emergencies/server/businesslogic/core/model/IncidentDescOption.hbm.xml"/>
+		<mapping resource="ar/com/tsoluciones/emergencies/server/businesslogic/core/model/Particularity.hbm.xml"/>
+		<mapping
+			resource="ar/com/tsoluciones/emergencies/server/businesslogic/core/model/ExternalIncidentSubtype.hbm.xml"/>
+		<mapping resource="ar/com/tsoluciones/emergencies/server/businesslogic/core/model/LabelComment.hbm.xml"/>
+		<mapping resource="ar/com/tsoluciones/emergencies/server/businesslogic/core/model/ValueComment.hbm.xml"/>
+		<mapping resource="ar/com/tsoluciones/emergencies/server/businesslogic/core/model/CallTransferEvent.hbm.xml"/>
+		<mapping resource="ar/com/tsoluciones/emergencies/server/businesslogic/core/model/CallTransferConfig.hbm.xml"/>
+		<mapping resource="ar/com/tsoluciones/emergencies/server/businesslogic/core/model/CallPanel.hbm.xml"/>
+		<mapping resource="ar/com/tsoluciones/emergencies/server/businesslogic/core/model/Tag.hbm.xml"/>
+
+		<!-- Concurrencia -->
+		<mapping resource="ar/com/tsoluciones/emergencies/server/concurrent/CommandRejection.hbm.xml"/>
+
+		<!-- Recursos -->
+		<mapping resource="ar/com/tsoluciones/emergencies/server/businesslogic/resources/Resource.hbm.xml"/>
+		<mapping resource="ar/com/tsoluciones/emergencies/server/businesslogic/resources/ResourcePosition.hbm.xml"/>
+		<mapping resource="ar/com/tsoluciones/emergencies/server/businesslogic/resources/Ownership.hbm.xml"/>
+		<mapping resource="ar/com/tsoluciones/emergencies/server/businesslogic/resources/Attribute.hbm.xml"/>
+		<mapping resource="ar/com/tsoluciones/emergencies/server/businesslogic/resources/ResourceState.hbm.xml"/>
+		<mapping resource="ar/com/tsoluciones/emergencies/server/businesslogic/resources/JurisdictionResource.hbm.xml"/>
+		<mapping resource="ar/com/tsoluciones/emergencies/server/businesslogic/resources/Jurisdiction.hbm.xml"/>
+		<mapping resource="ar/com/tsoluciones/emergencies/server/businesslogic/resources/ResourceType.hbm.xml"/>
+		<mapping resource="ar/com/tsoluciones/emergencies/server/businesslogic/resources/ResourceStateHistory.hbm.xml"/>
+
+		<!-- Antecedentes -->
+		<mapping resource="ar/com/tsoluciones/emergencies/server/businesslogic/dossier/DossierHistory.hbm.xml"/>
+		<mapping resource="ar/com/tsoluciones/emergencies/server/businesslogic/dossier/DossierHistoryDetail.hbm.xml"/>
+		<mapping resource="ar/com/tsoluciones/emergencies/server/businesslogic/dossier/Arcap.hbm.xml"/>
+		<mapping resource="ar/com/tsoluciones/emergencies/server/businesslogic/dossier/Arsef.hbm.xml"/>
+
+		<!-- Web Services -->
+		<mapping resource="ar/com/tsoluciones/emergencies/server/businesslogic/core/model/WsSession.hbm.xml"/>
+
+		<!-- Alertas -->
+		<mapping resource="ar/com/tsoluciones/emergencies/server/alerts/Semilla.hbm.xml"/>
+		<mapping resource="ar/com/tsoluciones/emergencies/server/alerts/DomainReference.hbm.xml"/>
+		<mapping resource="ar/com/tsoluciones/emergencies/server/alerts/AlertConfig.hbm.xml"/>
+		<mapping resource="ar/com/tsoluciones/emergencies/server/businesslogic/alerts/Semillas.hbm.xml"/>
+		<mapping resource="ar/com/tsoluciones/emergencies/server/businesslogic/alerts/AgencyCounter.hbm.xml"/>
+		<mapping resource="ar/com/tsoluciones/emergencies/server/businesslogic/alerts/ManagementCounter.hbm.xml"/>
+		<mapping resource="ar/com/tsoluciones/emergencies/server/businesslogic/core/model/Alert.hbm.xml"/>
+		<mapping resource="ar/com/tsoluciones/emergencies/server/alerts/AlertToConfig.hbm.xml"/>
+
+		<!-- ALI -->
+		<mapping resource="ar/com/tsoluciones/emergencies/server/businesslogic/core/model/Ali.hbm.xml"/>
+
+		<!-- Indice -->
+		<mapping resource="ar/com/tsoluciones/util/IndexLog.hbm.xml"/>
+
+		<!-- DRE -->
+		<mapping resource="ar/com/tsoluciones/emergencies/server/businesslogic/dre/DRECall.hbm.xml"/>
+		<mapping resource="ar/com/tsoluciones/emergencies/server/businesslogic/dre/DREAlerted.hbm.xml"/>
+		<mapping resource="ar/com/tsoluciones/emergencies/server/businesslogic/dre/Device.hbm.xml"/>
+		<mapping resource="ar/com/tsoluciones/emergencies/server/businesslogic/dre/DREModel.hbm.xml"/>
+		<mapping resource="ar/com/tsoluciones/emergencies/server/businesslogic/dre/message/NEMPMessage.hbm.xml"/>
+		<mapping resource="ar/com/tsoluciones/emergencies/server/businesslogic/dre/DREPosition.hbm.xml"/>
+		<mapping resource="ar/com/tsoluciones/emergencies/server/businesslogic/dre/DeviceType.hbm.xml"/>
+		<mapping resource="ar/com/tsoluciones/emergencies/server/businesslogic/dre/PropertyName.hbm.xml"/>
+		<mapping resource="ar/com/tsoluciones/emergencies/server/businesslogic/dre/Property.hbm.xml"/>
+		<mapping resource="ar/com/tsoluciones/emergencies/server/businesslogic/gis/model/Zone.hbm.xml"/>
+		<mapping resource="ar/com/tsoluciones/emergencies/server/businesslogic/gis/model/Reference.hbm.xml"/>
+		<mapping resource="ar/com/tsoluciones/emergencies/server/businesslogic/gis/model/Point.hbm.xml"/>
+		<mapping resource="ar/com/tsoluciones/emergencies/server/businesslogic/gis/model/GeoZone.hbm.xml"/>
+
+
+		<!-- AVL -->
+		<mapping resource="ar/com/tsoluciones/emergencies/integration/provider/avl/ExternalAvlPosition.hbm.xml"/>
+		<!-- Caching -->
+		<class-cache class="ar.com.tsoluciones.emergencies.server.businesslogic.core.model.Agency" usage="read-write"/>
+		<class-cache class="ar.com.tsoluciones.emergencies.server.businesslogic.core.model.AgencyDerivationLink"
+			usage="read-write"/>
+		<collection-cache
+			collection="ar.com.tsoluciones.emergencies.server.businesslogic.core.model.Agency.agenciesToDerivation"
+			usage="read-write"/>
+		<collection-cache
+			collection="ar.com.tsoluciones.emergencies.server.businesslogic.core.model.Agency.traceAgencies"
+			usage="read-write"/>
+		<collection-cache collection="ar.com.tsoluciones.emergencies.server.businesslogic.core.model.Agency.districts"
+			usage="read-write"/>
+		<collection-cache
+			collection="ar.com.tsoluciones.emergencies.server.businesslogic.core.model.AgencyDerivationLink.roles"
+			usage="read-write"/>
+
+
+		<class-cache class="ar.com.tsoluciones.arcom.security.User" usage="nonstrict-read-write"/>
+		<class-cache class="ar.com.tsoluciones.arcom.security.Security" usage="read-write"/>
+		<class-cache class="ar.com.tsoluciones.arcom.security.Role" usage="nonstrict-read-write"/>
+		<class-cache class="ar.com.tsoluciones.arcom.security.Group" usage="nonstrict-read-write"/>
+		<class-cache class="ar.com.tsoluciones.arcom.security.Permission" usage="nonstrict-read-write"/>
+		<class-cache class="ar.com.tsoluciones.emergencies.server.businesslogic.core.model.Workstation"
+			usage="read-write"/>
+		<class-cache class="ar.com.tsoluciones.arcom.util.Phone" usage="read-only"/>
+		<class-cache class="ar.com.tsoluciones.arcom.util.Email" usage="read-only"/>
+		<class-cache class="ar.com.tsoluciones.arcom.util.Address" usage="read-only"/>
+		<class-cache class="ar.com.tsoluciones.arcom.util.Comment" usage="read-only"/>
+		
+		<class-cache class="ar.com.tsoluciones.emergencies.server.businesslogic.core.model.GeoJurisdictionZone" 
+			usage="nonstrict-read-write"/>
+
+		<class-cache class="ar.com.tsoluciones.emergencies.server.businesslogic.resources.Attribute"
+			usage="nonstrict-read-write"/>
+		<class-cache class="ar.com.tsoluciones.emergencies.server.businesslogic.resources.ResourceType"
+			usage="nonstrict-read-write"/>
+		<collection-cache
+			collection="ar.com.tsoluciones.emergencies.server.businesslogic.resources.ResourceType.incidentSubtype"
+			usage="read-write"/>
+		<collection-cache
+			collection="ar.com.tsoluciones.emergencies.server.businesslogic.resources.ResourceType.attributeKeys"
+			usage="read-write"/>
+		<class-cache class="ar.com.tsoluciones.emergencies.server.businesslogic.core.model.Queue"
+			usage="nonstrict-read-write"/>
+		<collection-cache
+			collection="ar.com.tsoluciones.emergencies.server.businesslogic.core.model.Queue.derivedQueues"
+			usage="read-write"/>
+		<class-cache class="ar.com.tsoluciones.emergencies.server.businesslogic.core.model.Question"
+			usage="nonstrict-read-write"/>
+		<class-cache class="ar.com.tsoluciones.emergencies.server.businesslogic.core.model.DerivationUnit"
+			usage="nonstrict-read-write"/>
+		<class-cache class="ar.com.tsoluciones.emergencies.server.businesslogic.core.model.District"
+			usage="nonstrict-read-write"/>
+		<class-cache class="ar.com.tsoluciones.emergencies.server.businesslogic.core.model.IncidentType"
+			usage="nonstrict-read-write"/>
+		<class-cache class="ar.com.tsoluciones.emergencies.server.businesslogic.core.model.IncidentSubtype"
+			usage="nonstrict-read-write"/>
+		<collection-cache
+			collection="ar.com.tsoluciones.emergencies.server.businesslogic.core.model.IncidentSubtype.agencies"
+			usage="read-write"/>
+		<class-cache class="ar.com.tsoluciones.emergencies.server.businesslogic.core.model.Town"
+			usage="nonstrict-read-write"/>
+		<class-cache class="ar.com.tsoluciones.emergencies.server.businesslogic.gis.model.GeoZone"
+			usage="nonstrict-read-write"/>
+		<class-cache class="ar.com.tsoluciones.emergencies.server.businesslogic.gis.model.GeoZoneType"
+			usage="nonstrict-read-write"/>
+		<class-cache class="mobile" usage="nonstrict-read-write"/>
+
+		<class-cache class="ar.com.tsoluciones.emergencies.server.businesslogic.core.model.News"
+			usage="nonstrict-read-write"/>
+		<class-cache class="ar.com.tsoluciones.emergencies.server.businesslogic.core.model.Priority"
+			usage="nonstrict-read-write"/>
+		<class-cache class="ar.com.tsoluciones.emergencies.server.businesslogic.core.model.StreetType"
+			usage="nonstrict-read-write"/>
+		<class-cache class="ar.com.tsoluciones.emergencies.server.businesslogic.core.model.Street"
+			usage="nonstrict-read-write"/>
+		<class-cache class="ar.com.tsoluciones.emergencies.server.businesslogic.core.model.DerivationUnitAction"
+			usage="nonstrict-read-write"/>
+		<class-cache class="ar.com.tsoluciones.emergencies.server.businesslogic.core.model.DerivationUnitActionDetail"
+			usage="nonstrict-read-write"/>
+		<class-cache
+			class="ar.com.tsoluciones.emergencies.server.businesslogic.core.model.SpecialistTypeIncidentSubtype"
+			usage="nonstrict-read-write"/>
+		<class-cache class="ar.com.tsoluciones.emergencies.server.businesslogic.core.model.SpecialistType"
+			usage="nonstrict-read-write"/>
+		<class-cache class="ar.com.tsoluciones.emergencies.server.businesslogic.core.model.SpecialistTypeUser"
+			usage="nonstrict-read-write"/>
+		<class-cache class="ar.com.tsoluciones.emergencies.server.businesslogic.core.model.CallMotive"
+			usage="nonstrict-read-write"/>
+		<class-cache class="ar.com.tsoluciones.arcom.enterprise.DocType" usage="nonstrict-read-write"/>
+
+		<!-- Habilitación de caché para la entidad CallApprovable y algunas de las
+			dependientes
+			o asociadas a ésta -->
+		<class-cache class="ar.com.tsoluciones.emergencies.server.businesslogic.core.model.CallApprovable"
+			usage="read-write"/>
+		<collection-cache
+			collection="ar.com.tsoluciones.emergencies.server.businesslogic.core.model.CallApprovable.managements"
+			usage="read-write"/>
+		<class-cache class="com.opensymphony.workflow.spi.hibernate.HibernateWorkflowEntry" usage="read-write"/>
+		<class-cache class="ar.com.tsoluciones.emergencies.server.businesslogic.core.model.CallManagement"
+			usage="read-write"/>
+
+		<!--collection-cache
+			collection="ar.com.tsoluciones.emergencies.server.businesslogic.core.model.CallApprovable.comments"
+			usage="read-write"/>
+			<collection-cache
+			collection="ar.com.tsoluciones.emergencies.server.businesslogic.core.model.CallApprovable.questionAnswers"
+			usage="read-write"/>
+			<collection-cache
+			collection="ar.com.tsoluciones.emergencies.server.businesslogic.core.model.CallApprovable.associatedCallsToThis"
+			usage="read-write"/>
+			<collection-cache
+			collection="ar.com.tsoluciones.emergencies.server.businesslogic.core.model.CallApprovable.resource"
+			usage="read-write"/-->
+		<class-cache class="ar.com.tsoluciones.emergencies.server.businesslogic.resources.Resource" usage="read-write"/>
+		<class-cache class="ar.com.tsoluciones.emergencies.server.businesslogic.core.model.Company" usage="read-write"/>
+		<class-cache class="ar.com.tsoluciones.emergencies.server.businesslogic.core.model.CallApprovableComment"
+			usage="read-write"/>
+		<!-- Fin de configuración de regiones de caché para la entidad CallApprovable
+			-->
+
+		<!-- Configuración de caché para el mecanismo de alertas -->
+		<class-cache class="ar.com.tsoluciones.emergencies.server.alerts.DomainReference" usage="read-write"/>
+
+		<!--collection-cache collection="ar.com.tsoluciones.emergencies.server.alerts.DomainReference.semillas"
+			usage="read-write"/-->
+		<class-cache class="ar.com.tsoluciones.emergencies.server.alerts.AlertConfig" usage="read-write"/>
+		<collection-cache collection="ar.com.tsoluciones.emergencies.server.alerts.AlertConfig.roles" usage="read-write"/>
+		<collection-cache collection="ar.com.tsoluciones.emergencies.server.alerts.AlertConfig.agencies"
+			usage="read-write"/>
+		<class-cache class="ar.com.tsoluciones.emergencies.server.alerts.ClassReference" usage="read-write"/>
+
+		<!-- Configuración de listeners para Indexación por texto -->
+		<event type="post-update">
+			<listener class="org.hibernate.search.event.FullTextIndexEventListener"/>
+		</event>
+		<event type="post-insert">
+			<listener class="org.hibernate.search.event.FullTextIndexEventListener"/>
+		</event>
+		<event type="post-delete">
+			<listener class="org.hibernate.search.event.FullTextIndexEventListener"/>
+		</event>
+
+	</session-factory>
+</hibernate-configuration>

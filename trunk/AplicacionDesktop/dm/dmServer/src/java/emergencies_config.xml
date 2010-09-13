@@ -1,0 +1,474 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<properties>
+
+  <!-- Modulos Core: el modulo basico e imprescindible de F911 -->
+  <category name="core">
+    <!-- Nombre de la aplicacion -->
+    <property name="applicationName" value="1.4.6"/>
+    <!-- Cantidad de objetos por pagina mostrada en GUI -->
+    <property name="pageSize" value="30"/>
+    <!-- Limite en minutos para que se refresque el inbox -->
+    <property name="inboxRefreshSeconds" value="15"/>
+    <!-- Limite en minutos para que una noticia aparezca en el inbox -->
+    <property name="newsRefreshSeconds" value="30"/>
+    <!-- Límite en horas para la duración de una noticia -->
+    <property name="newsMaxTime" value="168"/>
+    <!-- Tiempo en segundos para controlar la expiración de semillas del mecanismo de alertas -->
+    <property name="alertControllerTime" value="15"/>
+    <!-- Tiempo en segundos para verificar la expiración de alertas -->
+    <property name="alertExpiredControllerTime" value="15"/>
+    <!-- Si no se selecciona ninguna acción rápida sobre la gestión local al momento de despachar a otro centro, quede derivada a despachante, en caso contrario, espera de cierre -->
+    <property name="derivarDespachanteLocal" value="true"/>
+    <!-- Id del despacho al que se derivara en caso de estar activada la propiedad  derivarDespachanteLocal -->
+    <property name="derivationUnitLocalAgency" value="1"/>
+    <!-- Límite para las entradas en el Mapa de cartas abiertas por los usuarios-->
+    <property name="maxEntryCallMap" value="50"/>
+    <!-- Cantidad de objetos mostrados por pagina del callejero ChooseAssistant -->
+    <property name="streetChooseAssistant" value="50"/>
+    <!-- Indica si debe realizar la búsqueda de calles por el motor de indexación por texto -->
+    <property name="useFullTextSearch" value="false"/>    
+    <!-- Cantidad de teclas ingresadas en un campo para que se despliegue el ChooseAssistant-->
+    <property name="charactersChooseAssistant" value="2"/>
+    <!-- Rol que permite cambiar el combo de prioridad. Si se deja vacio, entonces cualquiera puede modificar la prioridad -->
+    <property name="priorityUpdaterRole" value="SUPERVISOR"/>
+    <!-- Que tipos de incidencia permitimos a los operadores cerrar por si mismos ? Incluir los NAMES codigo de los tipos separados por punto y coma, o un asterisco (*) para todos -->
+    <property name="closeableIncidentTypes" value="BROM;LLAM;INTER" />
+    <!-- Si true, entonces muestra el campo Empresa en la carta de llamado. Si false, entonces muestra Tipo y numero de documento -->
+    <property name="showCompany" value="false" />
+    <!-- Reporte detalle de llamada, dependiendo de la instancia puede ser diferente. Es el nombre logico del reporte -->
+    <property name="callDetailReport" value="R15" />
+    <!-- Deshabilitar el campo relato de la carta de llamado ? -->
+    <property name="disableIncidentReportField" value="true" />
+    <!-- Si true, agrega un combo con valores adicionales al hecho y elimina el campo Relato -->
+    <property name="incidentDescriptionOptsEnabled" value="true"/>
+    <!-- Deshabilitar el campo Hecho de la carta de llamado?, menos para el owner y estado abierto -->
+    <property name="disableDescriptionField" value="false" />
+	<!-- Deshabilitar los campos cuando esté en estado Derivado, excepto localizaciones -->
+    <property name="disableFields" value="true" />
+    <!-- Habilitar la edición de la localización de la carta de llamado cuando esté en estado Derivado-->
+    <property name="enableLocalizationWhenDispatched" value="false" />
+    <!-- Permite ver el campo 'Entre calle 2' en la carta de llamado-->
+    <property name="enableIncidentStreetBetweenTwo" value="true"/>
+    <!-- Expande en la carta de llamado el numero de calle piso etc para ajustarlos en una sola linea -->
+    <property name="expandirCamposDatosDomicilio" value="false"/>
+    <!-- Muestra el campo localidad y partido en la carta de llamado-->
+    <property name="isLocalidadSeteable" value="true"/>
+    <!-- Permite hacer aparecer un popup con preguntas cerradas -->
+    <property name="showOpenQuestions" value="false"/>
+    <!-- Agranda la letra en determinados campos de la carta de llamado-->
+    <property name="bigFonts" value="true"/>
+    <!-- Permite cerrar la carta de llamado después de haber realizado una acción-->
+    <property name="closeAfterAction" value="false"/>
+    <!-- Muestra el campo particularidad en la carta de llamado / Permite agregar particularidades a los subtipos -->
+    <property name="particularidadEnable" value="true"/>
+	<!--Debuguea tiempos de duración entre llamadas, latencia etc.-->
+	<property name="debugTime" value="false"/>
+	<property name="debugTimeFile" value="C:/Temp/911_Timers.log"/>
+    <!-- Tope máximo de nombres de calle a cachear para el choose assistant-->
+	<property name="maxStreetCache" value="10"/>
+    <!-- Habilita las opciones de Salud en la carta de llamado -->
+    <property name="saludEnabled" value="false"/>
+    <!-- Indica el offset de la zona horaria por defecto. Por lo general Buenos Aires es GMT-3 -->
+    <property name="timeZoneOffset" value="-3"/>
+	<!-- Permite ver el campo 'Aprehendidos' en la carta de llamado-->
+    <category name="arrestedQuantity">
+	    <property name="enabled" value="false"/>
+    </category>
+    <!-- Permite ver el checkbox 'Incluir en parte policial' en la carta de llamado-->
+    <category name="policeReport">
+      <property name="enabled" value="false"/>
+    </category>
+
+    <!-- Permite ver el combo de Comisarias en caso de true, en caso de false muestra el combo de Radioestación-->
+    <category name="policeStation">
+      <property name="enabled" value="true"/>
+    </category>
+
+    <!-- Permite ver el combo de deslinde en caso de true-->
+    <category name="callPlaceSelect">
+      <property name="enabled" value="true"/>
+    </category>
+
+    <!-- CTI regla para habilitar la edicion del numero de telefono-->
+
+    <!-- Debe estar habilitada alguna o ninguna. De estar habilitadas
+      ambas opciones, quedara habilitada la mas restrictiva -->
+
+    <!--Deshabilita la opcion de editar el numero de telefono cuando la llamada entra por CTI
+      en caso de true-->
+    <category name="noEditableCTI">
+      <property name="enabled" value="false"/>
+    </category>
+
+    <!-- Habilita la opcion de editar el numero de telefono SOLO cuando la llamada entra por CTI Y el
+      numero es no identificado. De ser identificado, deshabilita la opcion de editarlo. Funciona en caso
+      de true-->
+    <category name="editableCTI">
+      <property name="enabled" value="true"/>
+    </category>
+
+    <!-- Permite activar la funcionalidad ALI -->
+    <category name="ALIModule">
+      <property name="enabled" value="false"/>
+    </category>
+
+    <!-- Parámetros utilizados por el pool de threads 
+    	(actualmente utilizado para las notificaciones de alertas y el envío de cartas a SIFEME) -->
+    <category name="commandExecutor">
+      	<property name="name" value="DEFAULT"/>
+      	<property name="bufferSize" value="50"/>
+      	<property name="corePoolSize" value="10"/>
+      	<property name="maximumPoolSize" value="50"/>
+		<property name="keepAliveSeconds" value="300"/>
+    </category>
+
+	<!-- Parámetros del pool de threads de la auditoría -->
+	<category name="auditPool">
+        <property name="name" value="AUDIT"/>
+		<property name="bufferSize"  value="20"/>
+		<property name="initialSize" value="5"/>
+		<property name="keepAlive" 	 value="300"/> <!-- segundos -->
+		<property name="maxSize" 	 value="50"/>
+	</category>
+	
+	<!-- Parámetros del pool de threads de mensajería -->
+	<category name="messagingPool">
+      	<property name="name" value="MESSAGING"/>
+		<property name="initialSize" value="15"/>
+		<property name="maxSize" 	 value="60"/>
+		<property name="bufferSize"  value="25"/>
+		<property name="keepAlive" 	 value="400"/> <!-- segundos -->
+	</category>
+	
+    <!--
+    Tiempo de refresco de los tabs del inbox.
+    Si no quiere refresco automatico para alguno de los tabs, no especifique valor en seconds.
+    -->
+    <tabRefresh>
+      <tab name="operador" seconds="20" />
+      <tab name="supervisor" seconds="15" />
+      <tab name="despachante" seconds="10" />
+      <tab name="avanzado" seconds="60" />
+      <tab name="jefe de sala" seconds="30" />
+      <tab name="derivador" seconds="45" />
+    </tabRefresh>
+
+    <!-- Listar aqui los rangos de minutos permitidos para cada rol. Si un rol no es incluido, utiliza default. Si un usuario
+    tiene mas de un rol, se emplea el ultimo -->
+
+    <!-- Rango de minutos por default -->
+    <property name="inbox_minutes_default" value="120"/>
+    <!-- Rango de minutos para rol supervisor -->
+    <property name="inbox_minutes_supervisor" value="360"/>
+    <!-- Rango de minutos para rol despachante -->
+    <property name="inbox_minutes_derivation_unit" value="1440"/>
+
+    <!-- Rangos que tienen posibilidad de busquedas ilimitadas, separados por punto y coma -->
+    <property name="inbox_limitless_roles" value="SUPERVISOR"/>
+
+    <!-- Especifique en este apartado si es necesario tener algun rol / roles (separados por ;)
+     en especial para poder ver cartas cerradas. Si no desea esta funcionalidad, no especifique rol alguno -->
+    <property name="closedCallApprovableRoles" value="SUPERVISOR"/>
+
+    <!-- Especifique en este apartado un usuario maestro que pueda editar todos los campos de una carta cerrada o despachada.
+      Si no desea esta funcionalidad, no especifique rol alguno -->
+    <property name="openClosedApprovMasterRole" value="SUPERVISOR" />
+
+    <!-- Especifique en este apartado si es necesario tener algun rol / roles (separados por ;)
+      en especial para poder ver cartas cerradas o despachadas. Si no desea esta funcionalidad, no especifique rol alguno -->
+    <property name="openClosedApprovRoles" value="OPERADOR;DESPACHANTE"/>
+
+    <!-- Especifique en este apartado la lista de paneles (separados por ;) que desea hacer NO EDITABLES cuando se reabre una carta de llamado.
+      Si no desea esta funcionalidad, no especifique panel alguno
+      PANELES: TELEFONO;DESCRIPCION;TIPIFICACION;LOCALIZACION;PREGUNTASCERRADAS;DENUNCIANTE;SALUD; -->
+    <property name="editablePanels" value="TIPIFICACION;DESCRIPCION"/>
+
+  	  	<!-- Especifique aquí si les está permitidos a todos los usuarios ver las cartas cerradas en un busqueda por número de carta -->
+	<property name="allowByIdWhenClosed" value="true" />
+
+    <!-- Especifique en este apartado si es necesario tener algun rol / roles (separados por ;) en especial para poder tomar cartas abiertas por otro usuario. Si no desea esta funcionalidad, no especifique rol alguno -->
+    <property name="lockedCallApprovableRoles" value="SUPERVISOR;CHIEF" />
+
+    <!-- ¿ La guardia es un dato obligatorio ? -->
+    <property name="dutyRequired" value="true" />
+
+    <!-- ¿ Se debe ingresar obligatoriamente el motivo de cierre ? -->
+    <property name="closeMotiveRequired" value="true" />
+    
+    <!-- Define si el tilde para que se incluya la carta en el parte policial este activado o no por defecto -->
+    <property name="defaultPartePolicial" value="false" />
+
+    <!-- Instancia del callApprovable. Valores posibles: L=Lite ; B=Nueva Version -->
+    <property name="callApprovableInstanceCode" value="C" />
+
+    <!-- CONFIGURACION CALLAPPROVABLE MAXIMA CANTIDAD DE  VENTANAS ABIERTAS -->
+     <maxCallApprovableFrameTab>
+      <property name="DEFAULT" value="3" /> <!-- DEFAULT ES DE EXISTENCIA OBLIGATORIA -->
+      <property name="OPERADOR" value="3" />
+	  <property name="SUPERVISOR" value="10" />
+      <property name="ADMINISTRADOR" value="3" />
+    </maxCallApprovableFrameTab>
+    <!-- FIN CONFIGURACION CALLAPPROVABLE MAXIMA CANTIDAD DE  VENTANAS ABIERTAS -->
+
+    <!-- CONFIGURACION DE ANTECENTES -->
+    <!--
+      Esta configuracion va a hacer que cuando uno presiona el boton agregar grabe directamente en la base
+      sin que muestre la ventana de Agregar Antecedente si false o va a abrir la ventana si es true.
+    -->
+    <property name="showNewDossier" value="false" />
+    <!-- determina que consulta de antecedentes debe tomar en cuenta para ser mostrado en informacion adicional
+      la cantidad de tiempo (milisegundos) de hoy hacia atras. 1hora = 3600000 - 1dia = 86400000 - 2dias = 172800000
+    -->
+    <property name="timeOldDossier" value="172800000" />
+    <!-- modifica el mensaje de referencia de tiempo para consulta de antecedentes en informacion adicional-->
+    <property name="timeOldDossierLabel" value="48 hs" />
+
+    <!-- FIN CONFIGURACION DE ANTECENTES -->
+
+    <property name="quickActions" value="DERIVATE_TO_CHIEF_ACTION, DERIVATE_TO_SUPERVISOR_ACTION, DERIVATE_TO_DERIVATOR_ACTION, WAIT_CLOSE_INCIDENT_ACTION"/>
+    <property name="historyActions" value="DERIVATE_TO_DERIVATION_UNIT_ACTION, REJECT_AND_CLOSE_ACTION, DERIVATE_TO_DERIVATOR_ACTION, CLOSE_INCIDENT_ACTION, CLOSE_ALREADY_REPORTED_ACTION"/>
+    <!-- Preposiciones que se deben descartar al seperar en palabras las calles-->
+    <property name="discardPrep" value="el,la,de,desde,hasta,para,por"/> 
+  </category>
+
+  <!-- Modulo CTI (Computer Telephony Integration): Integración telefónica del sistema F911 -->
+  <category name="cti">
+    <!-- Depende de las agencias, ellas habilitan o deshabilitan desde la BD -->
+    <!--property name="enabled" value=""/-->
+    <!-- Hay dos implementaciones posibles: Genesys (San Juan, Mar Del Plata, Buenos Aires, Pinamar, Necochea) y Cisco (Peru) -->
+    <property name="implementation" value="Genesys"/>
+    <!-- En segundos, la cantidad de tiempo que debe esperar el sistema antes de intentar una reconexion al servidor CTI -->
+    <property name="intervalToReconnect" value="10"/>
+
+    <!-- Servidor CTI (IP o nombre) Genesys:vtd01485 Cisco:10.0.0.10-->
+    <property name="server" value="10.60.100.20"/>
+    <!-- Servidor CTI 2 para alta disponibilidad (IP o nombre) Solo Genesys:vtd01485-->
+    <property name="server2" value="10.60.100.21"/>
+
+    <!-- EXTENSION MOBILITY habilitado o deshabilitado. Solo para Cisco -->
+    <property name="extensionMobility" value="false"/>
+    <!-- EXTENSION MOBILITY (solo para Cisco) usuario administrador de Cisco Call Manager-->
+    <property name="extMobilityAdministrator" value="administrator"/>
+    <!-- EXTENSION MOBILITY (solo para Cisco) password del usuario administrador de Cisco Call Manager -->
+    <property name="extMobilityAdminPwd" value="ciscotasa"/>
+
+    <!-- Cisco: Servidor del ACD - Genesys: Servidor de Backup-->
+    <property name="serverACD" value="10.60.100.21"/>
+    <!-- Puerto del servidor ACD de CTI - Genesys:3010 - Cisco:6293-->
+    <property name="port" value="3000"/>
+    <!-- Puerto del servidor de Backup de Genesys:3010-->
+    <property name="port2" value="3000"/>
+    <!-- Solo para Cisco: Idioma de la aplicación IP Phone Agent - Valores posibles: English/Spanish -->
+    <property name="ciscoACDLanguage" value="Spanish"/>
+    <!-- Rango de Números de los CTIPorts del ACD de Cisco -->
+    <property name="ciscoCTIPortRngFrom" value="2000"/>
+    <property name="ciscoCTIPortRngUntil" value="2010"/>
+    <!-- El numero al que el sistema deriva la llamada cuando se presiona el boton broma -->
+    <property name="jokeNumber" value="75910"/>
+    <!-- El tipo de incidente "Broma" -->
+    <property name="incidentTypeSelect" value="30"/>
+    <!-- El subtipo de incidente "Broma" -->
+    <property name="incidentSubtypeSelect" value="94"/>
+    <!-- El tipo para llamada interna (Para no mostrar el boton llamada interna en CTI poner el valor vacio "") -->
+    <property name="internalCallType" value="31"/>
+    <!-- El subtipo para llamada interna -->
+    <property name="internalCallSubtype" value="95"/>
+    <!-- Acción del workflow que va a realizar con la carta de llamado cuando se presione el botón de broma -->
+    <!-- Ej. Pcia Bs As.= CLOSE_INCIDENT_ACTION *** Ciudad Bs As y San Juan = CLOSE_IRRELEVANT_CALL_ACTION   -->
+    <property name="actionCloseIncidentWhenJoke" value="CLOSE_INCIDENT_ACTION"/>
+    <!-- SOLO GENESYS: Poner en true si se esta usando un simulador CTI en vez de una PABX real. En produccion este valor siempre va en false -->
+    <property name="simulator" value="false"/>
+    <!-- Para Siemens. En general va CAP-A. Es el nombre de la aplicación y su licencia -->
+    <property name="applicationId" value="CAP-A"/>
+    <property name="applicationIdPassword" value="123"/>
+    <!-- Para Siemens: Datos de login a la aplicacion CAP -->
+    <property name="capUser" value="Admin"/>
+    <property name="capPassword" value="Admin"/>
+    <!-- Cola a la que se conectan los operadores -->
+    <property name="operatorRole" value="OPERADOR"/>
+  </category>
+
+  <!-- Modulo GIS (Geographic Integration System): Cartografía y búsquedas geoespaciales -->
+  <category name="gis">
+    <!-- Sistema de referencia utilizado. Valores posibles: LATLONG, MERCATOR -->
+    <property name="referenceSystem" value="LATLONG"/>
+    <!-- Depende de las agencias, ellas habilitan o deshabilitan desde la BD -->
+    <!--property name="enabled" value="true"/-->
+    <!-- Cada cuantos segundos el GIS refresca la vista del operador -->
+    <property name="refreshTime" value="10"/>
+    <!-- Cada cuantos segundos el GIS refresca el layer de moviles -->
+    <property name="movilesRefreshTime" value="5"/>
+    <!-- Cada cuantas pasadas de timer se refresca el layer de móviles en forma forzada -->
+    <property name="avlForcedRefresh" value=""/>
+    <!-- Codigo de implementacion del mapa, determina la cartografia a mostrar. Los codigos posibles son MDP (Mar del Plata), PIN (Pinamar), NEC (Necochea) -->
+    <property name="implementationCode" value="BA"/>
+    <!-- La tabla de jurisdicciones, solo si recursos esta integrado al GIS -->
+    <property name="jurisdictionTables" value="jurisdicciones"/>
+    <!-- Radio en metros utilizado para determinar si una incidencia es duplicado de otra por su ubicacion -->
+    <property name="incidentRadius" value="400"/>
+    <!-- El nombre de la clase que resuelve las jurisdicciones de los recursos
+      (ar.com.tsoluciones.emergencies.server.businesslogic.gis.service.GeoJurisdictionService o
+       ar.com.tsoluciones.emergencies.server.businesslogic.gis.service.GeoJurisdictionWithAdjacentService) -->
+    <property name="jurisdictionService" value="ar.com.tsoluciones.emergencies.server.businesslogic.gis.service.GeoJurisdictionService"/>
+    <!-- El desplazamiento que sufre el punto del llamado con respecto a la calle segun sea par o impar la altura (la unidad depende de la cartografia) -->
+    <property name="callDisplacement" value="0.00003"/>
+    <!-- Habilita la busqueda de estado de mobiles -->
+    <property name="avlMobileState" value="true"/>
+    <!-- Histórico de avl. Si está en true, guarda un historial de los móviles que tienen avl. -->
+    <property name="avlHistory" value="true"/>
+    <!-- Usuarios que pueden ver estado de móvil con AVL-->
+    <property name="usersForAvlState" value="SUPERVISOR"/>
+	<!-- Tiempo que debe tomar el sistema para checkear los móviles que no están funcionando -->
+    <property name="noTransmisionTime" value="5"/>
+    <!-- Cantidad máxima de horas permitidas para el rango de fechas del recorrido del móvil. -->
+    <property name="maxRouteHours" value="8"/>
+    <!-- Listado de IDs de layers a deshabilitar (no se mostrarán) en el mapa de recorrido del móvil. -->
+    <property name="routeDisabledLayersList" value="Hito:Helipuertos;Dibujo;Moviles;Moviles sin serv.;Móviles Sin Trans.;Incidencias;Hito:Esparcimiento;Hito:Comercio/Banca;Hito:Clinica;Hito:Sitios Oficiales;Manzanas;Espacios verdes;Barrios"/>
+    <!-- Deshabilita la opcion de ver el recorrido -->
+    <property name="traceMovil" value="true"/>
+    <!-- Deshabilita el uso de los DRE -->
+    <property name="dreEnabled" value="false"/>
+  </category>
+  
+  <category name="dre">
+  	<property name="workstation" value="DRE"/>
+  	<property name="incidentType" value="ROBO"/>
+  	<property name="incidentSubtype" value="105"/>
+  	<property name="action" value="DERIVATE_TO_DERIVATION_UNIT_ACTION"/>
+	<property name="derivationUnit" value="Circ. 1"/>
+  </category>
+  
+  <!-- Móudlo Recursos: administración de recursos de la seguridad (Patrulleros, autobombas, ambulancias, etc) -->
+  <category name="resources">
+    <!-- Si true, el modulo de recursos extendido se activa. Si false, se usa el modulo basico. San Juan, Necochea y Pinamar deberian estar en false, Mar Del Plata en true -->
+	<!-- Depende de las agencias, ellas habilitan o deshabilitan desde la BD -->
+    <!--property name="enabled" value="false"/-->
+    <!-- Si true, el modulo de recursos se integra con el GIS para realizar calculos sobre jurisdicciones. Solo es importante para Mar del Plata, que debe poner en true esta opcion -->
+    <property name="integrated" value="false"/>
+  </category>
+
+  <!-- Modulo para consulta de datos del Datawerhouse -->
+  <category name="DataWarehousing">
+    <!-- Si true, el modulo de Data Warehousing se activa, sino, NO.  -->
+    <property name="enabled" value="false"/>
+    <!-- URL de Conexión a la BD -->
+    <property name="URL" value="JSQLConnect://td01489/database=alovbase-mdp/user=sa/asciiStringParameters=true/disableStatementPooling=true"/>
+    <!-- Usuario de conexión -->
+    <property name="user" value="sa"/>
+    <!-- Pasword de conexión -->
+    <property name="password" value="Proyecto911"/>
+    <!-- Servidor OLAP linkeado -->
+    <property name="linked_olap" value="LINKED_OLAP"/>
+    <!-- Timeout de la consulta -->
+    <property name="timeout" value="20"/>
+  </category>
+
+  <!-- Modulo de mensajeria cliente/servidor -->
+  <category name="messaging">
+      <!-- Si se activa el modulo debe estar en true -->
+      <property name="enabled" value="true"/>
+      <!-- Indica si va a usarse un broker externo -->
+      <property name="externalBroker" value="false"/>
+      <!-- Configuración para conexión remota (debe estar habilitada en el tomcat y configurada con los mismos valores) -->
+      <property name="JMXHost" value="localhost"/>
+      <property name="JMXPort" value="2000"/>
+    
+      <!-- Protocolo de conexión -->
+      <property name="protocol" value="tcp"/>
+      <!-- Protocolo de conexión interno -->
+      <property name="internalProtocol" value="tcp"/>
+      <!-- Host conexión -->
+      <property name="host" value="localhost"/>
+      <!-- Puerto de conexión -->
+      <property name="port" value="61618"/>
+      <!-- Timeout de lectura de los sockets -->
+      <property name="soTimeout" value="10000"/>
+      <!-- Timeout de escritura de los sockets -->
+      <property name="soWriteTimeout" value="10000"/>
+      <!-- Activa un mecanismo de control sobre el broker -->
+      <property name="enableBrokerControllers" value="false"/>
+      <!-- Nombre de los Threads sobre los que el JMSThreadInspector tiene que chequear el estado -->
+      <property name="threadName" value=""/>
+  </category>
+  
+  <!-- Modulo de Web Services (Patentes, Antecedentes y Salud)-->
+  <category name="webservices">
+	  <!-- URL para patentes y antecedentes -->
+      <property name="urlPatentes" value="http://servidor_BGH/servicios/Patentes"/>
+	  <!-- Nombre de la agencia de salud (en general SIFEME) -->
+      <property name="agenciaSalud" value="SIFEME"/>
+	  <!-- URL para SIFEME -->
+      <property name="urlSifeme" value="http://www.solucion-cedi.com.ar/servicios.asmx"/>
+  </category>
+
+    <!-- Permite configurar el acceso a internet del sistema a través de un proxy. Los tipos de proxy posibles son BASIC, NTLM -->
+    <category name="internet">
+        <property name="useProxy" value="false"/>
+        <property name="proxyType" value="NTLM"/>
+        <property name="proxyUser" value="unuser"/>
+        <property name="proxyPass" value="unapassword"/>
+        <property name="proxyDomain" value="TASA"/>
+        <property name="proxyHost" value="proxy.telefonica.com.ar"/>
+        <property name="proxyPort" value="80"/>
+    </category>
+
+  <!-- Parametros de debugging, solo para desarrolladores del sistema -->
+
+  <!-- Si habilita o no la workstation dummy, para cancelar el control de maquinas -->
+  <category name="dummyWorkstation">
+    <property name="enabled" value="false"/>
+    <property name="name" value="0.0.0.0"/>
+  </category>
+
+  <!-- Si enable es true, el filtro de seguridad se pone en debug, creando una sesion falsa por cada request -->
+  <category name="sessionDebug">
+    <property name="enabled" value="false"/>
+    <!-- Username es el usuario que sera la sesion para todos los requests -->
+    <property name="user" value="operador01"/>
+  </category>
+
+  <category name="interoperabilidad">
+    <!-- Si se activa el modulo debe estar en true -->
+    <property name="centerEnabled" value="false"/>
+    <!-- Codigo del centro -->
+    <property name="centerCode" value="BA"/>
+    <!-- Nombre del centro (descripcion) -->
+    <property name="centerName" value="La plata"/>
+    <!-- url de acceso al WebService (local) -->
+    <property name="centerUrl" value="http://td00639:8080/laplata"/>
+    <!-- Estado en que se crean las cartas recibidas de otro centro (ABIERTA, DESPACHANTE)-->
+    <property name="receiveStatus" value="ABIERTA"/>
+    <!-- Mensaje que se muestra al rechazar carta -->
+    <property name="rejectMessage" value="&#191;Desea Rechazar la carta&#63;"/>
+    <!-- Nombre del Workstation con el cual se crean las cartas que se reciben de otros centros -->
+    <property name="workstation" value="CenterWorkstation"/>
+  </category>
+
+  <category name="multipleFilters">
+    <!-- cantidad minima de caracteres para el campo hecho-relato-com si no se
+      combina con otro filtro -->
+    <property name="minCharactersDescription" value="10"/>
+    <property name="multipleFiltersRole" value="SUPERVISOR"/>
+    <!-- Nombre del archivo con la conf de datasources dinamicos -->
+    <property name="datasourceFileName" value="/datasources.xml"/>
+    <!-- reporte de detalle de llamada -->
+    <property name="multiplesCallreport" value="R66"/>
+  </category>
+  <category name="commentSummary">
+    <!-- Si es obligatorio tener todos los comentarios para cerrar la carta -->
+    <property name="commentsMandatory" value="false"/>
+  </category>
+
+  <!-- SE UTILIZA PARA CONFIGURAR LA VISUALIZACION DE REPORTES -->
+  <category name="report">
+    <!-- Si reportOutPutFormatXLS es true, muestra el boton para ver el reporte en formato .XLS -->
+    <property name="reportOutPutFormatXLS" value="true"/>
+    <!-- Si reportOutPutFormatPDF es true, muestra el boton para ver el reporte en formato .PDF -->
+    <property name="reportOutPutFormatPDF" value="true"/>
+    <!-- Si reportOutPutFormatDOC es true, muestra el boton para ver el reporte en formato .DOC -->
+    <property name="reportOutPutFormatDOC" value="false"/>
+    <!-- Maximo intervalo de tiempo (en minutos) para el reporte de avl -->
+    <property name="maxTimeAvlReport" value="60"/>
+  </category>
+  <!-- FIN SE UTILIZA PARA CONFIGURAR LA VISUALIZACION DE REPORTES -->
+</properties>

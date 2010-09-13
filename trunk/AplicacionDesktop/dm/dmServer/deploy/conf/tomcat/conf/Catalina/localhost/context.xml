@@ -1,0 +1,16 @@
+<!-- 
+	Esta configuracion habilita la persistencia propia de sesiones.
+
+	Configurar la instancia correspondiente reemplazando "1.4.6" por los nombres correctos
+	segun la implementacion concreta.
+
+	Deben copiarse 3 clases propias sobre el directorio <jakarta-tomcat>/server/classes
+		- ar.com.tsoluciones.emergencies.server.tomcat.PersistentManager
+		- ar.com.tsoluciones.emergencies.server.tomcat.PersistentSession
+		- ar.com.tsoluciones.util.Cast
+-->
+
+<Context path="/1.4.6" docBase="${catalina.home}/webapps/1.4.6" debug="0">
+	<Manager distributable="true" className="ar.com.tsoluciones.emergencies.server.tomcat.PersistentManager" debug="0">
+	</Manager>
+</Context>
