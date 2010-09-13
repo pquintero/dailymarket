@@ -7,7 +7,7 @@
 <%@ page import="java.util.Locale" %>
 <%@ page import="java.util.ResourceBundle" %>
 
-<html:form action="home.do">
+<html:form action="<%=action%>">
 	<%
 	ResourceBundle resources = ResourceBundle.getBundle("ApplicationResources", (Locale)request.getSession().getAttribute("org.apache.struts.action.LOCALE"));	
 	String retVal = null;
