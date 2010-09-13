@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+	"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+	"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+	<!-- ar.com.tsoluciones.arcom.util.Phone root -->
+	<class name="ar.com.tsoluciones.arcom.util.Phone" table="Phone">
+		<id name="id" type="long" column="id">
+			<generator class="native"/>
+		</id>
+		<property name="deleted" column="deleted" type="boolean"/>
+		<property name="countryCode" column="countryCode" type="string"/>
+		<property name="areaCode" column="areaCode" type="string"/>
+		<property name="number" column="number" type="string"/>
+		<property name="prefix" column="prefix" type="string"/>
+		<property name="extension" column="extension" type="string"/>
+	</class>
+</hibernate-mapping>

@@ -1,0 +1,59 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+	"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+	"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping default-lazy="false" default-cascade="save-update">
+
+	<class name="ar.com.tsoluciones.arcom.security.User" table="User">
+
+		<id name="id" type="long">
+			<generator class="native"/>
+		</id>
+
+		<property name="deleted" type="boolean"/>
+		<property name="legajo" type="string" unique="true"/>
+		<property name="username" type="string" unique="true" not-null="true"/>
+		<property name="lastLogin" type="timestamp"/>
+		<property name="title" type="string"/>
+		<property name="sysAdmin" type="boolean"/>
+		<property name="firstName" type="string"/>
+		<property name="lastName" type="string"/>
+		<property name="agentId" type="string"/>
+		<property name="agentPassword" type="string"/>
+		<property name="extMobilityUser" type="string"/>
+		<property name="extMobilityPwd" type="string"/>
+		<property name="robotUser" type="boolean"/>
+
+		<set name="addresses" table="addresses" lazy="true">
+			<key column="user_id" foreign-key="FK_user_address_user_id" />
+			<one-to-many class="ar.com.tsoluciones.arcom.util.Address"/>
+		</set>
+
+		<set name="phones" table="phones" lazy="true">
+			<key column="user_id" foreign-key="FK_user_phone_user_id" />
+			<one-to-many class="ar.com.tsoluciones.arcom.util.Phone"/>
+		</set>
+
+		<set name="emails" table="emails" lazy="true">
+			<key column="user_id" foreign-key="FK_user_email_user_id" />
+			<one-to-many class="ar.com.tsoluciones.arcom.util.Email"/>
+		</set>
+
+		<set name="roles" table="user_roles" lazy="true">
+			<key column="user_id" foreign-key="FK_user_role_user_id" />
+			<many-to-many class="ar.com.tsoluciones.arcom.security.Role" foreign-key="FK_role_user_role_id">
+				<column name="role_id" not-null="true"/>
+			</many-to-many>
+		</set>
+
+		<set name="permissions" table="user_permissions" lazy="true">
+			<key column="user_id" foreign-key="FK_user_permission_user_id" />
+			<many-to-many class="ar.com.tsoluciones.arcom.security.Permission" foreign-key="FK_permission_user_permission_id">
+				<column name="permission_id" not-null="true"/>
+			</many-to-many>
+		</set>
+
+		<many-to-one name="agency" not-null="true" cascade="none" lazy="false"/>
+	</class>
+</hibernate-mapping>

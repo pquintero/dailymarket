@@ -1,0 +1,266 @@
+<project name="F911 Server Packager" default="package" basedir="../..">
+
+	<!--======================================================================-->
+	<!-- Publico -->
+	<!-- Utilice el ant solo mediante estos target publicos -->
+	<!--======================================================================-->
+
+	<!-- Deploys -->
+	<target name="package" depends="clean, init, generar-ws-artifacts, generar-caws-artifacts, compile, resources, sql, external-components">
+	</target>
+
+	<!--======================================================================-->
+	<!-- Privado -->
+	<!--======================================================================-->
+
+	<property file="./deploy/packager/packager.properties"/>
+
+	<property name="app.name" value="F911" />
+
+	<property name="build.outdir" value="deploy/package"/>
+	<property name="src.dir" value="src/java"/>
+	<property name="res.dir" value="${basedir}/res"/>
+	<property name="conf.dir" value="deploy/conf"/>
+	<property name="page.dir" value="WebRoot"/>
+	<property name="web.inf" value="${page.dir}/WEB-INF"/>
+	<property name="lib.dir" value="${web.inf}/lib"/>
+	<property name="sql.dir" value="scripts"/>
+	<property name="sql.outdir" value="${build.outdir}/SQL"/>
+	<property name="external" value="${build.outdir}/external"/>
+	<property name="auto.dir" value="${basedir}/src/auto"/>
+	<property name="reports.dir" value="ar/com/tsoluciones/emergencies/server/businesslogic/reports/data/jasper"/>
+	<property name="jasper.src.dir" value="${src.dir}/${reports.dir}"/>
+	<property name="reports.dir" value="ar/com/tsoluciones/emergencies/server/businesslogic/reports/data/jasper"/>
+	<property name="jasper.src.dir" value="${src.dir}/${reports.dir}"/>
+
+	<!-- Directorios para distribuir la aplicación -->
+
+	<property name="app.dir" value="${build.outdir}/${app.name}"/>
+	<property name="app.dir.webinf" value="${app.dir}/WEB-INF"/>
+	<property name="app.dir.classes" value="${app.dir.webinf}/classes"/>
+	<property name="app.dir.lib" value="${app.dir.webinf}/lib"/>
+	<property name="jasper.dest.dir" value="${app.dir.classes}/${reports.dir}"/>
+
+
+	<!-- Variables de ambiente -->
+	<property environment="env"/>
+	<property name="catalina.home" value="${env.CATALINA_HOME}"/>
+
+	<!-- El classpath de la aplicacion -->
+	<path id="classpath">
+		<pathelement path="${app.dir.classes}"/>
+		<fileset dir="${lib.dir}">
+			<include name="**/*.jar"/>
+		</fileset>
+		<fileset dir="${catalina.home}/common/lib">
+			<include name="**/*.jar"/>
+		</fileset>
+	</path>
+
+	<target name="init">
+		<mkdir dir="${app.dir.webinf}"/>
+		<mkdir dir="${app.dir.lib}"/>
+		<mkdir dir="${app.dir.classes}"/>
+		<mkdir dir="${jasper.dest.dir}"/>
+	</target>
+
+	<!-- Limpia el directorio temporal -->
+	<target name="clean">
+		<echo message="Borrando temporales" />
+		<delete dir="${build.outdir}" failonerror="true" />
+	</target>
+
+	<target name="compile">
+		<javac destdir="${app.dir.classes}" debug="on" failonerror="yes">
+			<classpath refid="classpath"/>
+			<src path="${src.dir}:${auto.dir}"/>
+		</javac>
+
+		<!-- copiar los archivos asociados -->
+		<copy todir="${app.dir.classes}" failonerror="yes" overwrite="true">
+			<fileset dir="${src.dir}">
+				<include name="**/*.jasper"/>
+				<include name="**/*.sql"/>
+				<include name="**/*.xml"/>
+				<include name="**/*.hbm"/>
+				<include name="**/*.properties"/>
+				<include name="**/*.png"/>
+				<include name="**/*.gif"/>
+				<include name="**/*.jpg"/>
+			</fileset>
+		</copy>
+
+		<!-- copiar configuraciones parametrizables para produccion -->
+		<copy todir="${app.dir.classes}" failonerror="yes" overwrite="true">
+			<fileset dir="${conf.dir}">
+				<include name="**/*.xml"/>
+				<include name="**/*.properties"/>
+			</fileset>
+		</copy>
+
+		<!-- Reemplazar la version -->
+		<replace dir="${app.dir.classes}" summary="true" includes="**/version_config.xml">
+			<replacefilter token="%version%" value="${version}"/>
+		</replace>
+
+	</target>
+
+	<taskdef name="jasper" classname="net.sf.jasperreports.ant.JRAntCompileTask"
+		classpathref="classpath">
+	</taskdef>
+
+	<target name="compilar-jrxml" depends="compile">
+		<jasper srcdir="${jasper.src.dir}" destdir="${jasper.dest.dir}" compiler="net.sf.jasperreports.engine.design.JRJavacCompiler">
+			<classpath>
+		        <pathelement path="${app.dir.classes}"/>
+		        <pathelement path="."/>
+		        <fileset dir="${lib.dir}">
+		          <include name="**/*.jar"/>
+		        </fileset>
+			</classpath>
+		</jasper>
+	</target>
+
+	<target name="COMPILA-JRXML-A-CARPETA-SRC" depends="compile">
+		
+		<delete dir="${jasper.src.dir}/" excludes="*.jrxml"/>
+		
+		<jasper srcdir="${jasper.src.dir}" destdir="${jasper.src.dir}" compiler="net.sf.jasperreports.engine.design.JRJavacCompiler">
+			<classpath>
+		        <pathelement path="${app.dir.classes}"/>
+		        <pathelement path="."/>
+		        <fileset dir="${lib.dir}">
+		          <include name="**/*.jar"/>
+		        </fileset>
+			</classpath>
+		</jasper>
+	</target>
+	
+	<!-- Copia los updates de SQL del sistema -->
+	<target name="sql">
+		<copy todir="${sql.outdir}">
+			<fileset dir="${sql.dir}">
+				<include name="*.sql"/>
+			</fileset>
+		</copy>
+	</target>
+
+
+	<target name="external-components">
+		<copy todir="${external}">
+			<fileset dir="${res.dir}/external">
+				<include name="*.*"/>
+			</fileset>
+		</copy>
+	</target>
+
+	<target name="resources" depends="poner-revision">
+		<echo message="Copiando bibliotecas y recursos estáticos"/>
+		<copy overwrite="true" todir="${app.dir.classes}">
+			<fileset dir="${src.dir}">
+				<include name="exporter.bat"/>
+				<include name="schema-checker.bat"/>
+				<include name="schema-update.bat"/>
+				<include name="sifeme-checker.bat"/>
+				<include name="avl-simulator.bat"/>
+				<include name="puntos-avl-sanjuan.xml"/>
+				<include name="run-app.bat"/>
+				<include name="indexer.bat"/>
+				<include name="reiniciar-broker.bat"/>
+				<include name="geo-zone-linker.bat"/>
+				<include name="run-agency-generator.bat"/>
+				<include name="street-name-migrator.bat"/>
+			</fileset>
+		</copy>
+		<copy overwrite="true" todir="${app.dir.webinf}">
+			<fileset dir="${web.inf}">
+				<include name="*.*"/>
+			</fileset>
+			<fileset dir=".">
+				<include name="revision.txt"/>
+			</fileset>
+		</copy>
+		<copy overwrite="true" todir="${app.dir.lib}">
+			<fileset dir="${lib.dir}"/>
+		</copy>
+		<antcall target="alovmap"/>
+	</target>
+
+	<target name="alovmap">
+		<ant antfile="../Alovmap/deploy/packager/packager.xml" dir="../Alovmap"/>
+
+		<!-- Tomar el alov -->
+		<copy todir="${build.outdir}">
+			<fileset dir="../Alovmap/deploy/package">
+				<include name="**/*.*" />
+			</fileset>
+		</copy>
+	</target>
+
+	<!-- Genera el war de la aplicacion para realizar el deploy -->
+	<target name="war" depends="compile, poner-revision">
+		<echo message="Construyendo deploy de F911 Server"/>
+
+		<mkdir dir="${build.outdir}"/>
+
+		<jar destfile="${build.outdir}/${app.name}.zip" compress="true">
+			<zipfileset dir=".">
+				<include name="revision.txt" />
+			</zipfileset>
+			<!-- Clases -->
+			<zipfileset dir="${classes.outdir}" prefix="WEB-INF/classes">
+				<include name="**/*.*"/>
+			</zipfileset>
+
+			<!-- Bibliotecas -->
+			<zipfileset dir="${lib.dir}" prefix="WEB-INF/lib">
+				<exclude name="**/servlet.jar"/>
+			</zipfileset>
+
+			<!-- WEB-INF -->
+			<zipfileset dir="${web.inf}" prefix="WEB-INF">
+				<include name="*.*"/>
+			</zipfileset>
+		</jar>
+
+		<antcall target="alovmap"/>
+	</target>
+
+	<target name="shared-server" depends="compile">
+		<jar destfile="${build.outdir}/shared-server.jar" basedir="${build.outdir}/F911/WEB-INF/classes">
+			<include name="ar/com/tsoluciones/emergencies/shared/**"/>
+		</jar>
+	</target>
+
+	<target name="poner-revision" >
+		<exec executable="svnversion" outputproperty="log-head-revision" failifexecutionfails="false">
+			<arg value=".."/>
+		</exec>
+		<echo message="${log-head-revision}"/>
+		<echo message="${log-head-revision}" file="revision.txt" append="false"/>
+	</target>
+
+	<target name="javadoc" depends="init">
+		<javadoc destdir="${build.outdir}/docs"
+			access="protected" charset="ISO-8859-1" encoding="ISO-8859-1"
+			classpathref="classpath">
+			<packageset dir="${src.dir}">
+				<include name="ar/**"/>
+			</packageset>
+		</javadoc>
+	</target>
+
+	<taskdef name="wsgen" classname="org.codehaus.xfire.gen.WsGenTask"
+		classpathref="classpath"/>
+
+	<target name="generar-ws-artifacts">
+		<wsgen outputDirectory="${auto.dir}"
+		wsdl="${res.dir}/sifeme.wsdl.xml" package="ar.com.sifeme" overwrite="true" />
+	</target>
+
+	<target name="generar-caws-artifacts">
+		<wsgen outputDirectory="${auto.dir}"
+		wsdl="${res.dir}/moviles.wsdl.xml" package="org.bgh" overwrite="true"/>
+	</target>
+
+</project>

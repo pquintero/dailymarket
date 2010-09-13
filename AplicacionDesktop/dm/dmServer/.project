@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<projectDescription>
+	<name>f911_146_server</name>
+	<comment></comment>
+	<projects>
+	</projects>
+	<buildSpec>
+		<buildCommand>
+			<name>org.eclipse.jdt.core.javabuilder</name>
+			<arguments>
+			</arguments>
+		</buildCommand>
+	</buildSpec>
+	<natures>
+		<nature>org.eclipse.jdt.core.javanature</nature>
+	</natures>
+	<linkedResources>
+		<link>
+			<name>classes2</name>
+			<type>2</type>
+			<location>C:/jakarta-tomcat-5.0.28/webapps/1.4.6/WEB-INF/classes</location>
+		</link>
+		<link>
+			<name>classes</name>
+			<type>2</type>
+			<location>C:/jakarta-tomcat-5.0.28/webapps/1.4.6/WEB-INF/classes</location>
+		</link>
+		<link>
+			<name>tomcat2</name>
+			<type>2</type>
+			<location>C:/jakarta-tomcat-5.0.28/webapps/1.4.6/WEB-INF/classes</location>
+		</link>
+		<link>
+			<name>classes/classes</name>
+			<type>2</type>
+			<location>C:/jakarta-tomcat-5.0.28/webapps/1.4.6/WEB-INF/classes</location>
+		</link>
+	</linkedResources>
+</projectDescription>

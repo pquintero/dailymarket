@@ -1,0 +1,46 @@
+<!DOCTYPE hibernate-configuration PUBLIC
+        "-//Hibernate/Hibernate Configuration DTD//EN"
+        "http://hibernate.sourceforge.net/hibernate-configuration-3.0.dtd">
+
+<hibernate-configuration>
+	<session-factory>
+		<!-- Base de datos -->
+		<property name="hibernate.dialect">org.hibernate.dialect.SQLServerDialect</property>
+		<property name="hibernate.connection.driver_class">com.jnetdirect.jsql.JSQLDriver</property>
+		<property name="hibernate.connection.url">jdbc:JSQLConnect://TD01586/database=funcionales911_lp/user=sa/asciiStringParameters=true/disableStatementPooling=true</property>
+		<property name="hibernate.connection.username">sa</property>
+		<property name="hibernate.connection.password">Proyecto911</property>
+
+		<property name="hibernate.current_session_context_class">thread</property>
+
+		<!-- Pool de conexiones -->
+		<property name="hibernate.connection.provider_class">ar.com.tsoluciones.emergencies.server.hibernate.C3P0ConnectionProvider</property>
+		<property name="hibernate.c3p0.max_size">30</property>
+		<property name="hibernate.c3p0.min_size">10</property>
+		<property name="hibernate.c3p0.timeout">5000</property>
+		<property name="hibernate.c3p0.max_statements">100</property>
+		<property name="hibernate.c3p0.idle_test_period">3000</property>
+		<property name="hibernate.c3p0.acquire_increment">3</property>
+		<property name="hibernate.c3p0.validate">true</property>
+		<!-- Isolation -->
+		<property name="hibernate.connection.isolation">2</property>
+		<!-- Configuracion JDBC -->
+		<property name="hibernate.jdbc.batch_size">0</property>
+		<property name="hibernate.jdbc.use_streams_for_binary">true</property>
+		<!-- Usar outer joins ? -->
+		<property name="hibernate.use_outer_join">true</property>
+		<property name="hibernate.max_fetch_depth">3</property>
+		<!-- Optimizadores de performance -->
+		<property name="hibernate.bytecode.use_reflection_optimizer">true</property>
+
+		<!-- Debug -->
+		<property name="hibernate.show_sql">false</property>
+		<!-- Auditoria -->
+		<mapping resource="ar/com/tsoluciones/emergencies/server/businesslogic/audit/model/AuditAction.hbm.xml"/>
+		<mapping resource="ar/com/tsoluciones/emergencies/server/businesslogic/audit/model/AuditObject.hbm.xml"/>
+		<mapping resource="ar/com/tsoluciones/emergencies/server/businesslogic/audit/model/AuditAttribute.hbm.xml"/>
+		<mapping resource="ar/com/tsoluciones/emergencies/server/businesslogic/audit/model/AuditAttributes.hbm.xml"/>
+		<mapping resource="ar/com/tsoluciones/emergencies/server/businesslogic/audit/model/AuditClasses.hbm.xml"/>
+
+	</session-factory>
+</hibernate-configuration>

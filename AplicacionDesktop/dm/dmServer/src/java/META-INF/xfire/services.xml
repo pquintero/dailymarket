@@ -1,0 +1,70 @@
+<beans xmlns="http://xfire.codehaus.org/config/1.0">
+    <xfire>
+        <inHandlers>
+            <handler handlerClass="org.codehaus.xfire.util.dom.DOMInHandler"/>
+            <handler handlerClass="org.codehaus.xfire.util.LoggingHandler"/>
+        </inHandlers>
+        <outHandlers>
+            <handler handlerClass="org.codehaus.xfire.util.dom.DOMOutHandler"/>
+            <handler handlerClass="org.codehaus.xfire.util.LoggingHandler"/>
+        </outHandlers>
+        <faultHandlers>
+            <handler handlerClass="org.codehaus.xfire.util.dom.DOMOutHandler"/>
+            <handler handlerClass="org.codehaus.xfire.util.LoggingHandler"/>
+        </faultHandlers>
+    </xfire>
+    <service>
+        <name>PatentesService</name>
+        <namespace>http://localhost/services/PatentesService</namespace>
+        <serviceClass>ar.com.tsoluciones.emergencies.server.webservices.licenseService.servicio.LicenseService</serviceClass>
+        <implementationClass>ar.com.tsoluciones.emergencies.server.webservices.licenseService.servicio.LicenseServiceImpl</implementationClass>
+    </service>
+    <service>
+        <name>ParametrosService</name>
+        <namespace>http://localhost/services/ParametrosService</namespace>
+        <serviceClass>ar.com.tsoluciones.emergencies.server.webservices.parameterservice.ParameterService</serviceClass>
+        <implementationClass>ar.com.tsoluciones.emergencies.server.webservices.parameterservice.ParameterServiceImpl</implementationClass>
+    </service>
+    <service>
+        <name>AntecedentesService</name>
+        <namespace>http://localhost/services/AntecedentesService</namespace>
+        <serviceClass>ar.com.tsoluciones.emergencies.server.webservices.dossierservice.DossierService</serviceClass>
+        <implementationClass>ar.com.tsoluciones.emergencies.server.webservices.dossierservice.DossierServiceImpl</implementationClass>
+    </service>
+
+    <service>
+        <name>SessionService</name>
+        <namespace>http://localhost/services/SessionService</namespace>
+        <serviceClass>ar.com.tsoluciones.emergencies.server.webservices.sessionservice.SessionService</serviceClass>
+        <implementationClass>ar.com.tsoluciones.emergencies.server.webservices.sessionservice.SessionServiceImpl</implementationClass>
+    </service>
+
+	<service>
+        <name>AlarmaService</name>
+        <namespace>http://localhost/services/AlarmaService</namespace>
+        <serviceClass>ar.com.tsoluciones.emergencies.server.webservices.alarmas.AlarmaService</serviceClass>
+        <implementationClass>ar.com.tsoluciones.emergencies.server.webservices.alarmas.AlarmaServiceImpl</implementationClass>
+    </service>
+    
+    <service>
+        <name>CallApprovableService</name>
+        <namespace>http://localhost/services/CallApprovableService</namespace>
+        <serviceClass>ar.com.tsoluciones.emergencies.server.webservices.call.CallApprovableWebService</serviceClass>
+        <implementationClass>ar.com.tsoluciones.emergencies.server.webservices.call.CallApprovableWebServiceImpl</implementationClass>
+    </service>
+    
+    <service>
+        <name>DAOCService</name>
+        <namespace>http://localhost:8080/services/DAOCService</namespace>
+        <serviceClass>ar.com.tsoluciones.emergencies.server.webservices.daoc.DAOCWebService</serviceClass>
+        <implementationClass>ar.com.tsoluciones.emergencies.server.webservices.daoc.DAOCWebServiceImp</implementationClass>
+    </service>
+    
+    <service>
+        <name>CenterService</name>
+        <namespace>http://localhost:8080/services/CenterService</namespace>
+        <serviceClass>ar.com.tsoluciones.emergencies.server.webservices.daoc.CenterWebService</serviceClass>
+        <implementationClass>ar.com.tsoluciones.emergencies.server.webservices.daoc.CenterWebServiceImp</implementationClass>
+    </service>
+
+</beans>

@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+	"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+	"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+	<!-- ar.com.tsoluciones.arcom.util.Address root -->
+	<class name="ar.com.tsoluciones.arcom.util.Address" table="Address">
+		<id name="id" type="long" column="id">
+			<generator class="native"/>
+		</id>
+		<property name="deleted" column="deleted" type="boolean"/>
+		<property name="zipCode" column="zipCode" type="string"/>
+		<property name="state" column="state" type="string"/>
+		<property name="street2" column="street2" type="string"/>
+		<property name="street1" column="street1" type="string"/>
+		<property name="country" column="country" type="string"/>
+		<property name="city" column="city" type="string"/>
+	</class>
+</hibernate-mapping>

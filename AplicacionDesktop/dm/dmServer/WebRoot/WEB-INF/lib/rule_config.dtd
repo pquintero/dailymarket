@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XML Spy v4.3 U (http://www.xmlspy.com) by arthur (andersen) -->
+<!ELEMENT address (#PCDATA)>
+<!ELEMENT approvalrule-config (workflow-definition, documents, override-default?)>
+<!ELEMENT document EMPTY>
+<!ATTLIST document
+	class CDATA #REQUIRED
+>
+<!ELEMENT documents (document)+>
+<!ELEMENT from (#PCDATA)>
+<!ELEMENT mail-account (name, from, to)>
+<!ELEMENT name (#PCDATA)>
+<!ELEMENT override-default (restrict-handlers?, mail-account?)>
+<!ELEMENT restrict EMPTY>
+<!ATTLIST restrict
+	class CDATA #REQUIRED
+	handler CDATA #REQUIRED
+>
+<!ELEMENT restrict-handlers (restrict+)>
+<!ELEMENT to (address+)*>
+<!ELEMENT workflow-definition EMPTY>
+<!ATTLIST workflow-definition
+	type (File | URL | Resource) #REQUIRED
+	location CDATA #REQUIRED
+>

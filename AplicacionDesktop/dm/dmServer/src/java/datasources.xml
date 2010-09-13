@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<datasources>
+	<datasource default="true">
+		<name>F911</name>
+		<description>Productiva</description>
+		<url></url>
+		<username></username>
+		<password></password>
+		<!-- limite en dias para busquedas -->
+		<days-limit>30</days-limit>
+		<pool-minsize>0</pool-minsize>
+		<pool-maxsize>5</pool-maxsize>
+		<idleTestPeriod>300</idleTestPeriod><!-- Cantidad de segundos para verificar las conexiones -->
+	</datasource>
+</datasources>
