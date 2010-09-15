@@ -1,8 +1,6 @@
 package ar.com.tsoluciones.arcom.security.services.proxyinterface;
 
 
-import java.util.List;
-
 import ar.com.tsoluciones.arcom.cor.ServiceException;
 import ar.com.tsoluciones.arcom.security.User;
 
@@ -23,24 +21,6 @@ public interface UserServiceInterface
    * @return objeto User
    */
   public User get(Long id);
-
-  /**
-   * Graba un objeto User
-   *
-   * @param entity Objeto entity
-   * @throws ar.com.tsoluciones.arcom.cor.ServiceException
-   *          Cuando la llamada levanta un error
-   */
-  public void save(User entity) throws ServiceException;
-
-  /**
-   * Actualiza un objeto User
-   *
-   * @param entity Objeto entity a actualizar
-   * @throws ar.com.tsoluciones.arcom.cor.ServiceException
-   *          cuando el intento levanta un error
-   */
-  public void update(User entity) throws ServiceException;
 
   /**
    * Elimina un usuario físicamente
@@ -72,40 +52,5 @@ public interface UserServiceInterface
    */
   public User getUserByUserName(String username);
 
-  /**
-   * Obtiene un usuario por su legajo asignado
-   *
-   * @param legajo Legajo asignado
-   * @return El usuario obtenido
-   * @throws ServiceException cuando algo sale mal
-   */
-  public User getUserByLegajo(String legajo);
-
-  /**
-   * Resetea el password de un usuario
-   *
-   * @param userId El usuario
-   * @return El password
-   * @throws ServiceException Error al resetear el password
-   */
-  public String resetPassword(Long userId) throws ServiceException;
-
-  /**
-   * Agrega un rol
-   * @param roleId Id de rol
-   * @param userId Id de usuario
-   * @throws ServiceException Cuando hay un error
-   */
-  public void addRole(Long userId, Long roleId) throws ServiceException;
-
-  /**
-   * Elimina el rol
-   * @param userId Id de usuario
-   * @param roleId Id de rol
-   * @throws ServiceException Cuando hay un error
-   */
-  public void deleteRole(Long userId, Long roleId) throws ServiceException;
-  
-  public List<User> getUser(Long roleId, Long agencyId);
   
 }

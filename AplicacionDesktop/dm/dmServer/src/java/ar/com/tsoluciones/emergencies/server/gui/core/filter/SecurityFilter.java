@@ -58,7 +58,7 @@ public class SecurityFilter implements Filter {
 
 			// Si no hay usuario en la sesion, o hay usuario pero es distinto al pedido, guardar el user
 			if (presentSessionUser == null
-					|| (presentSessionUser.getUsername().equalsIgnoreCase(Configuration.getInstance().getSessionDebugUsername()) == false)) {
+					|| (presentSessionUser.getUser().equalsIgnoreCase(Configuration.getInstance().getSessionDebugUsername()) == false)) {
 				UserServiceInterface userServiceInterface = (UserServiceInterface) new UserServiceFactory().newInstance();
 				User newSessionUser = userServiceInterface.getUserByUserName(Configuration.getInstance().getSessionDebugUsername());
 				((HttpServletRequest) req).getSession(true).setAttribute(CURRENT_USER, newSessionUser);

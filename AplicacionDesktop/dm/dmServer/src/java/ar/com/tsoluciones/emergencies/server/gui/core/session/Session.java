@@ -72,12 +72,4 @@ public class Session {
 		httpSession.invalidate();
 	}
 
-	/**
-	 * Obtiene el rango de minutos permitidos para las busquedas de este usuario
-	 *
-	 * @return Rango de minutos
-	 */
-	public int getMinutesRange() {
-		return Configuration.getInstance().getInboxMinutes(this.getUser());
-	}
 }
