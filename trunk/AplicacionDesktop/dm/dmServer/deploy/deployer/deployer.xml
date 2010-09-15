@@ -1,4 +1,4 @@
-<project name="F911 server deployer" default="deploy" basedir=".">
+<project name="DM server deployer" default="deploy" basedir=".">
 
 	<property file="deployer.properties"/>
 
@@ -90,8 +90,6 @@
 				<include name="**/*.*"/>
 			</fileset>
 		</copy>
-		<antcall target="alov.projects.restore"/>
-		<antcall target="alov.checker"/>
 		<antcall target="clean" />
 	</target>
 
@@ -102,49 +100,6 @@
 			</fileset>
 		</zip>
 	</target>
-
-	<target name="alov.backup" if="previous.alov.exists">
-		<zip destfile="${webapps.dir}\${today}-${context.alov}.zip">
-			<fileset dir="${alov.dest}">
-				<include name="**/*.*"/>
-			</fileset>
-		</zip>
-		<antcall target="alov.projects.backup"></antcall>
-	</target>
-
-	<target name="alov.projects.backup">
-		<mkdir dir="${webapps.dir}/alovtemp"/>
-		<copy overwrite="true" todir="${webapps.dir}/alovtemp" verbose="true">
-					<fileset dir="${alov.dest}">
-						<include name="${app.code}_*.xml"/>
-					</fileset>
-		</copy>	
-	</target>
-	
-	<target name="alov.checker">
-		<java
-				dir="${F911.dest}/WEB-INF/classes" 
-				classname="ar.com.tsoluciones.emergencies.server.gui.gis.telefront.AlovChecker"
-				fork="true"
-				>
-			<classpath>
-			      <fileset dir="${F911.dest}/WEB-INF/lib">
-			        <include name="**/*.jar"/>
-			      </fileset>
-			      <pathelement location="${F911.dest}/WEB-INF/classes"/>
-		    </classpath>
-			<arg value="${alov.dest}"/>
-		</java>
-	</target>
-	
-	<target name="alov.projects.restore" if="previous.alov.exists">
-		<copy todir="${alov.dest}" verbose="true">
-					<fileset dir="${webapps.dir}/alovtemp">
-						<include name="*.*"/>
-					</fileset>
-		</copy>	
-		<delete dir="${webapps.dir}/alovtemp"/>
-	</target>
 	
 	<target name="procesar-filtros">
 		<!-- Reemplazos de configuracion -->
@@ -152,13 +107,9 @@
 			<exclude name="**/*.class" />
 			<exclude name="**/*.jasper" />
 
-			<replacefilter token="%gis.implementation.code%" value="${app.code}"/>
 			<replacefilter token="%sql.server%" value="${sql.server}"/>
-			<replacefilter token="%sql.gisDatabase%" value="${sql.gisDatabase}"/>
 			<replacefilter token="%sql.username%" value="${sql.username}"/>
-			<replacefilter token="%sql.password%" value="${sql.password}"/>
-			
-			<replacefilter token="%gis.log%" value="${catalina.home}\logs\${context.alov}.log"/>
+
 		</replace>
 
 		<replace dir="${dir-classes}" summary="true">
@@ -166,59 +117,20 @@
 			<exclude name="**/*.jasper" />
 
 			<replacefilter token="%app.version%" value="${app.version}"/>
-			<replacefilter token="%messaging.host%" value="${messaging.server}"/>
-			<replacefilter token="%messaging.port%" value="${messaging.port}"/>
-			<replacefilter token="%messaging.protocol%" value="${messaging.protocol}"/>
-			<replacefilter token="%messaging.internalProtocol%" value="${messaging.internalProtocol}"/>
-			<replacefilter token="%messaging.externalBroker%" value="${messaging.externalBroker}"/>
+		
 
 			<replacefilter token="%sql.server%" value="${sql.server}"/>
 			<replacefilter token="%sql.emergenciesDatabase%" value="${sql.emergenciesDatabase}"/>
 			<replacefilter token="%sql.username%" value="${sql.username}"/>
 			<replacefilter token="%sql.password%" value="${sql.password}"/>
 			<replacefilter token="%sql.gisDatabase%" value="${sql.gisDatabase}"/>
-
-			<replacefilter token="%geo.server%" value="${geo.server}"/>
-			<replacefilter token="%geo.database%" value="${geo.database}"/>
-			<replacefilter token="%geo.username%" value="${geo.username}"/>
-			<replacefilter token="%geo.password%" value="${geo.password}"/>
-
-			<replacefilter token="%audit.server%" value="${audit.server}"/>
-			<replacefilter token="%audit.database%" value="${audit.database}"/>
-			<replacefilter token="%audit.username%" value="${audit.username}"/>
-			<replacefilter token="%audit.password%" value="${audit.password}"/>
-
-			<replacefilter token="%audithistory.server%" value="${audithistory.server}"/>
-			<replacefilter token="%audithistory.database%" value="${audithistory.database}"/>
-			<replacefilter token="%audithistory.username%" value="${audithistory.username}"/>
-			<replacefilter token="%audithistory.password%" value="${audithistory.password}"/>
-
-			<replacefilter token="%avl.server%" value="${avl.server}"/>
-			<replacefilter token="%avl.database%" value="${avl.database}"/>
-			<replacefilter token="%avl.username%" value="${avl.username}"/>
-			<replacefilter token="%avl.password%" value="${avl.password}"/>
-
-	    	<replacefilter token="%avlhistory.server%" value="${avlhistory.server}"/>
-	        <replacefilter token="%avlhistory.database%" value="${avlhistory.database}"/>
-	        <replacefilter token="%avlhistory.username%" value="${avlhistory.username}"/>
-	        <replacefilter token="%avlhistory.password%" value="${avlhistory.password}"/>
-			
 			<replacefilter token="%context.name%" value="${context.F911}"/>
-
-			<replacefilter token="%gis.implementation.code%" value="${app.code}"/>
-			<replacefilter token="%gis.alovmap.context%" value="${context.alov}"/>
-
 			<replacefilter token="%emergencies.log%" value="${catalina.home}\logs\${context.F911}.log"/>
 			<replacefilter token="%hibernate.log%" value="${catalina.home}\logs\${context.F911}-hibernate.log"/>
 			<replacefilter token="%cache.log%" value="${catalina.home}\logs\${context.F911}-cache.log"/>
 			<replacefilter token="%sql.log%" value="${catalina.home}\logs\${context.F911}-sql.log"/>
 			<replacefilter token="%exceededOperations.log%" value="${catalina.home}\logs\${context.F911}-exceededOperations.log"/>
-			
-			<replacefilter token="%interop.code%" value="${interop.code}"/>
-			<replacefilter token="%interop.name%" value="${interop.name}"/>
-			<replacefilter token="%interop.url%" value="${interop.url}"/>
-			
-			<replacefilter token="%center.name%" value="${center.name}"/>
+
 		</replace>
 
 		<!-- Escapar en log4j.properties las barras -->
