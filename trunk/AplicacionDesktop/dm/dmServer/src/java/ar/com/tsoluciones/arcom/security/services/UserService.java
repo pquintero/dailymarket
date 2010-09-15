@@ -13,7 +13,6 @@ import org.hibernate.LockMode;
 import org.hibernate.type.Type;
 
 import ar.com.tsoluciones.arcom.hibernate.HibernateService;
-import ar.com.tsoluciones.arcom.security.Role;
 import ar.com.tsoluciones.arcom.security.User;
 import ar.com.tsoluciones.util.Cast;
 
@@ -41,22 +40,6 @@ public class UserService {
 	 */
 	public static User getUser(Long id) throws HibernateException {
 		User user = HibernateService.getObject(User.class, id, LockMode.READ);
-
-		if (user == null)
-			return null;
-
-		// Inicializar colecciones lazy
-		Hibernate.initialize(user.getAddresses());
-		Hibernate.initialize(user.getEmails());
-		Hibernate.initialize(user.getPhones());
-		Hibernate.initialize(user.getPermissions());
-		Hibernate.initialize(user.getRoles());
-
-		// Obtener todos los permisos
-		Role[] roleArray = user.getRoles().toArray(new Role[0]);
-		for (int i = 0; i < roleArray.length; i++) {
-			Hibernate.initialize(roleArray[i].getPermissions());
-		}
 		return user;
 	}
 

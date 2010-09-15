@@ -18,8 +18,6 @@ import org.jconfig.event.FileListener;
 import org.jconfig.event.FileListenerEvent;
 
 import ar.com.tsoluciones.arcom.logging.Log;
-import ar.com.tsoluciones.arcom.security.Role;
-import ar.com.tsoluciones.arcom.security.User;
 import ar.com.tsoluciones.emergencies.server.concurrent.PoolName;
 
 /**
@@ -294,66 +292,6 @@ public class Configuration implements FileListener {
 		messagingPool.setMaximumPoolSize(configuration.getIntProperty(
 				"maxSize", 50, "messagingPool"));
 
-		// Levantar roles necesarios para ver cartas de llamado cerradas
-		String closedCallApprovableRoles = configuration.getProperty(
-				"closedCallApprovableRoles", null, "core");
-		this.closedCallApprovableRoleArray = stringRoleFilter(closedCallApprovableRoles);
-
-		// levanta el rol maestro que permite abrir y editar todos los campos de
-		// una carta cerrada
-		this.openClosedApprovMasterRole = configuration.getProperty(
-				"openClosedApprovMasterRole", null, "core");
-
-		// Levantar roles necesarios para abrir cartas de llamado cerradas o
-		// derivadas
-		String openClosedApprovRoles = configuration.getProperty(
-				"openClosedApprovRoles", null, "core");
-		this.openClosedApprovableRoleArray = stringRoleFilter(openClosedApprovRoles);
-
-		// Levanta los paneles que pueden ser editados si la carta de llamado es
-		// reabierta
-		String panels = configuration.getProperty("editablePanels", null,
-				"core");
-		this.editablePanels = verifyPanels(panels);
-
-		// Levantar roles necesarios para quitar cartas tomadas.
-		String lockedCallApprovableRoles = configuration.getProperty(
-				"lockedCallApprovableRoles", null, "core");
-		this.lockedCallApprovableRoleArray = stringRoleFilter(lockedCallApprovableRoles);
-
-		// Aprehendidos
-		this.arrestedQuantityEnabled = configuration.getBooleanProperty(
-				"enabled", false, "arrestedQuantity");
-		// Incluir en parte policial
-		this.policeReportEnabled = configuration.getBooleanProperty("enabled",
-				false, "policeReport");
-		// combo de comisarias, en caso de false se muestra centro de despacho
-		this.policeStationEnabled = configuration.getBooleanProperty("enabled",
-				false, "policeStation");
-		// combo de deslinde, en caso de false no se muestra en la carta de
-		// llamada
-		this.callPlaceSelect = configuration.getBooleanProperty("enabled",
-				false, "callPlaceSelect");
-		// activa noEditableCTI
-		this.noEditableCTI = configuration.getBooleanProperty("enabled", false,
-				"noEditableCTI");
-		// activa editableCTI
-		this.editableCTI = configuration.getBooleanProperty("enabled", false,
-				"editableCTI");
-		// DummyWorkstation
-		this.dummyWorkstationEnabled = configuration.getBooleanProperty(
-				"enabled", false, "dummyWorkstation");
-		this.dummyWorkstationName = configuration.getProperty("name",
-				"0.0.0.0", "dummyWorkstation");
-		// SessionDebug
-		this.sessionDebugEnabled = configuration.getBooleanProperty("enabled",
-				false, "sessionDebug");
-		this.sessionDebugUsername = configuration.getProperty("user",
-				"operador01", "sessionDebug");
-		// Versión del CallApprovable. L=Lite ; N=New Version
-		this.callApprovableInstanceCode = configuration.getProperty(
-				"callApprovableInstanceCode", "N", "core");
-
 		this.quickActions = stringToCollection(configuration.getProperty(
 				"quickActions", null, "core"));
 		this.historyActions = stringToCollection(configuration.getProperty(
@@ -496,16 +434,6 @@ public class Configuration implements FileListener {
 		this.dreEnabled = configuration.getBooleanProperty("dreEnabled", false,
 				"gis");
 
-		if (usersForAvlState != null && usersForAvlState.length != 0) {
-
-			this.usersForAvlStateArray = new Role[usersForAvlState.length];
-			for (int i = 0; i < usersForAvlStateArray.length; i++) {
-				Role role = new Role();
-				role.setName(usersForAvlState[i]);
-				usersForAvlStateArray[i] = role;
-			}
-		}
-
 		try {
 			this.gisJurisdictionService = Class.forName(configuration
 					.getProperty("jurisdictionService", "", "gis"));
@@ -628,31 +556,6 @@ public class Configuration implements FileListener {
 		}
 	}
 
-	// funciones comunes al filtrado de propiedades del archivo de configuración
-
-	/*
-	 * filtra un string de roles separados por punto y coma, en caso de que no
-	 * existan devuelve un array de roles vacío
-	 */
-	private Role[] stringRoleFilter(String chainedRoles) {
-
-		Role[] roles;
-
-		if (chainedRoles != null && !chainedRoles.equals("")) {
-			String[] roleArray = chainedRoles.split(";");
-
-			roles = new Role[roleArray.length];
-			for (int i = 0; i < roles.length; i++) {
-				Role role = new Role();
-				role.setName(roleArray[i]);
-				roles[i] = role;
-			}
-
-			return roles;
-		}
-		return new Role[0];
-	}
-
 	private String[] verifyPanels(String panels) {
 		String[] editablePanels = panels.split(";");
 		for (String panel : editablePanels) {
@@ -700,9 +603,6 @@ public class Configuration implements FileListener {
 	private String tabXML;
 	private boolean allowByIdWhenClosed;
 	private String openClosedApprovMasterRole;
-	private Role[] closedCallApprovableRoleArray = new Role[0];
-	private Role[] openClosedApprovableRoleArray = new Role[0];
-	private Role[] lockedCallApprovableRoleArray = new Role[0];
 	private String[] editablePanels;
 	private boolean dutyRequired;
 	private boolean closeMotiveRequired;
@@ -814,28 +714,6 @@ public class Configuration implements FileListener {
 
 	public Pool getCommandExecutorParams() {
 		return commandExecutorParams;
-	}
-
-	/**
-	 * Verifica si el usuario entregado tiene los permisos necesarios para
-	 * modificar prioridades
-	 * 
-	 * @return true si tiene
-	 */
-	public boolean isPriorityUpdater(User user) {
-		if (priorityUpdaterRole == null || priorityUpdaterRole.equals(""))
-			return true;
-
-		Role role = new Role();
-		role.setName(priorityUpdaterRole);
-
-		Log.getLogger(this.getClass()).debug(
-				"Tiene rol " + priorityUpdaterRole + ": " + user.hasRole(role));
-
-		if (user.hasRole(role))
-			return true;
-
-		return false;
 	}
 
 	public boolean isDummyWorkstationEnabled() {
@@ -955,125 +833,6 @@ public class Configuration implements FileListener {
 			throw new RuntimeException(
 					"Error al intentar cargar documento XML", e);
 		}
-	}
-
-	/**
-	 * Obtiene los minutos asignados al rol de un usuario
-	 * 
-	 * @param user
-	 *            Usuario logeado
-	 * @return Cantidad de minutos permitidos
-	 */
-	public int getInboxMinutes(User user) {
-		Role[] roleArray = user.getRoles().toArray(new Role[0]);
-
-		int inboxMinutes = getConfigurationManager().getIntProperty(
-				"inbox_minutes_default", 30, "core");
-		for (int i = 0; i < roleArray.length; i++) {
-			String roleName = roleArray[i].getName();
-
-			String parameter = "inbox_minutes_" + roleName.toLowerCase();
-
-			int newInboxMinutes = getConfigurationManager().getIntProperty(
-					parameter, 30, "core");
-			if (inboxMinutes < newInboxMinutes)
-				inboxMinutes = newInboxMinutes;
-		}
-
-		return inboxMinutes;
-	}
-
-	/**
-	 * Verifica si un usuario dado puede ver las cartas de llamado cerradas
-	 * 
-	 * @param user
-	 *            Usuario dado
-	 * @return true si puede
-	 */
-	public boolean canSeeClosedCallApprovables(User user) {
-		// Si no hay exigencias por parte del SCM, todos pueden ver las cartas
-		// cerradas
-		if (closedCallApprovableRoleArray.length == 0)
-			return true;
-
-		for (int i = 0; i < closedCallApprovableRoleArray.length; i++) {
-			if (user.hasRole(closedCallApprovableRoleArray[i]))
-				return true;
-		}
-
-		return false;
-	}
-
-	/*
-	 * Verifica si un usuario puede abrir y editar cartas ya cerradas devuelve
-	 * true si es que está habilitado
-	 */
-	public boolean canOpenClosedApprovables(User user) {
-		for (int i = 0; i < openClosedApprovableRoleArray.length; i++) {
-			if (user.hasRole(openClosedApprovableRoleArray[i]))
-				return true;
-		}
-
-		return false;
-	}
-
-	/*
-	 * Verifica si un usuario puede abrir cartas ya derivadas sin restricciones
-	 * devuelve true si es que está habilitado
-	 */
-	public boolean isClosedApprovableMasterRole(User user) {
-
-		if (openClosedApprovMasterRole.equals(""))
-			return false;
-
-		Role role = new Role();
-		role.setName(openClosedApprovMasterRole);
-		return user.hasRole(role);
-	}
-
-	public String getUrlPatentes() {
-
-		return urlPatentes;
-	}
-
-	/**
-	 * Verifica si un usuario dado puede quitar las cartas de llamado tomadas.
-	 * 
-	 * @param user
-	 *            Usuario
-	 * @return true si puede
-	 */
-
-	public boolean canLockCallApprovables(User user) {
-		// Si no hay exigencias por parte del SCM, todos pueden quitar las
-		// cartas
-		if (lockedCallApprovableRoleArray.length == 0)
-			return true;
-
-		for (int i = 0; i < lockedCallApprovableRoleArray.length; i++) {
-			if (user.hasRole(lockedCallApprovableRoleArray[i]))
-				return true;
-		}
-
-		return false;
-
-	}
-
-	/**
-	 * Verifica si el usuario puede consultar el estado de un mï¿½vil con AVL
-	 * 
-	 * @param user
-	 */
-
-	public boolean canUseAvlState(User user) {
-		if (usersForAvlStateArray.length == 0)
-			return true;
-
-		for (int i = 0; i < usersForAvlStateArray.length; i++) {
-			if (user.hasRole(usersForAvlStateArray[i]))
-				return true;
-		}
-		return false;
 	}
 
 	// CTI
@@ -1244,25 +1003,6 @@ public class Configuration implements FileListener {
 		this.actionCloseIncidentWhenJoke = actionCloseIncidentWhenJoke;
 	}
 
-	/**
-	 * Evalua si de acuerdo a los roles que tiene el usuario solo debe ver la
-	 * carta en read only
-	 * 
-	 * @param user
-	 *            Usuario
-	 * @return true si es read only
-	 */
-	public boolean isReadOnlyCallApprovable(User user) {
-		Role[] roleArray = user.getRoles().toArray(new Role[0]);
-
-		for (int i = 0; i < roleArray.length; i++) {
-			if (roleArray[i].getName().startsWith("OPERACIONES"))
-				return true;
-		}
-
-		return false;
-	}
-
 	// Gis
 
 	// private boolean gisEnabled;
@@ -1279,7 +1019,6 @@ public class Configuration implements FileListener {
 	private boolean avlHistory;
 	private boolean traceMovil;
 	private boolean avlMobileState;
-	private Role[] usersForAvlStateArray = new Role[0];
 	private int noTransmisionTime;
 	private int maxRouteHours;
 	private String routeDisabledLayers;
@@ -1393,14 +1132,6 @@ public class Configuration implements FileListener {
 
 	public void setAvlHistory(boolean avlHistory) {
 		this.avlHistory = avlHistory;
-	}
-
-	public Role[] getUsersForAvlStateArray() {
-		return usersForAvlStateArray;
-	}
-
-	public void setUsersForAvlStateArray(Role[] usersForAvlStateArray) {
-		this.usersForAvlStateArray = usersForAvlStateArray;
 	}
 
 	public int getNoTransmisionTime() {

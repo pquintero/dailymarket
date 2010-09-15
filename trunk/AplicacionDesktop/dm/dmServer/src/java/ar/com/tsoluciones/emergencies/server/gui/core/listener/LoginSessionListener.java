@@ -50,7 +50,8 @@ public class LoginSessionListener implements HttpSessionListener {
 			return;
 		}
 
-		Log.getLogger(this.getClass()).debug("Sesion eliminada para el usuario " + user.getUsername());
+		Log.getLogger(this.getClass()).debug("Sesion eliminada para el usuario " + user.getUser()
+				);
 
 	}
 }

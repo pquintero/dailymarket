@@ -61,18 +61,5 @@ public class AperturaCajaManagerService extends TelefrontServiceFactory {
 		new Session(this.getHttpSession()).destroy();
 	}
 
-	public int changePassword(String oldPassword, String newPassword) {
-		Session session = new Session(this.getHttpSession());
-		User user = session.getUser();
-
-		ServiceFactory sf = SecurityHandlerFactory.getInstance();
-		SecurityHandler security = (SecurityHandler) sf.newInstance();
-
-		boolean auth = security.authenticate(user.getUsername(), oldPassword);
-		if (auth) {
-			return user.changePassword(oldPassword, newPassword);
-		}
-		return -1;
-	}
 
 }
