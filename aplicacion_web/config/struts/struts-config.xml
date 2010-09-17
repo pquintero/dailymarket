@@ -249,8 +249,12 @@
 			<form-property name="dsTable" type="java.lang.String" />
 			<form-property name="dsTableArray" type="java.lang.String[]" />
 			
-			<!--	INDICADOR XXX	-->
-			<form-property name="xxx" type="java.lang.String" initial=""/>
+			<form-property name="monthFrom" type="java.lang.String" initial=""/>
+			<form-property name="monthTo" type="java.lang.String" initial=""/>
+			<form-property name="cajero" type="java.lang.String" initial=""/>
+			<form-property name="bandaHoraria" type="java.lang.String" initial=""/>
+			<form-property name="yearFrom" type="java.lang.String" initial=""/>
+			<form-property name="yearTo" type="java.lang.String" initial=""/>
 			
 			<form-property name="queryDispatchName" type="java.lang.String" initial=""/>
 			<form-property name="collectionName" type="java.lang.String" initial="" />
@@ -398,6 +402,11 @@
 			<forward name="showIndicadoresVentasPorCajeroAnualFilter" path="tiles.indicadores.ventasPorCajeroAnualFilter"/>
 			<forward name="showIndicadoresComparativaDeVentasPorCajeroMensualFilter" path="tiles.indicadores.comparativaDeVentasPorCajeroMensualFilter"/>
 			<forward name="showIndicadoresComparativaDeVentasPorCajeroAnualFilter" path="tiles.indicadores.comparativaDeVentasPorCajeroAnualFilter"/>
+			
+			<forward name="showIndicadoresVentasPorCajeroMensualChart" path="tiles.indicadores.chart.ventasPorCajeroMensual"/>
+			<forward name="showIndicadoresVentasPorCajeroAnualChart" path="tiles.indicadores.chart.ventasPorCajeroAnual"/>
+			<forward name="showIndicadoresComparativaDeVentasPorCajeroMensualChart" path="tiles.indicadores.chart.comparativaDeVentasPorCajeroMensual"/>
+			<forward name="showIndicadoresComparativaDeVentasPorCajeroAnualChart" path="tiles.indicadores.chart.comparativaDeVentasPorCajeroAnual"/>
 		</action>
 		
 		<action 
