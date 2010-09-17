@@ -25,11 +25,70 @@
 				<tr align="center">
 					<td><bean:message key="indicadores.ventasPorCajeroAnualFilter"/></td>
 				</tr>
-
+				<tr align="left">
+					<td>&nbsp;</td>
+				</tr>
+				<tr align="left">
+					<td>&nbsp;</td>
+					<td><bean:message key="commons.yearDesde"/></td>
+					<td>&nbsp;</td>
+					<td>
+						<html:select property="yearFrom">
+							<html:option value="2010">2010</html:option>
+							<html:option value="2009">2009</html:option>
+							<html:option value="2008">2008</html:option>
+						</html:select>
+					</td>
+				</tr>
+				<tr align="left">
+					<td>&nbsp;</td>
+				</tr>
+				<tr align="left">
+					<td>&nbsp;</td>
+					<td><bean:message key="commons.yearHasta"/></td>
+					<td>&nbsp;</td>
+					<td>
+						<html:select property="yearTo">
+							<html:option value="2010">2010</html:option>
+							<html:option value="2009">2009</html:option>
+							<html:option value="2008">2008</html:option>
+						</html:select>
+					</td>
+				</tr>
+				<tr align="left">
+					<td>&nbsp;</td>
+				</tr>
+				<tr align="left">
+					<td>&nbsp;</td>
+					<td><bean:message key="commons.cajero"/></td>
+					<td>&nbsp;</td>
+					<td>
+						<html:select property="cajero">
+							<html:option value="cajero">cajero</html:option>
+						</html:select>
+					</td>
+				</tr>
+				<tr align="left">
+					<td>&nbsp;</td>
+				</tr>
+				<tr align="left">
+					<td>&nbsp;</td>
+					<td><bean:message key="commons.bandaHoraria"/></td>
+					<td>&nbsp;</td>
+					<td>
+						<html:select property="bandaHoraria">
+							<html:option value="bandaHoraria">bandaHoraria</html:option>
+						</html:select>
+					</td>
+				</tr>
+				<tr align="left">
+					<td>&nbsp;</td>
+				</tr>
 				<tr align="left">
 					<td colspan="3">&nbsp;</td>
 					<td>
-						<input type="button" value="Ver Indicador" readonly="readonly" onclick="alert('Indicador')">
+						<input type="button" value="Ver Indicador" 
+						onclick="forms[0].VirtualDispatchName.value='executeVentasPorCajeroAnual'; forms[0].submit();">
 					</td>
 				</tr>
 				<tr align="left">

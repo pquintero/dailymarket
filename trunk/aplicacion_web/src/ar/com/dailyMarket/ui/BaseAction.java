@@ -8,6 +8,7 @@ import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 import org.apache.struts.actions.DispatchAction;
 
+import ar.com.dailyMarket.charts.Chart;
 import ar.com.dailyMarket.dailyMapping.BaseActionMapping;
 
 public class BaseAction extends DispatchAction {	
@@ -35,5 +36,11 @@ public class BaseAction extends DispatchAction {
 	public ActionForward stepBack (ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
 		request.getSession().setAttribute("initMethod", true);
 		return mapping.findForward("redirectFilter");
+    }
+	
+    public ActionForward getXML(Chart chart, ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
+        response.setContentType("text/xml"); 
+        chart.writeXML(response.getOutputStream());
+        return null;
     } 
 }

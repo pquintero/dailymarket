@@ -727,4 +727,75 @@
         <put name="body"    value="/pages/indicadores/comparativaDeVentasPorCajeroAnualFilter.jsp" />
         <put name="buttons" value="tiles.indicadores.buttons" />                    
     </definition>
+    
+	<!--  Graficos de Indicadores  -->
+	<definition name="tiles.indicadores.chart.ventasPorCajeroMensual" extends=".managerMainLayout">
+        <put name="title"   value="indicadores.chart.ventasPorCajeroMensual" />
+        <put name="body"    value="tiles.indicadores.chart.ventasPorCajeroMensual.body" />
+    </definition>
+	<definition name="tiles.indicadores.chart.ventasPorCajeroMensual.body" extends=".homeLayout">
+        <put name="title"   value="indicadores.ventasPorCajeroMensualFilter" />
+        <put name="action"  value="indicadores" />
+        <put name="tabs"    value=""/>
+        <put name="body"    value="/pages/indicadores/ventasPorCajeroMensualChart.jsp" />
+        <put name="buttons" value="tiles.indicadores.chart.ventasPorCajeroMensual.buttons" />                    
+    </definition>
+   	<definition name="tiles.indicadores.chart.ventasPorCajeroMensual.buttons" extends=".buttonsLayout">
+        <putList name="buttonList">
+            <item value="common.button.back" link="doIndicadoresVentasPorCajeroMensual" classtype="org.apache.struts.tiles.beans.SimpleMenuItem"/>
+        </putList>
+    </definition>
+    
+	<definition name="tiles.indicadores.chart.ventasPorCajeroAnual" extends=".managerMainLayout">
+        <put name="title"   value="indicadores.chart.ventasPorCajeroAnual" />
+        <put name="body"    value="tiles.indicadores.chart.ventasPorCajeroAnual.body" />
+    </definition>
+	<definition name="tiles.indicadores.chart.ventasPorCajeroAnual.body" extends=".homeLayout">
+        <put name="title"   value="indicadores.ventasPorCajeroAnualFilter" />
+        <put name="action"  value="indicadores" />
+        <put name="tabs"    value=""/>
+        <put name="body"    value="/pages/indicadores/ventasPorCajeroAnualChart.jsp" />
+        <put name="buttons" value="tiles.indicadores.chart.ventasPorCajeroAnual.buttons" />                    
+    </definition>
+   	<definition name="tiles.indicadores.chart.ventasPorCajeroAnual.buttons" extends=".buttonsLayout">
+        <putList name="buttonList">
+            <item value="common.button.back" link="doIndicadoresVentasPorCajeroAnual" classtype="org.apache.struts.tiles.beans.SimpleMenuItem"/>
+        </putList>
+    </definition>
+    
+	<definition name="tiles.indicadores.chart.comparativaDeVentasPorCajeroMensual" extends=".managerMainLayout">
+        <put name="title"   value="indicadores.chart.comparativaDeVentasPorCajeroMensual" />
+        <put name="body"    value="tiles.indicadores.chart.comparativaDeVentasPorCajeroMensual.body" />
+    </definition>
+	<definition name="tiles.indicadores.chart.comparativaDeVentasPorCajeroMensual.body" extends=".homeLayout">
+        <put name="title"   value="indicadores.comparativaDeVentasPorCajeroMensualFilter" />
+        <put name="action"  value="indicadores" />
+        <put name="tabs"    value=""/>
+        <put name="body"    value="/pages/indicadores/comparativaDeVentasPorCajeroMensualChart.jsp" />
+        <put name="buttons" value="tiles.indicadores.chart.comparativaDeVentasPorCajeroMensual.buttons" />                    
+    </definition>
+   	<definition name="tiles.indicadores.chart.comparativaDeVentasPorCajeroMensual.buttons" extends=".buttonsLayout">
+        <putList name="buttonList">
+            <item value="common.button.back" link="doIndicadoresComparativaDeVentasPorCajeroMensual" classtype="org.apache.struts.tiles.beans.SimpleMenuItem"/>
+        </putList>
+    </definition>
+    
+	<definition name="tiles.indicadores.chart.comparativaDeVentasPorCajeroAnual" extends=".managerMainLayout">
+        <put name="title"   value="indicadores.chart.comparativaDeVentasPorCajeroAnual" />
+        <put name="body"    value="tiles.indicadores.chart.comparativaDeVentasPorCajeroAnual.body" />
+    </definition>
+	<definition name="tiles.indicadores.chart.comparativaDeVentasPorCajeroAnual.body" extends=".homeLayout">
+        <put name="title"   value="indicadores.comparativaDeVentasPorCajeroAnualFilter" />
+        <put name="action"  value="indicadores" />
+        <put name="tabs"    value=""/>
+        <put name="body"    value="/pages/indicadores/comparativaDeVentasPorCajeroAnualChart.jsp" />
+        <put name="buttons" value="tiles.indicadores.chart.comparativaDeVentasPorCajeroAnual.buttons" />                    
+    </definition>
+   	<definition name="tiles.indicadores.chart.comparativaDeVentasPorCajeroAnual.buttons" extends=".buttonsLayout">
+        <putList name="buttonList">
+            <item value="common.button.back" link="doIndicadoresComparativaDeVentasPorCajeroAnual" classtype="org.apache.struts.tiles.beans.SimpleMenuItem"/>
+        </putList>
+    </definition>
+    
+    
 </tiles-definitions>
