@@ -7,5 +7,11 @@ la cantidad de ventas que hizo un cajero en un dia En $ o por numero de ventas
 
 
 Preguntar si se puede cambiar los Filtros para los Indicadores a solo hacer mes o año sin desde hasta. Mas facil
-
+El indicador mensual tambien hay que especificarle el año?
 En los indicadores de comparatvas no seria mejor dar a elegir mediante checkboxs los cajeros a comparar. Sino, se comparan todos???
+
+
+Meti esto en el layout para que no se guarde en cache:
+
+<META HTTP-EQUIV="Pragma" CONTENT="no-cache">
+<META HTTP-EQUIV="Expires" CONTENT="-1">
