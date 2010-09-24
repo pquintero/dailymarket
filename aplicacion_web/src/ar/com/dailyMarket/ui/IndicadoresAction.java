@@ -9,6 +9,7 @@ import org.apache.struts.action.ActionMapping;
 import org.apache.struts.action.DynaActionForm;
 
 import ar.com.dailyMarket.charts.LineChart;
+import ar.com.dailyMarket.charts.MSLine;
 import ar.com.dailyMarket.services.IndicadoresService;
 
 public class IndicadoresAction extends BaseAction {
@@ -17,7 +18,7 @@ public class IndicadoresAction extends BaseAction {
     	return mapping.findForward("showIndicadoresHome");
     }
     
-/*		VentasPorCajeroMensual		*/
+/******		VentasPorCajeroMensual		******/
     
     public ActionForward doIndicadoresVentasPorCajeroMensual(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) {	
     	return mapping.findForward("showIndicadoresVentasPorCajeroMensualFilter");
@@ -34,7 +35,7 @@ public class IndicadoresAction extends BaseAction {
         return getXML(line, mapping, form, request, response);
     }
     
-/*		VentasPorCajeroAnual		*/
+/******		VentasPorCajeroAnual		******/
     public ActionForward doIndicadoresVentasPorCajeroAnual(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) {	
     	return mapping.findForward("showIndicadoresVentasPorCajeroAnualFilter");
     }
@@ -50,7 +51,7 @@ public class IndicadoresAction extends BaseAction {
         return getXML(line, mapping, form, request, response);
     }
 
-/*		ComparativaDeVentasPorCajeroMensual		*/
+/******		ComparativaDeVentasPorCajeroMensual		******/
     public ActionForward doIndicadoresComparativaDeVentasPorCajeroMensual(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) {	
     	return mapping.findForward("showIndicadoresComparativaDeVentasPorCajeroMensualFilter");
     }
@@ -60,9 +61,13 @@ public class IndicadoresAction extends BaseAction {
     	return mapping.findForward("showIndicadoresComparativaDeVentasPorCajeroMensualChart");
     }
     
-    //FALTA*************************
+    public ActionForward getCVPCMChart(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception{
+		IndicadoresService is = new IndicadoresService();
+        MSLine msline = is.getCVPCMChart((DynaActionForm)form);
+        return getXML(msline, mapping, form, request, response);
+    }
     
-/*		ComparativaDeVentasPorCajeroAnual		*/
+/******		ComparativaDeVentasPorCajeroAnual		******/
     public ActionForward doIndicadoresComparativaDeVentasPorCajeroAnual(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) {	
     	return mapping.findForward("showIndicadoresComparativaDeVentasPorCajeroAnualFilter");
     }
@@ -72,6 +77,10 @@ public class IndicadoresAction extends BaseAction {
     	return mapping.findForward("showIndicadoresComparativaDeVentasPorCajeroAnualChart");
     }
     
-    //FALTA*************************
+    public ActionForward getCVPCAChart(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception{
+		IndicadoresService is = new IndicadoresService();
+        MSLine msline = is.getCVPCAChart((DynaActionForm)form);
+        return getXML(msline, mapping, form, request, response);
+    }
 
 }

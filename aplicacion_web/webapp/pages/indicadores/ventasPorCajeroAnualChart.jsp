@@ -22,14 +22,15 @@
 				<tr align="center">
 					<TD>&nbsp;</TD>
 					<TD align="center">
-						<% String urlCyl = "indicadores.do?" +
+						<% String url = "indicadores.do?" +
 								"VirtualDispatchName=getVPCAChart" + 
+								"&yearFrom="+ URLEncoder.encode(yearFrom) + 
 								"&yearTo="+   URLEncoder.encode(yearTo) + 
 								"&cajero=" + URLEncoder.encode(cajero) + 
 								"&bandaHoraria=" + URLEncoder.encode(bandaHoraria);
 						%>
 						<embed src="charts/Line.swf"
-		 					flashVars="dataURL=<%=URLEncoder.encode(urlCyl)%>"
+		 					flashVars="dataURL=<%=URLEncoder.encode(url)%>"
 		 					allowscriptaccess="always"
 		 					quality="high"
 		 					width="900"
