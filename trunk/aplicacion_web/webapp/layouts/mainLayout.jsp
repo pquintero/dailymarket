@@ -24,6 +24,8 @@
 			}
 %>
     <TITLE>.:: DAILYMARKET :: <%=retVal%> ::.</TITLE>
+    <META HTTP-EQUIV="Pragma" CONTENT="no-cache"/>
+	<META HTTP-EQUIV="Expires" CONTENT="-1"/>
     <META HTTP-EQUIV="Content-Type" content="text/html; charset=iso-8859-1"/>
 	<script type="text/javascript" src="functions.js"></script>
 	<script type="text/javascript" src="ieupdateV2.js"></script>

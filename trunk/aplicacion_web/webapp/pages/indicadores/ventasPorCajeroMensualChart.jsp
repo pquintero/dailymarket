@@ -3,6 +3,7 @@
 
 <%@ taglib uri="/tags/struts-html" prefix="html" %>
 <%@ taglib uri="/tags/struts-bean" prefix="bean" %>
+<%@ page import="java.net.URLEncoder" %>
 
 <bean:define id="monthFrom" property="monthFrom" name="IndicadoresForm" type="java.lang.String"/>
 <bean:define id="monthTo" property="monthTo" name="IndicadoresForm" type="java.lang.String"/>
@@ -21,9 +22,15 @@
 				<tr align="center">
 					<TD>&nbsp;</TD>
 					<TD align="center">
+						<% String url = "indicadores.do?" +
+								"VirtualDispatchName=getVPCMChart" + 
+								"&monthFrom="+ URLEncoder.encode(monthFrom) + 
+								"&monthTo="+ URLEncoder.encode(monthTo) +
+								"&cajero=" + URLEncoder.encode(cajero) + 
+								"&bandaHoraria=" + URLEncoder.encode(bandaHoraria);
+						%>
 						<embed src="charts/Line.swf"
-		 					flashVars="&amp;dataURL=indicadores.do?VirtualDispatchName=getVPCMChart&monthFrom=<%= monthFrom %>
-		 								&monthTo=<%= monthTo %>&cajero=<%= cajero %>&bandaHoraria=<%= bandaHoraria %>"
+		 					flashVars="dataURL=<%=URLEncoder.encode(url)%>"
 		 					allowscriptaccess="always"
 		 					quality="high"
 		 					width="900"
