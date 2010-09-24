@@ -8,5 +8,4 @@ la cantidad de ventas que hizo un cajero en un dia En $ o por numero de ventas
 
 Preguntar si se puede cambiar los Filtros para los Indicadores a solo hacer mes o año sin desde hasta. Mas facil
 
-_____
-NO ME LLEGAN LOS DATOS EN EL FORMULARIO CUANDO SE LLAMA AL METODO QUE ARMA EL XML DEL CHART
+En los indicadores de comparatvas no seria mejor dar a elegir mediante checkboxs los cajeros a comparar. Sino, se comparan todos???
