@@ -43,7 +43,7 @@ function MM_swapImage() { //v3.0
 			<table cellpadding="0" class="bullets" cellspacing="0" border="0" align="right">
     			<tr>
        				<td>
-						<a href="home.do?VirtualDispatchName=initAction" ><img src="images/header/home.jpg"   name="home"  border="0" alt="Ir a Inicio"></a></td>
+						<a href="manager.do?VirtualDispatchName=initAction" ><img src="images/header/home.jpg"   name="home"  border="0" alt="Ir a Inicio"></a></td>
 					<td>&nbsp;</td>
 	   				<td><a href="logout.do?VirtualDispatchName=doLogout" ><img src="images/header/exit.jpg" name="boton3" border="0" alt="Salir"></a></td>
     			</tr>
@@ -61,7 +61,7 @@ function MM_swapImage() { //v3.0
 				<TR>
 					<td width="25"></td>
 					<TD class="inciarOrdenLeft"> 
-						<a href="product.do?VirtualDispatchName=showOrdersPending">Emisión</a>
+						<a href="manager.do?VirtualDispatchName=initAction">Emisión</a>
 					</TD>
 					
 					<td width="25"></td>
@@ -80,7 +80,7 @@ function MM_swapImage() { //v3.0
 				
 					<td width="25"></td>
 					<TD class="inciarOrdenLeft"> 
-						<a href="manager.do?VirtualDispatchName=doHomeSimulador">Simulador de Compras</a>
+						<a href="simulator.do?VirtualDispatchName=initAction">Simulador de Compras</a>
 					</TD> 	
 				</tr>				
 			</table>

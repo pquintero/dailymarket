@@ -215,18 +215,17 @@
     
     <!-- ============================================================== -->
     <!-- MANAGER                                                           -->
-    <!-- ============================================================== -->
-    
+    <!-- ============================================================== -->    
     <definition name="tiles.home.manager" extends=".managerMainLayout">
-        <put name="title"   value="Menu.managerHome" />
+        <put name="title"   value="ordersPending.title" />
         <put name="body"    value="tiles.home.manager.body" />
     </definition>
     <definition name="tiles.home.manager.body" extends=".homeLayout">
-   		<put name="title"  value="Menu.managerHome" />
-        <put name="action"  value="manager"/>
-        <put name="tabs" value="" />
-        <put name="body"  value="/pages/home/manager.jsp" />
-        <put name="buttons"  value="" />
+   		<put name="title"   value="ordersPending.title" />
+        <put name="action"  value="manager" />
+        <put name="tabs"    value=""/>
+        <put name="body"    value="/pages/manager/ordersPending.jsp" />
+        <put name="buttons" value="button.manager.ordersPending" />
     </definition>
 	
     <definition name="tiles.home.manager.estadisticas" extends=".managerMainLayout">
@@ -460,7 +459,7 @@
 	<!-- ============================================================== -->
     <!-- Simulator                                                   -->
     <!-- ============================================================== -->    
-    <definition name="tiles.simulator.execute" extends=".mainLayout">
+    <definition name="tiles.simulator.execute" extends=".managerMainLayout">
         <put name="title"   value="simulator.title.new" />
         <put name="body"    value="tiles.simulator.body" />
     </definition>    
@@ -485,23 +484,7 @@
         <put name="tabs"    value=""/>
         <put name="body"    value="/pages/configuration/configuration.jsp" />
         <put name="buttons" value="tiles.configuration.buttons" />                    
-    </definition>
-    
-    <!-- ============================================================== -->
-    <!-- Manager                                                   -->
-    <!-- ============================================================== -->    
-    <definition name="tiles.manager.ordersPending" extends=".managerMainLayout">
-        <put name="title"   value="ordersPending.title" />
-        <put name="body"    value="tiles.manager.ordersPending.body" />
-    </definition>    
-	<definition name="tiles.manager.ordersPending.body" extends=".editLayout">
-        <put name="title"   value="ordersPending.title" />
-        <put name="action"  value="product" />
-        <put name="tabs"    value=""/>
-        <put name="body"    value="/pages/product/ordersPending.jsp" />
-        <put name="buttons" value="button.manager.ordersPending" />                    
-    </definition>
-    
+    </definition>            
     
     <!-- ============================================================== -->
     <!-- REPORTES                                                   -->
