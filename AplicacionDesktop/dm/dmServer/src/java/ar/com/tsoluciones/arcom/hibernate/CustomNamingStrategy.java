@@ -11,7 +11,7 @@ import org.hibernate.util.StringHelper;
 public class CustomNamingStrategy implements NamingStrategy {
 
 	//Deberia ser reemplazado por un prefijo customizable por XML o archivo de configuracion
-	private static String prefix = "tea_";
+	private static String prefix = "";
 
 	public static final NamingStrategy INSTANCE = new CustomNamingStrategy();
 
