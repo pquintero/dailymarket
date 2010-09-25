@@ -1,9 +1,6 @@
 package ar.com.tsoluciones.arcom.system;
 
 import java.net.URL;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Set;
 
 import org.hibernate.HibernateException;
 import org.hibernate.SessionFactory;
@@ -11,7 +8,6 @@ import org.hibernate.cfg.Configuration;
 
 import ar.com.tsoluciones.arcom.hibernate.CustomNamingStrategy;
 import ar.com.tsoluciones.arcom.logging.Log;
-import ar.com.tsoluciones.emergencies.server.gui.core.configuration.DatasourceConfig;
 
 /**
  * Copyright (c) Tito Company.

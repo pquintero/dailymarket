@@ -39,65 +39,6 @@
             <annotation>ar.com.tsoluciones.arcom.hibernate.Transactional</annotation>
         </aspect>
 
-        <aspect implementation="ar.com.tsoluciones.emergencies.server.businesslogic.core.aspects.UpdateAspect" layer="6">
-            <pattern>ar\.com\.tsoluciones\.emergencies\.server\.businesslogic\.core\.service\.proxyinterface\.CallApprovableServiceInterface\.unlock</pattern>
-            <pattern>ar\.com\.tsoluciones\.emergencies\.server\.businesslogic\.core\.service\.proxyinterface\.CallApprovableServiceInterface\.lock</pattern>
-            <pattern>ar\.com\.tsoluciones\.emergencies\.server\.businesslogic\.core\.service\.proxyinterface\.CallApprovableServiceInterface\.update</pattern>
-        </aspect>
-
-        <aspect implementation="ar.com.tsoluciones.emergencies.server.businesslogic.gis.aspects.GeoIntegrationAspect" layer="2">
-            <pattern>ar\.com\.tsoluciones\.emergencies\.server\.businesslogic\.core\.service\.proxyinterface\.CallApprovableServiceInterface\.derivateToDerivationUnit</pattern>
-            <pattern>ar\.com\.tsoluciones\.emergencies\.server\.businesslogic\.core\.service\.proxyinterface\.CallApprovableServiceInterface\.derivateToSupervisor</pattern>
-            <pattern>ar\.com\.tsoluciones\.emergencies\.server\.businesslogic\.core\.service\.proxyinterface\.CallApprovableServiceInterface\.derivateToSpecialist</pattern>
-            <pattern>ar\.com\.tsoluciones\.emergencies\.server\.businesslogic\.core\.service\.proxyinterface\.CallApprovableServiceInterface\.derivateManagementBack</pattern>
-            <pattern>ar\.com\.tsoluciones\.emergencies\.server\.businesslogic\.core\.service\.proxyinterface\.CallApprovableServiceInterface\.close*</pattern>
-            <pattern>ar\.com\.tsoluciones\.emergencies\.server\.businesslogic\.core\.service\.proxyinterface\.CallApprovableServiceInterface\.update*</pattern>
-        </aspect>
-
-        <aspect implementation="ar.com.tsoluciones.emergencies.server.businesslogic.gis.aspects.GeoResourceIntegrationAspect" layer="3">
-            <pattern>ar\.com\.tsoluciones\.emergencies\.server\.businesslogic\.resources\.service\.proxyinterface\.ResourceService\.save</pattern>
-            <pattern>ar\.com\.tsoluciones\.emergencies\.server\.businesslogic\.resources\.service\.proxyinterface\.ResourceService\.update</pattern>
-            <pattern>ar\.com\.tsoluciones\.emergencies\.server\.businesslogic\.resources\.service\.proxyinterface\.ResourceStateHistoryService\.saveOrUpdate</pattern>
-            <pattern>ar\.com\.tsoluciones\.emergencies\.server\.businesslogic\.resources\.service\.proxyinterface\.AssignService\.update</pattern>
-            <pattern>ar\.com\.tsoluciones\.emergencies\.server\.businesslogic\.resources\.service\.proxyinterface\.AssignService\.save</pattern>
-        </aspect>
-
-        <aspect implementation="ar.com.tsoluciones.emergencies.server.businesslogic.audit.aspect.AuditAspect" layer="5">
-            <pattern>ar\.com\.tsoluciones\.emergencies\.server\.businesslogic\.core\.service\.proxyinterface\.CallApprovableServiceInterface\.derivate*</pattern>
-            <pattern>ar\.com\.tsoluciones\.emergencies\.server\.businesslogic\.core\.service\.proxyinterface\.CallApprovableServiceInterface\.close*</pattern>
-            <pattern>ar\.com\.tsoluciones\.emergencies\.server\.businesslogic\.core\.service\.proxyinterface\.CallApprovableServiceInterface\.waitToCloseIncident</pattern>
-            <pattern>ar\.com\.tsoluciones\.emergencies\.server\.businesslogic\.core\.service\.proxyinterface\.CallApprovableServiceInterface\.update*</pattern>
-            <pattern>ar\.com\.tsoluciones\.emergencies\.server\.businesslogic\.core\.service\.proxyinterface\.CallApprovableServiceInterface\.save</pattern>
-            <pattern>ar\.com\.tsoluciones\.emergencies\.server\.businesslogic\.core\.service\.proxyinterface\.CallApprovableServiceInterface\.saveOrUpdate*</pattern>
-            <pattern>ar\.com\.tsoluciones\.emergencies\.server\.businesslogic\.core\.service\.proxyinterface\.CallApprovableServiceInterface\.openAction</pattern>
-            <pattern>ar\.com\.tsoluciones\.emergencies\.server\.businesslogic\.core\.service\.proxyinterface\.CallApprovableServiceInterface\.lock*</pattern>
-            <pattern>ar\.com\.tsoluciones\.emergencies\.server\.businesslogic\.core\.service\.proxyinterface\.CallApprovableServiceInterface\.unlock*</pattern>
-            <pattern>ar\.com\.tsoluciones\.emergencies\.server\.businesslogic\.core\.service\.proxyinterface\.CallApprovableServiceInterface\.addComment*</pattern>
-            <pattern>ar\.com\.tsoluciones\.emergencies\.server\.businesslogic\.core\.service\.proxyinterface\.CallApprovableServiceInterface\.dispatchUpdate</pattern>
-            <pattern>ar\.com\.tsoluciones\.emergencies\.server\.businesslogic\.core\.service\.proxyinterface\.CommentSummaryServiceInterface\.updateValueComments</pattern>
-            <!-- ****************************************RECURSOS******************************************************** -->
-            <pattern>ar\.com\.tsoluciones\.emergencies\.server\.businesslogic\.core\.service\.proxyinterface\.DerivationUnitActionDetailServiceInterface\.save</pattern>
-            <pattern>ar\.com\.tsoluciones\.emergencies\.server\.businesslogic\.core\.service\.proxyinterface\.DerivationUnitActionDetailServiceInterface\.update*</pattern>
-            <pattern>ar\.com\.tsoluciones\.emergencies\.server\.businesslogic\.core\.service\.proxyinterface\.DerivationUnitActionDetailServiceInterface\.delete</pattern>
-		    <pattern>ar\.com\.tsoluciones\.emergencies\.server\.businesslogic\.resources\.service\.proxyinterface\.AssignService\.update*</pattern>
-            <pattern>ar\.com\.tsoluciones\.emergencies\.server\.businesslogic\.resources\.service\.proxyinterface\.AssignService\.save*</pattern>
-            <pattern>ar\.com\.tsoluciones\.emergencies\.server\.businesslogic\.resources\.service\.proxyinterface\.ResourceStateHistoryService\.save*</pattern>
-            <!-- ****************************************RECURSOS******************************************************** -->
-        </aspect>
-
-<!-- 
-        <aspect implementation="ar.com.tsoluciones.emergencies.server.businesslogic.core.aspects.LogExceptionAspect">
-            <pattern>*</pattern>
-        </aspect>
--->
-		<aspect implementation="ar.com.tsoluciones.emergencies.server.businesslogic.gis.aspects.GeoAgencyIntegrationAspect" layer="4">
-            <pattern>ar\.com\.tsoluciones\.emergencies\.server\.businesslogic\.core\.service\.proxyinterface\.AgencyServiceInterface\.save</pattern>
-            <pattern>ar\.com\.tsoluciones\.emergencies\.server\.businesslogic\.core\.service\.proxyinterface\.AgencyServiceInterface\.update</pattern>
-        </aspect>
-        
-        <aspect implementation="ar.com.tsoluciones.emergencies.server.businesslogic.aspects.SifemeIntegrationAspect" layer="4">
-            <pattern>ar\.com\.tsoluciones\.emergencies\.server\.businesslogic\.core\.service\.proxyinterface\.CallApprovableServiceInterface\.derivateToDerivationUnit</pattern>
-        </aspect>
     </category>
 
 </properties>
