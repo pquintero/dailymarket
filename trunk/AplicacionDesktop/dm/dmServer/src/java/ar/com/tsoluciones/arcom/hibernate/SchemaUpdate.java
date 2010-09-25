@@ -29,13 +29,6 @@ public class SchemaUpdate {
 	@SuppressWarnings("unchecked")
 	private void execute(boolean script) {
 	    executeUpdate("hibernate.cfg.xml", CustomNamingStrategy.INSTANCE, script);
-        executeUpdate("hibernate_Audit.cfg.xml", new CustomNamingStrategy(), script);
-        executeUpdate("hibernate_Audit-History.cfg.xml", new HistoryNamingStrategy(), script);
-        
-        ar.com.tsoluciones.emergencies.server.gui.core.configuration.Configuration appConfig =
-        	ar.com.tsoluciones.emergencies.server.gui.core.configuration.Configuration.getInstance(true);
-        executeUpdate("hibernate_Alov.cfg.xml", new AlovNamingStrategy("", appConfig.getGisImplementationCode()), script);
-        executeUpdate("hibernate_Geo.cfg.xml", new AlovNamingStrategy("", appConfig.getGisImplementationCode()), script);
 	}
 	
 	private static void executeUpdate(String configFile, NamingStrategy strategy, boolean script) {

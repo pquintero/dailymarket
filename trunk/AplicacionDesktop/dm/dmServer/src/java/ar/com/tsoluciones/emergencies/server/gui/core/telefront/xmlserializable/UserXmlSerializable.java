@@ -35,11 +35,11 @@ public class UserXmlSerializable implements XmlSerializable {
 
 		    Element pieceElement = rootElement.addElement("piece");
 
-		    pieceElement.addElement("id").setText(user.getId().toString());
-		    pieceElement.addElement("username").setText(user.getUsername());
-		    pieceElement.addElement("lastname").setText(user.getLastName() != null ? user.getLastName() : "");
-		    pieceElement.addElement("firstname").setText(user.getFirstName() != null ? user.getFirstName() : "");
-		    pieceElement.addElement("deleted").setText(""+user.isDeleted());
+//		    pieceElement.addElement("id").setText(user.getId().toString());
+//		    pieceElement.addElement("username").setText(user.getUsername());
+//		    pieceElement.addElement("lastname").setText(user.getLastName() != null ? user.getLastName() : "");
+//		    pieceElement.addElement("firstname").setText(user.getFirstName() != null ? user.getFirstName() : "");
+//		    pieceElement.addElement("deleted").setText(""+user.isDeleted());
 		}
 
 		this.xml = document.asXML();

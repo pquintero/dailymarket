@@ -1,1 +1,1 @@
-3525M
+${log-head-revision}

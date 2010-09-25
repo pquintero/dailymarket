@@ -50,8 +50,8 @@ public class UserService {
 	 * @return Usuario
 	 */
 	public static User getUserByUserName(String username) throws HibernateException {
-		List<User> l = Cast.castList(User.class, HibernateService.findByFilter(User.class, new String[] { "username", "deleted" }, new Object[] { username, Boolean.FALSE }, new Type[] {
-				Hibernate.STRING, Hibernate.BOOLEAN }));
+		List<User> l = Cast.castList(User.class, HibernateService.findByFilter(User.class, new String[] { "user"}, new Object[] { username}, new Type[] {
+				Hibernate.STRING}));
 
 		if (l == null || l.size() == 0)
 			return null;

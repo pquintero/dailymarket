@@ -56,7 +56,7 @@ public class BasicProfilingAspect extends Aspect {
 		//Si la operación se excede del tiempo configurado
 		String usuario = "";
 		if(UserManager.getCurrentUser()!=null){
-			usuario = "Usuario: " + UserManager.getCurrentUser().getUsername();
+//			usuario = "Usuario: " + UserManager.getCurrentUser().getUsername();
 		}
 		if(executionTime >= Configuration.getInstance().getMaxTimeForExecuteOperation()*1000){
 			exceededOperationsLog.info("Proxy culminó de invocar al método " + method.getName() + " tomó " + executionTime + " milisegundos. " + usuario);
