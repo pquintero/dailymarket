@@ -6,28 +6,14 @@
 
 	<session-factory>
 		<!-- Base de datos -->
-		<property name="hibernate.dialect">org.hibernate.dialect.SQLServerDialect</property>
-		<property name="hibernate.connection.driver_class">com.jnetdirect.jsql.JSQLDriver</property>
+		<property name="hibernate.dialect">org.hibernate.dialect.MySQLDialect</property>
+		<property name="hibernate.connection.driver_class">com.mysql.jdbc.Driver</property>
 		<property name="hibernate.connection.url">
-			jdbc:JSQLConnect://%sql.server%/database=%sql.emergenciesDatabase%/user=%sql.username%/asciiStringParameters=true/disableStatementPooling=true </property>
+			jdbc:mysql://%sql.server%/database=%sql.emergenciesDatabase%/user=%sql.username%/asciiStringParameters=true/disableStatementPooling=true </property>
 		<property name="hibernate.connection.username">%sql.username%</property>
 		<property name="hibernate.connection.password">%sql.password%</property>
 
 		<property name="hibernate.current_session_context_class">thread</property>
-
-		<!-- Pool de conexiones -->
-		<property name="hibernate.connection.provider_class">
-			ar.com.tsoluciones.emergencies.server.hibernate.C3P0ConnectionProvider </property>
-		<property name="hibernate.c3p0.max_size">1000</property>
-		<property name="hibernate.c3p0.min_size">50</property>
-		<property name="hibernate.c3p0.timeout">5000</property>
-		<property name="hibernate.c3p0.max_statements">100</property>
-		<property name="hibernate.c3p0.idle_test_period">3000</property>
-		<property name="hibernate.c3p0.acquire_increment">3</property>
-		<property name="hibernate.c3p0.validate">true</property>
-
-		<!-- Isolation -->
-		<property name="hibernate.connection.isolation">2</property>
 
 		<!-- Configuracion JDBC -->
 		<property name="hibernate.jdbc.batch_size">0</property>
@@ -44,9 +30,6 @@
 
 		<!-- Debug -->
 		<property name="hibernate.show_sql">false</property>
-
-		<property name="hibernate.search.default.directory_provider">org.hibernate.search.store.FSDirectoryProvider</property>
-		<property name="hibernate.search.default.indexBase">/etc/index/f911</property>
 
 	
 		<!-- Core -->

@@ -161,13 +161,13 @@ public class UserDto
 	 */
 	public User toUser(User user) throws ServiceException
 	{
-		user.setId(MappingHelper.parseLong(this.getIdText(), false));
-		user.setUsername(MappingHelper.parseString(this.getUsernameText(), true));
-		user.setLegajo(MappingHelper.parseString(this.getLegajoText(), false));
-		user.setFirstName(MappingHelper.parseString(this.getFirstnameText(), false));
-		user.setLastName(MappingHelper.parseString(this.getLastnameText(), false));
-		user.setTitle(MappingHelper.parseString(this.getTitleText(), false));
-		user.setDeleted(MappingHelper.parseBoolean(this.getDeletedCheckbox()));
+//		user.setId(MappingHelper.parseLong(this.getIdText(), false));
+//		user.setUsername(MappingHelper.parseString(this.getUsernameText(), true));
+//		user.setLegajo(MappingHelper.parseString(this.getLegajoText(), false));
+//		user.setFirstName(MappingHelper.parseString(this.getFirstnameText(), false));
+//		user.setLastName(MappingHelper.parseString(this.getLastnameText(), false));
+//		user.setTitle(MappingHelper.parseString(this.getTitleText(), false));
+//		user.setDeleted(MappingHelper.parseBoolean(this.getDeletedCheckbox()));
 
 
 		return user;
@@ -183,14 +183,14 @@ public class UserDto
 	{
 		UserDto userDto = new UserDto();
 
-		userDto.setIdText(MappingHelper.formatLong(user.getId(), false));
-		userDto.setUsernameText(MappingHelper.formatString(user.getUsername(), true));
-		userDto.setLegajoText(MappingHelper.formatString(user.getLegajo(), false));
-		userDto.setFirstnameText(MappingHelper.formatString(user.getFirstName(), false));
-		userDto.setLastnameText(MappingHelper.formatString(user.getLastName(), false));
-		userDto.setTitleText(MappingHelper.formatString(user.getTitle(), false));
-		userDto.setDeletedCheckbox(MappingHelper.formatBoolean(user.isDeleted()));
-		userDto.setSysadminCheckbox(MappingHelper.formatBoolean(user.isSysAdmin()));
+//		userDto.setIdText(MappingHelper.formatLong(user.getId(), false));
+//		userDto.setUsernameText(MappingHelper.formatString(user.getUsername(), true));
+//		userDto.setLegajoText(MappingHelper.formatString(user.getLegajo(), false));
+//		userDto.setFirstnameText(MappingHelper.formatString(user.getFirstName(), false));
+//		userDto.setLastnameText(MappingHelper.formatString(user.getLastName(), false));
+//		userDto.setTitleText(MappingHelper.formatString(user.getTitle(), false));
+//		userDto.setDeletedCheckbox(MappingHelper.formatBoolean(user.isDeleted()));
+//		userDto.setSysadminCheckbox(MappingHelper.formatBoolean(user.isSysAdmin()));
 
 		return userDto;
 	}

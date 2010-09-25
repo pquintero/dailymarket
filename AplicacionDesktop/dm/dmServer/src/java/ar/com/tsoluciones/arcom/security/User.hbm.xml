@@ -2,7 +2,7 @@
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 2.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
 
 <hibernate-mapping>
-    <class lazy="false" name="ar.com.dailyMarket.model.User" table="user">
+    <class lazy="false" name="ar.com.tsoluciones.arcom.security.User" table="user">
         <id column="id" name="id" type="java.lang.Long">
             <generator class="identity"/>
         </id>
@@ -16,7 +16,7 @@
         <property column="email" name="email"  type="java.lang.String"/>
         <property column="receivenotifications" name="receiveNotifications"  type="java.lang.Boolean"/>	   
         
-        <many-to-one name="groupUser" column="groupuserid" class="ar.com.dailyMarket.model.GroupUser"/>
+        <many-to-one name="groupUser" column="groupuserid" class="ar.com.tsoluciones.arcom.security.GroupUser"/>
     </class>   
 </hibernate-mapping>
 

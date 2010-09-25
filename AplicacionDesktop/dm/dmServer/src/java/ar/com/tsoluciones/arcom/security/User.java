@@ -111,7 +111,10 @@ public class User {
 		root.addElement("passwordOld").setText(String.valueOf(passwordOld));
 		root.addElement("dni").setText(String.valueOf(dni));
 		root.addElement("dateCreated").setText(String.valueOf(dateCreated));
-		root.addElement("groupUser").setText(String.valueOf(groupUser));
+		
+		//Serializar de otra forma
+//		root.addElement("groupUser").setText(String.valueOf(groupUser));
+		
 		root.addElement("email").setText(String.valueOf(email));
 		root.addElement("receiveNotifications").setText(String.valueOf(receiveNotifications));
 

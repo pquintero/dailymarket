@@ -33,9 +33,6 @@ public class SystemManager {
 
     private static SessionFactory factory;
     private static Configuration config;
-    
-    private static Map<String, Configuration> dynamicMapConfig = new HashMap<String, Configuration>();
-    private static Map<String, SessionFactory> dynamicMapFactory = new HashMap<String, SessionFactory>();
 
     public static void init(){
         try {
@@ -43,39 +40,6 @@ public class SystemManager {
             config.setNamingStrategy(CustomNamingStrategy.INSTANCE);
             config.configure();
             factory = config.buildSessionFactory();
-            
-            Map<String, DatasourceConfig> map = 
-            	ar.com.tsoluciones.emergencies.server.gui.core.configuration.Configuration.getInstance().getDynamicDatasources();
-            
-            Set<String> dskeys = map.keySet();
-            for (String name : dskeys) {
-            	DatasourceConfig dconfig = map.get(name);
-            	
-            	if (dconfig.isDefaultDatasource()) {
-            		dynamicMapConfig.put(dconfig.getName(), SystemManager.config);
-                    dynamicMapFactory.put(dconfig.getName(), SystemManager.factory);
-                    continue;
-            	}
-            	
-            	Configuration dynConfiguration = new Configuration();
-            	dynConfiguration.setNamingStrategy(CustomNamingStrategy.INSTANCE);
-            	dynConfiguration.configure();
-            
-            	dynConfiguration.setProperty("hibernate.connection.url", dconfig.getUrl());
-            	dynConfiguration.setProperty("hibernate.connection.username", dconfig.getUsername());
-            	dynConfiguration.setProperty("hibernate.connection.password", dconfig.getPassword());
-            	
-            	dynConfiguration.setProperty("hibernate.c3p0.max_size", dconfig.getPoolMaxSize().toString());
-            	dynConfiguration.setProperty("hibernate.c3p0.min_size", dconfig.getPoolMinSize().toString());
-            	dynConfiguration.setProperty("hibernate.c3p0.idleTestPeriod", dconfig.getIdleTestPeriod().toString());           	
-            	
-            	dynConfiguration.setNamingStrategy(CustomNamingStrategy.INSTANCE);
-            	
-            	dynamicMapConfig.put(name, dynConfiguration);
-            	dynamicMapFactory.put(name, dynConfiguration.buildSessionFactory());
-            	
-            }
-            
             
         } catch (HibernateException e) {
             Log.general.fatal("Fatal error initializing TSoluciones framework", e);
@@ -89,22 +53,6 @@ public class SystemManager {
 
     public static Configuration getConfiguration() {
         return config;
-    }
-
-    public static Configuration getConfigurationDynamic(String dynamicDSName) {
-    	return dynamicMapConfig.get(dynamicDSName);
-    }
-    
-    public static SessionFactory getSessionFactoryDynamic(String dynamicDSName) {
-    	return dynamicMapFactory.get(dynamicDSName);
-    }
-    
-    public static Map<String,Configuration> getConfigurationDynamic() {
-    	return dynamicMapConfig;
-    }
-    
-    public static Map<String,SessionFactory> getSessionFactoryDynamic() {
-    	return dynamicMapFactory;
     }
 
     public static void addConfigure(URL url) throws HibernateException {

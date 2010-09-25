@@ -54,13 +54,13 @@ public class UserRolesHelper {
 	public static boolean hasRole(User user, String roleName) {
 
 		// Para los otros roles es lo mismo
-		Object array[] = user.getRoles().toArray();
-
-		for (int i = 0; i < array.length; i++) {
-			Role role = (Role) array[i];
-			if (role.getName().toLowerCase().startsWith(roleName.toLowerCase()))
-				return true;
-		}
+//		Object array[] = user.getRoles().toArray();
+//
+//		for (int i = 0; i < array.length; i++) {
+//			Role role = (Role) array[i];
+//			if (role.getName().toLowerCase().startsWith(roleName.toLowerCase()))
+//				return true;
+//		}
 		return false;
 	}
 }
