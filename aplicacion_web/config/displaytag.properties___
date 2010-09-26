@@ -1,0 +1,44 @@
+
+basic.empty.showtable=true
+basic.show.header=true
+
+
+# page | list
+sort.amount=list
+
+export.amount=list
+export.decorated=true
+export.banner=<div class="exportlinks">Export: {0}</div>
+
+
+export.csv=true
+export.csv.include_header=false
+
+export.excel=true
+export.excel.include_header=true
+
+
+export.xml=true
+
+
+
+paging.banner.group_size=8
+
+
+paging.banner.placement=bottom
+
+save.excel.banner=<a href="{0}" rel="external">save ({1} bytes)</a>
+save.excel.filename=export.xls
+
+css.tr.even=even
+css.tr.odd=odd
+css.th.sorted=sorted
+css.th.ascending=order1
+css.th.descending=order2
+css.table=
+css.th.sortable=sortable
+
+# factory classes for extensions
+factory.requestHelper=org.displaytag.util.DefaultRequestHelperFactory
+
+locale.provider=org.displaytag.localization.I18nStrutsAdapter
