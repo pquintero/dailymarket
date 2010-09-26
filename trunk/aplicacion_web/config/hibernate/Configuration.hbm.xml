@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 2.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+    <class lazy="false" name="ar.com.dailyMarket.model.Configuration" table="configuration">
+        <id column="id" name="id" type="java.lang.Long">
+            <generator class="identity"/>
+        </id>
+		
+		<property column="timer" name="timer"  type="java.lang.Integer"/>	
+		<property column="emaildeposito" name="emailDeposito" type="java.lang.String"/>	
+    </class>   
+</hibernate-mapping>
+

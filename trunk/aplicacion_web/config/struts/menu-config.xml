@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<MenuConfig>
+  <Displayers>
+    <Displayer   name="DropDown"
+                 type="net.sf.navigator.displayer.DropDownMenuDisplayer"/>
+    <Displayer   name="Simple"
+                 type="net.sf.navigator.displayer.SimpleMenuDisplayer"/>    
+    <Displayer   name="CoolMenu"
+                 type="net.sf.navigator.displayer.CoolMenuDisplayer"/>
+    <Displayer   name="CoolMenu4"
+                 type="net.sf.navigator.displayer.CoolMenuDisplayer4"/>
+    <Displayer   name="MenuForm"
+                 type="net.sf.navigator.example.PermissionsFormMenuDisplayer"/>
+    <Displayer   name="TabbedMenu"
+                 type="net.sf.navigator.displayer.TabbedMenuDisplayer"/>
+    <Displayer   name="Velocity"
+                 type="net.sf.navigator.displayer.VelocityMenuDisplayer"/>
+    
+  </Displayers>
+
+  <Menus>
+	<Menu name="TabHome" title="" description="TabHome">
+		<Item name="TabAdmin" title="Tabs.home.admin" location="doHome" description="doHome" roles="Admin"/>
+	</Menu>	
+	
+	<Menu name="menu.commons.buttons.detail">
+	    <Item name="ButtonBack" title="common.button.back" location="stepToCheckPoint" roles="User"/>
+		<Item name="ButtonSave" title="common.button.save" location="update" roles="User"/>
+	</Menu>
+  </Menus>
+  
+</MenuConfig>

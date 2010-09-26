@@ -1,0 +1,784 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+
+ <!DOCTYPE tiles-definitions PUBLIC
+       "-//Apache Software Foundation//DTD Tiles Configuration 1.1//EN"
+       "http://jakarta.apache.org/struts/dtds/tiles-config_1_1.dtd">
+<tiles-definitions>
+    <!-- ============================================================== -->
+    <!-- Layouts                                                        -->
+    <!-- ============================================================== -->
+    <definition name=".mainLayout" path="/layouts/mainLayout.jsp">
+        <put name="title"       value="" />
+        <put name="header"      value="/common/header.jsp" />
+        <put name="footer"      value="/common/footer.jsp" />
+        <put name="body"        value=".portal.body" />
+    </definition>	
+	
+	<definition name=".managerMainLayout" path="/layouts/mainLayout.jsp">
+        <put name="title"       value="" />
+        <put name="header"      value="/common/managerHeader.jsp" />
+        <put name="footer"      value="/common/footer.jsp" />
+        <put name="body"        value=".portal.body" />
+    </definition>	
+	
+    <definition name=".errorLayout" path="/layouts/errorLayout.jsp">
+        <put name="title"       value="" />
+        <put name="body"        value=".portal.body" />
+		<put name="buttons"     value=".error.buttons"/>
+    </definition>
+
+    <definition name=".locatorLayout" path="/layouts/locatorLayout.jsp">
+        <put name="title"       value="" />
+        <put name="body"        value=".portal.body" />
+    </definition>
+
+	<definition name=".homeLayout" path="/layouts/homeLayout.jsp">
+        <put name="tabs"        value=".home.tabs"/>
+        <put name="body"        value=".home.body"/>         
+    </definition>
+    
+    <definition name=".homeLayoutTab" path="/layouts/homeLayoutTab.jsp">
+        <put name="tabs"        value=".home.fuel.tabs"/>
+        <put name="body"        value=".home.fuel.body"/>         
+    </definition>
+	
+	<definition name=".editLayout" path="/layouts/editLayout.jsp">
+        <put name="title"       value="Edit"/>
+        <put name="action"      value=".detail.action"/>
+        <put name="tabs"        value=".detail.tabs"/>
+        <put name="body"        value=".detail.body"/>
+        <put name="buttons"     value=".detail.buttons"/>
+    </definition>
+
+    <definition name=".newLayout" path="/layouts/newLayout.jsp">
+        <put name="title"       value="Edit"/>
+        <put name="action"      value=".detail.action"/>
+        <put name="body"        value=".detail.body"/>
+        <put name="buttons"     value=".detail.buttons"/>
+    </definition>   
+
+    <definition name=".msgLayout" path="/layouts/msgLayout.jsp">
+        <put name="title"       value="Edit"/>
+        <put name="action"      value=".detail.action"/>
+        <put name="body"        value=".detail.body"/>
+        <put name="buttons"     value=".detail.buttons"/>
+    </definition>    	
+	
+    <definition name=".searchLayout" path="/layouts/searchLayout.jsp">
+        <put name="title"       value="Search"/>
+        <put name="action"      value=".search.action"/>
+        <put name="criteria"    value=".search.criteria" />
+        <put name="buttons"     value=".search.buttons"/>
+        <put name="result"      value=".search.result" />
+    </definition>  
+
+    <definition name=".resultLayout" path="/layouts/resultLayout.jsp">
+        <put name="title"       value="Results"/>
+        <put name="action"      value=".result.action"/>
+        <put name="buttons"     value=".result.buttons"/>
+        <put name="list"		value=".result.list" />
+    </definition>
+
+    <definition name=".tabsLayout" path="/layouts/tabsLayout.jsp">
+        <put name="selectedIndex"   value="0" />
+        <put name="parameterName"   value="selected" />
+        <putList name="tabList"/>
+    </definition>
+	
+	<definition name=".subTabsLayout" path="/layouts/subTabsLayout.jsp">
+        <put name="selectedIndex"   value="0" />
+        <put name="parameterName"   value="selected" />
+        <putList name="tabList"/>
+    </definition>
+
+    <definition name=".buttonsLayout" path="/layouts/buttonsLayout.jsp">
+        <putList name="buttonList"/>
+    </definition>   
+
+	<definition name=".searchLayoutTab" path="/layouts/searchLayoutTab.jsp">
+        <put name="title"       value="Search"/>
+        <put name="action"      value=".search.action"/>
+        <put name="criteria"    value=".search.criteria" />
+        <put name="buttons"     value=".search.buttons"/>
+        <put name="tabs"   		value=".search.tabs"/>
+        <put name="result"      value=".search.result" />
+    </definition>
+    
+	<!-- ============================================================== -->
+    <!-- Generics                                                       -->
+    <!-- ============================================================== -->
+    <definition name=".menuButtonsLayout" path="/layouts/menuButtonsLayout.jsp">
+        <put name="menu"   value=""/>
+    </definition>	
+	
+	<definition name="tiles.commons.menu.buttons.detail" extends=".menuButtonsLayout">
+        <put name="menu"   value="menu.commons.buttons.detail" />
+    </definition>
+	<definition name="tiles.commons.menu.buttons.new" extends=".menuButtonsLayout">
+        <put name="menu"   value="menu.commons.buttons.new" />
+    </definition>
+     <definition name="tiles.fuel.menu.buttons.new" extends=".menuButtonsLayout">
+        <put name="menu"   value="menu.fuel.buttons.new" />
+    </definition>
+	<definition name="tiles.commons.menu.buttons.tab" extends=".menuButtonsLayout">
+        <put name="menu"   value="menu.commons.buttons.tab" />
+    </definition>
+	<definition name="tiles.commons.menu.buttons.filter" extends=".menuButtonsLayout">
+        <put name="menu"   value="menu.commons.buttons.filter" />
+    </definition>                           			
+	
+	<definition name="tiles.commons.locator" extends=".locatorLayout">
+        <put name="title"   value="baseClass.title.search" />
+        <put name="body"    value="tiles.commons.locator.body" />
+    </definition>    
+    <definition name="tiles.commons.locator.body" extends=".searchLayout">
+        <put name="title"       value="baseClass.title"/>
+        <put name="action"      value="locateBaseClass"/>
+        <put name="criteria"    value="/pages/baseClass/filter.jsp" />
+        <put name="result"      value="/pages/baseClass/list.jsp" />
+        <put name="buttons"     value="tiles.commons.menu.buttons.tab.filter" />
+    </definition>
+	
+	<definition name="tiles.commons.tab.list" extends=".mainLayout">
+        <put name="title"   value="baseClass.collectionNames" />
+        <put name="body"    value="tiles.commons.tab.list.body" />
+    </definition>
+    <definition name="tiles.commons.tab.list.body" extends=".editLayout">
+        <put name="title"   value="baseClass.title" />
+        <put name="action"  value="baseClass"/>
+    	<put name="tabs"    value="tiles.commons.tabs"/>
+        <put name="body"    value="/pages/collectionName/list.jsp" />
+        <put name="buttons" value="tiles.commons.menu.buttons.tab" />
+    </definition>
+
+    <!-- ============================================================== -->
+    <!-- Commons                                                        -->
+    <!-- ============================================================== -->
+    <definition name="tiles.common.buttons.new" extends=".buttonsLayout">
+        <putList name="buttonList">
+            <item value="common.button.back" link="stepBack" classtype="org.apache.struts.tiles.beans.SimpleMenuItem"/>
+            <item value="common.button.save" link="saveAndBackToCheckPoint" classtype="org.apache.struts.tiles.beans.SimpleMenuItem"/>
+        </putList>
+    </definition>
+    <definition name="tiles.common.buttons.detail" extends=".buttonsLayout">
+        <putList name="buttonList">
+            <item value="common.button.back" link="stepBack" classtype="org.apache.struts.tiles.beans.SimpleMenuItem"/>
+            <item value="common.button.save" link="update" classtype="org.apache.struts.tiles.beans.SimpleMenuItem"/>
+        </putList>
+    </definition>        
+    <definition name="tiles.common.buttons.filter" extends=".buttonsLayout">
+        <putList name="buttonList">
+			<item value="common.button.new" link="redirectCreate" classtype="org.apache.struts.tiles.beans.SimpleMenuItem"/>
+            <item value="common.button.search" link="executeFilter" classtype="org.apache.struts.tiles.beans.SimpleMenuItem"/>
+        </putList>
+    </definition>	     
+    <definition name="tiles.common.buttons.locator" extends=".buttonsLayout">
+        <putList name="buttonList">
+            <item value="common.button.search" link="executeQuery" classtype="org.apache.struts.tiles.beans.SimpleMenuItem"/>
+        </putList>
+    </definition>        
+	<definition name="tiles.simulator.buttons" extends=".buttonsLayout">
+        <putList name="buttonList">
+            <item value="common.button.back" link="doHome" classtype="org.apache.struts.tiles.beans.SimpleMenuItem"/>
+            <item value="common.button.save" link="saveAndBackToCheckPoint" classtype="org.apache.struts.tiles.beans.SimpleMenuItem"/>
+            <item value="common.button.execute" link="executeSimulator" classtype="org.apache.struts.tiles.beans.SimpleMenuItem"/>
+        </putList>
+    </definition>	
+    
+    <definition name="button.manager.ordersPending" extends=".buttonsLayout">
+        <putList name="buttonList">
+            <item value="manager.button.sendOrder" link="sendOrder" classtype="org.apache.struts.tiles.beans.SimpleMenuItem"/>
+        </putList>
+    </definition>	  
+    <definition name="tiles.configuration.buttons" extends=".buttonsLayout">
+        <putList name="buttonList">
+            <item value="common.button.save" link="saveAndBack" classtype="org.apache.struts.tiles.beans.SimpleMenuItem"/>
+        </putList>
+    </definition>     
+    <!-- ============================================================== -->
+    <!-- Home                                                           -->
+    <!-- ============================================================== -->
+	<definition name="tiles.home.admin" extends=".mainLayout">
+        <put name="title"   value="Menu.home" />
+        <put name="body"    value="tiles.home.admin.body" />
+    </definition>
+    <definition name="tiles.home.admin.body" extends=".homeLayout">
+   		<put name="title"  value="Menu.home" />
+        <put name="action"  value="home"/>
+        <put name="tabs" value="tiles.home.admin.tabs" />
+        <put name="body"  value="/pages/home/admin.jsp" />
+        <put name="buttons"  value="" />
+    </definition>
+	<definition name="tiles.home.admin.tabs" extends=".tabsLayout">
+        <put name="tab"   value="TabHome" />
+    </definition>
+    
+    <!-- ============================================================== -->
+    <!-- MANAGER                                                           -->
+    <!-- ============================================================== -->    
+    <definition name="tiles.home.manager" extends=".managerMainLayout">
+        <put name="title"   value="ordersPending.title" />
+        <put name="body"    value="tiles.home.manager.body" />
+    </definition>
+    <definition name="tiles.home.manager.body" extends=".homeLayout">
+   		<put name="title"   value="ordersPending.title" />
+        <put name="action"  value="manager" />
+        <put name="tabs"    value=""/>
+        <put name="body"    value="/pages/manager/ordersPending.jsp" />
+        <put name="buttons" value="button.manager.ordersPending" />
+    </definition>
+	
+    <definition name="tiles.home.manager.estadisticas" extends=".managerMainLayout">
+        <put name="title"   value="estadisticas.home" />
+        <put name="body"    value="tiles.home.manager.estadisticas.body" />
+    </definition>
+	<definition name="tiles.home.manager.estadisticas.body" extends=".homeLayout">
+        <put name="title"   value="estadisticas.home" />
+        <put name="action"  value="manager" />
+        <put name="tabs"    value=""/>
+        <put name="body"    value="/pages/manager/estadisticas.jsp" />
+        <put name="buttons" value="tiles.home.manager.buttons" />                    
+    </definition>
+    
+    <definition name="tiles.home.manager.indicadores" extends=".managerMainLayout">
+        <put name="title"   value="indicadores.home" />
+        <put name="body"    value="tiles.home.manager.indicadores.body" />
+    </definition>
+	<definition name="tiles.home.manager.indicadores.body" extends=".homeLayout">
+        <put name="title"   value="indicadores.home" />
+        <put name="action"  value="manager" />
+        <put name="tabs"    value=""/>
+        <put name="body"    value="/pages/manager/indicadores.jsp" />
+        <put name="buttons" value="tiles.home.manager.buttons" />                    
+    </definition>
+    
+    <definition name="tiles.home.manager.reportes" extends=".managerMainLayout">
+        <put name="title"   value="reportes.home" />
+        <put name="body"    value="tiles.home.manager.reportes.body" />
+    </definition>
+	<definition name="tiles.home.manager.reportes.body" extends=".homeLayout">
+        <put name="title"   value="reportes.home" />
+        <put name="action"  value="manager" />
+        <put name="tabs"    value=""/>
+        <put name="body"    value="/pages/manager/reportes.jsp" />
+        <put name="buttons" value="tiles.home.manager.buttons" />                    
+    </definition>
+    
+	<definition name="tiles.home.manager.buttons" extends=".buttonsLayout">
+        <putList name="buttonList">
+            <item value="common.button.back" link="initAction" classtype="org.apache.struts.tiles.beans.SimpleMenuItem"/>
+        </putList>
+    </definition>
+    <!-- ============================================================== -->
+    <!-- User                                                           -->
+    <!-- ============================================================== -->
+    <definition name="tiles.user.filter" extends=".mainLayout">
+        <put name="title"   value="user.title.search" />
+        <put name="body"    value="tiles.user.filter.body" />
+    </definition>    
+	<definition name="tiles.user.filter.body" extends=".searchLayout">
+        <put name="title"       value=""/>
+        <put name="action"      value="filterUser"/>
+        <put name="criteria"    value="/pages/user/filter.jsp" />
+        <put name="result"      value="/pages/user/list.jsp" />
+        <put name="buttons"     value="tiles.common.buttons.filter" />               
+    </definition> 
+    
+    <definition name="tiles.user.new" extends=".mainLayout">
+        <put name="title"   value="user.title.new" />
+        <put name="body"    value="tiles.user.new.body" />
+    </definition>    
+	<definition name="tiles.user.new.body" extends=".newLayout">
+        <put name="title"   value="user.title" />
+        <put name="action"  value="user" />
+        <put name="body"    value="/pages/user/detail.jsp" />
+        <put name="buttons" value="tiles.common.buttons.new" />                    
+    </definition>  
+    
+    <definition name="tiles.user.detail" extends=".mainLayout">
+        <put name="title"   value="user.title.detail" />
+        <put name="body"    value="tiles.user.detail.body" />
+    </definition>
+    <definition name="tiles.user.detail.body" extends=".editLayout">
+        <put name="title"   value="user.title" />
+        <put name="action"  value="user" />
+		<put name="tabs"    value=""/>        
+        <put name="body"    value="/pages/user/detail.jsp" />
+        <put name="buttons" value="tiles.common.buttons.detail" />
+    </definition> 
+
+	<!-- ============================================================== -->
+    <!-- GroupUser                                                      -->
+    <!-- ============================================================== -->
+    <definition name="tiles.groupUser.filter" extends=".mainLayout">
+        <put name="title"   value="groupUser.title.search" />
+        <put name="body"    value="tiles.groupUser.filter.body" />
+    </definition>    
+	<definition name="tiles.groupUser.filter.body" extends=".searchLayout">
+        <put name="title"       value=""/>
+        <put name="action"      value="filterGroupUser"/>
+        <put name="criteria"    value="/pages/groupUser/filter.jsp" />
+        <put name="result"      value="/pages/groupUser/list.jsp" />
+        <put name="buttons"     value="tiles.common.buttons.filter" />              
+    </definition> 
+    
+    <definition name="tiles.groupUser.new" extends=".mainLayout">
+        <put name="title"   value="groupUser.title.new" />
+        <put name="body"    value="tiles.groupUser.new.body" />
+    </definition>    
+	<definition name="tiles.groupUser.new.body" extends=".newLayout">
+        <put name="title"   value="groupUser.title" />
+        <put name="action"  value="groupUser" />
+        <put name="body"    value="/pages/groupUser/detail.jsp" />
+        <put name="buttons" value="tiles.common.buttons.new" />                    
+    </definition>
+    
+    <definition name="tiles.groupUser.detail" extends=".mainLayout">
+        <put name="title"   value="groupUser.title.detail" />
+        <put name="body"    value="tiles.groupUser.detail.body" />
+    </definition>
+    <definition name="tiles.groupUser.detail.body" extends=".editLayout">
+        <put name="title"   value="groupUser.title" />
+        <put name="action"  value="groupUser" />
+		<put name="tabs"    value=""/>        
+        <put name="body"    value="/pages/groupUser/detail.jsp" />
+        <put name="buttons" value="tiles.common.buttons.detail" />
+    </definition>         
+    
+    <!-- ============================================================== -->
+    <!-- Product                                                           -->
+    <!-- ============================================================== -->    
+    <definition name="tiles.product.filter" extends=".mainLayout">
+        <put name="title"   value="product.title.search" />
+        <put name="body"    value="tiles.product.filter.body" />
+    </definition>    
+	<definition name="tiles.product.filter.body" extends=".searchLayout">
+        <put name="title"       value=""/>
+        <put name="action"      value="filterProduct"/>
+        <put name="criteria"    value="/pages/product/filter.jsp" />
+        <put name="result"      value="/pages/product/list.jsp" />
+        <put name="buttons"     value="tiles.common.buttons.filter" />                
+    </definition> 
+    
+    <definition name="tiles.product.new" extends=".mainLayout">
+        <put name="title"   value="product.title.new" />
+        <put name="body"    value="tiles.product.new.body" />
+    </definition>    
+	<definition name="tiles.product.new.body" extends=".newLayout">
+        <put name="title"   value="product.title" />
+        <put name="action"  value="product" />
+        <put name="body"    value="/pages/product/detail.jsp" />
+        <put name="buttons" value="tiles.common.buttons.new" />                    
+    </definition>
+    
+    <definition name="tiles.product.detail" extends=".mainLayout">
+        <put name="title"   value="product.title.detail" />
+        <put name="body"    value="tiles.product.detail.body" />
+    </definition>
+    <definition name="tiles.product.detail.body" extends=".editLayout">
+        <put name="title"   value="product.title" />
+        <put name="action"  value="product" />
+		<put name="tabs"    value=""/>        
+        <put name="body"    value="/pages/product/detail.jsp" />
+        <put name="buttons" value="tiles.common.buttons.detail" />
+    </definition>      
+    <!-- ============================================================== -->
+    <!-- GroupProduct                                                   -->
+    <!-- ============================================================== -->
+    <definition name="tiles.groupProduct.filter" extends=".mainLayout">
+        <put name="title"   value="groupProduct.title.search" />
+        <put name="body"    value="tiles.groupProduct.filter.body" />
+    </definition>    
+	<definition name="tiles.groupProduct.filter.body" extends=".searchLayout">
+        <put name="title"       value=""/>
+        <put name="action"      value="filterGroupProduct"/>
+        <put name="criteria"    value="/pages/groupProduct/filter.jsp" />
+        <put name="result"      value="/pages/groupProduct/list.jsp" />
+        <put name="buttons"     value="tiles.common.buttons.filter" />                
+    </definition> 
+    
+    <definition name="tiles.groupProduct.new" extends=".mainLayout">
+        <put name="title"   value="groupProduct.title.new" />
+        <put name="body"    value="tiles.groupProduct.new.body" />
+    </definition>    
+	<definition name="tiles.groupProduct.new.body" extends=".newLayout">
+        <put name="title"   value="groupProduct.title" />
+        <put name="action"  value="groupProduct" />
+        <put name="body"    value="/pages/groupProduct/detail.jsp" />
+        <put name="buttons" value="tiles.common.buttons.new" />                    
+    </definition>
+    
+    <definition name="tiles.groupProduct.detail" extends=".mainLayout">
+        <put name="title"   value="groupProduct.title.detail" />
+        <put name="body"    value="tiles.groupProduct.detail.body" />
+    </definition>
+    <definition name="tiles.groupProduct.detail.body" extends=".editLayout">
+        <put name="title"   value="groupProduct.title" />
+        <put name="action"  value="groupProduct" />
+		<put name="tabs"    value=""/>        
+        <put name="body"    value="/pages/groupProduct/detail.jsp" />
+        <put name="buttons" value="tiles.common.buttons.detail" />
+    </definition>
+	<!-- ============================================================== -->
+    <!-- HourlyBand                                                   -->
+    <!-- ============================================================== -->
+    <definition name="tiles.hourlyBand.filter" extends=".mainLayout">
+        <put name="title"   value="hourlyBand.title.search" />
+        <put name="body"    value="tiles.hourlyBand.filter.body" />
+    </definition>    
+	<definition name="tiles.hourlyBand.filter.body" extends=".searchLayout">
+        <put name="title"       value=""/>
+        <put name="action"      value="filterHourlyBand"/>
+        <put name="criteria"    value="/pages/hourlyBand/filter.jsp" />
+        <put name="result"      value="/pages/hourlyBand/list.jsp" />
+        <put name="buttons"     value="tiles.common.buttons.filter" />            
+    </definition> 
+    
+    <definition name="tiles.hourlyBand.new" extends=".mainLayout">
+        <put name="title"   value="hourlyBand.title.new" />
+        <put name="body"    value="tiles.hourlyBand.new.body" />
+    </definition>    
+	<definition name="tiles.hourlyBand.new.body" extends=".newLayout">
+        <put name="title"   value="hourlyBand.title" />
+        <put name="action"  value="hourlyBand" />
+        <put name="body"    value="/pages/hourlyBand/detail.jsp" />
+        <put name="buttons" value="tiles.common.buttons.new" />                    
+    </definition>        
+	
+	<definition name="tiles.hourlyBand.detail" extends=".mainLayout">
+        <put name="title"   value="hourlyBand.title.detail" />
+        <put name="body"    value="tiles.hourlyBand.detail.body" />
+    </definition>
+    <definition name="tiles.hourlyBand.detail.body" extends=".editLayout">
+        <put name="title"   value="hourlyBand.title" />
+        <put name="action"  value="hourlyBand" />
+		<put name="tabs"    value=""/>        
+        <put name="body"    value="/pages/hourlyBand/detail.jsp" />
+        <put name="buttons" value="tiles.common.buttons.detail" />
+    </definition> 
+	<!-- ============================================================== -->
+    <!-- Simulator                                                   -->
+    <!-- ============================================================== -->    
+    <definition name="tiles.simulator.execute" extends=".managerMainLayout">
+        <put name="title"   value="simulator.title.new" />
+        <put name="body"    value="tiles.simulator.body" />
+    </definition>    
+	<definition name="tiles.simulator.body" extends=".editLayout">
+        <put name="title"   value="simulator.title" />
+        <put name="action"  value="simulator" />
+        <put name="tabs"    value=""/>
+        <put name="body"    value="/pages/simulator/detail.jsp" />
+        <put name="buttons" value="tiles.simulator.buttons" />                    
+    </definition>       
+    
+    <!-- ============================================================== -->
+    <!-- Configuration                                                   -->
+    <!-- ============================================================== -->    
+    <definition name="tiles.showConfiguration" extends=".mainLayout">
+        <put name="title"   value="configuration.title" />
+        <put name="body"    value="tiles.showConfiguration.body" />
+    </definition>    
+	<definition name="tiles.showConfiguration.body" extends=".editLayout">
+        <put name="title"   value="configuration.title" />
+        <put name="action"  value="configuration" />
+        <put name="tabs"    value=""/>
+        <put name="body"    value="/pages/configuration/configuration.jsp" />
+        <put name="buttons" value="tiles.configuration.buttons" />                    
+    </definition>            
+    
+    <!-- ============================================================== -->
+    <!-- REPORTES                                                   -->
+    <!-- ============================================================== -->  
+    
+   	<definition name="tiles.reportes.buttons" extends=".buttonsLayout">
+        <putList name="buttonList">
+            <item value="common.button.back" link="initAction" classtype="org.apache.struts.tiles.beans.SimpleMenuItem"/>
+        </putList>
+    </definition>
+    
+    <definition name="tiles.reportes.ventasAnualesFilter" extends=".managerMainLayout">
+        <put name="title"   value="reportes.ventasAnualesFilter" />
+        <put name="body"    value="tiles.reportes.ventasAnualesFilter.body" />
+    </definition>
+	<definition name="tiles.reportes.ventasAnualesFilter.body" extends=".homeLayout">
+        <put name="title"   value="reportes.ventasAnualesFilter" />
+        <put name="action"  value="reportes" />
+        <put name="tabs"    value=""/>
+        <put name="body"    value="/pages/reportes/ventasAnualesFilter.jsp" />
+        <put name="buttons" value="tiles.reportes.buttons" />                    
+    </definition>
+    
+    <definition name="tiles.reportes.ventasMensualesFilter" extends=".managerMainLayout">
+        <put name="title"   value="reportes.ventasMensualesFilter" />
+        <put name="body"    value="tiles.reportes.ventasMensualesFilter.body" />
+    </definition>
+	<definition name="tiles.reportes.ventasMensualesFilter.body" extends=".homeLayout">
+        <put name="title"   value="reportes.ventasMensualesFilter" />
+        <put name="action"  value="reportes" />
+        <put name="tabs"    value=""/>
+        <put name="body"    value="/pages/reportes/ventasMensualesFilter.jsp" />
+        <put name="buttons" value="tiles.reportes.buttons" />                    
+    </definition>
+    
+    <definition name="tiles.reportes.facturacionAnualFilter" extends=".managerMainLayout">
+        <put name="title"   value="reportes.facturacionAnualFilter" />
+        <put name="body"    value="tiles.reportes.facturacionAnualFilter.body" />
+    </definition>
+	<definition name="tiles.reportes.facturacionAnualFilter.body" extends=".homeLayout">
+        <put name="title"   value="reportes.facturacionAnualFilter" />
+        <put name="action"  value="reportes" />
+        <put name="tabs"    value=""/>
+        <put name="body"    value="/pages/reportes/facturacionAnualFilter.jsp" />
+        <put name="buttons" value="tiles.reportes.buttons" />                    
+    </definition>
+    
+    <definition name="tiles.reportes.facturacionMensualFilter" extends=".managerMainLayout">
+        <put name="title"   value="reportes.facturacionMensualFilter" />
+        <put name="body"    value="tiles.reportes.facturacionMensualFilter.body" />
+    </definition>
+	<definition name="tiles.reportes.facturacionMensualFilter.body" extends=".homeLayout">
+        <put name="title"   value="reportes.facturacionMensualFilter" />
+        <put name="action"  value="reportes" />
+        <put name="tabs"    value=""/>
+        <put name="body"    value="/pages/reportes/facturacionMensualFilter.jsp" />
+        <put name="buttons" value="tiles.reportes.buttons" />                    
+    </definition>
+    
+    <definition name="tiles.reportes.listadoPreciosFilter" extends=".managerMainLayout">
+        <put name="title"   value="reportes.listadoPreciosFilter" />
+        <put name="body"    value="tiles.reportes.listadoPreciosFilter.body" />
+    </definition>
+	<definition name="tiles.reportes.listadoPreciosFilter.body" extends=".homeLayout">
+        <put name="title"   value="reportes.listadoPreciosFilter" />
+        <put name="action"  value="reportes" />
+        <put name="tabs"    value=""/>
+        <put name="body"    value="/pages/reportes/listadoPreciosFilter.jsp" />
+        <put name="buttons" value="tiles.reportes.buttons" />                    
+    </definition>
+    
+    <definition name="tiles.reportes.listadoCodigosFilter" extends=".managerMainLayout">
+        <put name="title"   value="reportes.listadoCodigosFilter" />
+        <put name="body"    value="tiles.reportes.listadoCodigosFilter.body" />
+    </definition>
+	<definition name="tiles.reportes.listadoCodigosFilter.body" extends=".homeLayout">
+        <put name="title"   value="reportes.listadoCodigosFilter" />
+        <put name="action"  value="reportes" />
+        <put name="tabs"    value=""/>
+        <put name="body"    value="/pages/reportes/listadoCodigosFilter.jsp" />
+        <put name="buttons" value="tiles.reportes.buttons" />                    
+    </definition>
+	
+	
+	    
+    <!-- ============================================================== -->
+    <!-- ESTADISTICAS                                                   -->
+    <!-- ============================================================== -->  
+    
+   	<definition name="tiles.estadisticas.buttons" extends=".buttonsLayout">
+        <putList name="buttonList">
+            <item value="common.button.back" link="initAction" classtype="org.apache.struts.tiles.beans.SimpleMenuItem"/>
+        </putList>
+    </definition>
+    
+    <definition name="tiles.estadisticas.ventasMensualesFilter" extends=".managerMainLayout">
+        <put name="title"   value="estadisticas.ventasMensualesFilter" />
+        <put name="body"    value="tiles.estadisticas.ventasMensualesFilter.body" />
+    </definition>
+	<definition name="tiles.estadisticas.ventasMensualesFilter.body" extends=".homeLayout">
+        <put name="title"   value="estadisticas.ventasMensualesFilter" />
+        <put name="action"  value="estadisticas" />
+        <put name="tabs"    value=""/>
+        <put name="body"    value="/pages/estadisticas/ventasMensualesFilter.jsp" />
+        <put name="buttons" value="tiles.estadisticas.buttons" />                    
+    </definition>
+    
+    <definition name="tiles.estadisticas.ventasAnualesFilter" extends=".managerMainLayout">
+        <put name="title"   value="estadisticas.ventasAnualesFilter" />
+        <put name="body"    value="tiles.estadisticas.ventasAnualesFilter.body" />
+    </definition>
+	<definition name="tiles.estadisticas.ventasAnualesFilter.body" extends=".homeLayout">
+        <put name="title"   value="estadisticas.ventasAnualesFilter" />
+        <put name="action"  value="estadisticas" />
+        <put name="tabs"    value=""/>
+        <put name="body"    value="/pages/estadisticas/ventasAnualesFilter.jsp" />
+        <put name="buttons" value="tiles.estadisticas.buttons" />                    
+    </definition>
+    
+    <definition name="tiles.estadisticas.ventasMensualesPorProductoFilter" extends=".managerMainLayout">
+        <put name="title"   value="estadisticas.ventasMensualesPorProductoFilter" />
+        <put name="body"    value="tiles.estadisticas.ventasMensualesPorProductoFilter.body" />
+    </definition>
+	<definition name="tiles.estadisticas.ventasMensualesPorProductoFilter.body" extends=".homeLayout">
+        <put name="title"   value="estadisticas.ventasMensualesPorProductoFilter" />
+        <put name="action"  value="estadisticas" />
+        <put name="tabs"    value=""/>
+        <put name="body"    value="/pages/estadisticas/ventasMensualesPorProductoFilter.jsp" />
+        <put name="buttons" value="tiles.estadisticas.buttons" />                    
+    </definition>
+    
+    <definition name="tiles.estadisticas.ventasAnualesPorProductoFilter" extends=".managerMainLayout">
+        <put name="title"   value="estadisticas.ventasAnualesPorProductoFilter" />
+        <put name="body"    value="tiles.estadisticas.ventasAnualesPorProductoFilter.body" />
+    </definition>
+	<definition name="tiles.estadisticas.ventasAnualesPorProductoFilter.body" extends=".homeLayout">
+        <put name="title"   value="estadisticas.ventasAnualesPorProductoFilter" />
+        <put name="action"  value="estadisticas" />
+        <put name="tabs"    value=""/>
+        <put name="body"    value="/pages/estadisticas/ventasAnualesPorProductoFilter.jsp" />
+        <put name="buttons" value="tiles.estadisticas.buttons" />                    
+    </definition>
+    
+    <definition name="tiles.estadisticas.ventasMensualesPorGrupoDeProductoFilter" extends=".managerMainLayout">
+        <put name="title"   value="estadisticas.ventasMensualesPorGrupoDeProductoFilter" />
+        <put name="body"    value="tiles.estadisticas.ventasMensualesPorGrupoDeProductoFilter.body" />
+    </definition>
+	<definition name="tiles.estadisticas.ventasMensualesPorGrupoDeProductoFilter.body" extends=".homeLayout">
+        <put name="title"   value="estadisticas.ventasMensualesPorGrupoDeProductoFilter" />
+        <put name="action"  value="estadisticas" />
+        <put name="tabs"    value=""/>
+        <put name="body"    value="/pages/estadisticas/ventasMensualesPorGrupoDeProductoFilter.jsp" />
+        <put name="buttons" value="tiles.estadisticas.buttons" />                    
+    </definition>
+    
+    <definition name="tiles.estadisticas.ventasAnualesPorGrupoDeProductoFilter" extends=".managerMainLayout">
+        <put name="title"   value="estadisticas.ventasAnualesPorGrupoDeProductoFilter" />
+        <put name="body"    value="tiles.estadisticas.ventasAnualesPorGrupoDeProductoFilter.body" />
+    </definition>
+	<definition name="tiles.estadisticas.ventasAnualesPorGrupoDeProductoFilter.body" extends=".homeLayout">
+        <put name="title"   value="estadisticas.ventasAnualesPorGrupoDeProductoFilter" />
+        <put name="action"  value="estadisticas" />
+        <put name="tabs"    value=""/>
+        <put name="body"    value="/pages/estadisticas/ventasAnualesPorGrupoDeProductoFilter.jsp" />
+        <put name="buttons" value="tiles.estadisticas.buttons" />                    
+    </definition>
+    
+    
+    <!-- ============================================================== -->
+    <!-- INDICADORES                                                   -->
+    <!-- ============================================================== -->  
+    
+   	<definition name="tiles.indicadores.buttons" extends=".buttonsLayout">
+        <putList name="buttonList">
+            <item value="common.button.back" link="initAction" classtype="org.apache.struts.tiles.beans.SimpleMenuItem"/>
+        </putList>
+    </definition>
+    
+    <definition name="tiles.indicadores.ventasPorCajeroMensualFilter" extends=".managerMainLayout">
+        <put name="title"   value="indicadores.ventasPorCajeroMensualFilter" />
+        <put name="body"    value="tiles.indicadores.ventasPorCajeroMensualFilter.body" />
+    </definition>
+	<definition name="tiles.indicadores.ventasPorCajeroMensualFilter.body" extends=".homeLayout">
+        <put name="title"   value="indicadores.ventasPorCajeroMensualFilter" />
+        <put name="action"  value="indicadores" />
+        <put name="tabs"    value=""/>
+        <put name="body"    value="/pages/indicadores/ventasPorCajeroMensualFilter.jsp" />
+        <put name="buttons" value="tiles.indicadores.buttons" />                    
+    </definition>
+    
+    <definition name="tiles.indicadores.ventasPorCajeroAnualFilter" extends=".managerMainLayout">
+        <put name="title"   value="indicadores.ventasPorCajeroAnualFilter" />
+        <put name="body"    value="tiles.indicadores.ventasPorCajeroAnualFilter.body" />
+    </definition>
+	<definition name="tiles.indicadores.ventasPorCajeroAnualFilter.body" extends=".homeLayout">
+        <put name="title"   value="indicadores.ventasPorCajeroAnualFilter" />
+        <put name="action"  value="indicadores" />
+        <put name="tabs"    value=""/>
+        <put name="body"    value="/pages/indicadores/ventasPorCajeroAnualFilter.jsp" />
+        <put name="buttons" value="tiles.indicadores.buttons" />                    
+    </definition>
+    
+    <definition name="tiles.indicadores.comparativaDeVentasPorCajeroMensualFilter" extends=".managerMainLayout">
+        <put name="title"   value="indicadores.comparativaDeVentasPorCajeroMensualFilter" />
+        <put name="body"    value="tiles.indicadores.comparativaDeVentasPorCajeroMensualFilter.body" />
+    </definition>
+	<definition name="tiles.indicadores.comparativaDeVentasPorCajeroMensualFilter.body" extends=".homeLayout">
+        <put name="title"   value="indicadores.comparativaDeVentasPorCajeroMensualFilter" />
+        <put name="action"  value="indicadores" />
+        <put name="tabs"    value=""/>
+        <put name="body"    value="/pages/indicadores/comparativaDeVentasPorCajeroMensualFilter.jsp" />
+        <put name="buttons" value="tiles.indicadores.buttons" />                    
+    </definition>
+    
+    <definition name="tiles.indicadores.comparativaDeVentasPorCajeroAnualFilter" extends=".managerMainLayout">
+        <put name="title"   value="indicadores.comparativaDeVentasPorCajeroAnualFilter" />
+        <put name="body"    value="tiles.indicadores.comparativaDeVentasPorCajeroAnualFilter.body" />
+    </definition>
+	<definition name="tiles.indicadores.comparativaDeVentasPorCajeroAnualFilter.body" extends=".homeLayout">
+        <put name="title"   value="indicadores.comparativaDeVentasPorCajeroAnualFilter" />
+        <put name="action"  value="indicadores" />
+        <put name="tabs"    value=""/>
+        <put name="body"    value="/pages/indicadores/comparativaDeVentasPorCajeroAnualFilter.jsp" />
+        <put name="buttons" value="tiles.indicadores.buttons" />                    
+    </definition>
+    
+	<!--  Graficos de Indicadores  -->
+	<definition name="tiles.indicadores.chart.ventasPorCajeroMensual" extends=".managerMainLayout">
+        <put name="title"   value="indicadores.chart.ventasPorCajeroMensual" />
+        <put name="body"    value="tiles.indicadores.chart.ventasPorCajeroMensual.body" />
+    </definition>
+	<definition name="tiles.indicadores.chart.ventasPorCajeroMensual.body" extends=".homeLayout">
+        <put name="title"   value="indicadores.ventasPorCajeroMensualFilter" />
+        <put name="action"  value="indicadores" />
+        <put name="tabs"    value=""/>
+        <put name="body"    value="/pages/indicadores/ventasPorCajeroMensualChart.jsp" />
+        <put name="buttons" value="tiles.indicadores.chart.ventasPorCajeroMensual.buttons" />                    
+    </definition>
+   	<definition name="tiles.indicadores.chart.ventasPorCajeroMensual.buttons" extends=".buttonsLayout">
+        <putList name="buttonList">
+            <item value="common.button.back" link="doIndicadoresVentasPorCajeroMensual" classtype="org.apache.struts.tiles.beans.SimpleMenuItem"/>
+        </putList>
+    </definition>
+    
+	<definition name="tiles.indicadores.chart.ventasPorCajeroAnual" extends=".managerMainLayout">
+        <put name="title"   value="indicadores.chart.ventasPorCajeroAnual" />
+        <put name="body"    value="tiles.indicadores.chart.ventasPorCajeroAnual.body" />
+    </definition>
+	<definition name="tiles.indicadores.chart.ventasPorCajeroAnual.body" extends=".homeLayout">
+        <put name="title"   value="indicadores.ventasPorCajeroAnualFilter" />
+        <put name="action"  value="indicadores" />
+        <put name="tabs"    value=""/>
+        <put name="body"    value="/pages/indicadores/ventasPorCajeroAnualChart.jsp" />
+        <put name="buttons" value="tiles.indicadores.chart.ventasPorCajeroAnual.buttons" />                    
+    </definition>
+   	<definition name="tiles.indicadores.chart.ventasPorCajeroAnual.buttons" extends=".buttonsLayout">
+        <putList name="buttonList">
+            <item value="common.button.back" link="doIndicadoresVentasPorCajeroAnual" classtype="org.apache.struts.tiles.beans.SimpleMenuItem"/>
+        </putList>
+    </definition>
+    
+	<definition name="tiles.indicadores.chart.comparativaDeVentasPorCajeroMensual" extends=".managerMainLayout">
+        <put name="title"   value="indicadores.chart.comparativaDeVentasPorCajeroMensual" />
+        <put name="body"    value="tiles.indicadores.chart.comparativaDeVentasPorCajeroMensual.body" />
+    </definition>
+	<definition name="tiles.indicadores.chart.comparativaDeVentasPorCajeroMensual.body" extends=".homeLayout">
+        <put name="title"   value="indicadores.comparativaDeVentasPorCajeroMensualFilter" />
+        <put name="action"  value="indicadores" />
+        <put name="tabs"    value=""/>
+        <put name="body"    value="/pages/indicadores/comparativaDeVentasPorCajeroMensualChart.jsp" />
+        <put name="buttons" value="tiles.indicadores.chart.comparativaDeVentasPorCajeroMensual.buttons" />                    
+    </definition>
+   	<definition name="tiles.indicadores.chart.comparativaDeVentasPorCajeroMensual.buttons" extends=".buttonsLayout">
+        <putList name="buttonList">
+            <item value="common.button.back" link="doIndicadoresComparativaDeVentasPorCajeroMensual" classtype="org.apache.struts.tiles.beans.SimpleMenuItem"/>
+        </putList>
+    </definition>
+    
+	<definition name="tiles.indicadores.chart.comparativaDeVentasPorCajeroAnual" extends=".managerMainLayout">
+        <put name="title"   value="indicadores.chart.comparativaDeVentasPorCajeroAnual" />
+        <put name="body"    value="tiles.indicadores.chart.comparativaDeVentasPorCajeroAnual.body" />
+    </definition>
+	<definition name="tiles.indicadores.chart.comparativaDeVentasPorCajeroAnual.body" extends=".homeLayout">
+        <put name="title"   value="indicadores.comparativaDeVentasPorCajeroAnualFilter" />
+        <put name="action"  value="indicadores" />
+        <put name="tabs"    value=""/>
+        <put name="body"    value="/pages/indicadores/comparativaDeVentasPorCajeroAnualChart.jsp" />
+        <put name="buttons" value="tiles.indicadores.chart.comparativaDeVentasPorCajeroAnual.buttons" />                    
+    </definition>
+   	<definition name="tiles.indicadores.chart.comparativaDeVentasPorCajeroAnual.buttons" extends=".buttonsLayout">
+        <putList name="buttonList">
+            <item value="common.button.back" link="doIndicadoresComparativaDeVentasPorCajeroAnual" classtype="org.apache.struts.tiles.beans.SimpleMenuItem"/>
+        </putList>
+    </definition>
+    
+    
+</tiles-definitions>
