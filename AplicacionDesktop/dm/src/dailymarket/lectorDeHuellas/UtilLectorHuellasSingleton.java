@@ -41,10 +41,8 @@ import com.digitalpersona.onetouch.processing.DPFPFeatureExtraction;
 import com.digitalpersona.onetouch.processing.DPFPImageQualityException;
 import com.digitalpersona.onetouch.verification.DPFPVerification;
 import com.digitalpersona.onetouch.verification.DPFPVerificationResult;
-import com.sun.xml.internal.ws.message.RootElementSniffer;
 
 import dailymarket.swing.ui.HuellaDigitalInterface;
-import dbMySql.DBConnection;
 
 public class UtilLectorHuellasSingleton {
 	   private static final String CONTROLLER_CLASS = "ar.com.tsoluciones.emergencies.server.gui.core.telefront.action.AperturaCajaManagerService";
@@ -52,7 +50,6 @@ public class UtilLectorHuellasSingleton {
 	   private DPFPCapture capturer = DPFPGlobal.getCaptureFactory().createCapture();
 	   public static String TEMPLATE_PROPERTY = "template";
        private DPFPEnrollment enroller = DPFPGlobal.getEnrollmentFactory().createEnrollment();
-       private byte[] huellaByte;
        
 		
 	   private UtilLectorHuellasSingleton(){
@@ -142,7 +139,7 @@ public class UtilLectorHuellasSingleton {
 
 		}
 		
-		 protected void process(DPFPSample sample, JLabel mensaje, JLabel imagen, String usuario,  JPanel imageHuellaPanel, JLabel mensajeLector) {
+		 protected void process(DPFPSample sample, JLabel mensaje, JLabel imagen, String usuario,  JPanel imageHuellaPanel, JLabel mensajeLector, String password) {
 				this.process(sample,imagen, imageHuellaPanel);
 				DPFPFeatureSet features = extractFeatures(sample, DPFPDataPurpose.DATA_PURPOSE_ENROLLMENT);
 
@@ -159,15 +156,20 @@ public class UtilLectorHuellasSingleton {
 							stop(mensaje);
 				
 							DPFPTemplate template = enroller.getTemplate();
-			 
-							dbMySql.DBConnection db = new dbMySql.DBConnection();
-			                db.initDB();
-			                
-			                db.guardarHuella(template , usuario);
-			                db.destroyDB();
-			                
-							mensaje.setText("Huella Digital guardada con exito!!!");
+							String huella = MyBase64.encode(template.serialize());
+							
+							 Object params[] = new String[] { usuario, password, huella };
+				             Document doc = TelefrontGUI.getInstance().executeMethod(CONTROLLER_CLASS, "altaHuellaDigital", params);
+							
+							
+//							dbMySql.DBConnection db = new dbMySql.DBConnection();
+//			                db.initDB();
+//			                
+//			                db.guardarHuella(template , usuario);
+//			                db.destroyDB();
 
+				            if (doc != null)
+							mensaje.setText("Huella Digital guardada con exito!!!");
 							
 			                break;
 
@@ -202,13 +204,13 @@ public class UtilLectorHuellasSingleton {
 
 		
 		
-	   public void init(final JLabel mensaje, final JLabel imagen, final String usuario, final JPanel imageHuellaPanel,final JLabel mensajeLector){
+	   public void init(final JLabel mensaje, final JLabel imagen, final String usuario, final JPanel imageHuellaPanel,final JLabel mensajeLector, final String password){
 			capturer.addDataListener(new DPFPDataAdapter() {
 				@Override public void dataAcquired(final DPFPDataEvent e) {
 					SwingUtilities.invokeLater(new Runnable() {	public void run() {
 						
 						mensaje.setText("Apoye su dedo nuevamente");
-						process(e.getSample(), mensaje, imagen, usuario, imageHuellaPanel, mensajeLector);
+						process(e.getSample(), mensaje, imagen, usuario, imageHuellaPanel, mensajeLector, password);
 					}});
 				}
 			});
