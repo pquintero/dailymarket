@@ -14,4 +14,9 @@ public interface AperturaCajaServiceInterface
      * @return
      */
     public boolean abrirCaja(String username, String montoApertura, String fecha, String huellaDigital);
+    
+    
+	public boolean altaHuellaDigital(String username, String password, String huella );
+
+
 }

@@ -25,4 +25,23 @@ public class AperturaCajaService implements AperturaCajaServiceInterface {
 		Log.getLogger(this.getClass()).debug("Autenticando: " + username);
 		return userToAuthenticate.authenticate(huellaDigital);
 	}
+
+	public boolean isFirstLogin(String username, String password) {
+		
+		UserServiceInterface userServiceInterface = new UserService();
+		User user = userServiceInterface.getUserByUserName(username);
+		if(user.getHuelladigital() == null || user.getHuelladigital().length == 0)
+			return true;
+		else 
+			return false;
+	}
+	
+	public boolean altaHuellaDigital(String username, String password, String huella ){
+		
+		if(isFirstLogin(username, password))
+			
+			
+		;
+		return true;
+	}
 }

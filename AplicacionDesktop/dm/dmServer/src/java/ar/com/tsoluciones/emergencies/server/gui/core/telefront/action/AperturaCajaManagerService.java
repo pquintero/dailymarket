@@ -57,6 +57,13 @@ public class AperturaCajaManagerService extends TelefrontServiceFactory {
 	public void logout() {
 		new Session(this.getHttpSession()).destroy();
 	}
+	
+	public XmlSerializable altaHuellaDigital(String username, String password, String huella){
+		AperturaCajaServiceInterface aperturaCajaService = (AperturaCajaServiceInterface) new AperturaCajaServiceFactory().newInstance();
+		aperturaCajaService.altaHuellaDigital(username, password, huella);
+		
+		return null;
+	}
 
 
 }
