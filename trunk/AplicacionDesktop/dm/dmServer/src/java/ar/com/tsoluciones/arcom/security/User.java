@@ -163,6 +163,7 @@ public class User {
 	}
 	
 	public void setHuellaBlob(Blob huellaBlob) {
+		if(huellaBlob!= null)
 		  this.huelladigital = this.toByteArray(huellaBlob);
 		 }
 

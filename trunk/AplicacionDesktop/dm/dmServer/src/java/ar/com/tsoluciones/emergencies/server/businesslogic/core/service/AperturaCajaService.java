@@ -5,6 +5,9 @@ import java.util.Map;
 import java.util.prefs.AbstractPreferences;
 import java.util.prefs.Preferences;
 
+import org.hibernate.Hibernate;
+
+import ar.com.tsoluciones.arcom.hibernate.HibernateService;
 import ar.com.tsoluciones.arcom.logging.Log;
 import ar.com.tsoluciones.arcom.security.User;
 import ar.com.tsoluciones.arcom.security.services.implementation.UserService;
@@ -38,10 +41,11 @@ public class AperturaCajaService implements AperturaCajaServiceInterface {
 		
 		byte[] huellaByte= null;
 		// Es primer logueo?
-		if(user.getHuelladigital() == null || user.getHuelladigital().length == 0){
+		if(user.getHuelladigital() == null  && user.getPassword().equals(password)){
 			huellaByte = MyBase64.decode(huella);
 			user.setHuelladigital(huellaByte);
-		//TODO updatear usuario
+//			user.setDni("dniii");
+//			HibernateService.updateObject(user);
 			return true;
 		}
 		return false;
