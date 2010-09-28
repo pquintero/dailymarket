@@ -19,6 +19,10 @@ import javax.swing.JTextField;
 import javax.swing.border.LineBorder;
 import javax.swing.border.TitledBorder;
 
+import org.dom4j.Document;
+
+import telefront.TelefrontGUI;
+
 import dailymarket.lectorDeHuellas.UtilLectorHuellasSingleton;
 
 
@@ -202,6 +206,16 @@ public class AperturaCajaFrame extends DailyMarketFrame implements HuellaDigital
 			}else{
 				//VALIDAR Q SEA NUMERICO
 				try{
+//					//Aca se debe leer la huella digital y una vez leido  hacer el login
+//					String huellaDigital = "";
+//					Object params[] = new String[] { cajero.getText(), monto.getText(),"", huellaDigital};
+//					Document doc = TelefrontGUI.getInstance().executeMethod(CONTROLLER_CLASS, "abrirCaja", params);
+//					if (doc != null) {
+//						System.out.println(doc.asXML());
+//					//	setCurrentUser(doc);
+//					}
+//					
+					
 					Double.parseDouble(monto.getText());
 		
 					mensaje.setText("Esperando su huella digital");

@@ -23,9 +23,8 @@ public class SupervisorFrame extends JDialog {
 		TabbedPane solicitudesTabbedPane =/* new TabbedPane(tableModelProducts, this)*/ new TabbedPane(tableModelProducts, this);
         
         add(solicitudesTabbedPane, BorderLayout.CENTER);
-        setBounds(100,100,650,370);
-        setLayout(new FlowLayout(FlowLayout.CENTER));
-        
+        setBounds(100,100,900,370);
+        setLayout(new FlowLayout(FlowLayout.LEFT ));
         
         JPanel mensajesPanel = new JPanel();
 		mensajesPanel.setPreferredSize(new Dimension(600,70));
@@ -41,6 +40,7 @@ public class SupervisorFrame extends JDialog {
 		add(mensajesPanel);
 		setVisible(true);
 		setAlwaysOnTop(true);
+		setResizable(false);
 		setTitle("Solicitudes a Supervisor");
 		
 	}

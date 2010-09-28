@@ -35,13 +35,13 @@ public class DBConnection {
            Class.forName("com.mysql.jdbc.Driver");
 
            //Se conecta a la bd
-           dbConnection = DriverManager.getConnection("jdbc:mysql://localhost/somhue","root", "root");
+           dbConnection = DriverManager.getConnection("jdbc:mysql://localhost/dailymarket","root", "root");
 
            Statement stm = dbConnection.createStatement();
            
-           guardarStmt     = dbConnection.prepareStatement("INSERT INTO somhue( huenombre, huehuella) values(?,?)");
-           identificarStmt   = dbConnection.prepareStatement("SELECT * FROM somhue");
-           verificarStmt     = dbConnection.prepareStatement("SELECT huehuella FROM somhue WHERE huenombre=?");
+           guardarStmt     = dbConnection.prepareStatement("INSERT INTO user( name, user, huelladigital) values(?,?,?)");
+           identificarStmt   = dbConnection.prepareStatement("SELECT * FROM user");
+           verificarStmt     = dbConnection.prepareStatement("SELECT huelladigital FROM user WHERE user=?");
                    
        } catch (Exception e) {
            e.printStackTrace();
@@ -69,15 +69,16 @@ public class DBConnection {
    /*
     * Guarda los datos de la huella digital actual en la base de datos  
     * */
-   public void guardarHuella( DPFPTemplate template ){
+   public void guardarHuella( DPFPTemplate template, String user ){
 
            fingerprintData = new ByteArrayInputStream(template.serialize());
            fingerprintDataLength = template.serialize().length;
 
         try {
             //guardarStmt.setString(1,"default");
-            guardarStmt.setString(1,"test");
-            guardarStmt.setBinaryStream(2, fingerprintData, fingerprintDataLength);
+            guardarStmt.setString(1, user);
+            guardarStmt.setString(2, user);
+            guardarStmt.setBinaryStream(3, fingerprintData, fingerprintDataLength);
             
             guardarStmt.execute();
         } catch (SQLException ex) {

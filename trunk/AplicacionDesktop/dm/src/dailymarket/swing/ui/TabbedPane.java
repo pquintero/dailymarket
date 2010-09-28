@@ -27,7 +27,9 @@ public class TabbedPane extends JPanel {
     protected DefaultTableModel tableModelSelecteds;
     protected JTable tableSelecteds = new JTable();
     protected Vector<Vector<String>> rowsProducts = new Vector<Vector<String>>();
-
+    public JComponent panel1; 
+	public JComponent panel2 ;
+	public  JComponent panel3;
 	
     public TabbedPane(DefaultTableModel tableModelProducts, SupervisorFrame supervisorFrame) {
        
@@ -36,17 +38,17 @@ public class TabbedPane extends JPanel {
         JTabbedPane tabbedPane = new JTabbedPane();
         tabbedPane.setPreferredSize(new Dimension(600, 200));
         
-        JComponent panel1 = makeCancelarProductosPanel("", tableModelProducts);
+        panel1 = makeCancelarProductosPanel("", tableModelProducts);
         tabbedPane.addTab("Cancelar Productos", null, panel1,
                 "Cancelacion de los pedidos seleccionados por el cajero");
         tabbedPane.setMnemonicAt(0, KeyEvent.VK_1);
         
-        JComponent panel2 = makeDescuentosPanel("");
+        panel2 = makeDescuentosPanel("");
         tabbedPane.addTab("Otorgar Descuentos", null, panel2,
                 "Otorga Descuentos a clientes empleados");
         tabbedPane.setMnemonicAt(1, KeyEvent.VK_2);
         
-        JComponent panel3 = makeCancelarVentaPanel("panel para canelar");
+        panel3 = makeCancelarVentaPanel("panel para canelar");
         tabbedPane.addTab("Cancelar Venta", null, panel3,
                 "Cancela sesion de Venta Actual");
         tabbedPane.setMnemonicAt(2, KeyEvent.VK_3);

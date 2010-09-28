@@ -3,13 +3,23 @@ package dailymarket.lectorDeHuellas;
 import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.Image;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
+import java.util.prefs.AbstractPreferences;
+import java.util.prefs.Preferences;
 
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 
+import org.dom4j.Document;
+import org.dom4j.Element;
+import org.dom4j.tree.DefaultElement;
 
+import telefront.TelefrontGUI;
 
 import com.digitalpersona.onetouch.DPFPCaptureFeedback;
 import com.digitalpersona.onetouch.DPFPDataPurpose;
@@ -26,16 +36,25 @@ import com.digitalpersona.onetouch.capture.event.DPFPReaderStatusAdapter;
 import com.digitalpersona.onetouch.capture.event.DPFPReaderStatusEvent;
 import com.digitalpersona.onetouch.capture.event.DPFPSensorAdapter;
 import com.digitalpersona.onetouch.capture.event.DPFPSensorEvent;
+import com.digitalpersona.onetouch.processing.DPFPEnrollment;
 import com.digitalpersona.onetouch.processing.DPFPFeatureExtraction;
+import com.digitalpersona.onetouch.processing.DPFPImageQualityException;
 import com.digitalpersona.onetouch.verification.DPFPVerification;
 import com.digitalpersona.onetouch.verification.DPFPVerificationResult;
+import com.sun.xml.internal.ws.message.RootElementSniffer;
 
 import dailymarket.swing.ui.HuellaDigitalInterface;
 import dbMySql.DBConnection;
 
 public class UtilLectorHuellasSingleton {
+	   private static final String CONTROLLER_CLASS = "ar.com.tsoluciones.emergencies.server.gui.core.telefront.action.AperturaCajaManagerService";
 	   private volatile static UtilLectorHuellasSingleton singleton;
 	   private DPFPCapture capturer = DPFPGlobal.getCaptureFactory().createCapture();
+	   public static String TEMPLATE_PROPERTY = "template";
+       private DPFPEnrollment enroller = DPFPGlobal.getEnrollmentFactory().createEnrollment();
+       private byte[] huellaByte;
+       
+		
 	   private UtilLectorHuellasSingleton(){
 	   }
 	 
@@ -103,9 +122,131 @@ public class UtilLectorHuellasSingleton {
 				}
 			});
 		}
+		protected void process(DPFPSample sample, JLabel imagen, JPanel imageHuellaPanel){
+	
+			drawPicture(convertSampleToBitmap(sample), imageHuellaPanel, imagen);
+		}
+	
+		public void drawPicture(Image image, JPanel imageHuellaPanel, JLabel picture) {
+			imageHuellaPanel.remove(picture);
+		
+
+			picture = new JLabel(new ImageIcon(image.getScaledInstance(140, 90, Image.SCALE_SMOOTH)));
+			GridBagConstraints constraintHuella = new GridBagConstraints();
+			constraintHuella.gridx = 0;
+			constraintHuella.gridy = 0;
+			imageHuellaPanel.add(picture, constraintHuella);
+			
+//			imageHuellaPanel.firePropertyChange(null,true, true);
+//			imageHuellaPanel.setVisible(true);
+
+		}
+		
+		 protected void process(DPFPSample sample, JLabel mensaje, JLabel imagen, String usuario,  JPanel imageHuellaPanel, JLabel mensajeLector) {
+				this.process(sample,imagen, imageHuellaPanel);
+				DPFPFeatureSet features = extractFeatures(sample, DPFPDataPurpose.DATA_PURPOSE_ENROLLMENT);
+
+				if (features != null) 
+					try {
+					enroller.addFeatures(features);		
+				}
+				catch (DPFPImageQualityException ex) { }
+				finally {
+					updateStatus(mensajeLector);
+
+					switch(enroller.getTemplateStatus()){
+						case TEMPLATE_STATUS_READY:	
+							stop(mensaje);
+				
+							DPFPTemplate template = enroller.getTemplate();
+			 
+							dbMySql.DBConnection db = new dbMySql.DBConnection();
+			                db.initDB();
+			                
+			                db.guardarHuella(template , usuario);
+			                db.destroyDB();
+			                
+							mensaje.setText("Huella Digital guardada con exito!!!");
+
+							
+			                break;
+
+						case TEMPLATE_STATUS_FAILED:	
+							enroller.clear();
+							stop(mensaje);
+							updateStatus(mensajeLector);
+							JOptionPane.showMessageDialog(null, "The fingerprint template is not valid. Repeat fingerprint enrollment.", "Fingerprint Enrollment", JOptionPane.ERROR_MESSAGE);
+							start(mensaje);
+							break;
+					}
+				}
+			}
+		 
+			 private void updateStatus(JLabel mensaje){
+					 mensaje.setText((String.format("Restan : %1$s", enroller.getFeaturesNeeded() + " capturas")));
+			}
+		
+			protected DPFPFeatureSet extractFeatures(DPFPSample sample, DPFPDataPurpose purpose)
+			{
+				DPFPFeatureExtraction extractor = DPFPGlobal.getFeatureExtractionFactory().createFeatureExtraction();
+				try {
+					return extractor.createFeatureSet(sample, purpose);
+				} catch (DPFPImageQualityException e) {
+					return null;
+				}
+			}
+	
+			protected Image convertSampleToBitmap(DPFPSample sample) {
+				return DPFPGlobal.getSampleConversionFactory().createImage(sample);
+			}
+
+		
+		
+	   public void init(final JLabel mensaje, final JLabel imagen, final String usuario, final JPanel imageHuellaPanel,final JLabel mensajeLector){
+			capturer.addDataListener(new DPFPDataAdapter() {
+				@Override public void dataAcquired(final DPFPDataEvent e) {
+					SwingUtilities.invokeLater(new Runnable() {	public void run() {
+						
+						mensaje.setText("Apoye su dedo nuevamente");
+						process(e.getSample(), mensaje, imagen, usuario, imageHuellaPanel, mensajeLector);
+					}});
+				}
+			});
+			capturer.addReaderStatusListener(new DPFPReaderStatusAdapter() {
+				@Override public void readerConnected(final DPFPReaderStatusEvent e) {
+					SwingUtilities.invokeLater(new Runnable() {	public void run() {
+						mensajeLector.setText(("Lector Online"));
+					}});
+				}
+				@Override public void readerDisconnected(final DPFPReaderStatusEvent e) {
+					SwingUtilities.invokeLater(new Runnable() {	public void run() {
+						mensajeLector.setText("Lector Offline");
+					}});
+				}
+			});
+			capturer.addSensorListener(new DPFPSensorAdapter() {
+				@Override public void fingerTouched(final DPFPSensorEvent e) {
+					SwingUtilities.invokeLater(new Runnable() {	public void run() {
+					}});
+				}
+				@Override public void fingerGone(final DPFPSensorEvent e) {
+					SwingUtilities.invokeLater(new Runnable() {	public void run() {
+					}});
+				}
+			});
+			capturer.addImageQualityListener(new DPFPImageQualityAdapter() {
+				@Override public void onImageQuality(final DPFPImageQualityEvent e) {
+					SwingUtilities.invokeLater(new Runnable() {	public void run() {
+						if (!e.getFeedback().equals(DPFPCaptureFeedback.CAPTURE_FEEDBACK_GOOD))
+							mensajeLector.setText("Calidad de la huella pobre");
+					}});
+				}
+			});
+		}
+
 
 	   public void stop(  JLabel mensajeLector){
-		    mensajeLector.setText("OffLine");
+		    mensajeLector.setText("Lector Offline");
 			capturer.stopCapture();
 		}
 		
@@ -123,32 +264,37 @@ public class UtilLectorHuellasSingleton {
 	             DPFPVerification matcher = DPFPGlobal.getVerificationFactory().createVerification();
 	             matcher.setFARRequested(DPFPVerification.MEDIUM_SECURITY_FAR);
 	             
-	             /******************LLAMAR A SERVICIO*************************************/                         
-	             DBConnection db = new DBConnection();
-	             db.initDB();
+	        
+	 		     DPFPTemplate referenceTemplate = DPFPGlobal.getTemplateFactory().createTemplate();
+
+	             Object params[] = new String[] { user, "", "","" };
+	             Document doc = TelefrontGUI.getInstance().executeMethod(CONTROLLER_CLASS, "abrirCaja", params);
+				
+	             byte[] huellaBD = null;
+
+	             Element el = doc.getRootElement();
 	             
-	             DPFPTemplate template = db.loadTemplate(user);
-	             //Traerme el Objeto USUARIO
-	             
-	             /*
-	              * 
-	              * 	Object params[] = new String[] { cajero.getText() };
-						Document doc = TelefrontGUI.getInstance().executeMethod(CONTROLLER_CLASS, "loadUser", params);
-						User user
-	              */
-	             
-	             db.destroyDB();
-	             /******************************************************/       
+	             Iterator itr = el.content().iterator(); 
+	             while(itr.hasNext()) {
+	                 DefaultElement element =(DefaultElement) itr.next(); 
+	                 element.getText();
+	                 element.getName();
+	                 if(element.getName().equals("huelladigital")){
+	                	huellaBD = MyBase64.decode(element.getText());
+	                 }
+	             } 
+				 referenceTemplate.deserialize(huellaBD);
+
 	                 
-	             if (template != null) {
-	                DPFPVerificationResult result = matcher.verify(featureSet, template);
+	             if (referenceTemplate != null) {
+	                DPFPVerificationResult result = matcher.verify(featureSet, referenceTemplate);
 	                if (result.isVerified()) {
 	                 	 stop(mensajeLector);
 	                	 mensaje.setText("USUARIO: " + user + " LOGEADO");
 	                	 //PASARLE al FRAME el USUARIO para loguearlo
 	                	 frame.loguear();
 	                     }else{
-	                    	 mensaje.setText("Por favor Reintente nuevamente");
+	                    	 mensaje.setText("Por favor Reintente nuevamente" );
 	                     }
 	                    	}
 	             
@@ -159,16 +305,33 @@ public class UtilLectorHuellasSingleton {
 			drawPicture(convertSampleToBitmap(sample), imageHuellaPanel, picture);
 		}
 		
-		protected Image convertSampleToBitmap(DPFPSample sample) {
-			return DPFPGlobal.getSampleConversionFactory().createImage(sample);
-		}
+		 public static class MyBase64 {
+		     private static class MyPreferences extends AbstractPreferences {
+		         private Map<String,String> map = new HashMap<String,String>();
+		         MyPreferences() { super(null,""); }
+		         protected void putSpi(String key,String value) { map.put(key,value); }
+		         protected String getSpi(String key) { return map.get(key); }
+		         protected void removeSpi(String key) { map.remove(key); }
+		         protected void removeNodeSpi() { }
+		         protected String[] keysSpi() { return null; }
+		         protected String[] childrenNamesSpi() { return null; }
+		         protected AbstractPreferences childSpi(String key) { return null; }
+		         protected void syncSpi() {}
+		         protected void flushSpi() {}
+		     }
+		     static String encode(byte[] ba) {
+		         Preferences p = new MyPreferences();
+		         p.putByteArray("",ba);
+		         return p.get("",null);
+		     }
+		     static byte[] decode(String s) {
+		         Preferences p = new MyPreferences();
+		         p.put("",s);
+		         return p.getByteArray("",null);
+		     }
 		
-		public void drawPicture(Image image, JPanel imageHuellaPanel, JLabel picture) {
-			imageHuellaPanel.remove(picture);
-			picture = new JLabel(new ImageIcon(image.getScaledInstance(140, 90, Image.SCALE_SMOOTH)));
-			GridBagConstraints constraintHuella = new GridBagConstraints();
-			constraintHuella.gridx = 0;
-			constraintHuella.gridy = 0;
-			imageHuellaPanel.add(picture, constraintHuella);
-		}
+		 }
+
+		
+	
 	}
