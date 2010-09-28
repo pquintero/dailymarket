@@ -30,7 +30,6 @@ public class CajaFrame  extends DailyMarketFrame{
 		frame = this;
 		setBounds(300, 100, 400, 400);
 		setLayout(new FlowLayout(FlowLayout.CENTER));
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
 		JPanel mainPanel = new JPanel();
 		JPanel imagePanel = new JPanel();
