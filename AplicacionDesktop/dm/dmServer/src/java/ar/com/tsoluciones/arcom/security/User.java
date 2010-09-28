@@ -1,10 +1,21 @@
 package ar.com.tsoluciones.arcom.security;
 
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.sql.Blob;
+import java.sql.SQLException;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.prefs.AbstractPreferences;
+import java.util.prefs.Preferences;
 
 import org.dom4j.Document;
 import org.dom4j.DocumentHelper;
 import org.dom4j.Element;
+import org.hibernate.Hibernate;
+
 
 public class User {
 	
@@ -19,6 +30,7 @@ public class User {
 	private GroupUser groupUser;
 	private String email;
 	private boolean receiveNotifications;
+	private byte[] huelladigital;
 	
 	public Long getId() {
 		return id;
@@ -111,6 +123,7 @@ public class User {
 		root.addElement("passwordOld").setText(String.valueOf(passwordOld));
 		root.addElement("dni").setText(String.valueOf(dni));
 		root.addElement("dateCreated").setText(String.valueOf(dateCreated));
+		root.addElement("huelladigital").setText( MyBase64.encode(huelladigital));
 		
 		//Serializar de otra forma
 //		root.addElement("groupUser").setText(String.valueOf(groupUser));
@@ -142,4 +155,96 @@ public class User {
     public boolean logout() {
         return false;
     }
+	public void setHuelladigital(byte[] huelladigital) {
+		this.huelladigital = huelladigital;
+	}
+	public byte[] getHuelladigital() {
+		return huelladigital;
+	}
+	
+	public void setHuellaBlob(Blob huellaBlob) {
+		  this.huelladigital = this.toByteArray(huellaBlob);
+		 }
+
+	 private byte[] toByteArray(Blob fromBlob) {
+		  ByteArrayOutputStream baos = new ByteArrayOutputStream();
+		  try {
+		   return toByteArrayImpl(fromBlob, baos);
+		  } catch (SQLException e) {
+		   throw new RuntimeException(e);
+		  } catch (IOException e) {
+		   throw new RuntimeException(e);
+		  } finally {
+		   if (baos != null) {
+		    try {
+		     baos.close();
+		    } catch (IOException ex) {
+		    }
+		   }
+		  }
+		 }
+
+	 private byte[] toByteArrayImpl(Blob fromBlob, ByteArrayOutputStream baos)
+	  throws SQLException, IOException {
+	  byte[] buf = new byte[4000];
+	  InputStream is = fromBlob.getBinaryStream();
+	  try {
+	   for (;;) {
+	    int dataSize = is.read(buf);
+
+	    if (dataSize == -1)
+	     break;
+	    baos.write(buf, 0, dataSize);
+	   }
+	  } finally {
+	   if (is != null) {
+	    try {
+	     is.close();
+	    } catch (IOException ex) {
+	    }
+	   }
+	  }
+	  return baos.toByteArray();
+	 }
+	 /** Don't invoke this.  Used by Hibernate only. */
+	 public Blob getHuellaBlob() {
+	  return Hibernate.createBlob(this.huelladigital);
+	 }
+	 
+
+	 public static class MyBase64 {
+	     private static class MyPreferences extends AbstractPreferences {
+	         private Map<String,String> map = new HashMap<String,String>();
+	         MyPreferences() { super(null,""); }
+	         protected void putSpi(String key,String value) { map.put(key,value); }
+	         protected String getSpi(String key) { return map.get(key); }
+	         protected void removeSpi(String key) { map.remove(key); }
+	         protected void removeNodeSpi() { }
+	         protected String[] keysSpi() { return null; }
+	         protected String[] childrenNamesSpi() { return null; }
+	         protected AbstractPreferences childSpi(String key) { return null; }
+	         protected void syncSpi() {}
+	         protected void flushSpi() {}
+	     }
+	     static String encode(byte[] ba) {
+	         Preferences p = new MyPreferences();
+	         p.putByteArray("",ba);
+	         return p.get("",null);
+	     }
+	     static byte[] decode(String s) {
+	         Preferences p = new MyPreferences();
+	         p.put("",s);
+	         return p.getByteArray("",null);
+	     }
+	     public static void main(String[] arg) {
+	         byte[] ba = arg[0].getBytes();
+	         String s = MyBase64.encode(ba);
+	         System.out.println(s);
+	         ba = MyBase64.decode(s);
+	         s = new String(ba);
+	         System.out.println(s);
+	     }
+	 }
+
+	
 }
