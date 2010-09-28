@@ -1,5 +1,8 @@
 package ar.com.tsoluciones.emergencies.server.gui.core.telefront.action;
 
+import org.dom4j.Document;
+import org.dom4j.DocumentHelper;
+
 import ar.com.tsoluciones.arcom.cor.ServiceException;
 import ar.com.tsoluciones.arcom.security.User;
 import ar.com.tsoluciones.arcom.security.services.factory.UserServiceFactory;
@@ -62,7 +65,9 @@ public class AperturaCajaManagerService extends TelefrontServiceFactory {
 		AperturaCajaServiceInterface aperturaCajaService = (AperturaCajaServiceInterface) new AperturaCajaServiceFactory().newInstance();
 		aperturaCajaService.altaHuellaDigital(username, password, huella);
 		
-		return null;
+		Document doc = DocumentHelper.createDocument();
+
+		return new XmlSerializableImpl(doc.asXML());
 	}
 
 
