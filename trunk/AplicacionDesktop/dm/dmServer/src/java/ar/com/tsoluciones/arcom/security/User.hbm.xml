@@ -14,8 +14,9 @@
         <property column="password" name="password"  type="java.lang.String"/>
         <property column="datecreated" name="dateCreated"  type="java.util.Date"/>
         <property column="email" name="email"  type="java.lang.String"/>
-        <property column="receivenotifications" name="receiveNotifications"  type="java.lang.Boolean"/>	   
-        
+        <!--  >property column="receivenotifications" name="receiveNotifications"  type="java.lang.Boolean"/-->	   
+		<property column="huelladigital" name="HuellaBlob"  type="blob"/>	   
+		        
         <many-to-one name="groupUser" column="groupuserid" class="ar.com.tsoluciones.arcom.security.GroupUser"/>
     </class>   
 </hibernate-mapping>

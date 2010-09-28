@@ -11,7 +11,7 @@
 		<property name="hibernate.connection.url">
 			jdbc:mysql://localhost/dailymarket?autoReconnect=true</property>
 		<property name="hibernate.connection.username">root</property>
-		<property name="hibernate.connection.password">daily</property>
+		<property name="hibernate.connection.password">root</property>
 
 		<property name="hibernate.current_session_context_class">thread</property>
 
@@ -31,7 +31,7 @@
 
 		<!-- Configuracion JDBC -->
 		<property name="hibernate.jdbc.batch_size">0</property>
-		<property name="hibernate.jdbc.use_streams_for_binary">false</property>
+		<property name="hibernate.jdbc.use_streams_for_binary">true</property>
 
 		<!-- Usar outer joins ? -->
 		<property name="hibernate.use_outer_join">true</property>
@@ -43,7 +43,7 @@
 		<property name="hibernate.cache.provider_class">org.hibernate.cache.EhCacheProvider</property>
 
 		<!-- Debug -->
-		<property name="hibernate.show_sql">false</property>
+		<property name="hibernate.show_sql">true</property>
 
 		<property name="hibernate.search.default.directory_provider">org.hibernate.search.store.FSDirectoryProvider</property>
 		<property name="hibernate.search.default.indexBase">/etc/index/f911</property>
