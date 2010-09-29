@@ -39,9 +39,8 @@ import com.digitalpersona.onetouch.capture.event.DPFPSensorEvent;
 import com.digitalpersona.onetouch.processing.DPFPEnrollment;
 import com.digitalpersona.onetouch.processing.DPFPFeatureExtraction;
 import com.digitalpersona.onetouch.processing.DPFPImageQualityException;
-import com.digitalpersona.onetouch.verification.DPFPVerification;
-import com.digitalpersona.onetouch.verification.DPFPVerificationResult;
 
+import dailymarket.swing.ui.AperturaCajaFrame;
 import dailymarket.swing.ui.HuellaDigitalInterface;
 
 public class UtilLectorHuellasSingleton {
@@ -50,7 +49,6 @@ public class UtilLectorHuellasSingleton {
 	   private DPFPCapture capturer = DPFPGlobal.getCaptureFactory().createCapture();
 	   public static String TEMPLATE_PROPERTY = "template";
        private DPFPEnrollment enroller = DPFPGlobal.getEnrollmentFactory().createEnrollment();
-       
 		
 	   private UtilLectorHuellasSingleton(){
 	   }
@@ -70,12 +68,12 @@ public class UtilLectorHuellasSingleton {
 			messageLabel.setText("Listo Para leer");
 		}
 
-	   public void init(final HuellaDigitalInterface frame ){
+	   public void initLogin(final HuellaDigitalInterface frame ){
 			capturer.addDataListener(new DPFPDataAdapter() {
 				@Override public void dataAcquired(final DPFPDataEvent e) {
 					SwingUtilities.invokeLater(new Runnable() {	public void run() {
 						frame.getMensajeLector().setText("La Huella Fue Capturada");
-					    process(e.getSample(), frame);
+					    processLogin(e.getSample(), frame);
 					}});
 				}
 			});
@@ -160,16 +158,12 @@ public class UtilLectorHuellasSingleton {
 							
 							 Object params[] = new String[] { usuario, password, huella };
 				             Document doc = TelefrontGUI.getInstance().executeMethod(CONTROLLER_CLASS, "altaHuellaDigital", params);
-							
-							
-//							dbMySql.DBConnection db = new dbMySql.DBConnection();
-//			                db.initDB();
-//			                
-//			                db.guardarHuella(template , usuario);
-//			                db.destroyDB();
 
 				            if (doc != null)
 							mensaje.setText("Huella Digital guardada con exito!!!");
+				            else
+								mensaje.setText("No se pudo guardar la guella!!!");
+
 							
 			                break;
 
@@ -180,6 +174,12 @@ public class UtilLectorHuellasSingleton {
 							JOptionPane.showMessageDialog(null, "The fingerprint template is not valid. Repeat fingerprint enrollment.", "Fingerprint Enrollment", JOptionPane.ERROR_MESSAGE);
 							start(mensaje);
 							break;
+							//HACER OTRO SINGLETON PARA EL FIRST LOGIN; PORQ SINO SE COMPORTA EXTRANO
+//						case TEMPLATE_STATUS_INSUFFICIENT:
+//							//ver este case q agregue
+////							init(mensaje, imagen, usuario, imageHuellaPanel, mensajeLector, password);
+//							process(sample, mensaje, imagen, usuario, imageHuellaPanel, mensajeLector, password);
+//							break;
 					}
 				}
 			}
@@ -252,58 +252,64 @@ public class UtilLectorHuellasSingleton {
 			capturer.stopCapture();
 		}
 		
-		public void process(DPFPSample sample,  HuellaDigitalInterface frame ){
+		public void processLogin(DPFPSample sample,  HuellaDigitalInterface frame ){
 			String user = frame.getUserName();
 			JLabel mensajeLector = frame.getMensajeLector();
 			JLabel mensaje = frame.getFrameMensaje();
 			JPanel imageHuellaPanel = frame.getImageHuellaPanel();
 			JLabel picture = frame.getFingerPrintPicture();
 			
-	         try {
-	             DPFPFeatureExtraction featureExtractor = DPFPGlobal.getFeatureExtractionFactory().createFeatureExtraction();
-	             DPFPFeatureSet featureSet = featureExtractor.createFeatureSet(sample, DPFPDataPurpose.DATA_PURPOSE_VERIFICATION);
+	    	DPFPFeatureExtraction featureExtractor = DPFPGlobal.getFeatureExtractionFactory().createFeatureExtraction();
 
-	             DPFPVerification matcher = DPFPGlobal.getVerificationFactory().createVerification();
-	             matcher.setFARRequested(DPFPVerification.MEDIUM_SECURITY_FAR);
+	          try {
+				DPFPFeatureSet featureSet = featureExtractor.createFeatureSet(sample, DPFPDataPurpose.DATA_PURPOSE_VERIFICATION);
+				String featureSetString = MyBase64.encode(featureSet.serialize()); 
+			     
+	            Object params[] = new String[] { user, "", "", featureSetString };
+	            Document doc = TelefrontGUI.getInstance().executeMethod(CONTROLLER_CLASS, "abrirCaja", params);
+	            String huellaDigital = "";
+	            
+				if( doc != null){
+					
+					   Element el = doc.getRootElement();
+			             
+			             Iterator itr = el.content().iterator(); 
+			             while(itr.hasNext()) {
+			                 DefaultElement element =(DefaultElement) itr.next(); 
+			                 element.getText();
+			                 element.getName();
+			                 if(element.getName().equals("huelladigital")){
+			                	huellaDigital = element.getText();
+			                 }
+			             } 
+					if(huellaDigital.equals("")){
+						((AperturaCajaFrame) frame ).doFirstLogin();
+						mensaje.setText("REALIZAR PRRIMERRRR LOGUEO");
+						stop(new JLabel());
+
+					}else{
+						((AperturaCajaFrame) frame ).loguear();
+						mensaje.setText("USUARIO LOGUEADO");
+					}
+			             
+				}else{
+					stop(new JLabel());
+					//Reiniciar la captura? reiniciar el
+					//Mostrar mensaje
+					
+				}
+	      
+
+
+	          
+	             
+	          } catch (DPFPImageQualityException e) {
+	        	  mensaje.setText(e.getMessage());
+	        	  e.printStackTrace();
+				}
+                	
 	             
 	        
-	 		     DPFPTemplate referenceTemplate = DPFPGlobal.getTemplateFactory().createTemplate();
-
-	             Object params[] = new String[] { user, "", "","" };
-	             Document doc = TelefrontGUI.getInstance().executeMethod(CONTROLLER_CLASS, "abrirCaja", params);
-				
-	             byte[] huellaBD = null;
-
-	             Element el = doc.getRootElement();
-	             
-	             Iterator itr = el.content().iterator(); 
-	             while(itr.hasNext()) {
-	                 DefaultElement element =(DefaultElement) itr.next(); 
-	                 element.getText();
-	                 element.getName();
-	                 if(element.getName().equals("huelladigital")){
-	                	huellaBD = MyBase64.decode(element.getText());
-	                 }
-	             } 
-				 referenceTemplate.deserialize(huellaBD);
-
-	                 
-	             if (referenceTemplate != null) {
-	                DPFPVerificationResult result = matcher.verify(featureSet, referenceTemplate);
-	                if (result.isVerified()) {
-	                 	 stop(mensajeLector);
-	                	 mensaje.setText("USUARIO: " + user + " LOGEADO");
-	                	 //PASARLE al FRAME el USUARIO para loguearlo
-	                	 frame.loguear();
-	                     }else{
-	                    	 mensaje.setText("Por favor Reintente nuevamente" );
-	                     }
-	                    	}
-	             
-	         } catch (Exception e) {
-	        	 //Logear
-	        	 mensajeLector.setText("Falló:" + e.getCause());
-	         }
 			drawPicture(convertSampleToBitmap(sample), imageHuellaPanel, picture);
 		}
 		
