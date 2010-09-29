@@ -16,6 +16,15 @@ import org.dom4j.DocumentHelper;
 import org.dom4j.Element;
 import org.hibernate.Hibernate;
 
+import com.digitalpersona.onetouch.DPFPDataPurpose;
+import com.digitalpersona.onetouch.DPFPFeatureSet;
+import com.digitalpersona.onetouch.DPFPGlobal;
+import com.digitalpersona.onetouch.DPFPSample;
+import com.digitalpersona.onetouch.DPFPTemplate;
+import com.digitalpersona.onetouch.processing.DPFPFeatureExtraction;
+import com.digitalpersona.onetouch.processing.DPFPImageQualityException;
+import com.digitalpersona.onetouch.verification.DPFPVerification;
+import com.digitalpersona.onetouch.verification.DPFPVerificationResult;
 
 public class User {
 	
@@ -116,20 +125,20 @@ public class User {
 
 		Element root = doc.getRootElement();
 		root.addElement("id").setText(id.toString());
-		root.addElement("user").setText(String.valueOf(user));
-		root.addElement("name").setText(String.valueOf(name));
-		root.addElement("lastName").setText(String.valueOf(lastName));
-		root.addElement("password").setText(String.valueOf(password));
-		root.addElement("passwordOld").setText(String.valueOf(passwordOld));
-		root.addElement("dni").setText(String.valueOf(dni));
-		root.addElement("dateCreated").setText(String.valueOf(dateCreated));
-		root.addElement("huelladigital").setText( MyBase64.encode(huelladigital));
+		root.addElement("user").setText(user !=null ?String.valueOf(user):"");
+		root.addElement("name").setText(name !=null ?String.valueOf(name):"");
+		root.addElement("lastName").setText(lastName !=null ? String.valueOf(lastName) :"");
+		root.addElement("password").setText(password !=null ?String.valueOf(password):"");
+		root.addElement("passwordOld").setText(passwordOld !=null ?String.valueOf(passwordOld):"");
+		root.addElement("dni").setText(dni != null ? String.valueOf(dni): "");
+		root.addElement("dateCreated").setText(dateCreated != null ? String.valueOf(dateCreated):"");
+		root.addElement("huelladigital").setText( huelladigital != null ? MyBase64.encode(huelladigital):"");
 		
 		//Serializar de otra forma
 //		root.addElement("groupUser").setText(String.valueOf(groupUser));
 		
-		root.addElement("email").setText(String.valueOf(email));
-		root.addElement("receiveNotifications").setText(String.valueOf(receiveNotifications));
+		root.addElement("email").setText(email != null ? String.valueOf(email): "");
+		root.addElement("receiveNotifications").setText( String.valueOf(receiveNotifications));
 
 	    return doc;
 	}
@@ -140,12 +149,27 @@ public class User {
 	 * </p>
 	 * @param huellaDigital - La huellaDigital a autentificar
 	 * @return boolean true = La password es valida false= La password no es valida
+	 * @throws DPFPImageQualityException 
 	 */
-    public boolean authenticate(String huellaDigital) {
+    public boolean authenticate(String featureSetString)  {
 
-    	boolean auth = true;
- 
-        return auth;
+    	  byte[] featureByte = MyBase64.decode(featureSetString);
+    	  DPFPFeatureSet featureSet = DPFPGlobal.getFeatureSetFactory().createFeatureSet(featureByte);
+    	  
+          DPFPVerification matcher = DPFPGlobal.getVerificationFactory().createVerification();
+          matcher.setFARRequested(DPFPVerification.MEDIUM_SECURITY_FAR);
+		  DPFPTemplate referenceTemplate = DPFPGlobal.getTemplateFactory().createTemplate();
+		  if(huelladigital == null)
+			  return true;
+		  referenceTemplate.deserialize(huelladigital);
+          
+          if (referenceTemplate != null) {
+             DPFPVerificationResult result = matcher.verify(featureSet, referenceTemplate);
+             if (result.isVerified()) {
+            	 return true;
+             }
+          }
+    	return false;
     }
 
     /**

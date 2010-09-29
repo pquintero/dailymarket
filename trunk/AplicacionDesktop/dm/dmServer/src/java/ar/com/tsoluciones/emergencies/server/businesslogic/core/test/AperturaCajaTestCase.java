@@ -26,9 +26,9 @@ public class AperturaCajaTestCase extends TestCase
     public void testLogin() throws Exception
     {
         AperturaCajaService loguinService = new AperturaCajaService();
-        boolean resultado = loguinService.abrirCaja("", "", "", "");
+//        boolean resultado = loguinService.abrirCaja("", "", "", "");
 
-        System.out.println("Resultado del login: " + resultado);
+//        System.out.println("Resultado del login: " + resultado);
     }
 
 }

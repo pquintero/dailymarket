@@ -5,8 +5,7 @@ import java.util.Map;
 import java.util.prefs.AbstractPreferences;
 import java.util.prefs.Preferences;
 
-import org.hibernate.Hibernate;
-
+import ar.com.tsoluciones.arcom.cor.ServiceException;
 import ar.com.tsoluciones.arcom.hibernate.HibernateService;
 import ar.com.tsoluciones.arcom.logging.Log;
 import ar.com.tsoluciones.arcom.security.User;
@@ -18,20 +17,9 @@ import ar.com.tsoluciones.emergencies.server.businesslogic.core.service.proxyint
 public class AperturaCajaService implements AperturaCajaServiceInterface {
 	/**
 	 * Logea un usuario en el sistema
+	 * @throws ServiceException 
 	 *
 	 */
-	public boolean abrirCaja(String username, String montoApertura, String fecha, String huellaDigital) {
-		UserServiceInterface userServiceInterface = new UserService();
-		User userToAuthenticate = userServiceInterface.getUserByUserName(username);
-
-		if (userToAuthenticate == null) {
-			Log.getLogger(this.getClass()).debug("Usuario no encontrado");
-			return false;
-		}
-
-		Log.getLogger(this.getClass()).debug("Autenticando: " + username);
-		return userToAuthenticate.authenticate(huellaDigital);
-	}
 
 	
 	public boolean altaHuellaDigital(String username, String password, String huella ){
@@ -44,8 +32,8 @@ public class AperturaCajaService implements AperturaCajaServiceInterface {
 		if(user.getHuelladigital() == null  && user.getPassword().equals(password)){
 			huellaByte = MyBase64.decode(huella);
 			user.setHuelladigital(huellaByte);
-//			user.setDni("dniii");
-//			HibernateService.updateObject(user);
+			user.setDni("dniii");
+			HibernateService.updateObject(user);
 			return true;
 		}
 		return false;
