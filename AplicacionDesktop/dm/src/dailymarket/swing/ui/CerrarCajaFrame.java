@@ -216,7 +216,7 @@ public class CerrarCajaFrame extends DailyMarketFrame implements HuellaDigitalIn
 					mensaje.setText("Esperando su huella digital");
 					mensaje.setForeground(Color.red);
 				
-					utilHuellas.init( frame);
+					utilHuellas.initLogin(frame);
 					utilHuellas.start(mensajeLector);
 					FIRMA_CIERRE = true;
 
