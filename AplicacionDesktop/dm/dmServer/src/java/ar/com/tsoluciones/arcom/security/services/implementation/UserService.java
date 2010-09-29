@@ -88,7 +88,7 @@ public class UserService implements UserServiceInterface {
 		try {
 			return ar.com.tsoluciones.arcom.security.services.UserService.getUserByUserName(username);
 		} catch (HibernateException e) {
-			throw new InternalErrorException("Error al intentar otener todos los objetos User", e, username);
+			throw new InternalErrorException("Error al intentar obtener todos los objetos User", e, username);
 		}
 	}
 

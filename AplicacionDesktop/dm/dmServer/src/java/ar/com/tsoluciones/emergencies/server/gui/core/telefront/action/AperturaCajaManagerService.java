@@ -37,21 +37,26 @@ public class AperturaCajaManagerService extends TelefrontServiceFactory {
    *          Cuando hay un error de negocios, por ejemplo, si el usuario no se puede logear
    */
   public XmlSerializable abrirCaja(String username, String montoApertura, String fecha, String huellaDigital) throws ServiceException {
-		AperturaCajaServiceInterface aperturaCajaService = (AperturaCajaServiceInterface) new AperturaCajaServiceFactory().newInstance();
-		boolean authenticated = aperturaCajaService.abrirCaja(username, montoApertura, fecha, huellaDigital);
+		UserServiceInterface userInterface = (UserServiceInterface) new UserServiceFactory().newInstance();
+		User user = userInterface.getUserByUserName(username);
+		
+		if(user == null )
+			throw new ServiceException("El usuario o la huella digital no son validos. Reintente nuevamente");
 
+		
+		//Si es primer logueo entonces no tiene huella asociada, devuelvo el user sin meter el usaurio en la session
+		if(user.getHuelladigital() == null)
+			return new XmlSerializableImpl(user.toXml().asXML());
+		
 		// Si se logeo...
-		if (!authenticated)
-			throw new ServiceException("El usuario o la contraseña no son válidos");
+		if (!user.authenticate(huellaDigital))
+			throw new ServiceException("El usuario o la huella digital no son validos. Reintente nuevamente");
 
-		// ...setear usuario en session
-		UserServiceInterface userServiceInterface = (UserServiceInterface) new UserServiceFactory().newInstance();
-		User userAuthenticated = userServiceInterface.getUserByUserName(username);
 
 		Session session = new Session(this.getHttpSession());
-		session.setUser(userAuthenticated);
+		session.setUser(user);
 
-		return new XmlSerializableImpl(userAuthenticated.toXml().asXML());
+		return new XmlSerializableImpl(user.toXml().asXML());
 	}
 
 	/**
@@ -67,7 +72,7 @@ public class AperturaCajaManagerService extends TelefrontServiceFactory {
 		
 		Document doc = DocumentHelper.createDocument();
 
-		return new XmlSerializableImpl(doc.asXML());
+		return null;
 	}
 
 
