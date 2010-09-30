@@ -170,5 +170,9 @@
 	<classpathentry kind="lib" path="WebRoot/WEB-INF/lib/xstream-1.2.jar"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/jre6"/>
 	<classpathentry kind="lib" path="WebRoot/WEB-INF/lib/mysql-connector-java-3.0.17-ga-bin.jar"/>
+	<classpathentry kind="lib" path="WebRoot/WEB-INF/lib/dpfpenrollment.jar"/>
+	<classpathentry kind="lib" path="WebRoot/WEB-INF/lib/dpfpverification.jar"/>
+	<classpathentry kind="lib" path="WebRoot/WEB-INF/lib/dpotapi.jar"/>
+	<classpathentry kind="lib" path="WebRoot/WEB-INF/lib/dpotjni.jar"/>
 	<classpathentry kind="output" path="tomcat2"/>
 </classpath>
