@@ -126,5 +126,13 @@ public class UserService {
 		User user = getUserByPK(idUser);
 		user.setReceiveNotifications(new Boolean(false));
 		save(user);
-	}	
+	}
+	
+	
+	@SuppressWarnings("unchecked")
+	public List<User> getCajeros() {
+		Criteria c = HibernateHelper.currentSession().createCriteria(User.class)
+					.createCriteria("groupUser").add(Restrictions.eq("name", GroupUser.ROLE_CAJERO));
+		return c.list();
+	}
 }

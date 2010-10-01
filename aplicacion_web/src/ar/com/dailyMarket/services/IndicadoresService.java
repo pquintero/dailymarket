@@ -18,30 +18,34 @@ import ar.com.dailyMarket.charts.elements.CategoryElement;
 import ar.com.dailyMarket.charts.elements.DatasetElement;
 import ar.com.dailyMarket.charts.elements.Lines;
 import ar.com.dailyMarket.charts.elements.SetElement;
+import ar.com.dailyMarket.model.User;
 
 public class IndicadoresService {
 	
 /******		VentasPorCajeroMensual		******/
 	public LineChart getVPCMChart(DynaActionForm form) {
-		GregorianCalendar hoy = new GregorianCalendar();
-		hoy.setTime(new Date());//ESTO VIENE DEL FORM mes
+		UserService us = new UserService();
+		User cajero = us.getUserByPK((Long)form.get("cajeroId"));
+		
+		GregorianCalendar fechaPedida = new GregorianCalendar();
+		fechaPedida.set(Integer.valueOf((String)form.get("year")), Integer.valueOf((String)form.get("month")), 1);
 		
 		GregorianCalendar cal = new GregorianCalendar();
-		cal.set(hoy.get(GregorianCalendar.YEAR), hoy.get(GregorianCalendar.MONTH), 1);
+		cal.set(fechaPedida.get(GregorianCalendar.YEAR), fechaPedida.get(GregorianCalendar.MONTH), 1);
 		SimpleDateFormat sdf = new SimpleDateFormat("dd");
 		
 		List values = new ArrayList();
-		while(hoy.get(GregorianCalendar.MONTH) == cal.get(GregorianCalendar.MONTH)){
+		while(fechaPedida.get(GregorianCalendar.MONTH) == cal.get(GregorianCalendar.MONTH)){
 	      	SetElement el = new SetElement();
 	       	el.setLabel(sdf.format(cal.getTime()));//DIAS
-	      	//getValueByEmployeeByParameters
+	      	//getValueByEmployeeByParameters (cajero y banda horaria y fecha pedida)
 	       	el.setValue(new Double(new Random().nextDouble() * 50).toString());
 	      	values.add(el);
 	      	cal.add(GregorianCalendar.DATE, 1);
 	    }
 		
 		LineChart line = new LineChart(values);
-		line.setCaption("Ventas De XXX EMPLEADO, En el mes " + hoy.getDisplayName(GregorianCalendar.MONTH,GregorianCalendar.LONG, new Locale("es")));
+		line.setCaption("Ventas De " + cajero.getCompleteName() + ". En el mes de" + fechaPedida.getDisplayName(GregorianCalendar.MONTH,GregorianCalendar.LONG, new Locale("es")).toUpperCase());
 		line.setXAxisName("Días");
 		line.setYAxisName("Ventas");
 		line.setNumberPrefix("");
@@ -53,25 +57,28 @@ public class IndicadoresService {
 	
 /******		VentasPorCajeroAnual		******/
 	public LineChart getVPCAChart(DynaActionForm form) {
-		GregorianCalendar hoy = new GregorianCalendar();
-		hoy.setTime(new Date());//ESTO VIENE DEL FORM año
+		UserService us = new UserService();
+		User cajero = us.getUserByPK((Long)form.get("cajeroId"));
+		
+		GregorianCalendar fechaPedida = new GregorianCalendar();
+		fechaPedida.set(Integer.valueOf((String)form.get("year")), 0, 1);
 		
 		GregorianCalendar cal = new GregorianCalendar();
-		cal.set(hoy.get(GregorianCalendar.YEAR), 0 , 1);
+		cal.set(fechaPedida.get(GregorianCalendar.YEAR), 0 , 1);
 		SimpleDateFormat sdf = new SimpleDateFormat("MM");
 		
 		List values = new ArrayList();
-		while(hoy.get(GregorianCalendar.YEAR) == cal.get(GregorianCalendar.YEAR)){
+		while(fechaPedida.get(GregorianCalendar.YEAR) == cal.get(GregorianCalendar.YEAR)){
 	      	SetElement el = new SetElement();
 	       	el.setLabel(cal.getDisplayName(GregorianCalendar.MONTH,GregorianCalendar.LONG, new Locale("es")));
-	      	//getValueByEmployeeByParameters
+	      	//getValueByEmployeeByParameters(con el cajero y si tiene banda Horaria y fecha pedida)
 	       	el.setValue(new Double(new Random().nextDouble() * 50).toString());
 	      	values.add(el);
 	      	cal.add(GregorianCalendar.MONTH, 1);
 	    }
 		
 		LineChart line = new LineChart(values);
-		line.setCaption("Ventas De XXX EMPLEADO, En el año " + hoy.get(GregorianCalendar.YEAR));
+		line.setCaption("Ventas De " + cajero.getCompleteName() + ". En el año " + fechaPedida.get(GregorianCalendar.YEAR));
 		line.setXAxisName("Meses");
 		line.setYAxisName("Ventas");
 		line.setNumberPrefix("");

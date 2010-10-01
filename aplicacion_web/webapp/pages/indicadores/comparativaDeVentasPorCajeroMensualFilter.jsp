@@ -4,7 +4,14 @@
 <%@ taglib uri="/tags/struts-bean" prefix="bean" %>
 <%@ taglib uri="/tags/struts-logic" prefix="logic" %>
 <%@ taglib uri="/tags/displaytag" prefix="ds" %>
+<%@ page import="java.util.*" %>
+<%@ page import="ar.com.dailyMarket.model.*" %>
 
+<bean:define id="cajerosArray" property="cajerosArray" name="IndicadoresForm" type="java.lang.String[]"/>
+<%
+ArrayList<String> listaAnios = (ArrayList<String>) request.getAttribute("aniosList");
+ArrayList<String> listaMeses = (ArrayList<String>)request.getAttribute("mesesList");
+%>
 
 <TABLE class="form" cellSpacing="0" cellPadding="0" border="0">
 	<TR> 
@@ -29,11 +36,13 @@
 	</tr>
 	<tr align="left">
 		<td>&nbsp;</td>
-		<th><bean:message key="commons.mesDesde"/></th>
+		<th><bean:message key="commons.year"/></th>
 		<td>&nbsp;</td>
 		<td>
-			<html:select property="monthFrom">
-				<html:option value="0">0</html:option>
+			<html:select property="year">
+				<% for(int i = 0; i < listaAnios.size(); i++) { %>
+					<html:option  value="<%= listaAnios.get(i) %>"><%= listaAnios.get(i) %></html:option>
+				<% } %>
 			</html:select>
 		</td>
 	</tr>
@@ -42,11 +51,13 @@
 	</tr>
 	<tr align="left">
 		<td>&nbsp;</td>
-		<th><bean:message key="commons.mesHasta"/></th>
+		<th><bean:message key="commons.mes"/></th>
 		<td>&nbsp;</td>
 		<td>
-			<html:select property="monthTo">
-				<html:option value="1">1</html:option>
+			<html:select property="month">
+				<% for(Integer i = 0; i < listaMeses.size(); i++) { %>
+					<html:option  value="<%= i.toString() %>"><%= listaMeses.get(i) %></html:option>
+				<% } %>
 			</html:select>
 		</td>
 	</tr>
@@ -58,9 +69,39 @@
 		<th><bean:message key="commons.bandaHoraria"/></th>
 		<td>&nbsp;</td>
 		<td>
-			<html:select property="bandaHoraria">
-				<html:option value="bandaHoraria">bandaHoraria</html:option>
+			<html:select property="bandaHorariaId">
+				<html:option value="-1">&nbsp;</html:option>
+				<html:options collection="bandaList" property="id" labelProperty="detail"/>
 			</html:select>
+		</td>
+	</tr>
+	<tr align="left">
+		<td colspan="4">&nbsp;</td>
+	</tr>
+	<tr>
+		<td colspan="4">
+			<table width="40%">
+				<TR>
+					<td><bean:message key="indicadores.seleccionarCajeros"/></td>
+				</TR>
+				<tr>
+					<td>&nbsp;</td>
+				</tr>
+				<tr>
+					<td>
+						<ds:table name="cajerosList" sort="list"  prop="formDisplaytag" export="false" id="row" pagesize="10" class="list"  cellspacing="0" cellpadding="3">
+							<% User cajeroUser = (User) row;%>
+							<ds:column titleKey="UserForm.name" headerClass="listTitle" property="completeName" />
+					    	<ds:column headerClass="listTitle"  title="&nbsp;">
+								<html:multibox property="cajerosArray" value="<%= cajeroUser.getId().toString() %>"></html:multibox>
+					    		<input type="hidden" name="cajerosArray" value="-1">
+					    	</ds:column>        
+						</ds:table>
+						
+					</td>
+				</tr>
+			</table>
+			
 		</td>
 	</tr>
 	<tr align="left">

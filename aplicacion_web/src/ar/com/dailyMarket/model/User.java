@@ -84,5 +84,8 @@ public class User {
 	}
 	public void setReceiveNotifications(boolean receiveNotifications) {
 		this.receiveNotifications = receiveNotifications;
-	}	
+	}
+	public String getCompleteName() {
+		return getLastName() + ", " + getName();
+	}
 }

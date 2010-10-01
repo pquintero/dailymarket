@@ -251,10 +251,13 @@
 			
 			<form-property name="monthFrom" type="java.lang.String" initial=""/>
 			<form-property name="monthTo" type="java.lang.String" initial=""/>
-			<form-property name="cajero" type="java.lang.String" initial=""/>
-			<form-property name="bandaHoraria" type="java.lang.String" initial=""/>
+			<form-property name="month" type="java.lang.String" initial=""/>
+			<form-property name="cajeroId" type="java.lang.Long" initial="-1"/>
+			<form-property name="bandaHorariaId" type="java.lang.Long" initial="-1"/>
 			<form-property name="yearFrom" type="java.lang.String" initial=""/>
 			<form-property name="yearTo" type="java.lang.String" initial=""/>
+			<form-property name="year" type="java.lang.String" initial=""/>
+			<form-property name="cajerosArray" type="java.lang.String[]" />
 			
 			<form-property name="queryDispatchName" type="java.lang.String" initial=""/>
 			<form-property name="collectionName" type="java.lang.String" initial="" />
