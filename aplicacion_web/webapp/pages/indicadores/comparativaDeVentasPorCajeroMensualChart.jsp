@@ -11,13 +11,15 @@
 <bean:define id="cajero" property="cajero" name="IndicadoresForm" type="java.lang.String"/>
 <bean:define id="bandaHoraria" property="bandaHoraria" name="IndicadoresForm" type="java.lang.String"/>
 
-<%= monthFrom + "_" + monthTo + "_" + bandaHoraria%>
-
-
-<TABLE class="body"  border="0" cellpadding="0" cellspacing="0">	
+<TABLE class="form"  border="0" cellpadding="0" cellspacing="0">	
 	<tr>
 		<td>&nbsp;</td>
 	</tr>
+	<TR> 
+		<TD>
+			<%= monthFrom + "_" + monthTo + "_" + bandaHoraria%>
+		</TD>		
+	</TR>
 	<tr>
 		<td >
 			<table width="100%" align="left" cellpadding="0"  cellspacing="0" border="0">			
