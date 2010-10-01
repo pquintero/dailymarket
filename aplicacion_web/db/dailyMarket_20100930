@@ -147,7 +147,7 @@ CREATE TABLE `product` (
 INSERT INTO `product` (`id`,`name`,`description`,`sizeofpurchase`,`price`,`actualstock`,`code`,`groupproductid`,`repositionstock`,`datewithoutstock`,`state`) VALUES 
  (1,'Yerba','Yerba mate',34,12.3,12,'1',4,15,NULL,'product.state.send'),
  (2,'Alfajor jorgito','Alfajor jorgito',20,2,12,'2',3,11,NULL,'product.state.stock'),
- (3,'Queso rallado la serenisima','Queso rallado la serenima',100,12,23,'3',2,30,NULL,'product.state.send');
+ (3,'Queso rallado la serenisima','Queso rallado la serenima',100,12,23,'3',2,30,NULL,'product.state.pending');
 /*!40000 ALTER TABLE `product` ENABLE KEYS */;
 
 
