@@ -6,9 +6,9 @@
 <%@ taglib uri="/tags/displaytag" prefix="ds" %>
 
 
-<TABLE class="body"  border="0" cellpadding="0" cellspacing="0">	
+<TABLE class="form"  border="0" cellpadding="0" cellspacing="0">	
 	<TR> 
-		<TD> 
+		<TD colspan="4"> 
 			<ul class="errors" type="square">
 				<html:messages id="mensaje" message="true" >
 					<li><bean:write name="mensaje" /></li>
@@ -17,67 +17,50 @@
 		</TD>
 	</TR>
 	<tr>
-		<td>&nbsp;</td>
+		<td colspan="4">&nbsp;</td>
 	</tr>
-	<tr>
-		<td >
-			<table width="70%" align="left" cellpadding="0"  cellspacing="0" border="0">			
-				<tr align="center">
-					<td><bean:message key="indicadores.comparativaDeVentasPorCajeroAnualFilter"/></td>
-				</tr>
-				<tr align="left">
-					<td>&nbsp;</td>
-				</tr>
-				<tr align="left">
-					<td>&nbsp;</td>
-					<td><bean:message key="commons.yearDesde"/></td>
-					<td>&nbsp;</td>
-					<td>
-						<html:select property="yearFrom">
-							<html:option value="0">0</html:option>
-						</html:select>
-					</td>
-				</tr>
-				<tr align="left">
-					<td>&nbsp;</td>
-				</tr>
-				<tr align="left">
-					<td>&nbsp;</td>
-					<td><bean:message key="commons.yearHasta"/></td>
-					<td>&nbsp;</td>
-					<td>
-						<html:select property="yearTo">
-							<html:option value="1">1</html:option>
-						</html:select>
-					</td>
-				</tr>
-				<tr align="left">
-					<td>&nbsp;</td>
-				</tr>
-				<tr align="left">
-					<td>&nbsp;</td>
-					<td><bean:message key="commons.bandaHoraria"/></td>
-					<td>&nbsp;</td>
-					<td>
-						<html:select property="bandaHoraria">
-							<html:option value="bandaHoraria">bandaHoraria</html:option>
-						</html:select>
-					</td>
-				</tr>
-				<tr align="left">
-					<td>&nbsp;</td>
-				</tr>
-				<tr align="left">
-					<td colspan="3">&nbsp;</td>
-					<td>
-						<input type="button" value="Ver Indicador" 
-						onclick="forms[0].VirtualDispatchName.value='executeComparativaDeVentasPorCajeroAnual'; forms[0].submit();">
-					</td>
-				</tr>
-				<tr align="left">
-					<td>&nbsp;</td>
-				</tr>
-			</table>
+	<TR> 
+		<TD colspan="4">
+			<h1 class="formtitle"><bean:message key="indicadores.comparativaDeVentasPorCajeroAnualFilter"/></h1>
+		</TD>		
+	</TR>	
+	<tr align="left">
+		<td colspan="4">&nbsp;</td>
+	</tr>
+	<tr align="left">
+		<td>&nbsp;</td>
+		<th><bean:message key="commons.yearDesde"/></th>
+		<td>&nbsp;</td>
+		<td>
+			<html:select property="yearFrom">
+				<html:option value="0">0</html:option>
+			</html:select>
 		</td>
 	</tr>
+	<tr align="left">
+		<td colspan="4">&nbsp;</td>
+	</tr>
+	<tr align="left">
+		<td>&nbsp;</td>
+		<th><bean:message key="commons.yearHasta"/></th>
+		<td>&nbsp;</td>
+		<td>
+			<html:select property="yearTo">
+				<html:option value="1">1</html:option>
+			</html:select>
+		</td>
+	</tr>
+	<tr align="left">
+		<td colspan="4">&nbsp;</td>
+	</tr>
+	<tr align="left">
+		<td>&nbsp;</td>
+		<th><bean:message key="commons.bandaHoraria"/></th>
+		<td>&nbsp;</td>
+		<td>
+			<html:select property="bandaHoraria">
+				<html:option value="bandaHoraria">bandaHoraria</html:option>
+			</html:select>
+		</td>
+	</tr>	
 </TABLE>

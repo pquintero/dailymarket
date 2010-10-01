@@ -237,19 +237,19 @@
         <put name="action"  value="manager" />
         <put name="tabs"    value=""/>
         <put name="body"    value="/pages/manager/estadisticas.jsp" />
-        <put name="buttons" value="tiles.home.manager.buttons" />                    
+        <put name="buttons" value="" />                    
     </definition>
     
     <definition name="tiles.home.manager.indicadores" extends=".managerMainLayout">
         <put name="title"   value="indicadores.home" />
         <put name="body"    value="tiles.home.manager.indicadores.body" />
     </definition>
-	<definition name="tiles.home.manager.indicadores.body" extends=".homeLayout">
+	<definition name="tiles.home.manager.indicadores.body" extends=".editLayout">
         <put name="title"   value="indicadores.home" />
         <put name="action"  value="manager" />
         <put name="tabs"    value=""/>
         <put name="body"    value="/pages/manager/indicadores.jsp" />
-        <put name="buttons" value="tiles.home.manager.buttons" />                    
+        <put name="buttons" value="" />                    
     </definition>
     
     <definition name="tiles.home.manager.reportes" extends=".managerMainLayout">
@@ -261,7 +261,7 @@
         <put name="action"  value="manager" />
         <put name="tabs"    value=""/>
         <put name="body"    value="/pages/manager/reportes.jsp" />
-        <put name="buttons" value="tiles.home.manager.buttons" />                    
+        <put name="buttons" value="" />                    
     </definition>
     
 	<definition name="tiles.home.manager.buttons" extends=".buttonsLayout">
@@ -500,7 +500,7 @@
         <put name="title"   value="reportes.ventasAnualesFilter" />
         <put name="body"    value="tiles.reportes.ventasAnualesFilter.body" />
     </definition>
-	<definition name="tiles.reportes.ventasAnualesFilter.body" extends=".homeLayout">
+	<definition name="tiles.reportes.ventasAnualesFilter.body" extends=".editLayout">
         <put name="title"   value="reportes.ventasAnualesFilter" />
         <put name="action"  value="reportes" />
         <put name="tabs"    value=""/>
@@ -662,41 +662,65 @@
             <item value="common.button.back" link="initAction" classtype="org.apache.struts.tiles.beans.SimpleMenuItem"/>
         </putList>
     </definition>
+    <definition name="tiles.indicadores.comparativaVentasCajero.mensual.buttons" extends=".buttonsLayout">
+        <putList name="buttonList">
+            <item value="common.button.back" link="initAction" classtype="org.apache.struts.tiles.beans.SimpleMenuItem"/>
+            <item value="common.button.showIndicator" link="executeComparativaDeVentasPorCajeroMensual" classtype="org.apache.struts.tiles.beans.SimpleMenuItem"/>
+        </putList>
+    </definition>
+    <definition name="tiles.indicadores.comparativaVentasCajero.anual.buttons" extends=".buttonsLayout">
+        <putList name="buttonList">
+            <item value="common.button.back" link="initAction" classtype="org.apache.struts.tiles.beans.SimpleMenuItem"/>
+            <item value="common.button.showIndicator" link="executeComparativaDeVentasPorCajeroAnual" classtype="org.apache.struts.tiles.beans.SimpleMenuItem"/>
+        </putList>
+    </definition>  
+    <definition name="tiles.indicadores.ventasCajero.anual.buttons" extends=".buttonsLayout">
+        <putList name="buttonList">
+            <item value="common.button.back" link="initAction" classtype="org.apache.struts.tiles.beans.SimpleMenuItem"/>
+            <item value="common.button.showIndicator" link="executeVentasPorCajeroAnual" classtype="org.apache.struts.tiles.beans.SimpleMenuItem"/>
+        </putList>
+    </definition>     
+    <definition name="tiles.indicadores.ventasCajero.mensual.buttons" extends=".buttonsLayout">
+        <putList name="buttonList">
+            <item value="common.button.back" link="initAction" classtype="org.apache.struts.tiles.beans.SimpleMenuItem"/>
+            <item value="common.button.showIndicator" link="executeVentasPorCajeroMensual" classtype="org.apache.struts.tiles.beans.SimpleMenuItem"/>
+        </putList>
+    </definition>
     
     <definition name="tiles.indicadores.ventasPorCajeroMensualFilter" extends=".managerMainLayout">
         <put name="title"   value="indicadores.ventasPorCajeroMensualFilter" />
         <put name="body"    value="tiles.indicadores.ventasPorCajeroMensualFilter.body" />
     </definition>
-	<definition name="tiles.indicadores.ventasPorCajeroMensualFilter.body" extends=".homeLayout">
+	<definition name="tiles.indicadores.ventasPorCajeroMensualFilter.body" extends=".editLayout">
         <put name="title"   value="indicadores.ventasPorCajeroMensualFilter" />
         <put name="action"  value="indicadores" />
         <put name="tabs"    value=""/>
         <put name="body"    value="/pages/indicadores/ventasPorCajeroMensualFilter.jsp" />
-        <put name="buttons" value="tiles.indicadores.buttons" />                    
+        <put name="buttons" value="tiles.indicadores.ventasCajero.mensual.buttons" />                    
     </definition>
     
     <definition name="tiles.indicadores.ventasPorCajeroAnualFilter" extends=".managerMainLayout">
         <put name="title"   value="indicadores.ventasPorCajeroAnualFilter" />
         <put name="body"    value="tiles.indicadores.ventasPorCajeroAnualFilter.body" />
     </definition>
-	<definition name="tiles.indicadores.ventasPorCajeroAnualFilter.body" extends=".homeLayout">
+	<definition name="tiles.indicadores.ventasPorCajeroAnualFilter.body" extends=".editLayout">
         <put name="title"   value="indicadores.ventasPorCajeroAnualFilter" />
         <put name="action"  value="indicadores" />
         <put name="tabs"    value=""/>
         <put name="body"    value="/pages/indicadores/ventasPorCajeroAnualFilter.jsp" />
-        <put name="buttons" value="tiles.indicadores.buttons" />                    
+        <put name="buttons" value="tiles.indicadores.ventasCajero.anual.buttons" />                    
     </definition>
     
     <definition name="tiles.indicadores.comparativaDeVentasPorCajeroMensualFilter" extends=".managerMainLayout">
         <put name="title"   value="indicadores.comparativaDeVentasPorCajeroMensualFilter" />
         <put name="body"    value="tiles.indicadores.comparativaDeVentasPorCajeroMensualFilter.body" />
     </definition>
-	<definition name="tiles.indicadores.comparativaDeVentasPorCajeroMensualFilter.body" extends=".homeLayout">
+	<definition name="tiles.indicadores.comparativaDeVentasPorCajeroMensualFilter.body" extends=".editLayout">
         <put name="title"   value="indicadores.comparativaDeVentasPorCajeroMensualFilter" />
         <put name="action"  value="indicadores" />
         <put name="tabs"    value=""/>
         <put name="body"    value="/pages/indicadores/comparativaDeVentasPorCajeroMensualFilter.jsp" />
-        <put name="buttons" value="tiles.indicadores.buttons" />                    
+        <put name="buttons" value="tiles.indicadores.comparativaVentasCajero.mensual.buttons" />                    
     </definition>
     
     <definition name="tiles.indicadores.comparativaDeVentasPorCajeroAnualFilter" extends=".managerMainLayout">
@@ -708,7 +732,7 @@
         <put name="action"  value="indicadores" />
         <put name="tabs"    value=""/>
         <put name="body"    value="/pages/indicadores/comparativaDeVentasPorCajeroAnualFilter.jsp" />
-        <put name="buttons" value="tiles.indicadores.buttons" />                    
+        <put name="buttons" value="tiles.indicadores.comparativaVentasCajero.anual.buttons" />                    
     </definition>
     
 	<!--  Graficos de Indicadores  -->

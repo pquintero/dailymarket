@@ -6,9 +6,9 @@
 <%@ taglib uri="/tags/displaytag" prefix="ds" %>
 
 
-<TABLE class="body"  border="0" cellpadding="0" cellspacing="0">	
+<TABLE class="form"  border="0" cellpadding="0" cellspacing="0">	
 	<TR> 
-		<TD> 
+		<TD colspan="4"> 
 			<ul class="errors" type="square">
 				<html:messages id="mensaje" message="true" >
 					<li><bean:write name="mensaje" /></li>
@@ -19,52 +19,73 @@
 	<tr>
 		<td>&nbsp;</td>
 	</tr>
-	<tr>
-		<td >
-			<table width="100%" align="left" cellpadding="0"  cellspacing="0" border="0">			
-				<tr align="center">
-					<td>&nbsp;</td>
-					<td>
-						<a href="estadisticas.do?VirtualDispatchName=doEstadisticasVentasMensuales">Ventas Mensuales</a>
-					</td>
-					<td>&nbsp;</td>
-					<td>
-						<a href="estadisticas.do?VirtualDispatchName=doEstadisticasVentasAnuales">Ventas Anuales</a>
-					</td>
-					<td>&nbsp;</td>
-				</tr>
-				<tr align="center">
-					<td colspan="5">&nbsp;</td>
-				</tr>
-				<tr align="center">
-					<td>&nbsp;</td>
-					<td>
-						<a href="estadisticas.do?VirtualDispatchName=doEstadisticasVentasMensualesPorProducto">Ventas Mensuales<br/>Por Producto</a>
-					</td>
-					<td>&nbsp;</td>
-					<td>
-						<a href="estadisticas.do?VirtualDispatchName=doEstadisticasVentasAnualesPorProducto">Ventas Anuales<br/>Por Producto</a>
-					</td>
-					<td>&nbsp;</td>
-				</tr>
-				<tr align="center">
-					<td colspan="5">&nbsp;</td>
-				</tr>
-				<tr align="center">
-					<td>&nbsp;</td>
-					<td>
-						<a href="estadisticas.do?VirtualDispatchName=doEstadisticasVentasMensualesPorGrupoDeProducto">Ventas Mensuales<br/>Por Grupo de Producto</a>
-					</td>
-					<td>&nbsp;</td>
-					<td>
-						<a href="estadisticas.do?VirtualDispatchName=doEstadisticasVentasAnualesPorGrupoDeProducto">Ventas Anuales<br/>Por Grupo de Producto</a>
-					</td>
-					<td>&nbsp;</td>
-				</tr>
-				<tr align="center">
-					<td colspan="5">&nbsp;</td>
-				</tr>
-			</table>
+	<TR> 
+		<TD colspan="4">
+			<h1 class="formtitle"><bean:message key="estadisticas.ventas"/></h1>
+		</TD>		
+	</TR>
+	<tr align="center">
+		<td>&nbsp;</td>
+		<td>
+			<a href="estadisticas.do?VirtualDispatchName=doEstadisticasVentasMensuales">Mensuales</a>
+		</td>
+		<td>&nbsp;</td>
+		<td>
+			<a href="estadisticas.do?VirtualDispatchName=doEstadisticasVentasAnuales">Anuales</a>
 		</td>
 	</tr>
+	<tr>				
+		<td>&nbsp;</td>
+		<TD class="title">Refleja las ventas totales efectuadas en un periodo mensual</TD>	
+		<td>&nbsp;</td>			
+		<TD class="title">Refleja las ventas totales efectuadas en un periodo anual</TD>
+	</tr>
+	<tr align="center">
+		<td colspan="4">&nbsp;</td>
+	</tr>
+	<TR> 
+		<TD colspan="4">
+			<h1 class="formtitle"><bean:message key="estadisticas.ventasPorProducto"/></h1>
+		</TD>		
+	</TR>
+	<tr align="center">
+		<td>&nbsp;</td>
+		<td>
+			<a href="estadisticas.do?VirtualDispatchName=doEstadisticasVentasMensualesPorProducto">Mensuales</a>
+		</td>
+		<td>&nbsp;</td>
+		<td>
+			<a href="estadisticas.do?VirtualDispatchName=doEstadisticasVentasAnualesPorProducto">Anuales</a>
+		</td>		
+	</tr>
+	<tr>				
+		<td>&nbsp;</td>
+		<TD class="title">Refleja las ventas por producto efectuadas en un periodo mensual</TD>
+		<td>&nbsp;</td>				
+		<TD class="title">Refleja las ventas por producto efectuadas en un periodo anual</TD>
+	</tr>
+	<tr align="center">
+		<td colspan="4">&nbsp;</td>
+	</tr>
+	<TR> 
+		<TD colspan="4">
+			<h1 class="formtitle"><bean:message key="estadisticas.ventasPorGrupoDeProducto"/></h1>
+		</TD>		
+	</TR>
+	<tr align="center">
+		<td>&nbsp;</td>
+		<td>
+			<a href="estadisticas.do?VirtualDispatchName=doEstadisticasVentasMensualesPorGrupoDeProducto">Mensuales</a>
+		</td>
+		<td>&nbsp;</td>
+		<td>
+			<a href="estadisticas.do?VirtualDispatchName=doEstadisticasVentasAnualesPorGrupoDeProducto">Anuales</a>
+		</td>	
+	</tr>
+	<tr>				
+		<td>&nbsp;</td>
+		<TD class="title">Refleja las ventas por grupo de producto efectuadas en un periodo mensual</TD>
+		<td>&nbsp;</td>				
+		<TD class="title">Refleja las ventas por grupo de producto efectuadas en un periodo anual</TD>		
+	</tr>	
 </TABLE>

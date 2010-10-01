@@ -6,9 +6,9 @@
 <%@ taglib uri="/tags/displaytag" prefix="ds" %>
 
 
-<TABLE class="body"  border="0" cellpadding="0" cellspacing="0">	
+<TABLE class="form"  border="0" cellpadding="0" cellspacing="0">	
 	<TR> 
-		<TD> 
+		<TD colspan="3"> 
 			<ul class="errors" type="square">
 				<html:messages id="mensaje" message="true" >
 					<li><bean:write name="mensaje" /></li>
@@ -17,40 +17,47 @@
 		</TD>
 	</TR>
 	<tr>
+		<td colspan="3">&nbsp;</td>
+	</tr>
+	<TR> 
+		<TD colspan="3">
+			<h1 class="formtitle"><bean:message key="indicadores.ventasPorCajero"/></h1>
+		</TD>		
+	</TR>
+	<tr>				
 		<td>&nbsp;</td>
+		<td>
+			<a href="indicadores.do?VirtualDispatchName=doIndicadoresVentasPorCajeroMensual">Mensuales</a>
+		</td>		
+		<td>
+			<a href="indicadores.do?VirtualDispatchName=doIndicadoresVentasPorCajeroAnual">Anuales</a>
+		</td>		
+	</tr>
+	<tr>				
+		<td>&nbsp;</td>
+		<TD class="title">Refleja las ventas por cajero de forma mensual</TD>		
+		<TD class="title">Refleja las ventas por cajero de forma anual</TD>		
 	</tr>
 	<tr>
-		<td >
-			<table width="100%" align="left" cellpadding="0"  cellspacing="0" border="0">			
-				<tr align="center">
-					<td>&nbsp;</td>
-					<td>
-						<a href="indicadores.do?VirtualDispatchName=doIndicadoresVentasPorCajeroMensual">Indicador Mensual de<br/>Ventas Por Cajero</a>
-					</td>
-					<td>&nbsp;</td>
-					<td>
-						<a href="indicadores.do?VirtualDispatchName=doIndicadoresVentasPorCajeroAnual">Indicador Anual de<br/>Ventas Por Cajero</a>
-					</td>
-					<td>&nbsp;</td>
-				</tr>
-				<tr align="center">
-					<td colspan="5">&nbsp;</td>
-				</tr>
-				<tr align="center">
-					<td>&nbsp;</td>
-					<td>
-						<a href="indicadores.do?VirtualDispatchName=doIndicadoresComparativaDeVentasPorCajeroMensual">Indicador Mensual Comparativo<br/>de Ventas Por Cajero</a>
-					</td>
-					<td>&nbsp;</td>
-					<td>
-						<a href="indicadores.do?VirtualDispatchName=doIndicadoresComparativaDeVentasPorCajeroAnual">Indicador Anual Comparativo<br/>de Ventas Por Cajero</a>
-					</td>
-					<td>&nbsp;</td>
-				</tr>
-				<tr align="center">
-					<td colspan="5">&nbsp;</td>
-				</tr>
-			</table>
+		<td colspan="3">&nbsp;</td>
+	</tr>
+	<TR> 
+		<TD colspan="3">
+			<h1 class="formtitle"><bean:message key="indicadores.comparativaPorCajero"/></h1>
+		</TD>		
+	</TR>
+	<tr>
+		<td>&nbsp;</td>
+		<td>
+			<a href="indicadores.do?VirtualDispatchName=doIndicadoresComparativaDeVentasPorCajeroMensual">Mensual</a>
+		</td>
+		<td>
+			<a href="indicadores.do?VirtualDispatchName=doIndicadoresComparativaDeVentasPorCajeroAnual">Anual</a>
 		</td>
 	</tr>
+	<tr>				
+		<td>&nbsp;</td>
+		<TD class="title">Refleja una comparativa de ventas mensuales entre cajeros de forma mensual</TD>		
+		<TD class="title">Refleja una comparativa de ventas mensuales entre cajeros de forma anual</TD>		
+	</tr>	
 </TABLE>
