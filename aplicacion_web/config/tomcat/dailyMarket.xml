@@ -1,7 +1,7 @@
 <Context path="/dailyMarket" reloadable="false" docBase="C:\workspace\aplicacion_web\webapp">
 	<Logger className="org.apache.catalina.logger.SystemOutLogger" verbosity="4" timestamp="true"/>
 
-	<!-- URL de donde se encuentra la base, necesaria para un update, actualzar al momento de cambiarla -->
+	<!-- Usr, Pass y URL de donde se encuentra la base, necesaria para un update, actualzar al momento de cambiarla -->
 	<Environment name="urlDataBase" value="jdbc:mysql://localhost/dailyMarket" type="java.lang.String" override="true"/>
 	<Environment name="usrDataBase" value="root" type="java.lang.String" override="true"/>
 	<Environment name="passDataBase" value="root" type="java.lang.String" override="true"/> 			
