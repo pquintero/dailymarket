@@ -5,11 +5,8 @@
 <%@ taglib uri="/tags/struts-bean" prefix="bean" %>
 <%@ page import="java.net.URLEncoder" %>
 
-<bean:define id="yearFrom" property="yearFrom" name="IndicadoresForm" type="java.lang.String"/>
-<bean:define id="yearTo" property="yearTo" name="IndicadoresForm" type="java.lang.String"/>
-<bean:define id="bandaHoraria" property="bandaHoraria" name="IndicadoresForm" type="java.lang.String"/>
-
-<%= yearFrom + "_" + yearTo + "_" + bandaHoraria%>
+<bean:define id="year" property="yearFrom" name="IndicadoresForm" type="java.lang.String"/>
+<bean:define id="bandaHorariaId" property="bandaHorariaId" name="IndicadoresForm" type="java.lang.Long"/>
 
 <TABLE class="body"  border="0" cellpadding="0" cellspacing="0">	
 	<tr>
@@ -23,9 +20,8 @@
 					<TD align="center">
 						<% String url = "indicadores.do?" +
 								"VirtualDispatchName=getCVPCAChart" + 
-								"&yearFrom="+ URLEncoder.encode(yearFrom) + 
-								"&yearTo="+   URLEncoder.encode(yearTo) + 
-								"&bandaHoraria=" + URLEncoder.encode(bandaHoraria);
+								"&year="+  URLEncoder.encode(year) + 
+								"&bandaHorariaId=" + bandaHorariaId;
 						%>
 						<embed src="charts/MSLine.swf"
 		 					flashVars="dataURL=<%=URLEncoder.encode(url)%>"

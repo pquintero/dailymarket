@@ -5,12 +5,11 @@
 <%@ taglib uri="/tags/struts-bean" prefix="bean" %>
 <%@ page import="java.net.URLEncoder" %>
 
-<bean:define id="monthFrom" property="monthFrom" name="IndicadoresForm" type="java.lang.String"/>
-<bean:define id="monthTo" property="monthTo" name="IndicadoresForm" type="java.lang.String"/>
-<bean:define id="cajero" property="cajero" name="IndicadoresForm" type="java.lang.String"/>
-<bean:define id="bandaHoraria" property="bandaHoraria" name="IndicadoresForm" type="java.lang.String"/>
+<bean:define id="month" property="month" name="IndicadoresForm" type="java.lang.String"/>
+<bean:define id="year" property="year" name="IndicadoresForm" type="java.lang.String"/>
+<bean:define id="cajeroId" property="cajeroId" name="IndicadoresForm" type="java.lang.Long"/>
+<bean:define id="bandaHorariaId" property="bandaHorariaId" name="IndicadoresForm" type="java.lang.Long"/>
 
-<%= monthFrom + "_" + monthTo + "_" + cajero + "_" + bandaHoraria%>
 
 <TABLE class="body"  border="0" cellpadding="0" cellspacing="0">	
 	<tr>
@@ -24,10 +23,10 @@
 					<TD align="center">
 						<% String url = "indicadores.do?" +
 								"VirtualDispatchName=getVPCMChart" + 
-								"&monthFrom="+ URLEncoder.encode(monthFrom) + 
-								"&monthTo="+ URLEncoder.encode(monthTo) +
-								"&cajero=" + URLEncoder.encode(cajero) + 
-								"&bandaHoraria=" + URLEncoder.encode(bandaHoraria);
+								"&year="+ URLEncoder.encode(year) +
+								"&month="+ URLEncoder.encode(month) +
+								"&cajeroId=" + cajeroId + 
+								"&bandaHorariaId=" + bandaHorariaId;
 						%>
 						<embed src="charts/Line.swf"
 		 					flashVars="dataURL=<%=URLEncoder.encode(url)%>"

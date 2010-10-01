@@ -5,12 +5,10 @@
 <%@ taglib uri="/tags/struts-bean" prefix="bean" %>
 <%@ page import="java.net.URLEncoder" %>
 
-<bean:define id="yearFrom" property="yearFrom" name="IndicadoresForm" type="java.lang.String"/>
-<bean:define id="yearTo" property="yearTo" name="IndicadoresForm" type="java.lang.String"/>
-<bean:define id="cajero" property="cajero" name="IndicadoresForm" type="java.lang.String"/>
-<bean:define id="bandaHoraria" property="bandaHoraria" name="IndicadoresForm" type="java.lang.String"/>
+<bean:define id="year" property="year" name="IndicadoresForm" type="java.lang.String"/>
+<bean:define id="cajeroId" property="cajeroId" name="IndicadoresForm" type="java.lang.Long"/>
+<bean:define id="bandaHorariaId" property="bandaHorariaId" name="IndicadoresForm" type="java.lang.Long"/>
 
-<%= yearFrom + "_" + yearTo + "_" + cajero + "_" + bandaHoraria%>
 
 <TABLE class="body"  border="0" cellpadding="0" cellspacing="0">	
 	<tr>
@@ -24,10 +22,9 @@
 					<TD align="center">
 						<% String url = "indicadores.do?" +
 								"VirtualDispatchName=getVPCAChart" + 
-								"&yearFrom="+ URLEncoder.encode(yearFrom) + 
-								"&yearTo="+   URLEncoder.encode(yearTo) + 
-								"&cajero=" + URLEncoder.encode(cajero) + 
-								"&bandaHoraria=" + URLEncoder.encode(bandaHoraria);
+								"&year="+   URLEncoder.encode(year) + 
+								"&cajeroId=" + cajeroId + 
+								"&bandaHorariaId=" + bandaHorariaId;
 						%>
 						<embed src="charts/Line.swf"
 		 					flashVars="dataURL=<%=URLEncoder.encode(url)%>"
