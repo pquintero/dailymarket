@@ -6,15 +6,12 @@ import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.font.FontRenderContext;
-import java.awt.font.LineBreakMeasurer;
-import java.awt.font.TextAttribute;
 import java.awt.font.TextLayout;
 import java.awt.geom.Point2D;
 import java.awt.print.PageFormat;
 import java.awt.print.Printable;
 import java.awt.print.PrinterException;
 import java.awt.print.PrinterJob;
-import java.text.AttributedString;
 import java.util.Vector;
 
 public class PrinterTicket implements Printable{
@@ -106,7 +103,7 @@ public class PrinterTicket implements Printable{
 	
 		//Abre el cuadro de diálogo de la impresora, si queremos que imprima
 		//directamente sin cuadro de diálogo quitamos el if...
-//		if (job.printDialog()){
+		//if (job.printDialog()){
 			//Imprime, llama a la función print del objeto a imprimir
 			//en nuestro caso el Objeto ObjetoAImprimir
 			try { 

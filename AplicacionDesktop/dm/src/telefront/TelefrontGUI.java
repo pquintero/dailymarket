@@ -80,11 +80,13 @@ public class TelefrontGUI extends Telefront {
 
 	@Override
 	public Document executeMethod(String className, String methodName, Object... parameters) {
-		Logger.getLogger911().debug("class " + className + " - method " + methodName + " -  params " + this.getStringForParameters(parameters));
+		//Logger.getLogger911().debug("class " + className + " - method " + methodName + " -  params " + this.getStringForParameters(parameters));
+		System.out.println("class " + className + " - method " + methodName + " -  params " + this.getStringForParameters(parameters));
 		try {
 			normalizeParameters(parameters);
 			Document doc = super.executeMethod(className, methodName, parameters);
-			Logger.getLogger911().debug(doc != null ? doc.asXML() : "null");
+			//Logger.getLogger911().debug(doc != null ? doc.asXML() : "null");
+			System.out.println("null o docxml" + doc.asXML());
 			return doc;
 		} catch (ConnectionException e) {
 			logError(e);

@@ -37,14 +37,14 @@ public class ErrorMessageListener implements TelefrontExceptionListener {
 	 * @param telefront Objeto telefront que reporta el error
 	 */
 	private static synchronized void logError(Exception e, TelefrontGUI telefront) {
-		Logger.getLogger911().warn("Excepcion reportada desde business logic", e);
+//		Logger.getLogger911().warn("Excepcion reportada desde business logic", e);
 
 		if (largeDetailDialog != null)
 			return;
 
-		Logger.getLogger911().info("Creando y mostrando nuevo cartel de error");
+//		Logger.getLogger911().info("Creando y mostrando nuevo cartel de error");
 
-		largeDetailDialog = new LargeDetailDialog(telefront.getParent(), "Mensaje", "Información de F911", e.getMessage());
+		largeDetailDialog = new LargeDetailDialog(telefront.getParent(), "Mensaje", "Información de DailyMarket", e.getMessage());
 
 		largeDetailDialog.addWindowListener(new WindowAdapter() {
 			@Override

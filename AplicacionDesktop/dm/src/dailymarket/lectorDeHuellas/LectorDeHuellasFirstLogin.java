@@ -1,6 +1,5 @@
 package dailymarket.lectorDeHuellas;
 
-
 import java.awt.GridBagConstraints;
 import java.awt.Image;
 import java.util.HashMap;
@@ -13,10 +12,7 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
-
 import org.dom4j.Document;
-
-
 import telefront.TelefrontGUI;
 
 import com.digitalpersona.onetouch.DPFPCaptureFeedback;
@@ -38,7 +34,7 @@ import com.digitalpersona.onetouch.processing.DPFPEnrollment;
 import com.digitalpersona.onetouch.processing.DPFPFeatureExtraction;
 import com.digitalpersona.onetouch.processing.DPFPImageQualityException;
 
-
+import dailymarket.swing.ui.HuellaDigitalInterface;
 
 public class LectorDeHuellasFirstLogin {
 	   private static final String CONTROLLER_CLASS = "ar.com.tsoluciones.emergencies.server.gui.core.telefront.action.AperturaCajaManagerService";
@@ -61,7 +57,8 @@ public class LectorDeHuellasFirstLogin {
 	  }
 	   
 	   public void start(JLabel messageLabel){
-			capturer.startCapture();
+		   if(!capturer.isStarted())
+			   capturer.startCapture();
 			messageLabel.setText("Listo Para leer");
 		}
 
@@ -86,8 +83,16 @@ public class LectorDeHuellasFirstLogin {
 
 		}
 		
-		 protected void process(DPFPSample sample, JLabel mensaje, JLabel imagen, String usuario,  JPanel imageHuellaPanel, JLabel mensajeLector, String password) {
-				this.process(sample,imagen, imageHuellaPanel);
+		 protected void process(DPFPSample sample, HuellaDigitalInterface frame) {
+			 	JPanel imageHuellaPanel = frame.getImageHuellaPanel();
+			 	JLabel imagen = frame.getFingerPrintPicture();
+			 	JLabel mensajeLector = frame.getMensajeLector();
+			 	JLabel mensaje = frame.getFrameMensaje();
+			 	String usuario = frame.getUserName();
+			 	String password = frame.getUserPassword();
+			 	
+			 
+			 	this.process(sample,imagen, imageHuellaPanel);
 				DPFPFeatureSet features = extractFeatures(sample, DPFPDataPurpose.DATA_PURPOSE_ENROLLMENT);
 
 				if (features != null) 
@@ -108,10 +113,13 @@ public class LectorDeHuellasFirstLogin {
 							 Object params[] = new String[] { usuario, password, huella };
 				             Document doc = TelefrontGUI.getInstance().executeMethod(CONTROLLER_CLASS, "altaHuellaDigital", params);
 
-				            if (doc != null)
+				            if (doc != null){
+				            	mensaje.setText("Huella Digital guardada con exito!!!");
+					            frame.loguear();
+					            	
+				            }
 				            	
-							mensaje.setText("Huella Digital guardada con exito!!!");
-				            else
+							else
 								mensaje.setText("No se pudo guardar la hsuella!!!");
 
 							
@@ -149,25 +157,24 @@ public class LectorDeHuellasFirstLogin {
 
 		
 		
-	   public void init(final JLabel mensaje, final JLabel imagen, final String usuario, final JPanel imageHuellaPanel,final JLabel mensajeLector, final String password){
+	   public void init(final HuellaDigitalInterface frame){
 			capturer.addDataListener(new DPFPDataAdapter() {
 				@Override public void dataAcquired(final DPFPDataEvent e) {
 					SwingUtilities.invokeLater(new Runnable() {	public void run() {
-						
-						mensaje.setText("Apoye su dedo nuevamente");
-						process(e.getSample(), mensaje, imagen, usuario, imageHuellaPanel, mensajeLector, password);
+						frame.getMensajeLector().setText("Apoye su dedo nuevamente");
+						process(e.getSample(), frame);
 					}});
 				}
 			});
 			capturer.addReaderStatusListener(new DPFPReaderStatusAdapter() {
 				@Override public void readerConnected(final DPFPReaderStatusEvent e) {
 					SwingUtilities.invokeLater(new Runnable() {	public void run() {
-						mensajeLector.setText(("Lector Online"));
+						frame.getMensajeLector().setText("Lector Online");
 					}});
 				}
 				@Override public void readerDisconnected(final DPFPReaderStatusEvent e) {
 					SwingUtilities.invokeLater(new Runnable() {	public void run() {
-						mensajeLector.setText("Lector Offline");
+						frame.getMensajeLector().setText("Lector Offline");
 					}});
 				}
 			});
@@ -185,7 +192,7 @@ public class LectorDeHuellasFirstLogin {
 				@Override public void onImageQuality(final DPFPImageQualityEvent e) {
 					SwingUtilities.invokeLater(new Runnable() {	public void run() {
 						if (!e.getFeedback().equals(DPFPCaptureFeedback.CAPTURE_FEEDBACK_GOOD))
-							mensajeLector.setText("Calidad de la huella pobre");
+							frame.getMensajeLector().setText("Calidad de la huella pobre");
 					}});
 				}
 			});

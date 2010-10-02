@@ -13,6 +13,8 @@ public interface HuellaDigitalInterface {
 	public JLabel getFrameMensaje();
 	public JPanel getImageHuellaPanel();
 	public JLabel getFingerPrintPicture();
+	public String getUserPassword();
+	public String getMonto();
 	public void loguear();
 
 	

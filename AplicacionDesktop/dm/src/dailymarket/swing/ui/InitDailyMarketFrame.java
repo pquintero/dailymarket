@@ -107,7 +107,7 @@ public  static void main(String arg[]){
 		segundos++;
 		progressBar.setValue(segundos);
 	
-		if(segundos == 10){
+		if(segundos == 30){
 			tiempo.cancel();
 			crearNuevaSesion();
 		}
