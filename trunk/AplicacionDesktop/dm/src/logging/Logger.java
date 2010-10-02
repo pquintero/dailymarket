@@ -97,27 +97,27 @@ public class Logger {
     }
 
     public static org.apache.log4j.Logger getLogger911() {
-        return org.apache.log4j.Logger.getLogger("F911");
+        return org.apache.log4j.Logger.getLogger("DM");
     }
 
     private static void initLog4j() {
         String path = System.getProperty("user.home");
         boolean created = false;
-        File dir = new File(path + File.separator + "F911" + File.separator + "logs");
+        File dir = new File(path + File.separator + "DM" + File.separator + "logs");
         if (!dir.exists())
             created = dir.mkdirs();
         else
             created = true;
 
         if (created) {
-            System.setProperty("CTI", path + File.separator + "F911" + File.separator + "logs" + File.separator
+            System.setProperty("CTI", path + File.separator + "DM" + File.separator + "logs" + File.separator
                             + "cti.log");
-            System.setProperty("F911", path + File.separator + "F911" + File.separator + "logs" + File.separator
-                            + "F911.log");
-            System.setProperty("PROFILING", path + File.separator + "F911" + File.separator + "logs" + File.separator
+            System.setProperty("DM", path + File.separator + "DM" + File.separator + "logs" + File.separator
+                            + "DM.log");
+            System.setProperty("PROFILING", path + File.separator + "DM" + File.separator + "logs" + File.separator
                     + "PROFILING.log");            
         } else
-            throw new RuntimeException("No se pudo crear el directorio " + path + File.separator + "F911"
+            throw new RuntimeException("No se pudo crear el directorio " + path + File.separator + "DM"
                             + File.separator + "logs" + File.separator);
 
         InputStream is = Logger.class.getClassLoader().getResourceAsStream("log4j.properties");

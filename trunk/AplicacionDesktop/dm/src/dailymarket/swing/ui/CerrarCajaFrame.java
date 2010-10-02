@@ -39,7 +39,7 @@ public class CerrarCajaFrame extends DailyMarketFrame implements HuellaDigitalIn
 	
 	JPanel imageHuellaPanel = new JPanel();
 	JButton cerrarButton;
-	UtilLectorHuellasSingleton  utilHuellas = UtilLectorHuellasSingleton.getInstance();
+	UtilLectorHuellasSingleton  utilHuellas = new UtilLectorHuellasSingleton();
 	
 	
 	public CerrarCajaFrame(JFrame f){
@@ -67,8 +67,6 @@ public class CerrarCajaFrame extends DailyMarketFrame implements HuellaDigitalIn
 
 		cierrePanel.add(formPanel);
 		cierrePanel.add(imageHuellaPanel);
-		
-	
 		
 		JLabel cajeroLabel = new JLabel("Cajero :");
 		JTextField cajero = new JTextField();
@@ -215,9 +213,9 @@ public class CerrarCajaFrame extends DailyMarketFrame implements HuellaDigitalIn
 		
 					mensaje.setText("Esperando su huella digital");
 					mensaje.setForeground(Color.red);
-				
+					utilHuellas.start(mensajeLector);				
 					utilHuellas.initLogin(frame);
-					utilHuellas.start(mensajeLector);
+
 					FIRMA_CIERRE = true;
 
 					
@@ -262,4 +260,30 @@ public class CerrarCajaFrame extends DailyMarketFrame implements HuellaDigitalIn
   	 //	setCurrentUser(user);
   	 
 	 }
+
+	@Override
+	public String getUserPassword() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+
+	public String getMonto() {
+		return monto.getText();
+	}
+
+	public void backToInitLogin() {
+		// TODO Auto-generated method stub
+//
+//		utilHuellas.stop(mensajeLector);
+
+		String[] disabledButtons = new String[2];
+		disabledButtons[0] = DailyMarketFrame.CERRAR_CAJA;
+		disabledButtons[1] = DailyMarketFrame.NUEVA_SESION;
+
+		((CajaFrame) parentFrame).deshabilitarBotones(disabledButtons);
+		parentFrame.setVisible(true);
+		dispose();
+		
+	}
 }

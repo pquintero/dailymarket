@@ -86,7 +86,7 @@ public class Configuration {
 		if (System.getProperty("user.home") != null)
 			tempdir = System.getProperty("user.home") + File.separator + "F911" + File.separator + "temp";
 		else
-			tempdir = "c:" + File.separator + "F911" + File.separator + "temp";
+			tempdir = "c:" + File.separator + "DM" + File.separator + "temp";
 
 		File file = new File(tempdir);
 		file.mkdirs();

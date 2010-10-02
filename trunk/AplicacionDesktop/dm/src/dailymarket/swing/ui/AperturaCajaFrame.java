@@ -43,7 +43,7 @@ public class AperturaCajaFrame extends DailyMarketFrame implements HuellaDigital
 	
 	JPanel imageHuellaPanel = new JPanel();
 	JButton cerrarButton;
-	UtilLectorHuellasSingleton  utilHuellas = UtilLectorHuellasSingleton.getInstance();
+	UtilLectorHuellasSingleton  utilHuellas = new UtilLectorHuellasSingleton();
 	LectorDeHuellasFirstLogin  utilHuellasFirstLogin = LectorDeHuellasFirstLogin.getInstance();
     protected JPasswordField passwordTextField = new JPasswordField();
 	JLabel passwordLabel = new JLabel("Password :");
@@ -226,6 +226,7 @@ public class AperturaCajaFrame extends DailyMarketFrame implements HuellaDigital
 					
 					try{
 						if(!DO_FIRST_LOGIN){
+							utilHuellasFirstLogin.stop(mensajeLector);
 							utilHuellas.start(mensajeLector);
 							utilHuellas.initLogin(frame);
 						}
@@ -236,7 +237,9 @@ public class AperturaCajaFrame extends DailyMarketFrame implements HuellaDigital
 							}else{
 								utilHuellas.stop(mensajeLector);
 								utilHuellasFirstLogin.start(mensaje);
-								utilHuellasFirstLogin.init(mensaje, imgHuella, cajero.getText(), imageHuellaPanel, mensajeLector, passwordTextField.getText());
+								utilHuellasFirstLogin.init(frame);
+								
+								DO_FIRST_LOGIN = false;
 
 							}
 						}
@@ -297,4 +300,30 @@ public class AperturaCajaFrame extends DailyMarketFrame implements HuellaDigital
 		firmar.setEnabled(true);
 		
 	 }
+
+	public String getUserPassword() {
+		
+		return passwordTextField.getText();
+	}
+
+	@Override
+	public String getMonto() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public void backToInitSession() {
+		// TODO Auto-generated method stub
+		
+//		utilHuellas.stop(mensajeLector);
+		utilHuellasFirstLogin.stop(mensajeLector);
+		String[] disabledButtons = new String[2];
+		disabledButtons[0] = DailyMarketFrame.APERTURA_CAJA;
+		disabledButtons[1] = DailyMarketFrame.CERRAR_APLICACION;
+
+		((CajaFrame) parentFrame).deshabilitarBotones(disabledButtons);
+		parentFrame.setVisible(true);
+		dispose();
+
+	}
 }

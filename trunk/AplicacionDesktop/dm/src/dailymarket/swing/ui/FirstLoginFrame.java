@@ -33,7 +33,7 @@ public class FirstLoginFrame extends DailyMarketFrame  {
 	
 	JPanel imageHuellaPanel = new JPanel();
 	
-	UtilLectorHuellasSingleton utilHuellas = UtilLectorHuellasSingleton.getInstance();
+	UtilLectorHuellasSingleton utilHuellas = new UtilLectorHuellasSingleton();
 	JButton firmar = new JButton("Registrar Huella");
 	
 	public FirstLoginFrame(JFrame f){
@@ -139,7 +139,7 @@ public class FirstLoginFrame extends DailyMarketFrame  {
 			}else{
 					mensaje.setText("Esperando su huella digital");
 					mensaje.setForeground(Color.red);
-					utilHuellas.init(mensaje,imgHuella , usuario.getText(), imageHuellaPanel, mensajeLector, passwordTextField.getText());
+//					utilHuellas.init(frame);
 					utilHuellas.start(mensajeLector);
 					firmar.setEnabled(false);
 			}
