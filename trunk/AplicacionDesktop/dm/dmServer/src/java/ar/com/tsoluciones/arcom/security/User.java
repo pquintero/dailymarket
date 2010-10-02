@@ -16,12 +16,9 @@ import org.dom4j.DocumentHelper;
 import org.dom4j.Element;
 import org.hibernate.Hibernate;
 
-import com.digitalpersona.onetouch.DPFPDataPurpose;
 import com.digitalpersona.onetouch.DPFPFeatureSet;
 import com.digitalpersona.onetouch.DPFPGlobal;
-import com.digitalpersona.onetouch.DPFPSample;
 import com.digitalpersona.onetouch.DPFPTemplate;
-import com.digitalpersona.onetouch.processing.DPFPFeatureExtraction;
 import com.digitalpersona.onetouch.processing.DPFPImageQualityException;
 import com.digitalpersona.onetouch.verification.DPFPVerification;
 import com.digitalpersona.onetouch.verification.DPFPVerificationResult;
@@ -233,7 +230,10 @@ public class User {
 	 }
 	 /** Don't invoke this.  Used by Hibernate only. */
 	 public Blob getHuellaBlob() {
+		 if(huelladigital!=null)
 	  return Hibernate.createBlob(this.huelladigital);
+		 else
+			 return null;
 	 }
 	 
 
