@@ -66,10 +66,11 @@ public class AperturaCajaManagerService extends TelefrontServiceFactory {
 		new Session(this.getHttpSession()).destroy();
 	}
 	
-	public XmlSerializable altaHuellaDigital(String username, String password, String huella){
+	public XmlSerializable altaHuellaDigital(String username, String password, String huella) throws ServiceException{
 		AperturaCajaServiceInterface aperturaCajaService = (AperturaCajaServiceInterface) new AperturaCajaServiceFactory().newInstance();
-		aperturaCajaService.altaHuellaDigital(username, password, huella);
-		
+		if(!aperturaCajaService.altaHuellaDigital(username, password, huella))
+			throw new ServiceException("La contraseña es invalida. Reintente nuevamente");
+
 		Document doc = DocumentHelper.createDocument();
 
 		return null;

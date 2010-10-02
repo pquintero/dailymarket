@@ -7,7 +7,7 @@ import java.util.prefs.Preferences;
 
 import ar.com.tsoluciones.arcom.cor.ServiceException;
 import ar.com.tsoluciones.arcom.hibernate.HibernateService;
-import ar.com.tsoluciones.arcom.logging.Log;
+import ar.com.tsoluciones.arcom.hibernate.Transactional;
 import ar.com.tsoluciones.arcom.security.User;
 import ar.com.tsoluciones.arcom.security.services.implementation.UserService;
 import ar.com.tsoluciones.arcom.security.services.proxyinterface.UserServiceInterface;
@@ -21,7 +21,7 @@ public class AperturaCajaService implements AperturaCajaServiceInterface {
 	 *
 	 */
 
-	
+	@Transactional
 	public boolean altaHuellaDigital(String username, String password, String huella ){
 		
 		UserServiceInterface userServiceInterface = new UserService();
