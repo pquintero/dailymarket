@@ -8,6 +8,7 @@
 <%@ page import="ar.com.dailyMarket.model.*" %>
 
 <bean:define id="cajerosArray" property="cajerosArray" name="IndicadoresForm" type="java.lang.String[]"/>
+<bean:define id="cajerosList" property="cajerosList" name="IndicadoresForm" type="java.util.List"/>
 <%
 ArrayList<String> listaAnios = (ArrayList<String>) request.getAttribute("aniosList");
 ArrayList<String> listaMeses = (ArrayList<String>)request.getAttribute("mesesList");
@@ -87,19 +88,19 @@ ArrayList<String> listaMeses = (ArrayList<String>)request.getAttribute("mesesLis
 				<tr>
 					<td>&nbsp;</td>
 				</tr>
-				<tr>
-					<td>
-						<ds:table name="cajerosList" sort="list"  prop="formDisplaytag" export="false" id="row" pagesize="10" class="list"  cellspacing="0" cellpadding="3">
-							<% User cajeroUser = (User) row;%>
-							<ds:column titleKey="UserForm.name" headerClass="listTitle" property="completeName" />
-					    	<ds:column headerClass="listTitle"  title="&nbsp;">
-								<html:multibox property="cajerosArray" value="<%= cajeroUser.getId().toString() %>"></html:multibox>
-					    		<input type="hidden" name="cajerosArray" value="-1">
-					    	</ds:column>        
-						</ds:table>
-						
-					</td>
-				</tr>
+				<logic:iterate id="cajero" property="cajerosList" name="IndicadoresForm">
+					<tr>
+						<td>
+							<bean:write name="cajero" property="name"/>
+						</td>
+						<td>
+							<html:multibox property="cajerosArray" value="3" > 
+							
+								<input type="hidden" name="cajerosArray" value="-1">
+							</html:multibox>
+						</td>
+					</tr>
+				</logic:iterate>
 			</table>
 			
 		</td>

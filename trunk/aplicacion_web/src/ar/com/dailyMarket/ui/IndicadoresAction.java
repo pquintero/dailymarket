@@ -117,8 +117,12 @@ public class IndicadoresAction extends BaseAction {
     	
     	request.setAttribute("aniosList", anios);
     	request.setAttribute("mesesList", meses);
-    	request.setAttribute("cajerosList", us.getCajeros());
+//    	request.setAttribute("cajerosList", us.getCajeros());
     	request.setAttribute("bandaList", hbs.getAllHourlyBands());
+    	
+    	((DynaActionForm)form).set("cajerosList",  us.getCajeros());
+    	String[] cajerosArray = {"",""};
+    	((DynaActionForm)form).set("cajerosArray", cajerosArray);
     	return mapping.findForward("showIndicadoresComparativaDeVentasPorCajeroMensualFilter");
     }
     

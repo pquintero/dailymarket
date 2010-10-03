@@ -15,3 +15,13 @@ Meti esto en el layout para que no se guarde en cache:
 
 <META HTTP-EQUIV="Pragma" CONTENT="no-cache">
 <META HTTP-EQUIV="Expires" CONTENT="-1">
+
+
+<ds:table name="cajerosList" sort="list"  prop="formDisplaytag" export="false" id="row" pagesize="10" class="list"  cellspacing="0" cellpadding="3">
+							<% User cajeroUser = (User) row;%>
+							<ds:column titleKey="UserForm.name" headerClass="listTitle" property="completeName" />
+					    	<ds:column headerClass="listTitle"  title="&nbsp;">
+								<html:multibox property="cajerosArray" value="<%= cajeroUser.getId().toString() %>"></html:multibox>
+					    		<input type="hidden" name="cajerosArray" value="-1">
+					    	</ds:column>        
+						</ds:table>
