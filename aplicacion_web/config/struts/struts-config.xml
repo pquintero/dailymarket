@@ -258,6 +258,7 @@
 			<form-property name="yearTo" type="java.lang.String" initial=""/>
 			<form-property name="year" type="java.lang.String" initial=""/>
 			<form-property name="cajerosArray" type="java.lang.String[]" />
+			<form-property name="cajerosList" type="java.util.List" />
 			
 			<form-property name="queryDispatchName" type="java.lang.String" initial=""/>
 			<form-property name="collectionName" type="java.lang.String" initial="" />
