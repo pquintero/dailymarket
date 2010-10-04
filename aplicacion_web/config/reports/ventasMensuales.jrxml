@@ -17,17 +17,13 @@
 		 whenNoDataType="NoPages"
 		 isTitleNewPage="false"
 		 isSummaryNewPage="false">
-	<property name="ireport.scriptlethandling" value="2" />
+	<property name="ireport.scriptlethandling" value="0" />
 	<property name="ireport.encoding" value="UTF-8" />
 	<import value="java.util.*" />
 	<import value="net.sf.jasperreports.engine.*" />
 	<import value="net.sf.jasperreports.engine.data.*" />
 
 	<parameter name="reportsFolder" isForPrompting="false" class="java.lang.String"/>
-
-	<field name="periodo" class="java.lang.String"/>
-	<field name="product" class="java.lang.String"/>
-	<field name="productGroup" class="java.lang.String"/>
 
 		<background>
 			<band height="0"  isSplitAllowed="true" >
@@ -55,7 +51,7 @@
 						key="image-1"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
 					<graphicElement stretchType="NoStretch"/>
-					<imageExpression class="java.lang.String"><![CDATA[$P{reportsFolder}+"tituloDailyMarket.jpg"]]></imageExpression>
+					<imageExpression class="java.lang.String"><![CDATA["C:/workspace/aplicacion_web/webapp/images/header/tituloDailyMarket.jpg"]]></imageExpression>
 				</image>
 				<image  evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
@@ -66,7 +62,7 @@
 						key="image-2"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
 					<graphicElement stretchType="NoStretch"/>
-					<imageExpression class="java.lang.String"><![CDATA[$P{reportsFolder}+"logoDailyMarket.jpg"]]></imageExpression>
+					<imageExpression class="java.lang.String"><![CDATA["C:/workspace/aplicacion_web/webapp/images/header/logoDailyMarket.jpg"]]></imageExpression>
 				</image>
 			</band>
 		</title>
@@ -98,19 +94,6 @@
 					</textElement>
 				<text><![CDATA[Tipo: Mensual]]></text>
 				</staticText>
-				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
-					<reportElement
-						x="54"
-						y="17"
-						width="97"
-						height="14"
-						key="textField-1"/>
-					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
-					<textElement>
-						<font/>
-					</textElement>
-				<textFieldExpression   class="java.lang.String"><![CDATA[$F{periodo}]]></textFieldExpression>
-				</textField>
 				<staticText>
 					<reportElement
 						x="8"
@@ -162,6 +145,19 @@
 						<font/>
 					</textElement>
 				<text><![CDATA[Todos]]></text>
+				</staticText>
+				<staticText>
+					<reportElement
+						x="50"
+						y="16"
+						width="95"
+						height="14"
+						key="staticText-35"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement>
+						<font/>
+					</textElement>
+				<text><![CDATA[09/09 - 02/10]]></text>
 				</staticText>
 			</band>
 		</pageHeader>

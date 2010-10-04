@@ -214,12 +214,17 @@
 			<form-property name="dsTable" type="java.lang.String" />
 			<form-property name="dsTableArray" type="java.lang.String[]" />
 			
-			<!--	VENTAS ANUALES	-->
 			<form-property name="yearFrom" type="java.lang.String" initial=""/>
 			<form-property name="yearTo" type="java.lang.String" initial=""/>
+			<form-property name="monthFrom" type="java.lang.String" initial=""/>
+			<form-property name="monthTo" type="java.lang.String" initial=""/>
+			
 			<form-property name="productGroup" type="java.lang.String" initial=""/>
+			<form-property name="groupProductId" type="java.lang.Long"/>			
 			<form-property name="product" type="java.lang.String" initial=""/>
-			<form-property name="bandaHoraria" type="java.lang.String" initial=""/>
+			<form-property name="productId" type="java.lang.Long"/>
+			<form-property name="hourlyBand" type="java.lang.String" initial=""/>
+			<form-property name="hourlyBandId" type="java.lang.Long"/>
 			
 			
 			<form-property name="queryDispatchName" type="java.lang.String" initial=""/>

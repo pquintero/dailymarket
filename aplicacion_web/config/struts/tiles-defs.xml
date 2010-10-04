@@ -517,7 +517,7 @@
         <put name="action"  value="reportes" />
         <put name="tabs"    value=""/>
         <put name="body"    value="/pages/reportes/ventasMensualesFilter.jsp" />
-        <put name="buttons" value="tiles.reportes.buttons" />                    
+        <put name="buttons" value="tiles.reportes.ventasMensuales.buttons" />                    
     </definition>
     
     <definition name="tiles.reportes.facturacionAnualFilter" extends=".managerMainLayout">
@@ -568,7 +568,12 @@
         <put name="buttons" value="tiles.reportes.buttons" />                    
     </definition>
 	
-	
+	<definition name="tiles.reportes.ventasMensuales.buttons" extends=".buttonsLayout">
+        <putList name="buttonList">
+            <item value="common.button.back" link="initAction" classtype="org.apache.struts.tiles.beans.SimpleMenuItem"/>
+            <item value="common.button.showIndicator" link="executeMonthlySales" classtype="org.apache.struts.tiles.beans.SimpleMenuItem"/>
+        </putList>
+    </definition>	
 	    
     <!-- ============================================================== -->
     <!-- ESTADISTICAS                                                   -->
