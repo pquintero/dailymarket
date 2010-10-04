@@ -154,4 +154,9 @@ public class ProductService extends MailService{
 		}								
 		return message;
 	}
+	
+	@SuppressWarnings("unchecked")
+	public List<Product> getAllProducts() {
+		return (List<Product>)HibernateHelper.currentSession().createCriteria(Product.class).list();
+	}
 }
