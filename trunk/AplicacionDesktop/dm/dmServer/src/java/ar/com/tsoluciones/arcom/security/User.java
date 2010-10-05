@@ -37,6 +37,8 @@ public class User {
 	private String email;
 	private boolean receiveNotifications;
 	private byte[] huelladigital;
+	private byte[] huelladigitalAlternativa;
+
 	
 	public Long getId() {
 		return id;
@@ -130,6 +132,7 @@ public class User {
 		root.addElement("dni").setText(dni != null ? String.valueOf(dni): "");
 		root.addElement("dateCreated").setText(dateCreated != null ? String.valueOf(dateCreated):"");
 		root.addElement("huelladigital").setText( huelladigital != null ? MyBase64.encode(huelladigital):"");
+		root.addElement("huelladigitalAlternativa").setText( huelladigitalAlternativa != null ? MyBase64.encode(huelladigitalAlternativa):"");
 		
 		Element groupUserEl = root.addElement("groupUser");
 		groupUserEl.addElement("id").setText(groupUser.getId().toString());
@@ -157,15 +160,22 @@ public class User {
           DPFPVerification matcher = DPFPGlobal.getVerificationFactory().createVerification();
           matcher.setFARRequested(DPFPVerification.MEDIUM_SECURITY_FAR);
 		  DPFPTemplate referenceTemplate = DPFPGlobal.getTemplateFactory().createTemplate();
+
 		  if(huelladigital == null)
 			  return true;
+		  
 		  referenceTemplate.deserialize(huelladigital);
           
-          if (referenceTemplate != null) {
+		  if (referenceTemplate != null) {
              DPFPVerificationResult result = matcher.verify(featureSet, referenceTemplate);
              if (result.isVerified()) {
             	 return true;
+             }else{
+            	 referenceTemplate.deserialize(huelladigitalAlternativa);
+            	  if(matcher.verify(featureSet, referenceTemplate).isVerified())
+            		  return true;
              }
+            	 
           }
     	return false;
     }
@@ -189,6 +199,20 @@ public class User {
 		  this.huelladigital = this.toByteArray(huellaBlob);
 		 }
 
+	public void setHuelladigitalAlternativa(byte[] huelladigital) {
+		this.huelladigitalAlternativa = huelladigital;
+	}
+	public byte[] getHuelladigitalAlternativa() {
+		return huelladigitalAlternativa;
+	}
+	
+	public void setHuellaBlobAlternativa(Blob huellaBlob) {
+		if(huellaBlob!= null)
+		  this.huelladigitalAlternativa = this.toByteArray(huellaBlob);
+		 }
+	
+	
+	
 	 private byte[] toByteArray(Blob fromBlob) {
 		  ByteArrayOutputStream baos = new ByteArrayOutputStream();
 		  try {
@@ -230,12 +254,20 @@ public class User {
 	  return baos.toByteArray();
 	 }
 	 /** Don't invoke this.  Used by Hibernate only. */
+	 public Blob getHuellaBlobAlternativa() {
+		 if(huelladigitalAlternativa != null)
+			 return Hibernate.createBlob(this.huelladigitalAlternativa);
+		 else
+			 return null;
+	 }
+	 /** Don't invoke this.  Used by Hibernate only. */
 	 public Blob getHuellaBlob() {
-		 if(huelladigital!=null)
+		 if(huelladigital != null)
 	  return Hibernate.createBlob(this.huelladigital);
 		 else
 			 return null;
 	 }
+	 
 	 
 
 	 public static class MyBase64 {

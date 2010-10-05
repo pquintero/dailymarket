@@ -4,7 +4,7 @@ public interface AperturaCajaServiceInterface
 {
 
     
-	public boolean altaHuellaDigital(String username, String password, String huella );
+	public boolean altaHuellaDigital(String username, String password, String huella , String huellaAlternativa);
 
 
 }
