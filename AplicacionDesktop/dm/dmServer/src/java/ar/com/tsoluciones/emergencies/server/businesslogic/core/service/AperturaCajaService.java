@@ -22,16 +22,16 @@ public class AperturaCajaService implements AperturaCajaServiceInterface {
 	 */
 
 	@Transactional
-	public boolean altaHuellaDigital(String username, String password, String huella ){
+	public boolean altaHuellaDigital(String username, String password, String huella, String huellaAlternativa ){
 		
 		UserServiceInterface userServiceInterface = new UserService();
 		User user = userServiceInterface.getUserByUserName(username);
 		
-		byte[] huellaByte= null;
 		// Es primer logueo?
 		if(user.getHuelladigital() == null  && user.getPassword().equals(password)){
-			huellaByte = MyBase64.decode(huella);
-			user.setHuelladigital(huellaByte);
+			
+			user.setHuelladigital(MyBase64.decode(huella));
+			user.setHuelladigitalAlternativa(MyBase64.decode(huellaAlternativa));
 			user.setDni("dniii");
 			HibernateService.updateObject(user);
 			return true;

@@ -16,6 +16,7 @@
         <property column="email" name="email"  type="java.lang.String"/>
         <!--  >property column="receivenotifications" name="receiveNotifications"  type="java.lang.Boolean"/-->	   
 		<property column="huelladigital" name="HuellaBlob"  type="blob"/>	   
+		<property column="huelladigitalAlternativa" name="HuellaBlobAlternativa"  type="blob"/>	   
 		        
         <many-to-one name="groupUser" column="groupuserid" class="ar.com.tsoluciones.arcom.security.GroupUser"/>
     </class>   

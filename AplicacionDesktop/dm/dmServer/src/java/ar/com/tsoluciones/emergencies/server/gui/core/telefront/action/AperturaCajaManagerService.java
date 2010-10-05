@@ -2,6 +2,7 @@ package ar.com.tsoluciones.emergencies.server.gui.core.telefront.action;
 
 import org.dom4j.Document;
 import org.dom4j.DocumentHelper;
+import org.dom4j.Element;
 
 import ar.com.tsoluciones.arcom.cor.ServiceException;
 import ar.com.tsoluciones.arcom.security.User;
@@ -66,14 +67,19 @@ public class AperturaCajaManagerService extends TelefrontServiceFactory {
 		new Session(this.getHttpSession()).destroy();
 	}
 	
-	public XmlSerializable altaHuellaDigital(String username, String password, String huella) throws ServiceException{
+	public XmlSerializable altaHuellaDigital(String username, String password, String huella, String huellaAlternativa) throws ServiceException{
+
 		AperturaCajaServiceInterface aperturaCajaService = (AperturaCajaServiceInterface) new AperturaCajaServiceFactory().newInstance();
-		if(!aperturaCajaService.altaHuellaDigital(username, password, huella))
-			throw new ServiceException("La contraseña es invalida. Reintente nuevamente");
-
-		Document doc = DocumentHelper.createDocument();
-
-		return null;
+		Document document = DocumentHelper.createDocument();
+        Element rootElement = document.addElement("altaHuella");
+		
+		if(aperturaCajaService.altaHuellaDigital(username, password, huella, huellaAlternativa)){
+	        rootElement.addElement("firstLogin").setText("OK");
+	        return new XmlSerializableImpl(document.asXML());
+		}else{
+			rootElement.addElement("firstLogin").setText("NOK");
+	        return new XmlSerializableImpl(document.asXML());
+		}
 	}
 
 
