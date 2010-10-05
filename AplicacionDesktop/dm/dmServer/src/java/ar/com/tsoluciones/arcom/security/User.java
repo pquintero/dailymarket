@@ -131,9 +131,10 @@ public class User {
 		root.addElement("dateCreated").setText(dateCreated != null ? String.valueOf(dateCreated):"");
 		root.addElement("huelladigital").setText( huelladigital != null ? MyBase64.encode(huelladigital):"");
 		
-		//Serializar de otra forma
-//		root.addElement("groupUser").setText(String.valueOf(groupUser));
-		
+		Element groupUserEl = root.addElement("groupUser");
+		groupUserEl.addElement("id").setText(groupUser.getId().toString());
+		groupUserEl.addElement("name").setText(groupUser.getName());
+		groupUserEl.addElement("description").setText(groupUser.getDescription());		
 		root.addElement("email").setText(email != null ? String.valueOf(email): "");
 		root.addElement("receiveNotifications").setText( String.valueOf(receiveNotifications));
 
@@ -270,6 +271,8 @@ public class User {
 	         System.out.println(s);
 	     }
 	 }
+	 
+	 
 
 	
 }
