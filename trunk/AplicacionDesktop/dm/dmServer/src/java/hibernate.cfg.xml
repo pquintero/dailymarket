@@ -52,6 +52,8 @@
 		<!-- Core -->
 		<mapping resource="ar/com/tsoluciones/arcom/security/User.hbm.xml"/>
 		<mapping resource="ar/com/tsoluciones/arcom/security/GroupUser.hbm.xml"/>
+		<mapping resource="ar/com/tsoluciones/arcom/security/Product.hbm.xml"/>
+		<mapping resource="ar/com/tsoluciones/arcom/security/GroupProduct.hbm.xml"/>
 		
 
 	</session-factory>

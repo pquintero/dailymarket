@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 2.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+    <class lazy="false" name="ar.com.tsoluciones.arcom.security.Product" table="product">
+        <id column="id" name="id" type="java.lang.Long">
+            <generator class="identity"/>
+        </id>
+		
+		<property column="name" name="name"  type="java.lang.String"/>
+		<property column="description" name="description"  type="java.lang.String"/>
+		<property column="code" name="code"  type="java.lang.String"/>
+		<property column="price" name="price"  type="java.lang.Double"/>
+        <property column="sizeofpurchase" name="sizeOfPurchase"  type="java.lang.Integer"/>
+        <property column="actualstock" name="actualStock"  type="java.lang.Integer"/>
+        <property column="datewithoutstock" name="dateWithoutStock"  type="java.util.Date"/>	 
+        <property column="repositionstock" name="repositionStock"  type="java.lang.Integer"/>
+        <property column="state" name="state"  type="java.lang.String"/>
+        
+        <many-to-one name="groupProduct" column="groupproductid" class="ar.com.dailyMarket.model.GroupProduct"/>   	    			 
+    </class>   
+</hibernate-mapping>
+
