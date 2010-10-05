@@ -43,8 +43,7 @@ public class AperturaCajaFrame extends DailyMarketFrame implements HuellaDigital
 	
 	JPanel imageHuellaPanel = new JPanel();
 	JButton cerrarButton;
-	UtilLectorHuellasSingleton  utilHuellas = new UtilLectorHuellasSingleton();
-	LectorDeHuellasFirstLogin  utilHuellasFirstLogin = LectorDeHuellasFirstLogin.getInstance();
+
     protected JPasswordField passwordTextField = new JPasswordField();
 	JLabel passwordLabel = new JLabel("Password :");
 	JButton firmar = new JButton("Firmar");
@@ -173,8 +172,6 @@ public class AperturaCajaFrame extends DailyMarketFrame implements HuellaDigital
 				FIRMA_APERTURA  = false;
 				mensaje.setText("Apertura cancelada");
 				mensaje.setForeground(Color.red);
-				utilHuellas.stop(mensajeLector);
-				utilHuellasFirstLogin.stop(mensajeLector);
 				cerrarButton.setEnabled(false);
 			}
 		}
@@ -183,8 +180,6 @@ public class AperturaCajaFrame extends DailyMarketFrame implements HuellaDigital
 	class volverButtonListener implements ActionListener{
 
 		public void actionPerformed(ActionEvent arg0) {
-			utilHuellas.stop(mensajeLector);
-			utilHuellasFirstLogin.stop(mensajeLector);
 			if(FIRMA_APERTURA){
 				String [] disabledButtons = new String[2];
 				disabledButtons[0] = DailyMarketFrame.APERTURA_CAJA;
@@ -218,7 +213,7 @@ public class AperturaCajaFrame extends DailyMarketFrame implements HuellaDigital
 				//VALIDAR Q SEA NUMERICO
 				try{
 					
-					Double.parseDouble(monto.getText());
+					Double.parseDouble(monto.getText().replace(",","."));
 		
 					mensaje.setText("Esperando su huella digital");
 					mensaje.setForeground(Color.red);
@@ -226,7 +221,7 @@ public class AperturaCajaFrame extends DailyMarketFrame implements HuellaDigital
 					
 					try{
 						if(!DO_FIRST_LOGIN){
-							utilHuellasFirstLogin.stop(mensajeLector);
+							UtilLectorHuellasSingleton utilHuellas = new UtilLectorHuellasSingleton();
 							utilHuellas.start(mensajeLector);
 							utilHuellas.initLogin(frame);
 						}
@@ -235,9 +230,11 @@ public class AperturaCajaFrame extends DailyMarketFrame implements HuellaDigital
 								JOptionPane.showMessageDialog(frame, "Ingrese su password");
 								firmar.setEnabled(true);
 							}else{
-								utilHuellas.stop(mensajeLector);
+								passwordTextField.setEnabled(false);
+								LectorDeHuellasFirstLogin utilHuellasFirstLogin = new LectorDeHuellasFirstLogin();
 								utilHuellasFirstLogin.start(mensaje);
 								utilHuellasFirstLogin.init(frame);
+								monto.setEnabled(false);
 								
 								DO_FIRST_LOGIN = false;
 
@@ -312,10 +309,6 @@ public class AperturaCajaFrame extends DailyMarketFrame implements HuellaDigital
 	}
 
 	public void backToInitSession() {
-		// TODO Auto-generated method stub
-		
-//		utilHuellas.stop(mensajeLector);
-		utilHuellasFirstLogin.stop(mensajeLector);
 		String[] disabledButtons = new String[2];
 		disabledButtons[0] = DailyMarketFrame.APERTURA_CAJA;
 		disabledButtons[1] = DailyMarketFrame.CERRAR_APLICACION;
@@ -324,5 +317,15 @@ public class AperturaCajaFrame extends DailyMarketFrame implements HuellaDigital
 		parentFrame.setVisible(true);
 		dispose();
 
+	}
+
+	@Override
+	public void altaDeHuella() {
+		JOptionPane.showMessageDialog(frame, "La password ingresada es incorrecta, re intente nuevamente");
+		DO_FIRST_LOGIN = true;
+		firmar.setEnabled(true);
+		monto.setEnabled(true);
+		passwordTextField.setEnabled(true);
+		
 	}
 }

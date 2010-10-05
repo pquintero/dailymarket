@@ -1,5 +1,6 @@
 package dailymarket.lectorDeHuellas;
 
+import java.awt.Component;
 import java.awt.GridBagConstraints;
 import java.awt.Image;
 import java.util.HashMap;
@@ -38,23 +39,16 @@ import dailymarket.swing.ui.HuellaDigitalInterface;
 
 public class LectorDeHuellasFirstLogin {
 	   private static final String CONTROLLER_CLASS = "ar.com.tsoluciones.emergencies.server.gui.core.telefront.action.AperturaCajaManagerService";
-	   private volatile static LectorDeHuellasFirstLogin singleton;
 	   private DPFPCapture capturer = DPFPGlobal.getCaptureFactory().createCapture();
 	   public static String TEMPLATE_PROPERTY = "template";
        private DPFPEnrollment enroller = DPFPGlobal.getEnrollmentFactory().createEnrollment();
+
+       String huella = null;
+		String huellaAlternativa = null;
+
 		
-	   private LectorDeHuellasFirstLogin(){
+	   public LectorDeHuellasFirstLogin(){
 	   }
-	 
-	   public static LectorDeHuellasFirstLogin getInstance(){
-	     if(singleton==null) {
-	       synchronized(LectorDeHuellasFirstLogin.class){
-	          if(singleton==null)
-	        	  singleton= new LectorDeHuellasFirstLogin();
-	       }
-	    }
-	   return singleton;
-	  }
 	   
 	   public void start(JLabel messageLabel){
 		   if(!capturer.isStarted())
@@ -105,23 +99,36 @@ public class LectorDeHuellasFirstLogin {
 
 					switch(enroller.getTemplateStatus()){
 						case TEMPLATE_STATUS_READY:	
-							stop(mensaje);
-				
-							DPFPTemplate template = enroller.getTemplate();
-							String huella = MyBase64.encode(template.serialize());
 							
-							 Object params[] = new String[] { usuario, password, huella };
-				             Document doc = TelefrontGUI.getInstance().executeMethod(CONTROLLER_CLASS, "altaHuellaDigital", params);
+							DPFPTemplate template = enroller.getTemplate();
+							if( huella == null){
+								huella = MyBase64.encode(template.serialize());
+								stop(mensajeLector);
 
-				            if (doc != null){
-				            	mensaje.setText("Huella Digital guardada con exito!!!");
-					            frame.loguear();
+								JOptionPane.showMessageDialog((Component) frame, "Huella Digital Capturada con éxito\n" + "Por favor ingrese una segunda huella alternativa");
+								mensaje.setText("Proporcione otrar huell");
+								
+								enroller = DPFPGlobal.getEnrollmentFactory().createEnrollment();
+								start(mensaje);
+							}else{
+								
+								huellaAlternativa = MyBase64.encode(template.serialize());
+							
+								Object params[] = new String[] { usuario, password, huella , huellaAlternativa};
+					            Document doc = TelefrontGUI.getInstance().executeMethod(CONTROLLER_CLASS, "altaHuellaDigital", params);
+
+					            if (doc.getRootElement().selectSingleNode("firstLogin").getText().equals("OK")){
+					            	mensaje.setText("Huella Digital guardada con exito!!!");
+						            frame.loguear();
+						            stop(mensajeLector);
+					            }
 					            	
-				            }
-				            	
-							else
-								mensaje.setText("No se pudo guardar la hsuella!!!");
-
+								else{
+									mensaje.setText("No se pudo guardar la huella!!!");
+					            	stop(mensajeLector);
+					            	frame.altaDeHuella();
+								}
+							}
 							
 			                break;
 
@@ -129,7 +136,7 @@ public class LectorDeHuellasFirstLogin {
 							enroller.clear();
 							stop(mensaje);
 							updateStatus(mensajeLector);
-							JOptionPane.showMessageDialog(null, "The fingerprint template is not valid. Repeat fingerprint enrollment.", "Fingerprint Enrollment", JOptionPane.ERROR_MESSAGE);
+							JOptionPane.showMessageDialog(null, "La huella digital tomada es inválida. Por favor repita la operación.", "Alta de huella digital", JOptionPane.ERROR_MESSAGE);
 							start(mensaje);
 							break;
 

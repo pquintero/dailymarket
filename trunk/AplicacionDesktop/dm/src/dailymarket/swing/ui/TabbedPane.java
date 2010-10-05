@@ -12,6 +12,8 @@ import javax.swing.border.EtchedBorder;
 import javax.swing.border.LineBorder;
 import javax.swing.table.DefaultTableModel;
 
+import dailymarket.lectorDeHuellas.UtilLectorHuellasSingleton;
+
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
@@ -22,7 +24,6 @@ import java.awt.event.KeyEvent;
 import java.util.Vector;
 
 public class TabbedPane extends JPanel {
-	SupervisorFrame parentFrame;
 	JScrollPane scrollProductsPane;
     protected DefaultTableModel tableModelSelecteds;
     protected JTable tableSelecteds = new JTable();
@@ -31,9 +32,14 @@ public class TabbedPane extends JPanel {
 	public JComponent panel2 ;
 	public  JComponent panel3;
 	
-    public TabbedPane(DefaultTableModel tableModelProducts, SupervisorFrame supervisorFrame) {
-       
-    	parentFrame = supervisorFrame;
+	protected JLabel imgHuella = new JLabel();
+	JLabel mensajeLector = new JLabel();
+	
+	HuellaDigitalInterface frameParent;
+	JButton aceptarButton = new JButton("Firmar");
+	
+    public TabbedPane(DefaultTableModel tableModelProducts, HuellaDigitalInterface supervisorFrame, JLabel mensajeLector, JLabel imgHuella) {
+        frameParent = supervisorFrame;
     	
         JTabbedPane tabbedPane = new JTabbedPane();
         tabbedPane.setPreferredSize(new Dimension(600, 200));
@@ -77,11 +83,14 @@ public class TabbedPane extends JPanel {
 		 cancelarVentaPanel.add(motivoLabel);
 		 cancelarVentaPanel.add(textArea);
 		 
-		 JButton aceptarButton = new JButton("Firmar");
 		 aceptarButton.setMnemonic(KeyEvent.VK_F);
 		 aceptarButton.addActionListener( new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-			
+					((SupervisorFrame)frameParent).setActualAction(SupervisorFrame.CANCELAR_VENTA);
+					UtilLectorHuellasSingleton utilHuellas = new UtilLectorHuellasSingleton();
+					utilHuellas.start(mensajeLector);
+					utilHuellas.initLogin(frameParent);
+					aceptarButton.setEnabled(false);
 			}
 		});
         cancelarVentaPanel.add(aceptarButton);
@@ -91,11 +100,11 @@ public class TabbedPane extends JPanel {
         terminarButton.setMnemonic(KeyEvent.VK_V);
         terminarButton.addActionListener( new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-			parentFrame.dispose();
+			((SupervisorFrame)frameParent).dispose();	
 			}
 		});
-       cancelarVentaPanel.add(terminarButton);
-    	
+        
+        cancelarVentaPanel.add(terminarButton);    	
 		
         return cancelarVentaPanel;
     }
@@ -163,11 +172,10 @@ public class TabbedPane extends JPanel {
            }
        };
        tableSelecteds.setModel(tableModelSelecteds);
-       tableModelSelecteds.setDataVector(
+        tableModelSelecteds.setDataVector(
                new Object[][] {},
                new Object[] { "Cancel","Descripcion", "Cantidad", "Precio", "Total" });
 	    
-       tableSelecteds.getColumnModel().getColumn(0).setPreferredWidth(3);
        tableSelecteds.getColumnModel().getColumn(1).setPreferredWidth(185);
        tableSelecteds.getColumnModel().getColumn(2).setPreferredWidth(3);
        tableSelecteds.getColumnModel().getColumn(3).setPreferredWidth(5);
@@ -192,7 +200,7 @@ public class TabbedPane extends JPanel {
 
         	public void actionPerformed(ActionEvent arg0) {
 		
-			parentFrame.dispose();
+        		((SupervisorFrame)frameParent).dispose();
 			
 		}
 	});
