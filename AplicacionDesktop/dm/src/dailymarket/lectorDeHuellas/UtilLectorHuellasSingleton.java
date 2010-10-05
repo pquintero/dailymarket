@@ -1,5 +1,6 @@
 package dailymarket.lectorDeHuellas;
 
+import java.awt.Component;
 import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.Image;
@@ -11,6 +12,7 @@ import java.util.prefs.Preferences;
 
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 
@@ -44,26 +46,15 @@ import dailymarket.model.GroupEmpleado;
 import dailymarket.swing.ui.AperturaCajaFrame;
 import dailymarket.swing.ui.CerrarCajaFrame;
 import dailymarket.swing.ui.HuellaDigitalInterface;
+import dailymarket.swing.ui.SupervisorFrame;
 
 public class UtilLectorHuellasSingleton {
 	   private static final String CONTROLLER_CLASS = "ar.com.tsoluciones.emergencies.server.gui.core.telefront.action.AperturaCajaManagerService";
-	   private volatile static UtilLectorHuellasSingleton singleton;
 	   private DPFPCapture capturer = DPFPGlobal.getCaptureFactory().createCapture();
 	   public static String TEMPLATE_PROPERTY = "template";
     	
 	   public UtilLectorHuellasSingleton(){
 	   }
-	 
-	   public static UtilLectorHuellasSingleton getInstance(){
-	     if(singleton==null) {
-	       synchronized(UtilLectorHuellasSingleton.class){
-	          if(singleton==null)
-	        	  singleton= new UtilLectorHuellasSingleton();
-	       }
-	    }
-	   return singleton;
-	  }
-	   
 	   public void start(JLabel messageLabel){
 		   if(!capturer.isStarted())
 			capturer.startCapture();
@@ -120,15 +111,13 @@ public class UtilLectorHuellasSingleton {
 			});
 		}
 		protected void process(DPFPSample sample, JLabel imagen, JPanel imageHuellaPanel){
-	
 			drawPicture(convertSampleToBitmap(sample), imageHuellaPanel, imagen);
 		}
 	
 		public void drawPicture(Image image, JPanel imageHuellaPanel, JLabel picture) {
 			imageHuellaPanel.remove(picture);
-		
-
 			picture = new JLabel(new ImageIcon(image.getScaledInstance(140, 90, Image.SCALE_SMOOTH)));
+
 			GridBagConstraints constraintHuella = new GridBagConstraints();
 			constraintHuella.gridx = 0;
 			constraintHuella.gridy = 0;
@@ -138,11 +127,7 @@ public class UtilLectorHuellasSingleton {
 //			imageHuellaPanel.setVisible(true);
 
 		}
-		
-		
-		 
-		
-			protected DPFPFeatureSet extractFeatures(DPFPSample sample, DPFPDataPurpose purpose)
+	protected DPFPFeatureSet extractFeatures(DPFPSample sample, DPFPDataPurpose purpose)
 			{
 				DPFPFeatureExtraction extractor = DPFPGlobal.getFeatureExtractionFactory().createFeatureExtraction();
 				try {
@@ -152,13 +137,9 @@ public class UtilLectorHuellasSingleton {
 				}
 			}
 	
-			protected Image convertSampleToBitmap(DPFPSample sample) {
+    protected Image convertSampleToBitmap(DPFPSample sample) {
 				return DPFPGlobal.getSampleConversionFactory().createImage(sample);
 			}
-
-		
-		
-	
 
 	   public void stop(  JLabel mensajeLector){
 //		    mensajeLector.setText("Lector Offline");
@@ -175,28 +156,48 @@ public class UtilLectorHuellasSingleton {
 	    	DPFPFeatureExtraction featureExtractor = DPFPGlobal.getFeatureExtractionFactory().createFeatureExtraction();
 	    	
 	          try {
+	        	  //TODO MODULARIZAR TOdo este tratamiento
 				DPFPFeatureSet featureSet = featureExtractor.createFeatureSet(sample, DPFPDataPurpose.DATA_PURPOSE_VERIFICATION);
 				String featureSetString = MyBase64.encode(featureSet.serialize()); 
 			     
 	            Object params[] = new String[] { user, "", "", featureSetString };
 	            Document doc = null;
 	            
-	            if( frame instanceof CerrarCajaFrame){
+	            if(frame instanceof SupervisorFrame){
+	            	
+	            	if(((SupervisorFrame)frame).getActualAction().equals(SupervisorFrame.CANCELAR_VENTA)){
+//			    		doc = TelefrontGUI.getInstance().executeMethod(CONTROLLER_CLASS, "cancelarVenta", params);
+			            if( doc == null){
+   							mensaje.setText("REALIZAR PRIMER LOGUEO");
+   							JOptionPane.showMessageDialog((Component)frame , "Este es su primer logueo en la aplicación para poder loguearse debe dar de alta 2 huellas digitales. \n " +
+   									"Para ello debe ingresar la clave proporcionada por su superior y luego hacer click en el boton \"Alta de Huella\" ");
+			            	((SupervisorFrame) frame).doFirstLogin();
+			            }
+	            	}else if(((SupervisorFrame)frame).getActualAction().equals(SupervisorFrame.CANCELAR_PRODUCTOS)){
+	            		//Validar q sea supervisor
+//			    		doc = TelefrontGUI.getInstance().executeMethod(CONTROLLER_CLASS, "validarSupervisor", params);
+	            		if( doc == null){
+				            	((SupervisorFrame) frame).doFirstLogin();
+				            }
+	            	}else if(((SupervisorFrame)frame).getActualAction().equals(SupervisorFrame.OTORGAR_DESCUENTOS)){
+	            		
+	            		
+	            	}
+	            }
+	            else if( frame instanceof CerrarCajaFrame){
 		    		System.out.println("Cerrar Caja");
-		    		
+		    		//Persistir la operacion de cerrar caja
 //		    		doc = TelefrontGUI.getInstance().executeMethod(CONTROLLER_CLASS, "cerrarCaja", params);
-		            
 		    		((CerrarCajaFrame) frame).backToInitLogin();
 		    		
 		    	}else{
 		    		System.out.println("Abrir Caja");
+
 		    		doc = TelefrontGUI.getInstance().executeMethod(CONTROLLER_CLASS, "abrirCaja", params);
 		            String huellaDigital = "";
 		            
 		            if( doc != null){
-						
 						   Element el = doc.getRootElement();
-				             
 				             Iterator itr = el.content().iterator(); 
 				             while(itr.hasNext()) {
 				                 DefaultElement element =(DefaultElement) itr.next(); 
@@ -206,33 +207,26 @@ public class UtilLectorHuellasSingleton {
 				                	huellaDigital = element.getText();
 				                 }
 				             } 
+				             
 						if(huellaDigital.equals("")){
 							((AperturaCajaFrame) frame ).doFirstLogin();
-							mensaje.setText("REALIZAR PRRIMERRRR LOGUEO");
-							stop(new JLabel());
+							mensaje.setText("REALIZAR PRIMER LOGUEO");
+   							JOptionPane.showMessageDialog((Component)frame , "Este es su primer logueo en la aplicación para poder loguearse debe dar de alta 2 huellas digitales. \n Debe ingresar la clave proporcionada por su superior");
 
 						}else{
 							((AperturaCajaFrame) frame ).loguear();
 							mensaje.setText("USUARIO LOGUEADO");
-							
 							((AperturaCajaFrame) frame ).backToInitSession();
-							
-							
 						}
 						
 						setCurrentUser(doc);
 						
 				             
 					}else{
-						
 						//Reiniciar la captura? reiniciar el
 						//Mostrar mensaje
-						
 					}
-		      
- 	
-		    	}
-	            
+		    	 }
 	            
 				
 
@@ -242,8 +236,6 @@ public class UtilLectorHuellasSingleton {
 	        	  mensaje.setText(e.getMessage());
 	        	  e.printStackTrace();
 				}
-                	
-	             
 	        
 			drawPicture(convertSampleToBitmap(sample), imageHuellaPanel, picture);
 		}

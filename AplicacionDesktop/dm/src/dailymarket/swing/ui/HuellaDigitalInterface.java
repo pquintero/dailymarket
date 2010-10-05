@@ -16,7 +16,6 @@ public interface HuellaDigitalInterface {
 	public String getUserPassword();
 	public String getMonto();
 	public void loguear();
-
-	
+	public void altaDeHuella();
 
 }

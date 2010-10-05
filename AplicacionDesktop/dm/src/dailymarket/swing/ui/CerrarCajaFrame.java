@@ -39,8 +39,6 @@ public class CerrarCajaFrame extends DailyMarketFrame implements HuellaDigitalIn
 	
 	JPanel imageHuellaPanel = new JPanel();
 	JButton cerrarButton;
-	UtilLectorHuellasSingleton  utilHuellas = new UtilLectorHuellasSingleton();
-	
 	
 	public CerrarCajaFrame(JFrame f){
 		
@@ -171,7 +169,6 @@ public class CerrarCajaFrame extends DailyMarketFrame implements HuellaDigitalIn
 				FIRMA_CIERRE  = false;
 				mensaje.setText("Apertura cancelada");
 				mensaje.setForeground(Color.red);
-				utilHuellas.stop(mensajeLector);
 				cerrarButton.setEnabled(false);
 				
 			}
@@ -181,8 +178,6 @@ public class CerrarCajaFrame extends DailyMarketFrame implements HuellaDigitalIn
 	class volverButtonListener implements ActionListener{
 
 		public void actionPerformed(ActionEvent arg0) {
-			utilHuellas.stop(mensajeLector);
-			
 			String [] disabledButtons = new String[2];
 			if(FIRMA_CIERRE){
 				disabledButtons[0] = DailyMarketFrame.CERRAR_CAJA;
@@ -209,10 +204,12 @@ public class CerrarCajaFrame extends DailyMarketFrame implements HuellaDigitalIn
 			}else{
 				//VALIDAR Q SEA NUMERICO
 				try{
-					Double.parseDouble(montoCierre.getText());
+					String monto = montoCierre.getText().replace(",", ".");
+					Double.parseDouble(monto);
 		
 					mensaje.setText("Esperando su huella digital");
 					mensaje.setForeground(Color.red);
+					UtilLectorHuellasSingleton utilHuellas = new UtilLectorHuellasSingleton();
 					utilHuellas.start(mensajeLector);				
 					utilHuellas.initLogin(frame);
 
@@ -284,6 +281,12 @@ public class CerrarCajaFrame extends DailyMarketFrame implements HuellaDigitalIn
 		((CajaFrame) parentFrame).deshabilitarBotones(disabledButtons);
 		parentFrame.setVisible(true);
 		dispose();
+		
+	}
+
+	@Override
+	public void altaDeHuella() {
+		// TODO Auto-generated method stub
 		
 	}
 }
