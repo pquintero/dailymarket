@@ -16,6 +16,7 @@ import javax.swing.SwingUtilities;
 
 import org.dom4j.Document;
 import org.dom4j.Element;
+import org.dom4j.Node;
 import org.dom4j.tree.DefaultElement;
 
 import telefront.TelefrontGUI;
@@ -25,7 +26,6 @@ import com.digitalpersona.onetouch.DPFPDataPurpose;
 import com.digitalpersona.onetouch.DPFPFeatureSet;
 import com.digitalpersona.onetouch.DPFPGlobal;
 import com.digitalpersona.onetouch.DPFPSample;
-import com.digitalpersona.onetouch.DPFPTemplate;
 import com.digitalpersona.onetouch.capture.DPFPCapture;
 import com.digitalpersona.onetouch.capture.event.DPFPDataAdapter;
 import com.digitalpersona.onetouch.capture.event.DPFPDataEvent;
@@ -38,6 +38,9 @@ import com.digitalpersona.onetouch.capture.event.DPFPSensorEvent;
 import com.digitalpersona.onetouch.processing.DPFPFeatureExtraction;
 import com.digitalpersona.onetouch.processing.DPFPImageQualityException;
 
+import dailymarket.model.Context;
+import dailymarket.model.Empleado;
+import dailymarket.model.GroupEmpleado;
 import dailymarket.swing.ui.AperturaCajaFrame;
 import dailymarket.swing.ui.CerrarCajaFrame;
 import dailymarket.swing.ui.HuellaDigitalInterface;
@@ -217,6 +220,8 @@ public class UtilLectorHuellasSingleton {
 							
 						}
 						
+						setCurrentUser(doc);
+						
 				             
 					}else{
 						
@@ -269,6 +274,55 @@ public class UtilLectorHuellasSingleton {
 		     }
 		
 		 }
+		 
+		 /**
+			 * Setea el usuario actual en el contexto de sesión del cliente.
+			 * @param doc Representación XML del usuario.
+			 */
+			public static void setCurrentUser(Document doc) {
+				Element root = doc.getRootElement();
+				
+				//Setear todos los valores necesarios para el cajero
+				
+				Empleado user = new Empleado();
+				
+				Long id = Long.valueOf(root.selectSingleNode("id").getStringValue());
+				String username = root.selectSingleNode("user").getStringValue();
+				String name = root.selectSingleNode("name").getStringValue();
+				String lastName = root.selectSingleNode("lastName").getStringValue();
+				String password = root.selectSingleNode("password").getStringValue();
+				String passwordOld = root.selectSingleNode("passwordOld").getStringValue();
+				String dni = root.selectSingleNode("dni").getStringValue();
+				String dateCreated = root.selectSingleNode("dateCreated").getStringValue();
+				String huelladigital = root.selectSingleNode("huelladigital").getStringValue();
+				
+				Node groupUser = root.selectSingleNode("groupUser");
+				Long idGroup = Long.valueOf(groupUser.selectSingleNode("id").getStringValue());
+				String nameGroup = groupUser.selectSingleNode("name").getStringValue();
+				String descriptionGroup = groupUser.selectSingleNode("description").getStringValue();
+				String email = root.selectSingleNode("email").getStringValue();
+				String receiveNotifications = root.selectSingleNode("receiveNotifications").getStringValue();
+				
+				user.setDateCreated(dateCreated);
+				user.setDni(dni);
+				user.setEmail(email);
+				user.setHuelladigital(huelladigital);
+				user.setId(id);
+				user.setLastName(lastName);
+				user.setName(lastName);
+				user.setPassword(password);
+				user.setPasswordOld(passwordOld);
+				user.setReceiveNotifications(Boolean.valueOf(receiveNotifications));
+				user.setUser(username);
+				GroupEmpleado groupEmpleado = new GroupEmpleado();
+				groupEmpleado.setDescription(descriptionGroup);
+				groupEmpleado.setId(idGroup);
+				groupEmpleado.setName(nameGroup);
+				user.setGroupEmpleado(groupEmpleado);
+
+				Context.getInstance().setCurrentUser(user);
+			}
+
 
 		
 	

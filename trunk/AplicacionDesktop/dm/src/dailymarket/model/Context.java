@@ -19,14 +19,14 @@ public class Context {
 		return instance;
 	}
 
-	private Cajero currentUser;
+	private Empleado currentUser;
 	private boolean profilingEnabled;
 
-	public void setCurrentUser(Cajero user) {
+	public void setCurrentUser(Empleado user) {
 		currentUser = user;
 	}
 
-	public Cajero getCurrentUser() {
+	public Empleado getCurrentUser() {
 		return currentUser;
 	}
 
