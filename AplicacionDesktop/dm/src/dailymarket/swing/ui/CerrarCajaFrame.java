@@ -261,7 +261,7 @@ public class CerrarCajaFrame extends DailyMarketFrame implements HuellaDigitalIn
   	 
 	 }
 
-	@Override
+
 	public String getUserPassword() {
 		// TODO Auto-generated method stub
 		return null;

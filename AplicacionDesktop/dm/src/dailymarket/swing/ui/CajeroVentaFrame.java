@@ -41,7 +41,7 @@ import javax.swing.border.TitledBorder;
 import javax.swing.table.DefaultTableModel;
 
 import dailymarket.model.Caja;
-import dailymarket.model.Cajero;
+import dailymarket.model.Empleado;
 import dailymarket.model.LineaTicket;
 import dailymarket.model.Sucursal;
 import dailymarket.model.Ticket;
@@ -257,10 +257,10 @@ public class CajeroVentaFrame extends DailyMarketFrame {
 				suc.setNombre("Lider_Oriental");
 				suc.setTelefono("4982-7021");
 				
-				Cajero cajero = new Cajero();
-				cajero.setApellido("Gimenez");
-				cajero.setLegajo("15-489892");
-				cajero.setNombre("Patricia");
+				Empleado cajero = new Empleado();
+				cajero.setLastName("Gimenez");
+				cajero.setDni("15-489892");
+				cajero.setName("Patricia");
 				
 				Caja caja = new Caja();
 				caja.setCajero(cajero);
@@ -299,7 +299,7 @@ public class CajeroVentaFrame extends DailyMarketFrame {
 				lineaTicket[0]= ticket.getCaja().getSucursal().getNombre().toUpperCase();
 				lineaTicket[1]= ticket.getCaja().getSucursal().getDireccion().toUpperCase() ;
 				lineaTicket[2]= ".";
-				lineaTicket[3]= "EMPLEADO:" + ticket.getCaja().getCajero().getLegajo() + " - " + ticket.getCaja().getCajero().getNombre();
+				lineaTicket[3]= "EMPLEADO:" + ticket.getCaja().getCajero().getDni() + " - " + ticket.getCaja().getCajero().getLastName();
 				lineaTicket[4]= "CAJA:" + ticket.getCaja().getNroCaja();
 				lineaTicket[5]= "CUIT-NRO: " + ticket.getCaja().getSucursal().getCuit().toUpperCase();
 				lineaTicket[6]= "NRO-TICKET: " + ticket.getNroTicket().toUpperCase();

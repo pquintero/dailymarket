@@ -4,7 +4,7 @@ public class Caja {
 	
 	private String nroCaja;
 	private Sucursal sucursal;
-	private Cajero cajero;
+	private Empleado cajero;
 	
 	public String getNroCaja() {
 		return nroCaja;
@@ -18,10 +18,10 @@ public class Caja {
 	public void setSucursal(Sucursal sucursal) {
 		this.sucursal = sucursal;
 	}
-	public Cajero getCajero() {
+	public Empleado getCajero() {
 		return cajero;
 	}
-	public void setCajero(Cajero cajero) {
+	public void setCajero(Empleado cajero) {
 		this.cajero = cajero;
 	}
 	

@@ -306,7 +306,6 @@ public class AperturaCajaFrame extends DailyMarketFrame implements HuellaDigital
 		return passwordTextField.getText();
 	}
 
-	@Override
 	public String getMonto() {
 		// TODO Auto-generated method stub
 		return null;
