@@ -22,7 +22,8 @@
 				<tr align="center">
 					<TD>&nbsp;</TD>
 					<TD align="center">
-						<% String url = "indicadores.do?" +
+						<% 
+						String url = "indicadores.do?" +
 								"VirtualDispatchName=getCVPCMChart" + 
 								"&month="+ URLEncoder.encode(month) + 
 								"&year="+ URLEncoder.encode(year) +

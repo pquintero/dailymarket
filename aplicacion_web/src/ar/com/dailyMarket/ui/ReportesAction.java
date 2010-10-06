@@ -13,7 +13,6 @@ import org.apache.struts.action.ActionErrors;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
-import org.hibernate.mapping.Collection;
 
 import ar.com.dailyMarket.services.GroupProductService;
 import ar.com.dailyMarket.services.MonthlySalesReportService;
@@ -63,9 +62,11 @@ public class ReportesAction extends BaseAction {
     public ActionForward executeMonthlySales(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) {
     	ServletContext context = request.getSession().getServletContext();
     	MonthlySalesReportService rrs = new MonthlySalesReportService();            
-        String path = "/reports/";    	                        	
-   
-      	try {
+//        String path = "/reports/";
+//        String path = "WEB-INF" + File.separator + "classes" + File.separator + "reports" + File.separator;
+    	String path = context.getRealPath("");
+        
+        try {
       		response.setHeader("Content-Disposition","attachment; filename=" + "ventasMensuales.pdf" + "\"");
       		List l = new ArrayList();
       		int cant = rrs.runReport((DynaBean)form, response.getOutputStream(), path, context, l,"ventasMensuales");            

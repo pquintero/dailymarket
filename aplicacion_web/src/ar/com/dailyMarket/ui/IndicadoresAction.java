@@ -128,18 +128,21 @@ public class IndicadoresAction extends BaseAction {
     
     public ActionForward executeComparativaDeVentasPorCajeroMensual(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) {	
     	//Redireccionar a un jsp con el chart y un volver hacia el filtro
+//    	request.getSession().setAttribute("cajerosComparar", (String[])((DynaActionForm)form).get("cajerosArray"));
     	return mapping.findForward("showIndicadoresComparativaDeVentasPorCajeroMensualChart");
     }
     
     public ActionForward getCVPCMChart(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception{
 		IndicadoresService is = new IndicadoresService();
+//		String[] vec = (String[])request.getSession().getAttribute("cajerosComparar");
+		
         MSLine msline = is.getCVPCMChart((DynaActionForm)form);
         return getXML(msline, mapping, form, request, response);
     }
     
 /******		ComparativaDeVentasPorCajeroAnual		******/
     public ActionForward doIndicadoresComparativaDeVentasPorCajeroAnual(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) {	
-    	ArrayList<String> anios = new ArrayList();
+    	ArrayList<String> anios = new ArrayList<String>();
     	anios.add("2010");
     	anios.add("2009");
     	anios.add("2008");

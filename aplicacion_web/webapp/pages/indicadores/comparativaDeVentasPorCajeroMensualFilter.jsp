@@ -89,15 +89,14 @@ ArrayList<String> listaMeses = (ArrayList<String>)request.getAttribute("mesesLis
 					<td>&nbsp;</td>
 				</tr>
 				<logic:iterate id="cajero" property="cajerosList" name="IndicadoresForm">
+					<% User us = (User) cajero; %>
 					<tr>
 						<td>
 							<bean:write name="cajero" property="name"/>
 						</td>
 						<td>
-							<html:multibox property="cajerosArray" value="3" > 
-							
-								<input type="hidden" name="cajerosArray" value="-1">
-							</html:multibox>
+							<html:multibox name="IndicadoresForm" property="cajerosArray" value='<%= us.getId().toString() %>' /> 
+			   				<html:hidden name="IndicadoresForm" property="cajerosArray" value='<%= "-1" %>'/>
 						</td>
 					</tr>
 				</logic:iterate>

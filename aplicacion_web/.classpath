@@ -35,7 +35,6 @@
 	<classpathentry kind="lib" path="webapp/WEB-INF/lib/mysql-connector-java-3.0.17-ga-bin.jar"/>
 	<classpathentry kind="lib" path="webapp/WEB-INF/lib/odmg.jar"/>
 	<classpathentry kind="lib" path="webapp/WEB-INF/lib/optional.jar"/>
-	<classpathentry kind="lib" path="webapp/WEB-INF/lib/poi-2.0-final-20040126.jar"/>
 	<classpathentry kind="lib" path="webapp/WEB-INF/lib/providers.jar"/>
 	<classpathentry kind="lib" path="webapp/WEB-INF/lib/proxool.jar"/>
 	<classpathentry kind="lib" path="webapp/WEB-INF/lib/securityfilter.jar"/>
@@ -49,12 +48,14 @@
 	<classpathentry kind="lib" path="webapp/WEB-INF/lib/xml-apis.jar"/>
 	<classpathentry kind="lib" path="webapp/WEB-INF/lib/dcc-tiles.jar"/>
 	<classpathentry kind="lib" path="webapp/WEB-INF/lib/quartz-all-1.6.0.jar"/>
-	<classpathentry kind="lib" path="webapp/WEB-INF/lib/jasperreports-1.2.6.jar"/>
 	<classpathentry kind="lib" path="webapp/WEB-INF/lib/commons-collections-3.1.jar"/>
 	<classpathentry kind="lib" path="webapp/WEB-INF/lib/commons-beanutils.jar"/>
-	<classpathentry kind="lib" path="webapp/WEB-INF/lib/commons-digester.jar"/>
 	<classpathentry kind="lib" path="webapp/WEB-INF/lib/commons-logging.jar"/>
-	<classpathentry kind="lib" path="webapp/WEB-INF/lib/itext-1.4.jar"/>
 	<classpathentry kind="lib" path="webapp/WEB-INF/lib/iReport.jar"/>
+	<classpathentry kind="lib" path="webapp/WEB-INF/lib/itext-1.01.jar"/>
+	<classpathentry kind="lib" path="webapp/WEB-INF/lib/jasperreports-2.0.2.jar"/>
+	<classpathentry kind="lib" path="webapp/WEB-INF/lib/jdt-compiler.jar"/>
+	<classpathentry kind="lib" path="webapp/WEB-INF/lib/poi-2.0-final-20040126.jar"/>
+	<classpathentry kind="lib" path="webapp/WEB-INF/lib/commons-digester-1.8.jar"/>
 	<classpathentry kind="output" path="webapp/WEB-INF/classes"/>
 </classpath>
