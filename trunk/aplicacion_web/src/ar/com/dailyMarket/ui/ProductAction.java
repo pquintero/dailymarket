@@ -1,7 +1,5 @@
 package ar.com.dailyMarket.ui;
 
-import java.sql.SQLException;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
