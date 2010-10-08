@@ -1,552 +1,99 @@
-<?xml version="1.0" encoding="UTF-8"  ?>
-<!-- Created with iReport - A designer for JasperReports -->
-<!DOCTYPE jasperReport PUBLIC "//JasperReports//DTD Report Design//EN" "http://jasperreports.sourceforge.net/dtds/jasperreport.dtd">
-<jasperReport
-		 name="ventasMensuales"
-		 columnCount="1"
-		 printOrder="Vertical"
-		 orientation="Portrait"
-		 pageWidth="595"
-		 pageHeight="842"
-		 columnWidth="535"
-		 columnSpacing="0"
-		 leftMargin="30"
-		 rightMargin="30"
-		 topMargin="20"
-		 bottomMargin="20"
-		 whenNoDataType="NoPages"
-		 isTitleNewPage="false"
-		 isSummaryNewPage="false">
-	<property name="ireport.scriptlethandling" value="0" />
-	<property name="ireport.encoding" value="UTF-8" />
-	<import value="java.util.*" />
-	<import value="net.sf.jasperreports.engine.*" />
-	<import value="net.sf.jasperreports.engine.data.*" />
-
-	<parameter name="reportsFolder" isForPrompting="false" class="java.lang.String"/>
-
-		<background>
-			<band height="0"  isSplitAllowed="true" >
-			</band>
-		</background>
-		<title>
-			<band height="50"  isSplitAllowed="true" >
-				<line direction="TopDown">
-					<reportElement
-						x="1"
-						y="45"
-						width="533"
-						height="0"
-						forecolor="#6699FF"
-						backcolor="#6699FF"
-						key="line-1"/>
-					<graphicElement stretchType="NoStretch"/>
-				</line>
-				<image  evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
-					<reportElement
-						x="6"
-						y="3"
-						width="162"
-						height="36"
-						key="image-1"/>
-					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
-					<graphicElement stretchType="NoStretch"/>
-					<imageExpression class="java.lang.String"><![CDATA["C:/workspace/aplicacion_web/webapp/images/header/tituloDailyMarket.jpg"]]></imageExpression>
-				</image>
-				<image  evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
-					<reportElement
-						x="367"
-						y="3"
-						width="162"
-						height="36"
-						key="image-2"/>
-					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
-					<graphicElement stretchType="NoStretch"/>
-					<imageExpression class="java.lang.String"><![CDATA["C:/workspace/aplicacion_web/webapp/images/header/logoDailyMarket.jpg"]]></imageExpression>
-				</image>
-			</band>
-		</title>
-		<pageHeader>
-			<band height="89"  isSplitAllowed="true" >
-				<staticText>
-					<reportElement
-						x="8"
-						y="17"
-						width="38"
-						height="14"
-						key="staticText-1"/>
-					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
-					<textElement>
-						<font/>
-					</textElement>
-				<text><![CDATA[Período]]></text>
-				</staticText>
-				<staticText>
-					<reportElement
-						x="164"
-						y="17"
-						width="144"
-						height="14"
-						key="staticText-2"/>
-					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
-					<textElement>
-						<font/>
-					</textElement>
-				<text><![CDATA[Tipo: Mensual]]></text>
-				</staticText>
-				<staticText>
-					<reportElement
-						x="8"
-						y="41"
-						width="93"
-						height="15"
-						key="staticText-3"/>
-					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
-					<textElement>
-						<font/>
-					</textElement>
-				<text><![CDATA[Grupo de Producto:]]></text>
-				</staticText>
-				<staticText>
-					<reportElement
-						x="9"
-						y="63"
-						width="93"
-						height="15"
-						key="staticText-4"/>
-					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
-					<textElement>
-						<font/>
-					</textElement>
-				<text><![CDATA[Producto:]]></text>
-				</staticText>
-				<staticText>
-					<reportElement
-						x="109"
-						y="41"
-						width="38"
-						height="14"
-						key="staticText-33"/>
-					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
-					<textElement>
-						<font/>
-					</textElement>
-				<text><![CDATA[Todos]]></text>
-				</staticText>
-				<staticText>
-					<reportElement
-						x="109"
-						y="63"
-						width="38"
-						height="14"
-						key="staticText-34"/>
-					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
-					<textElement>
-						<font/>
-					</textElement>
-				<text><![CDATA[Todos]]></text>
-				</staticText>
-				<staticText>
-					<reportElement
-						x="50"
-						y="16"
-						width="95"
-						height="14"
-						key="staticText-35"/>
-					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
-					<textElement>
-						<font/>
-					</textElement>
-				<text><![CDATA[09/09 - 02/10]]></text>
-				</staticText>
-			</band>
-		</pageHeader>
-		<columnHeader>
-			<band height="0"  isSplitAllowed="true" >
-			</band>
-		</columnHeader>
-		<detail>
-			<band height="338"  isSplitAllowed="true" >
-				<staticText>
-					<reportElement
-						x="9"
-						y="12"
-						width="38"
-						height="14"
-						key="staticText-5"/>
-					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
-					<textElement>
-						<font/>
-					</textElement>
-				<text><![CDATA[Mes]]></text>
-				</staticText>
-				<staticText>
-					<reportElement
-						x="93"
-						y="12"
-						width="51"
-						height="14"
-						key="staticText-6"/>
-					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
-					<textElement>
-						<font/>
-					</textElement>
-				<text><![CDATA[Productos]]></text>
-				</staticText>
-				<staticText>
-					<reportElement
-						x="191"
-						y="12"
-						width="51"
-						height="14"
-						key="staticText-7"/>
-					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
-					<textElement>
-						<font/>
-					</textElement>
-				<text><![CDATA[Ventas]]></text>
-				</staticText>
-				<staticText>
-					<reportElement
-						x="298"
-						y="12"
-						width="118"
-						height="14"
-						key="staticText-8"/>
-					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
-					<textElement>
-						<font/>
-					</textElement>
-				<text><![CDATA[Productos Por Venta]]></text>
-				</staticText>
-				<staticText>
-					<reportElement
-						x="8"
-						y="53"
-						width="38"
-						height="14"
-						key="staticText-9"/>
-					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
-					<textElement>
-						<font/>
-					</textElement>
-				<text><![CDATA[10/09]]></text>
-				</staticText>
-				<staticText>
-					<reportElement
-						x="9"
-						y="33"
-						width="38"
-						height="14"
-						key="staticText-10"/>
-					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
-					<textElement>
-						<font/>
-					</textElement>
-				<text><![CDATA[09/09]]></text>
-				</staticText>
-				<staticText>
-					<reportElement
-						x="8"
-						y="73"
-						width="38"
-						height="14"
-						key="staticText-11"/>
-					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
-					<textElement>
-						<font/>
-					</textElement>
-				<text><![CDATA[11/09]]></text>
-				</staticText>
-				<staticText>
-					<reportElement
-						x="8"
-						y="114"
-						width="38"
-						height="14"
-						key="staticText-12"/>
-					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
-					<textElement>
-						<font/>
-					</textElement>
-				<text><![CDATA[01/10]]></text>
-				</staticText>
-				<staticText>
-					<reportElement
-						x="8"
-						y="94"
-						width="38"
-						height="14"
-						key="staticText-13"/>
-					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
-					<textElement>
-						<font/>
-					</textElement>
-				<text><![CDATA[12/09]]></text>
-				</staticText>
-				<staticText>
-					<reportElement
-						x="8"
-						y="134"
-						width="38"
-						height="14"
-						key="staticText-14"/>
-					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
-					<textElement>
-						<font/>
-					</textElement>
-				<text><![CDATA[02/10]]></text>
-				</staticText>
-				<staticText>
-					<reportElement
-						x="97"
-						y="54"
-						width="38"
-						height="14"
-						key="staticText-15"/>
-					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
-					<textElement>
-						<font/>
-					</textElement>
-				<text><![CDATA[17502]]></text>
-				</staticText>
-				<staticText>
-					<reportElement
-						x="98"
-						y="34"
-						width="38"
-						height="14"
-						key="staticText-16"/>
-					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
-					<textElement>
-						<font/>
-					</textElement>
-				<text><![CDATA[18144]]></text>
-				</staticText>
-				<staticText>
-					<reportElement
-						x="97"
-						y="74"
-						width="38"
-						height="14"
-						key="staticText-17"/>
-					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
-					<textElement>
-						<font/>
-					</textElement>
-				<text><![CDATA[15.835]]></text>
-				</staticText>
-				<staticText>
-					<reportElement
-						x="97"
-						y="115"
-						width="38"
-						height="14"
-						key="staticText-18"/>
-					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
-					<textElement>
-						<font/>
-					</textElement>
-				<text><![CDATA[17619]]></text>
-				</staticText>
-				<staticText>
-					<reportElement
-						x="97"
-						y="95"
-						width="38"
-						height="14"
-						key="staticText-19"/>
-					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
-					<textElement>
-						<font/>
-					</textElement>
-				<text><![CDATA[26923]]></text>
-				</staticText>
-				<staticText>
-					<reportElement
-						x="97"
-						y="135"
-						width="38"
-						height="14"
-						key="staticText-20"/>
-					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
-					<textElement>
-						<font/>
-					</textElement>
-				<text><![CDATA[18770]]></text>
-				</staticText>
-				<staticText>
-					<reportElement
-						x="197"
-						y="55"
-						width="38"
-						height="14"
-						key="staticText-21"/>
-					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
-					<textElement>
-						<font/>
-					</textElement>
-				<text><![CDATA[1423]]></text>
-				</staticText>
-				<staticText>
-					<reportElement
-						x="198"
-						y="35"
-						width="38"
-						height="14"
-						key="staticText-22"/>
-					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
-					<textElement>
-						<font/>
-					</textElement>
-				<text><![CDATA[1512]]></text>
-				</staticText>
-				<staticText>
-					<reportElement
-						x="197"
-						y="75"
-						width="38"
-						height="14"
-						key="staticText-23"/>
-					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
-					<textElement>
-						<font/>
-					</textElement>
-				<text><![CDATA[1342]]></text>
-				</staticText>
-				<staticText>
-					<reportElement
-						x="197"
-						y="116"
-						width="38"
-						height="14"
-						key="staticText-24"/>
-					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
-					<textElement>
-						<font/>
-					</textElement>
-				<text><![CDATA[1345]]></text>
-				</staticText>
-				<staticText>
-					<reportElement
-						x="197"
-						y="96"
-						width="38"
-						height="14"
-						key="staticText-25"/>
-					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
-					<textElement>
-						<font/>
-					</textElement>
-				<text><![CDATA[1896]]></text>
-				</staticText>
-				<staticText>
-					<reportElement
-						x="197"
-						y="136"
-						width="38"
-						height="14"
-						key="staticText-26"/>
-					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
-					<textElement>
-						<font/>
-					</textElement>
-				<text><![CDATA[1478]]></text>
-				</staticText>
-				<staticText>
-					<reportElement
-						x="327"
-						y="56"
-						width="38"
-						height="14"
-						key="staticText-27"/>
-					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
-					<textElement>
-						<font/>
-					</textElement>
-				<text><![CDATA[12.3]]></text>
-				</staticText>
-				<staticText>
-					<reportElement
-						x="328"
-						y="36"
-						width="38"
-						height="14"
-						key="staticText-28"/>
-					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
-					<textElement>
-						<font/>
-					</textElement>
-				<text><![CDATA[12.0]]></text>
-				</staticText>
-				<staticText>
-					<reportElement
-						x="327"
-						y="76"
-						width="38"
-						height="14"
-						key="staticText-29"/>
-					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
-					<textElement>
-						<font/>
-					</textElement>
-				<text><![CDATA[11.8]]></text>
-				</staticText>
-				<staticText>
-					<reportElement
-						x="327"
-						y="117"
-						width="38"
-						height="14"
-						key="staticText-30"/>
-					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
-					<textElement>
-						<font/>
-					</textElement>
-				<text><![CDATA[13.1]]></text>
-				</staticText>
-				<staticText>
-					<reportElement
-						x="327"
-						y="97"
-						width="38"
-						height="14"
-						key="staticText-31"/>
-					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
-					<textElement>
-						<font/>
-					</textElement>
-				<text><![CDATA[14.2]]></text>
-				</staticText>
-				<staticText>
-					<reportElement
-						x="327"
-						y="137"
-						width="38"
-						height="14"
-						key="staticText-32"/>
-					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
-					<textElement>
-						<font/>
-					</textElement>
-				<text><![CDATA[12.7]]></text>
-				</staticText>
-			</band>
-		</detail>
-		<columnFooter>
-			<band height="30"  isSplitAllowed="true" >
-			</band>
-		</columnFooter>
-		<pageFooter>
-			<band height="50"  isSplitAllowed="true" >
-			</band>
-		</pageFooter>
-		<lastPageFooter>
-			<band height="50"  isSplitAllowed="true" >
-			</band>
-		</lastPageFooter>
-		<summary>
-			<band height="50"  isSplitAllowed="true" >
-			</band>
-		</summary>
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="ventasMensuales" pageWidth="595" pageHeight="842" whenNoDataType="AllSectionsNoDetail" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" isSummaryWithPageHeaderAndFooter="true" isFloatColumnFooter="true">
+	<property name="ireport.zoom" value="1.2100000000000042"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<field name="producto" class="java.lang.String"/>
+	<field name="ventas" class="java.lang.String"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="58" splitType="Stretch">
+			<image>
+				<reportElement x="0" y="0" width="555" height="58"/>
+				<imageExpression class="java.lang.String"><![CDATA["C:\\workspace\\dailymarket\\aplicacion_web\\webapp\\images\\header\\pdfHeader.jpg"]]></imageExpression>
+			</image>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="36" splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band height="28" splitType="Stretch">
+			<rectangle>
+				<reportElement x="0" y="1" width="334" height="27" backcolor="#CCCCCC"/>
+			</rectangle>
+			<staticText>
+				<reportElement x="216" y="0" width="100" height="20"/>
+				<textElement/>
+				<text><![CDATA[VENTAS]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="35" y="1" width="100" height="20"/>
+				<textElement/>
+				<text><![CDATA[PRODUCTO]]></text>
+			</staticText>
+			<line>
+				<reportElement x="177" y="0" width="1" height="28"/>
+			</line>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="20" splitType="Stretch">
+			<rectangle>
+				<reportElement x="0" y="0" width="334" height="20"/>
+			</rectangle>
+			<textField>
+				<reportElement x="35" y="0" width="100" height="20"/>
+				<textElement/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{producto}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="216" y="0" width="100" height="20"/>
+				<textElement/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{ventas}]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement x="177" y="0" width="1" height="20"/>
+			</line>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="128" splitType="Stretch">
+			<pieChart>
+				<chart>
+					<reportElement x="177" y="15" width="200" height="100"/>
+					<chartTitle/>
+					<chartSubtitle/>
+					<chartLegend/>
+				</chart>
+				<pieDataset>
+					<keyExpression><![CDATA[$F{producto}]]></keyExpression>
+					<valueExpression><![CDATA[new Double($F{ventas})]]></valueExpression>
+				</pieDataset>
+				<piePlot>
+					<plot/>
+					<itemLabel color="#000000" backgroundColor="#FFFFFF"/>
+				</piePlot>
+			</pieChart>
+		</band>
+	</columnFooter>
+	<pageFooter>
+		<band height="54" splitType="Stretch">
+			<textField>
+				<reportElement x="214" y="18" width="80" height="20"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression class="java.lang.String"><![CDATA["Page "+$V{PAGE_NUMBER}+" of"]]></textFieldExpression>
+			</textField>
+			<textField evaluationTime="Report">
+				<reportElement x="294" y="18" width="40" height="20"/>
+				<textElement/>
+				<textFieldExpression class="java.lang.String"><![CDATA[" " + $V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageFooter>
+	<summary>
+		<band height="42" splitType="Stretch"/>
+	</summary>
 </jasperReport>

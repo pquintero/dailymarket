@@ -43,19 +43,20 @@
 	<classpathentry kind="lib" path="webapp/WEB-INF/lib/struts.jar"/>
 	<classpathentry kind="lib" path="webapp/WEB-INF/lib/struts-legacy.jar"/>
 	<classpathentry kind="lib" path="webapp/WEB-INF/lib/struts-menu-2.3.jar"/>
-	<classpathentry kind="lib" path="webapp/WEB-INF/lib/xalan.jar"/>
-	<classpathentry kind="lib" path="webapp/WEB-INF/lib/xerces.jar"/>
 	<classpathentry kind="lib" path="webapp/WEB-INF/lib/xml-apis.jar"/>
 	<classpathentry kind="lib" path="webapp/WEB-INF/lib/dcc-tiles.jar"/>
 	<classpathentry kind="lib" path="webapp/WEB-INF/lib/quartz-all-1.6.0.jar"/>
 	<classpathentry kind="lib" path="webapp/WEB-INF/lib/commons-collections-3.1.jar"/>
 	<classpathentry kind="lib" path="webapp/WEB-INF/lib/commons-beanutils.jar"/>
 	<classpathentry kind="lib" path="webapp/WEB-INF/lib/commons-logging.jar"/>
-	<classpathentry kind="lib" path="webapp/WEB-INF/lib/iReport.jar"/>
-	<classpathentry kind="lib" path="webapp/WEB-INF/lib/itext-1.01.jar"/>
-	<classpathentry kind="lib" path="webapp/WEB-INF/lib/jasperreports-2.0.2.jar"/>
-	<classpathentry kind="lib" path="webapp/WEB-INF/lib/jdt-compiler.jar"/>
-	<classpathentry kind="lib" path="webapp/WEB-INF/lib/poi-2.0-final-20040126.jar"/>
-	<classpathentry kind="lib" path="webapp/WEB-INF/lib/commons-digester-1.8.jar"/>
+	<classpathentry kind="lib" path="webapp/WEB-INF/lib/commons-digester-1.7.jar"/>
+	<classpathentry kind="lib" path="webapp/WEB-INF/lib/iText-2.1.7.jar"/>
+	<classpathentry kind="lib" path="webapp/WEB-INF/lib/jasperreports-3.7.5.jar"/>
+	<classpathentry kind="lib" path="webapp/WEB-INF/lib/jdt-compiler-3.1.1.jar"/>
+	<classpathentry kind="lib" path="webapp/WEB-INF/lib/poi-3.6.jar"/>
+	<classpathentry kind="lib" path="webapp/WEB-INF/lib/xercesImpl-2.7.0.jar"/>
+	<classpathentry kind="lib" path="webapp/WEB-INF/lib/xalan-2.7.1.jar"/>
+	<classpathentry kind="lib" path="webapp/WEB-INF/lib/jfreechart-1.0.12.jar"/>
+	<classpathentry kind="lib" path="webapp/WEB-INF/lib/jcommon-1.0.15.jar"/>
 	<classpathentry kind="output" path="webapp/WEB-INF/classes"/>
 </classpath>
