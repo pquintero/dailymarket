@@ -1,5 +1,6 @@
 package ar.com.dailyMarket.ui;
 
+import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -61,17 +62,18 @@ public class ReportesAction extends BaseAction {
     
     public ActionForward executeMonthlySales(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) {
     	ServletContext context = request.getSession().getServletContext();
-    	MonthlySalesReportService rrs = new MonthlySalesReportService();            
-//        String path = "/reports/";
-//        String path = "WEB-INF" + File.separator + "classes" + File.separator + "reports" + File.separator;
-    	String path = context.getRealPath("");
-        
+    	MonthlySalesReportService rrs = new MonthlySalesReportService();
+    	String reportName = "ventasMensuales";
         try {
-      		response.setHeader("Content-Disposition","attachment; filename=" + "ventasMensuales.pdf" + "\"");
+      		response.setHeader("Content-Disposition","attachment; filename=" + reportName + ".pdf" + "\"");
       		List l = new ArrayList();
-      		int cant = rrs.runReport((DynaBean)form, response.getOutputStream(), path, context, l,"ventasMensuales");            
-      	    response.setContentType("aplication/pdf");
-      	    response.setContentLength(cant);    	    
+      		byte[] bytes = rrs.runReport((DynaBean)form, l,reportName);
+      		OutputStream stream = response.getOutputStream();
+      		stream.write(bytes);
+			stream.flush();
+			stream.close();
+      		response.setContentType("aplication/pdf");
+      	    response.setContentLength(bytes.length);    	    
       	    return null;
       	} catch (Exception fe){
       	    log.error("Error en la generacion del reporte", fe);
