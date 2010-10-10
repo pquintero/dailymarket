@@ -25,7 +25,7 @@ public class UserService {
 		user.setDni((String)form.get("dni"));
 		user.setDateCreated(new Date());
 		GroupUserService groupUserService = new GroupUserService();
-		user.setGroupUser(groupUserService.getUserByPK((Long)form.get("groupUserId")));
+		user.setGroupUser(groupUserService.getGroupUserByPK((Long)form.get("groupUserId")));
 		user.setReceiveNotifications(new Boolean(false));
 	}
 	
@@ -62,7 +62,7 @@ public class UserService {
 		String lastName = !((String)form.get("lastName")).equals("") ? (String)form.get("lastName") : null;
 		String dni = !((String)form.get("dni")).equals("") ? (String)form.get("dni") : null;
 		String id = !((String)form.get("idStr")).equals("") ? (String)form.get("idStr") : null;		
-		Long groupUser = ((Long)form.get("groupUserId")).longValue() != new Long(-1).longValue() ? (Long)form.get("groupUserId") : null;
+		Long groupUser = form.get("groupUserId") != null && ((Long)form.get("groupUserId")).longValue() != new Long(-1).longValue() ? (Long)form.get("groupUserId") : null;
 		
 		Criteria c = HibernateHelper.currentSession().createCriteria(User.class);
 		if (user != null) {
@@ -134,5 +134,11 @@ public class UserService {
 		Criteria c = HibernateHelper.currentSession().createCriteria(User.class)
 					.createCriteria("groupUser").add(Restrictions.eq("name", GroupUser.ROLE_CAJERO));
 		return c.list();
+	}
+	
+	public void delete(String userStr) {
+		User user = (User)HibernateHelper.currentSession().createCriteria(User.class).add(Restrictions.eq("user", userStr)).uniqueResult();
+		HibernateHelper.currentSession().delete(user);
+		HibernateHelper.currentSession().flush();
 	}
 }

@@ -75,4 +75,11 @@ public class UserAction extends BaseAction {
     	setGroupUserRequest(request);
     	return super.redirectCreate(mapping, form, request, response);
     }
+    
+    public ActionForward delete(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
+    	UserService userService = new UserService();
+    	userService.delete((String)((DynaActionForm)form).get("user"));
+    	((DynaActionForm)form).set("user", ""); //limpio el dato para el executeFilter
+    	return executeFilter(mapping, form, request, response);
+    }
 }

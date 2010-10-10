@@ -21,7 +21,7 @@
     	<ds:column headerClass="listTitle"  title="&nbsp;">
 			<img 
 				src="images/common/eliminar.gif" 
-				onclick="document.location='user.do?VirtualDispatchName=findByPK&id=<%=((User)row).getId()%>'" 
+				onclick="document.location='filterUser.do?VirtualDispatchName=delete&user=<%=((User)row).getUser()%>'" 
 				alt='<bean:message key="common.delete"/>'
 				style="cursor: pointer;"/>
     	</ds:column>        

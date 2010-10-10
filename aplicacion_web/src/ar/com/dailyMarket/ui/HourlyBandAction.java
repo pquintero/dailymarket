@@ -66,4 +66,12 @@ public class HourlyBandAction extends BaseAction {
     	setHourlyBandRequest(request);
     	return super.redirectCreate(mapping, form, request, response);
     }
+    
+    public ActionForward delete(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
+    	HourlyBandService hourlyBandService = new HourlyBandService();
+    	hourlyBandService.delete((Long)((DynaActionForm)form).get("id"));
+    	((DynaActionForm)form).set("name", "");
+    	((DynaActionForm)form).set("id", new Long(-1));
+    	return executeFilter(mapping, form, request, response);
+    }
 }

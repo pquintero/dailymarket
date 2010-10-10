@@ -23,7 +23,7 @@
     	<ds:column headerClass="listTitle"  title="&nbsp;">
 			<img 
 				src="images/common/eliminar.gif" 
-				onclick="document.location='product.do?VirtualDispatchName=findByPK&id=<%=((Product)row).getId()%>'" 
+				onclick="document.location='filterProduct.do?VirtualDispatchName=delete&id=<%=((Product)row).getId()%>'" 
 				alt='<bean:message key="common.delete"/>'
 				style="cursor: pointer;"/>
     	</ds:column>

@@ -32,13 +32,13 @@ public class GroupProductAction extends BaseAction {
     
     public ActionForward update (ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
     	GroupProductService groupProductService = new GroupProductService();
-    	groupProductService.update(form,groupProductService.getProductByPK((Long)((DynaActionForm)form).get("id")));
+    	groupProductService.update(form,groupProductService.getGroupProductByPK((Long)((DynaActionForm)form).get("id")));
     	return super.stepBack(mapping, form, request, response);
     }
     
     public ActionForward findByPK (ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
     	GroupProductService groupProductService = new GroupProductService();
-    	setFormProperties((DynaActionForm)form,groupProductService.getProductByPK((Long)((DynaActionForm)form).get("id")));
+    	setFormProperties((DynaActionForm)form,groupProductService.getGroupProductByPK((Long)((DynaActionForm)form).get("id")));
     	return mapping.findForward("showDetail");
     }
     
@@ -51,5 +51,11 @@ public class GroupProductAction extends BaseAction {
     	form.set("id", groupProduct.getId());
     	form.set("name", groupProduct.getName());
     	form.set("description", groupProduct.getDescription());
+    }
+    
+    public ActionForward delete (ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
+    	GroupProductService groupProductService = new GroupProductService();
+    	groupProductService.delete((Long)((DynaActionForm)form).get("id"));
+    	return executeFilter(mapping, form, request, response);
     }
 }
