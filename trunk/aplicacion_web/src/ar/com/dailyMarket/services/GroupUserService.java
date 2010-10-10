@@ -35,7 +35,7 @@ public class GroupUserService {
 		HibernateHelper.currentSession().flush();		
 	}
 	
-	public GroupUser getUserByPK (Long id) {
+	public GroupUser getGroupUserByPK (Long id) {
 		return (GroupUser)HibernateHelper.currentSession().load(GroupUser.class, id);
 	}
 	
@@ -58,5 +58,11 @@ public class GroupUserService {
 	@SuppressWarnings("unchecked")
 	public List<GroupUser> getAllGroupsUsers () {
 		return (List)HibernateHelper.currentSession().createCriteria(GroupUser.class).list();
+	}
+	
+	public void delete (Long id) {
+		GroupUser groupUser = getGroupUserByPK(id);
+		HibernateHelper.currentSession().delete(groupUser);
+		HibernateHelper.currentSession().flush();
 	}
 }

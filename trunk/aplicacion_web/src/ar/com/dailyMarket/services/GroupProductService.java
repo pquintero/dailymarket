@@ -8,6 +8,7 @@ import org.apache.struts.action.DynaActionForm;
 import org.hibernate.Criteria;
 import org.hibernate.criterion.MatchMode;
 import org.hibernate.criterion.Restrictions;
+import org.hibernate.util.GetGeneratedKeysHelper;
 
 import ar.com.dailyMarket.model.GroupProduct;
 
@@ -35,7 +36,7 @@ public class GroupProductService {
 		HibernateHelper.currentSession().flush();		
 	}
 	
-	public GroupProduct getProductByPK (Long id) {
+	public GroupProduct getGroupProductByPK (Long id) {
 		return (GroupProduct)HibernateHelper.currentSession().load(GroupProduct.class, id);
 	}
 	
@@ -58,5 +59,11 @@ public class GroupProductService {
 	@SuppressWarnings("unchecked")
 	public List<GroupProduct> getAllGroupProduct() {
 		return (List)HibernateHelper.currentSession().createCriteria(GroupProduct.class).list();
+	}
+	
+	public void delete (Long id) {
+		GroupProduct groupProduct = getGroupProductByPK(id);
+		HibernateHelper.currentSession().delete(groupProduct);
+		HibernateHelper.currentSession().flush();
 	}
 }

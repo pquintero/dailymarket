@@ -56,4 +56,10 @@ public class HourlyBandService {
 	public List<HourlyBand> getAllHourlyBands() {
 		return (List<HourlyBand>)HibernateHelper.currentSession().createCriteria(HourlyBand.class).list();
 	}
+	
+	public void delete (Long id) {
+		HourlyBand hourlyBand = getHourlyBandByPK(id);
+		HibernateHelper.currentSession().delete(hourlyBand);
+		HibernateHelper.currentSession().flush();
+	}
 }

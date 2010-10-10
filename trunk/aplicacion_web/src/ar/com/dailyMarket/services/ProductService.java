@@ -32,7 +32,7 @@ public class ProductService extends MailService{
 		product.setPrice((Double)form.get("price"));
 		product.setSizeOfPurchase((Integer)form.get("sizeOfPurchase"));
 		GroupProductService groupProductService = new GroupProductService();
-		product.setGroupProduct(groupProductService.getProductByPK((Long)form.get("groupProductId")));
+		product.setGroupProduct(groupProductService.getGroupProductByPK((Long)form.get("groupProductId")));
 		product.setRepositionStock((Integer)form.get("repositionStock"));
 	}
 	
@@ -64,7 +64,7 @@ public class ProductService extends MailService{
 		String code = !((String)form.get("code")).equals("") ? (String)form.get("code") : null;
 		String name = !((String)form.get("name")).equals("") ? (String)form.get("name") : null;
 		String description = !((String)form.get("description")).equals("") ? (String)form.get("description") : null;			
-		Long groupProduct = ((Long)form.get("groupProductId")).longValue() != new Long(-1).longValue() ? (Long)form.get("groupProductId") : null;
+		Long groupProduct = form.get("groupProductId") != null && ((Long)form.get("groupProductId")).longValue() != new Long(-1).longValue() ? (Long)form.get("groupProductId") : null;
 		
 		Criteria c = HibernateHelper.currentSession().createCriteria(Product.class);
 		if (code != null) {
@@ -158,5 +158,11 @@ public class ProductService extends MailService{
 	@SuppressWarnings("unchecked")
 	public List<Product> getAllProducts() {
 		return (List<Product>)HibernateHelper.currentSession().createCriteria(Product.class).list();
+	}
+	
+	public void delete (Long id) {
+		Product product = getProductByPK(id);
+		HibernateHelper.currentSession().delete(product);
+		HibernateHelper.currentSession().flush();
 	}
 }

@@ -20,7 +20,7 @@
     	<ds:column headerClass="listTitle"  title="&nbsp;">
 			<img 
 				src="images/common/eliminar.gif" 
-				onclick="document.location='hourlyBand.do?VirtualDispatchName=findByPK&id=<%=((HourlyBand)row).getId()%>'" 
+				onclick="document.location='filterHourlyBand.do?VirtualDispatchName=delete&id=<%=((HourlyBand)row).getId()%>'" 
 				alt='<bean:message key="common.edit"/>'
 				style="cursor: pointer;"/>
     	</ds:column>        

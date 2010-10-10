@@ -74,5 +74,11 @@ public class ProductAction extends BaseAction {
     public ActionForward redirectCreate(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) {
     	setGroupUserRequest(request);
     	return super.redirectCreate(mapping, form, request, response);
-    }            
+    }   
+    
+    public ActionForward delete(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
+    	ProductService productService = new ProductService();
+    	productService.delete((Long)((DynaActionForm)form).get("id"));
+    	return executeFilter(mapping, form, request, response);    	
+    }
 }
