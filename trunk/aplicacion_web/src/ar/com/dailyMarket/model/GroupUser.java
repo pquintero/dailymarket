@@ -9,6 +9,8 @@ public class GroupUser {
 	private Long id;
 	private String name;
 	private String description;
+	private Boolean active;
+	
 	public Long getId() {
 		return id;
 	}
@@ -26,5 +28,11 @@ public class GroupUser {
 	}
 	public void setDescription(String description) {
 		this.description = description;
-	}		
+	}
+	public Boolean getActive() {
+		return active;
+	}
+	public void setActive(Boolean active) {
+		this.active = active;
+	}			
 }

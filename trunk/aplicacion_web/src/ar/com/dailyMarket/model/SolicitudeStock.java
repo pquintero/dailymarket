@@ -7,6 +7,7 @@ public class SolicitudeStock {
 	private Long id;
 	private Product product;
 	private Date dateSolicitude;
+	private Boolean active;
 	
 	public Long getId() {
 		return id;
@@ -25,5 +26,11 @@ public class SolicitudeStock {
 	}
 	public void setDateSolicitude(Date dateSolicitude) {
 		this.dateSolicitude = dateSolicitude;
+	}
+	public Boolean getActive() {
+		return active;
+	}
+	public void setActive(Boolean active) {
+		this.active = active;
 	}		
 }

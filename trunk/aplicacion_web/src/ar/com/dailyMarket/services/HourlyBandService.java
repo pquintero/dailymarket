@@ -18,6 +18,7 @@ public class HourlyBandService {
 		hourlyBand.setDescription((String)form.get("description"));
 		hourlyBand.setInitBand((Integer)form.get("initBand"));
 		hourlyBand.setEndBand((Integer)form.get("endBand"));
+		hourlyBand.setActive(new Boolean(true));
 	}
 	
 	public void save (ActionForm form) {	
@@ -48,18 +49,20 @@ public class HourlyBandService {
 		if (id != null) {
 			c.add(Restrictions.eq("id", id));
 		}		
+		c.add(Restrictions.eq("active", new Boolean(true)));
 		List hourlyBands = (List)c.list();		
 		return hourlyBands.isEmpty() ? new ArrayList() : hourlyBands;
 	}
 	
 	@SuppressWarnings("unchecked")
 	public List<HourlyBand> getAllHourlyBands() {
-		return (List<HourlyBand>)HibernateHelper.currentSession().createCriteria(HourlyBand.class).list();
+		return (List<HourlyBand>)HibernateHelper.currentSession().createCriteria(HourlyBand.class)
+		.add(Restrictions.eq("active", new Boolean(true))).list();
 	}
 	
 	public void delete (Long id) {
 		HourlyBand hourlyBand = getHourlyBandByPK(id);
-		HibernateHelper.currentSession().delete(hourlyBand);
-		HibernateHelper.currentSession().flush();
+		hourlyBand.setActive(false);
+		save(hourlyBand);
 	}
 }

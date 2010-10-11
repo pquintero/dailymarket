@@ -18,7 +18,7 @@ import net.sf.jasperreports.engine.util.JRLoader;
 
 import org.apache.commons.beanutils.DynaBean;
 
-public class MonthlySalesReportService extends BaseReportService{
+public class AnnualSalesReportService extends BaseReportService{
 	
 	public byte[] runReport(DynaBean reportData, Collection col, String report, Map<String, String> filters)throws Exception {
         Map<String, String> parameters = new HashMap<String, String>();		
@@ -35,13 +35,13 @@ public class MonthlySalesReportService extends BaseReportService{
         parameters.put("reportsFolder", imgs); 
 		
         try {
-		    JasperReport jasperReport = (JasperReport) JRLoader.loadObject(MonthlySalesReportService.class.getResourceAsStream("/reports/" + report + ".jasper"));
+		    JasperReport jasperReport = (JasperReport) JRLoader.loadObject(AnnualSalesReportService.class.getResourceAsStream("/reports/" + report + ".jasper"));
 			
 		  //Para probar
-		    col.add(new Mensual(new Integer(58), new Integer(764), "09/09"));
-		    col.add(new Mensual(new Integer(58), new Integer(678), "10/09"));
-		    col.add(new Mensual(new Integer(58), new Integer(813), "11/09"));
-		    col.add(new Mensual(new Integer(58), new Integer(1351), "12/09"));
+		    col.add(new Anual(new Integer(58), new Integer(764), "2007"));
+		    col.add(new Anual(new Integer(58), new Integer(678), "2008"));
+		    col.add(new Anual(new Integer(58), new Integer(813), "2009"));
+		    col.add(new Anual(new Integer(58), new Integer(1351), "2010"));
 		    
 		    return JasperRunManager.runReportToPdf(jasperReport, parameters, getDataSource(col, filters));			
         } catch (Throwable e) {
@@ -50,16 +50,16 @@ public class MonthlySalesReportService extends BaseReportService{
 		}
 	}
 	
-	protected class Mensual {
+	protected class Anual {
 		protected Integer producto;
 		protected Integer ventas;
 		protected Double prom;
-		protected String month;
+		protected String anio;
 		
-		public Mensual(Integer pr, Integer ve, String month) {
+		public Anual(Integer pr, Integer ve, String anio) {
 			producto = pr;
 			ventas = ve;
-			this.month = month; 
+			this.anio = anio; 
 			prom =  Double.parseDouble(pr.toString()) / Double.parseDouble(ve.toString());
 		}
 		
@@ -81,12 +81,12 @@ public class MonthlySalesReportService extends BaseReportService{
 		public void setProm(Double prom) {
 			this.prom = prom;
 		}
-		public String getMonth() {
-			return month;
+		public String getAnio() {
+			return anio;
 		}
-		public void setMonth(String month) {
-			this.month = month;
-		}		
+		public void setAnio(String anio) {
+			this.anio = anio;
+		}			
 	}
 	
     private JRDataSource getDataSource(Collection results, Map<String, String> filters) {
@@ -104,7 +104,7 @@ public class MonthlySalesReportService extends BaseReportService{
         }
         
         public Object getFieldValue(JRField field) {
-            Mensual pr = (Mensual) currentValue;
+        	Anual pr = (Anual) currentValue;
         	if ("producto".equals(field.getName())) {
         		return pr.getProducto();
         	} else if("ventas".equals(field.getName())) {
@@ -117,8 +117,8 @@ public class MonthlySalesReportService extends BaseReportService{
         		return filters.get("periodo");
         	} else if("hourlyBand".equals(field.getName())) {
         		return filters.get("hourlyBand");
-        	} else if("mes".equals(field.getName())) {
-        		return pr.getMonth();
+        	} else if("anio".equals(field.getName())) {
+        		return pr.getAnio();
         	} else if("prom".equals(field.getName())) {
         		return pr.getProm().toString().substring(0, pr.getProm().toString().indexOf(".") + 3);
         	}
@@ -129,5 +129,5 @@ public class MonthlySalesReportService extends BaseReportService{
             currentValue = iterator.hasNext() ? iterator.next() : null; 
             return (currentValue != null);
         }
-    }  
+    }          
 }

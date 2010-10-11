@@ -5,6 +5,8 @@ public class GroupProduct {
 	private Long id;
 	private String description;
 	private String name;
+	private Boolean active;
+	
 	public Long getId() {
 		return id;
 	}
@@ -22,5 +24,11 @@ public class GroupProduct {
 	}
 	public void setName(String name) {
 		this.name = name;
-	}		
+	}
+	public Boolean getActive() {
+		return active;
+	}
+	public void setActive(Boolean active) {
+		this.active = active;
+	}			
 }

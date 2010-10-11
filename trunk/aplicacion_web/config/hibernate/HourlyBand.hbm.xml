@@ -10,7 +10,8 @@
 		<property column="name" name="name"  type="java.lang.String"/>
 		<property column="description" name="description"  type="java.lang.String"/>
 		<property column="initband" name="initBand"  type="java.lang.Integer"/>
-		<property column="endband" name="endBand"  type="java.lang.Integer"/>			    	    			 
+		<property column="endband" name="endBand"  type="java.lang.Integer"/>
+		<property column="active" name="active" type="java.lang.Boolean"/>			    	    			 
     </class>   
 </hibernate-mapping>
 

@@ -19,6 +19,7 @@ public class Product {
 	private String state;
 	private Integer repositionStock;
 	private Date dateWithoutStock; //fecha última en q se quedo sin stock
+	private Boolean active;
 	
 	public Long getId() {
 		return id;
@@ -85,5 +86,11 @@ public class Product {
 	}
 	public void setRepositionStock(Integer repositionStock) {
 		this.repositionStock = repositionStock;
-	}	
+	}
+	public Boolean getActive() {
+		return active;
+	}
+	public void setActive(Boolean active) {
+		this.active = active;
+	}		
 }

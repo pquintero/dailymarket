@@ -17,6 +17,7 @@ public class GroupUserService {
 		GroupUser groupUser = (GroupUser)obj;
 		groupUser.setName((String)form.get("name"));
 		groupUser.setDescription((String)form.get("description"));
+		groupUser.setActive(new Boolean(true));
 	}
 	
 	public void save (ActionForm form) {	
@@ -51,18 +52,20 @@ public class GroupUserService {
 		if (description != null) {
 			c.add(Restrictions.ilike("description", description,MatchMode.ANYWHERE));
 		}		
+		c.add(Restrictions.eq("active", new Boolean(true)));
 		List groups = (List)c.list();		
 		return groups.isEmpty() ? new ArrayList() : groups;
 	}
 	
 	@SuppressWarnings("unchecked")
 	public List<GroupUser> getAllGroupsUsers () {
-		return (List)HibernateHelper.currentSession().createCriteria(GroupUser.class).list();
+		return (List)HibernateHelper.currentSession().createCriteria(GroupUser.class)
+		.add(Restrictions.eq("active", new Boolean(true))).list();
 	}
 	
 	public void delete (Long id) {
 		GroupUser groupUser = getGroupUserByPK(id);
-		HibernateHelper.currentSession().delete(groupUser);
-		HibernateHelper.currentSession().flush();
+		groupUser.setActive(false);
+		save(groupUser);
 	}
 }

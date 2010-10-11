@@ -15,6 +15,7 @@ public class User {
 	private GroupUser groupUser;
 	private String email;
 	private boolean receiveNotifications;
+	private Boolean active;
 	
 	public Long getId() {
 		return id;
@@ -88,4 +89,10 @@ public class User {
 	public String getCompleteName() {
 		return getLastName() + ", " + getName();
 	}
+	public Boolean getActive() {
+		return active;
+	}
+	public void setActive(Boolean active) {
+		this.active = active;
+	}	
 }

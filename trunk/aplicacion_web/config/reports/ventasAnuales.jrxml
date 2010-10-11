@@ -2,14 +2,14 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="ventasMensuales" pageWidth="595" pageHeight="842" whenNoDataType="AllSectionsNoDetail" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" isSummaryWithPageHeaderAndFooter="true" isFloatColumnFooter="true">
 	<property name="ireport.zoom" value="1.2100000000000042"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="15"/>
+	<property name="ireport.y" value="0"/>
 	<parameter name="imgs" class="java.lang.String"/>
 	<field name="producto" class="java.lang.Integer"/>
 	<field name="ventas" class="java.lang.Number"/>
 	<field name="periodo" class="java.lang.String"/>
 	<field name="groupProduct" class="java.lang.String"/>
 	<field name="productFilter" class="java.lang.String"/>
-	<field name="mes" class="java.lang.String"/>
+	<field name="anio" class="java.lang.String"/>
 	<field name="prom" class="java.lang.String"/>
 	<field name="hourlyBand" class="java.lang.String"/>
 	<background>
@@ -24,7 +24,7 @@
 		</band>
 	</title>
 	<pageHeader>
-		<band height="119" splitType="Stretch">
+		<band height="117" splitType="Stretch">
 			<staticText>
 				<reportElement x="216" y="0" width="57" height="20"/>
 				<textElement/>
@@ -63,28 +63,28 @@
 			<staticText>
 				<reportElement x="100" y="0" width="100" height="20"/>
 				<textElement/>
-				<text><![CDATA[Mensual]]></text>
+				<text><![CDATA[Anual]]></text>
 			</staticText>
 			<rectangle>
-				<reportElement x="0" y="92" width="538" height="27" backcolor="#CCCCCC"/>
+				<reportElement x="0" y="90" width="538" height="27" backcolor="#CCCCCC"/>
 			</rectangle>
 			<staticText>
-				<reportElement x="90" y="93" width="100" height="20"/>
+				<reportElement x="90" y="91" width="100" height="20"/>
 				<textElement/>
 				<text><![CDATA[PRODUCTO]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="14" y="93" width="45" height="20"/>
+				<reportElement x="14" y="91" width="45" height="20"/>
 				<textElement/>
-				<text><![CDATA[MES]]></text>
+				<text><![CDATA[Año]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="232" y="93" width="45" height="20"/>
+				<reportElement x="232" y="91" width="45" height="20"/>
 				<textElement/>
 				<text><![CDATA[VENTAS]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="378" y="93" width="108" height="20"/>
+				<reportElement x="378" y="91" width="108" height="20"/>
 				<textElement/>
 				<text><![CDATA[PRODUCTO / VENTAS]]></text>
 			</staticText>
@@ -94,7 +94,7 @@
 				<text><![CDATA[Banda Horaria:]]></text>
 			</staticText>
 			<textField>
-				<reportElement x="99" y="61" width="367" height="20"/>
+				<reportElement x="100" y="61" width="299" height="20"/>
 				<textElement/>
 				<textFieldExpression class="java.lang.String"><![CDATA[$F{hourlyBand}]]></textFieldExpression>
 			</textField>
@@ -118,7 +118,7 @@
 			<textField>
 				<reportElement x="14" y="1" width="49" height="19"/>
 				<textElement/>
-				<textFieldExpression class="java.lang.String"><![CDATA[$F{mes}]]></textFieldExpression>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{anio}]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="399" y="1" width="67" height="19"/>
@@ -138,7 +138,7 @@
 				</chart>
 				<categoryDataset>
 					<categorySeries>
-						<seriesExpression><![CDATA["Ventas Mensuales"]]></seriesExpression>
+						<seriesExpression><![CDATA["Ventas Anuales"]]></seriesExpression>
 						<categoryExpression><![CDATA[$F{producto}]]></categoryExpression>
 						<valueExpression><![CDATA[$F{ventas}]]></valueExpression>
 					</categorySeries>
@@ -160,11 +160,6 @@
 					</valueAxisFormat>
 				</bar3DPlot>
 			</bar3DChart>
-			<staticText>
-				<reportElement x="361" y="49" width="62" height="20"/>
-				<textElement/>
-				<text><![CDATA[VENTAS]]></text>
-			</staticText>
 		</band>
 	</columnFooter>
 	<pageFooter>

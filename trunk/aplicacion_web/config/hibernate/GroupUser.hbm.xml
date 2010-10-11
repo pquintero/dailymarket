@@ -8,7 +8,8 @@
         </id>
 				
 		<property column="name" name="name"  type="java.lang.String"/>
-		<property column="description" name="description"  type="java.lang.String"/>			    	    			
+		<property column="description" name="description"  type="java.lang.String"/>	
+		<property column="active" name="active" type="java.lang.Boolean"/>		    	    			
     </class>   
 </hibernate-mapping>
 

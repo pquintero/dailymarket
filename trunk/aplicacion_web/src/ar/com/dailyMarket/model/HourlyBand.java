@@ -8,6 +8,7 @@ public class HourlyBand {
 	private Integer endBand;
 	private String description;
 	private String detail;
+	private Boolean active;
 	
 	public Long getId() {
 		return id;
@@ -41,5 +42,14 @@ public class HourlyBand {
 	}
 	public String getDetail() {
 		return name + " " + getInitBand().toString() + "-" + getEndBand().toString();
+	}	
+	public void setDetail(String detail) {
+		this.detail = detail;
+	}
+	public Boolean getActive() {
+		return active;
+	}
+	public void setActive(Boolean active) {
+		this.active = active;
 	}
 }

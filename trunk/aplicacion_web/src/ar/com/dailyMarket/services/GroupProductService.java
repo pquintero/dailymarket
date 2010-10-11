@@ -8,7 +8,6 @@ import org.apache.struts.action.DynaActionForm;
 import org.hibernate.Criteria;
 import org.hibernate.criterion.MatchMode;
 import org.hibernate.criterion.Restrictions;
-import org.hibernate.util.GetGeneratedKeysHelper;
 
 import ar.com.dailyMarket.model.GroupProduct;
 
@@ -18,6 +17,7 @@ public class GroupProductService {
 		GroupProduct groupProduct = (GroupProduct)obj;
 		groupProduct.setName((String)form.get("name"));
 		groupProduct.setDescription((String)form.get("description"));
+		groupProduct.setActive(new Boolean(true));
 	}
 	
 	public void save (ActionForm form) {	
@@ -52,18 +52,20 @@ public class GroupProductService {
 		if (description != null) {
 			c.add(Restrictions.ilike("description", description,MatchMode.ANYWHERE));
 		}		
+		c.add(Restrictions.eq("active", new Boolean(true)));
 		List groups = (List)c.list();		
 		return groups.isEmpty() ? new ArrayList() : groups;
 	}
 	
 	@SuppressWarnings("unchecked")
 	public List<GroupProduct> getAllGroupProduct() {
-		return (List)HibernateHelper.currentSession().createCriteria(GroupProduct.class).list();
+		return (List)HibernateHelper.currentSession().createCriteria(GroupProduct.class)
+		.add(Restrictions.eq("active", new Boolean(true))).list();
 	}
 	
 	public void delete (Long id) {
 		GroupProduct groupProduct = getGroupProductByPK(id);
-		HibernateHelper.currentSession().delete(groupProduct);
-		HibernateHelper.currentSession().flush();
+		groupProduct.setActive(false);
+		save(groupProduct);
 	}
 }
