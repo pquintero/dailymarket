@@ -4,7 +4,8 @@
 	<!-- Usr, Pass y URL de donde se encuentra la base, necesaria para un update, actualzar al momento de cambiarla -->
 	<Environment name="urlDataBase" value="jdbc:mysql://localhost/dailyMarket" type="java.lang.String" override="true"/>
 	<Environment name="usrDataBase" value="root" type="java.lang.String" override="true"/>
-	<Environment name="passDataBase" value="root" type="java.lang.String" override="true"/> 			
+	<Environment name="passDataBase" value="root" type="java.lang.String" override="true"/>
+	<Environment name="reportsFolder" value="C:\workspace\aplicacion_web\webapp" type="java.lang.String" override="true"/> 			
 	
     <Resource   name="jdbc/dailyMarket" 
                 scope="Shareable" 
