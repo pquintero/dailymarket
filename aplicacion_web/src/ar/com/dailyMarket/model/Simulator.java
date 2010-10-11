@@ -7,6 +7,8 @@ public class Simulator {
 	private Date lastSimulator;
 	private GroupProduct groupProduct;
 	private Product product;
+	private Boolean active;
+	
 	public Date getLastSimulator() {
 		return lastSimulator;
 	}
@@ -25,4 +27,10 @@ public class Simulator {
 	public void setProduct(Product product) {
 		this.product = product;
 	}
+	public Boolean getActive() {
+		return active;
+	}
+	public void setActive(Boolean active) {
+		this.active = active;
+	}	
 }

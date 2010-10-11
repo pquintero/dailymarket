@@ -34,6 +34,7 @@ public class ProductService extends MailService{
 		GroupProductService groupProductService = new GroupProductService();
 		product.setGroupProduct(groupProductService.getGroupProductByPK((Long)form.get("groupProductId")));
 		product.setRepositionStock((Integer)form.get("repositionStock"));
+		product.setActive(new Boolean(true));
 	}
 	
 	public void save (ActionForm form) {	
@@ -79,6 +80,7 @@ public class ProductService extends MailService{
 		if (groupProduct != null) {
 			c.createCriteria("groupProduct").add(Restrictions.eq("id", groupProduct));
 		}
+		c.add(Restrictions.eq("active", new Boolean(true)));
 		List products = (List)c.list();		
 		return products.isEmpty() ? new ArrayList() : products;
 	}
@@ -108,6 +110,7 @@ public class ProductService extends MailService{
 		} 						
 		Criteria c = HibernateHelper.currentSession().createCriteria(Product.class);
 		c.add(Restrictions.leProperty("actualStock", "repositionStock"));
+		c.add(Restrictions.eq("active", new Boolean(true)));
 		return c.list();
 	}
 	
@@ -157,12 +160,13 @@ public class ProductService extends MailService{
 	
 	@SuppressWarnings("unchecked")
 	public List<Product> getAllProducts() {
-		return (List<Product>)HibernateHelper.currentSession().createCriteria(Product.class).list();
+		return (List<Product>)HibernateHelper.currentSession().createCriteria(Product.class)
+		.add(Restrictions.eq("active", new Boolean(true))).list();
 	}
 	
 	public void delete (Long id) {
 		Product product = getProductByPK(id);
-		HibernateHelper.currentSession().delete(product);
-		HibernateHelper.currentSession().flush();
+		product.setActive(false);
+		save(product);
 	}
 }

@@ -27,6 +27,7 @@ public class UserService {
 		GroupUserService groupUserService = new GroupUserService();
 		user.setGroupUser(groupUserService.getGroupUserByPK((Long)form.get("groupUserId")));
 		user.setReceiveNotifications(new Boolean(false));
+		user.setActive(new Boolean(true));
 	}
 	
 	public void save (ActionForm form) {	
@@ -83,6 +84,7 @@ public class UserService {
 		if (groupUser != null) {
 			c.createCriteria("groupUser").add(Restrictions.eq("id", groupUser));
 		}
+		c.add(Restrictions.eq("active", new Boolean(true)));
 		List users = (List)c.list();		
 		return users.isEmpty() ? new ArrayList() : users;
 	}			
@@ -132,13 +134,14 @@ public class UserService {
 	@SuppressWarnings("unchecked")
 	public List<User> getCajeros() {
 		Criteria c = HibernateHelper.currentSession().createCriteria(User.class)
-					.createCriteria("groupUser").add(Restrictions.eq("name", GroupUser.ROLE_CAJERO));
+					.createCriteria("groupUser").add(Restrictions.eq("name", GroupUser.ROLE_CAJERO))
+					.add(Restrictions.eq("active", new Boolean(true)));
 		return c.list();
 	}
 	
 	public void delete(String userStr) {
 		User user = (User)HibernateHelper.currentSession().createCriteria(User.class).add(Restrictions.eq("user", userStr)).uniqueResult();
-		HibernateHelper.currentSession().delete(user);
-		HibernateHelper.currentSession().flush();
+		user.setActive(false);
+		save(user);
 	}
 }
