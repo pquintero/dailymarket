@@ -18,9 +18,9 @@ import net.sf.jasperreports.engine.util.JRLoader;
 
 import org.apache.commons.beanutils.DynaBean;
 
-public class AnnualSalesReportService extends BaseReportService{
+public class SalesReportService extends BaseReportService{
 	
-	public byte[] runReport(DynaBean reportData, Collection col, String report, Map<String, String> filters)throws Exception {
+	public byte[] runReport(DynaBean reportData, Collection col, String report, Map<String, String> filters,String tipo)throws Exception {
         Map<String, String> parameters = new HashMap<String, String>();		
         String imgs = "";
         
@@ -35,7 +35,7 @@ public class AnnualSalesReportService extends BaseReportService{
         parameters.put("reportsFolder", imgs); 
 		
         try {
-		    JasperReport jasperReport = (JasperReport) JRLoader.loadObject(AnnualSalesReportService.class.getResourceAsStream("/reports/" + report + ".jasper"));
+		    JasperReport jasperReport = (JasperReport) JRLoader.loadObject(SalesReportService.class.getResourceAsStream("/reports/" + report + ".jasper"));
 			
 		  //Para probar
 		    col.add(new Anual(new Integer(58), new Integer(764), "2007"));
@@ -43,7 +43,7 @@ public class AnnualSalesReportService extends BaseReportService{
 		    col.add(new Anual(new Integer(58), new Integer(813), "2009"));
 		    col.add(new Anual(new Integer(58), new Integer(1351), "2010"));
 		    
-		    return JasperRunManager.runReportToPdf(jasperReport, parameters, getDataSource(col, filters));			
+		    return JasperRunManager.runReportToPdf(jasperReport, parameters, getDataSource(col, filters, tipo));			
         } catch (Throwable e) {
 			e.printStackTrace();
 			throw new Exception(e);
@@ -89,18 +89,20 @@ public class AnnualSalesReportService extends BaseReportService{
 		}			
 	}
 	
-    private JRDataSource getDataSource(Collection results, Map<String, String> filters) {
-        return new CustomDS(results, filters);
+    private JRDataSource getDataSource(Collection results, Map<String, String> filters, String tipo) {
+        return new CustomDS(results, filters, tipo);
     }
     
     protected class CustomDS implements JRDataSource  {		
         protected Iterator<Object> iterator; 
         protected Object currentValue; 
         protected Map<String, String> filters;
+        protected String tipo;
         
-        public CustomDS(Collection c, Map<String, String> filters) {
+        public CustomDS(Collection c, Map<String, String> filters, String tipo) {
         	this.iterator = c.iterator();
         	this.filters = filters;
+        	this.tipo = tipo;
         }
         
         public Object getFieldValue(JRField field) {
@@ -117,11 +119,15 @@ public class AnnualSalesReportService extends BaseReportService{
         		return filters.get("periodo");
         	} else if("hourlyBand".equals(field.getName())) {
         		return filters.get("hourlyBand");
-        	} else if("anio".equals(field.getName())) {
+        	} else if("date".equals(field.getName())) {
         		return pr.getAnio();
         	} else if("prom".equals(field.getName())) {
         		return pr.getProm().toString().substring(0, pr.getProm().toString().indexOf(".") + 3);
-        	}
+        	} else if("tipo".equals(field.getName())) {
+        		return tipo;
+        	} else if("tipoPeriodo".equals(field.getName())) {
+        		return tipo.equals("Anual") ? "Año" : "Mes";
+        	}        	
         	return null;
         }
         

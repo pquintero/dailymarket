@@ -9,9 +9,11 @@
 	<field name="periodo" class="java.lang.String"/>
 	<field name="groupProduct" class="java.lang.String"/>
 	<field name="productFilter" class="java.lang.String"/>
-	<field name="mes" class="java.lang.String"/>
+	<field name="date" class="java.lang.String"/>
 	<field name="prom" class="java.lang.String"/>
 	<field name="hourlyBand" class="java.lang.String"/>
+	<field name="tipo" class="java.lang.String"/>
+	<field name="tipoPeriodo" class="java.lang.String"/>
 	<background>
 		<band splitType="Stretch"/>
 	</background>
@@ -60,11 +62,6 @@
 				<textElement/>
 				<text><![CDATA[Tipo: ]]></text>
 			</staticText>
-			<staticText>
-				<reportElement x="100" y="0" width="100" height="20"/>
-				<textElement/>
-				<text><![CDATA[Mensual]]></text>
-			</staticText>
 			<rectangle>
 				<reportElement x="0" y="92" width="538" height="27" backcolor="#CCCCCC"/>
 			</rectangle>
@@ -72,11 +69,6 @@
 				<reportElement x="90" y="93" width="100" height="20"/>
 				<textElement/>
 				<text><![CDATA[PRODUCTO]]></text>
-			</staticText>
-			<staticText>
-				<reportElement x="14" y="93" width="45" height="20"/>
-				<textElement/>
-				<text><![CDATA[MES]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="232" y="93" width="45" height="20"/>
@@ -98,6 +90,16 @@
 				<textElement/>
 				<textFieldExpression class="java.lang.String"><![CDATA[$F{hourlyBand}]]></textFieldExpression>
 			</textField>
+			<textField>
+				<reportElement x="99" y="0" width="100" height="20"/>
+				<textElement/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{tipo}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="6" y="94" width="49" height="19"/>
+				<textElement/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{tipoPeriodo}]]></textFieldExpression>
+			</textField>
 		</band>
 	</pageHeader>
 	<detail>
@@ -118,7 +120,7 @@
 			<textField>
 				<reportElement x="14" y="1" width="49" height="19"/>
 				<textElement/>
-				<textFieldExpression class="java.lang.String"><![CDATA[$F{mes}]]></textFieldExpression>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{date}]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="399" y="1" width="67" height="19"/>

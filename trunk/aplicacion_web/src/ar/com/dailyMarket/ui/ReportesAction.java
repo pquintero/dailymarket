@@ -1,5 +1,6 @@
 package ar.com.dailyMarket.ui;
 
+import java.io.IOException;
 import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.List;
@@ -16,13 +17,13 @@ import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 import org.apache.struts.action.DynaActionForm;
 
-import ar.com.dailyMarket.services.AnnualBillingReportService;
-import ar.com.dailyMarket.services.AnnualSalesReportService;
+import ar.com.dailyMarket.services.BillingReportService;
 import ar.com.dailyMarket.services.GroupProductService;
 import ar.com.dailyMarket.services.HourlyBandService;
-import ar.com.dailyMarket.services.MonthlyBillingReportService;
-import ar.com.dailyMarket.services.MonthlySalesReportService;
+import ar.com.dailyMarket.services.ListCodesReportService;
+import ar.com.dailyMarket.services.ListPricesReportService;
 import ar.com.dailyMarket.services.ProductService;
+import ar.com.dailyMarket.services.SalesReportService;
 
 public class ReportesAction extends BaseAction {
 
@@ -31,53 +32,49 @@ public class ReportesAction extends BaseAction {
     }
     
     public ActionForward doReporteVentasAnuales(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) {	
-    	setInRequest(request);    
+    	setHourlyBandInRequest(request);
+    	setProductAndGroupInRequest(request);    
     	return mapping.findForward("showReporteVentasAnualesFilter");
     }
     
-    public ActionForward executeReporteVentasAnuales(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) {	
-    	//agarrar datos del formulario y ejecutar reporte
-    	return null;
-    }
-    
     public ActionForward doReporteVentasMensuales(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) {	
-    	setInRequest(request);    	
+    	setHourlyBandInRequest(request);
+    	setProductAndGroupInRequest(request);
     	return mapping.findForward("showReporteVentasMensualesFilter");
     }
     
     public ActionForward doReporteFacturacionAnual(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) {	
-    	setInRequest(request);
+    	setHourlyBandInRequest(request);
+    	setProductAndGroupInRequest(request);
     	return mapping.findForward("showReporteFacturacionAnualFilter");
     }
     
     public ActionForward doReporteFacturacionMensual(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) {	    	
-    	setInRequest(request);
+    	setHourlyBandInRequest(request);
+    	setProductAndGroupInRequest(request);
     	return mapping.findForward("showReporteFacturacionMensualFilter");
     }
 
     public ActionForward doReporteListadoPrecios(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) {	
+    	setProductAndGroupInRequest(request);
     	return mapping.findForward("showReporteListadoPreciosFilter");
     }
     
     public ActionForward doReporteListadoCodigos(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) {	
+    	setProductAndGroupInRequest(request);
     	return mapping.findForward("showReporteListadoCodigosFilter");
     }
     
-  //Ventas Mensuales
+    //Ventas Mensuales
     public ActionForward executeMonthlySales(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) {
-    	MonthlySalesReportService rrs = new MonthlySalesReportService();
-    	String reportName = "ventasMensuales";
+    	SalesReportService rrs = new SalesReportService();
+    	String reportName = "ventas";
         try {
       		response.setHeader("Content-Disposition","attachment; filename=" + reportName + ".pdf" + "\"");
       		List col = new ArrayList();
       		Map<String, String> filters = rrs.getFilters((DynaActionForm)form);
-      		byte[] bytes = rrs.runReport((DynaBean)form, col,reportName, filters);
-      		OutputStream stream = response.getOutputStream();
-      		stream.write(bytes);
-			stream.flush();
-			stream.close();
-      		response.setContentType("aplication/pdf");
-      	    response.setContentLength(bytes.length);    	    
+      		byte[] bytes = rrs.runReport((DynaBean)form, col,reportName, filters, "Mensual");
+      		executeReport(bytes, response);    	    
       	    return null;
       	} catch (Exception fe){
       	    log.error("Error en la generacion del reporte", fe);
@@ -86,17 +83,17 @@ public class ReportesAction extends BaseAction {
             saveErrors(request, errors);
             return doReporteVentasMensuales(mapping, form, request, response);
       	}
-    }
+    }        
     
     //Ventas Anuales
     public ActionForward executeAnnualSales(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) {
-    	AnnualSalesReportService ars = new AnnualSalesReportService();
-    	String reportName = "ventasAnuales";
+    	SalesReportService ars = new SalesReportService();
+    	String reportName = "ventas";
         try {
       		response.setHeader("Content-Disposition","attachment; filename=" + reportName + ".pdf" + "\"");
       		List col = new ArrayList();
       		Map<String, String> filters = ars.getFilters((DynaActionForm)form);
-      		byte[] bytes = ars.runReport((DynaBean)form, col,reportName, filters);
+      		byte[] bytes = ars.runReport((DynaBean)form, col,reportName, filters, "Anual");
       		OutputStream stream = response.getOutputStream();
       		stream.write(bytes);
 			stream.flush();
@@ -113,21 +110,16 @@ public class ReportesAction extends BaseAction {
       	}
     }   
     
-  //facturacion Mensual
+    //facturacion Mensual
     public ActionForward executeMonthlyBilling(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) {
-    	MonthlyBillingReportService mrs = new MonthlyBillingReportService();
-    	String reportName = "facturacionMensual";
+    	BillingReportService mrs = new BillingReportService();
+    	String reportName = "facturacion";
         try {
       		response.setHeader("Content-Disposition","attachment; filename=" + reportName + ".pdf" + "\"");
       		List col = new ArrayList();
       		Map<String, String> filters = mrs.getFilters((DynaActionForm)form);
-      		byte[] bytes = mrs.runReport((DynaBean)form, col,reportName, filters);
-      		OutputStream stream = response.getOutputStream();
-      		stream.write(bytes);
-			stream.flush();
-			stream.close();
-      		response.setContentType("aplication/pdf");
-      	    response.setContentLength(bytes.length);    	    
+      		byte[] bytes = mrs.runReport((DynaBean)form, col,reportName, filters, "Mensual");
+      		executeReport(bytes, response);  	    
       	    return null;
       	} catch (Exception fe){
       	    log.error("Error en la generacion del reporte", fe);
@@ -140,19 +132,14 @@ public class ReportesAction extends BaseAction {
     
     //facturacion Anual
     public ActionForward executeAnnualBilling(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) {
-    	AnnualBillingReportService ars = new AnnualBillingReportService();
-    	String reportName = "facturacionAnual";
+    	BillingReportService ars = new BillingReportService();
+    	String reportName = "facturacion";
         try {
       		response.setHeader("Content-Disposition","attachment; filename=" + reportName + ".pdf" + "\"");
       		List col = new ArrayList();
       		Map<String, String> filters = ars.getFilters((DynaActionForm)form);
-      		byte[] bytes = ars.runReport((DynaBean)form, col,reportName, filters);
-      		OutputStream stream = response.getOutputStream();
-      		stream.write(bytes);
-			stream.flush();
-			stream.close();
-      		response.setContentType("aplication/pdf");
-      	    response.setContentLength(bytes.length);    	    
+      		byte[] bytes = ars.runReport((DynaBean)form, col,reportName, filters, "Anual");
+      		executeReport(bytes, response);    	    
       	    return null;
       	} catch (Exception fe){
       	    log.error("Error en la generacion del reporte", fe);
@@ -163,14 +150,61 @@ public class ReportesAction extends BaseAction {
       	}
     }
     
-    public void setInRequest (HttpServletRequest request) {
+    public ActionForward executeListCodes(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) {
+    	ListCodesReportService lcrs = new ListCodesReportService();
+    	String reportName = "codigos";
+        try {
+      		response.setHeader("Content-Disposition","attachment; filename=" + reportName + ".pdf" + "\"");
+      		Map<String, Object> filters = lcrs.getFiltersObject((DynaActionForm)form);
+      		byte[] bytes = lcrs.runReport((DynaBean)form, reportName, filters);
+      		executeReport(bytes, response);    	    
+      	    return null;
+      	} catch (Exception fe){
+      	    log.error("Error en la generacion del reporte", fe);
+            ActionErrors errors = new ActionErrors();
+            errors.add("", new ActionError("errors.report"));
+            saveErrors(request, errors);
+            return doReporteFacturacionAnual(mapping, form, request, response);
+      	}
+    }    
+    
+    public ActionForward executeListPrices(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) {
+    	ListPricesReportService lprs = new ListPricesReportService();
+    	String reportName = "precios";
+        try {
+      		response.setHeader("Content-Disposition","attachment; filename=" + reportName + ".pdf" + "\"");
+      		Map<String, Object> filters = lprs.getFiltersObject((DynaActionForm)form);
+      		byte[] bytes = lprs.runReport((DynaBean)form, reportName, filters);
+      		executeReport(bytes, response);    	    
+      	    return null;
+      	} catch (Exception fe){
+      	    log.error("Error en la generacion del reporte", fe);
+            ActionErrors errors = new ActionErrors();
+            errors.add("", new ActionError("errors.report"));
+            saveErrors(request, errors);
+            return doReporteFacturacionAnual(mapping, form, request, response);
+      	}
+    }
+    
+    public void setProductAndGroupInRequest (HttpServletRequest request) {
     	GroupProductService groupProductService = new GroupProductService();
     	ProductService productService = new ProductService();
-    	HourlyBandService hourlyBandService = new HourlyBandService();
     	
     	request.setAttribute("groupsProduct", groupProductService.getAllGroupProduct());
     	request.setAttribute("products", productService.getAllProducts());
+    }  
+    
+    public void setHourlyBandInRequest (HttpServletRequest request) {
+    	HourlyBandService hourlyBandService = new HourlyBandService();
     	request.setAttribute("hourlyBands", hourlyBandService.getAllHourlyBands());
     }
     
+    private void executeReport(byte[] bytes, HttpServletResponse response) throws IOException {
+    	OutputStream stream = response.getOutputStream();
+  		stream.write(bytes);
+		stream.flush();
+		stream.close();
+  		response.setContentType("aplication/pdf");
+  	    response.setContentLength(bytes.length);    	    
+    }
 }

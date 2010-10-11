@@ -6,9 +6,9 @@
 <%@ taglib uri="/tags/displaytag" prefix="ds" %>
 
 
-<TABLE class="body"  border="0" cellpadding="0" cellspacing="0">	
+<TABLE class="form"  border="0" cellpadding="0" cellspacing="0">		
 	<TR> 
-		<TD> 
+		<TD colspan="7"> 
 			<ul class="errors" type="square">
 				<html:messages id="mensaje" message="true" >
 					<li><bean:write name="mensaje" /></li>
@@ -17,15 +17,33 @@
 		</TD>
 	</TR>
 	<tr>
-		<td>&nbsp;</td>
+		<td colspan="7">&nbsp;</td>
 	</tr>
+	<TR> 
+		<TD colspan="7">
+			<h1 class="formtitle"><bean:message key="reportes.listadoDePrecios"/></h1>
+		</TD>		
+	</TR>	
 	<tr>
-		<td >
-			<table width="100%" align="left" cellpadding="0"  cellspacing="0" border="0">			
-				<tr align="center">
-					<td>FILTROS PARA REALIZAR UN REPORTE DE LISTADO DE PRECIOS</td>
-				</tr>
-			</table>
-		</td>
+		<td colspan="7">&nbsp;</td>
 	</tr>
+	<TR>
+		<td>&nbsp;</td>
+		<TH><bean:message key="ProductForm.groupProduct"/></TH>
+		<td>&nbsp;</td>
+		<TD>
+			<html:select property="groupProductId">						
+				<OPTION VALUE="-1">Seleccione</OPTION>
+				<html:options collection="groupsProduct" property="id" labelProperty="name" />				
+			</html:select>
+		</TD>
+		<TH><bean:message key="reportes.ventasAnuales.producto"/></TH>
+		<td>&nbsp;</td>
+		<TD>
+			<html:select property="productId">						
+				<OPTION VALUE="-1">Seleccione</OPTION>
+				<html:options collection="products" property="id" labelProperty="name" />				
+			</html:select>
+		</TD>
+	</TR>
 </TABLE>
