@@ -2,6 +2,10 @@ package ar.com.tsoluciones.arcom.security;
 
 import java.util.Date;
 
+import org.dom4j.Document;
+import org.dom4j.DocumentHelper;
+import org.dom4j.Element;
+
 public class Product {
 	
 	public static final String PRODUCT_STATE_STOCK = "product.state.stock";
@@ -86,4 +90,35 @@ public class Product {
 	public void setRepositionStock(Integer repositionStock) {
 		this.repositionStock = repositionStock;
 	}	
+	
+	/**
+	 * <p>
+	 * Retorna una representación mínima del producto.
+	 * </p>
+	 * @return Document
+	 */
+	public Document toXml() {
+
+		Document doc = DocumentHelper.createDocument();
+		doc.setRootElement(DocumentHelper.createElement("product"));
+		
+		Element root = doc.getRootElement();
+		root.addElement("id").setText(id.toString());
+		root.addElement("description").setText(description !=null ?String.valueOf(description):"");
+		root.addElement("name").setText(name !=null ?String.valueOf(name):"");
+		root.addElement("actualStock").setText(actualStock !=null ? String.valueOf(actualStock) :"");
+		root.addElement("price").setText(price !=null ?String.valueOf(price):"");
+		root.addElement("sizeOfPurchase").setText(sizeOfPurchase !=null ?String.valueOf(sizeOfPurchase):"");
+		root.addElement("code").setText(code != null ? String.valueOf(code): "");
+		root.addElement("state").setText(state != null ? String.valueOf(state):"");
+		root.addElement("repositionStock").setText( repositionStock != null ? String.valueOf(repositionStock):"");
+		root.addElement("dateWithoutStock").setText( dateWithoutStock != null ? String.valueOf(dateWithoutStock):"");
+		
+		Element groupUserEl = root.addElement("groupProduct");
+		groupUserEl.addElement("id").setText(groupProduct.getId().toString());
+		groupUserEl.addElement("name").setText(groupProduct.getName());
+		groupUserEl.addElement("description").setText(groupProduct.getDescription());		
+
+	    return doc;
+	}
 }
