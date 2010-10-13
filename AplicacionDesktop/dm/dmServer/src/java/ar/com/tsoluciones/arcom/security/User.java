@@ -153,7 +153,6 @@ public class User {
 	 * @throws DPFPImageQualityException 
 	 */
     public boolean authenticate(String featureSetString)  {
-
     	  byte[] featureByte = MyBase64.decode(featureSetString);
     	  DPFPFeatureSet featureSet = DPFPGlobal.getFeatureSetFactory().createFeatureSet(featureByte);
     	  
