@@ -180,7 +180,6 @@
 	<definition name="tiles.simulator.buttons" extends=".buttonsLayout">
         <putList name="buttonList">
             <item value="common.button.back" link="doHome" classtype="org.apache.struts.tiles.beans.SimpleMenuItem"/>
-            <item value="common.button.save" link="saveAndBackToCheckPoint" classtype="org.apache.struts.tiles.beans.SimpleMenuItem"/>
             <item value="common.button.execute" link="executeSimulator" classtype="org.apache.struts.tiles.beans.SimpleMenuItem"/>
         </putList>
     </definition>	
@@ -462,15 +461,14 @@
     <definition name="tiles.simulator.execute" extends=".managerMainLayout">
         <put name="title"   value="simulator.title.new" />
         <put name="body"    value="tiles.simulator.body" />
-    </definition>    
+    </definition>
 	<definition name="tiles.simulator.body" extends=".editLayout">
         <put name="title"   value="simulator.title" />
         <put name="action"  value="simulator" />
         <put name="tabs"    value=""/>
         <put name="body"    value="/pages/simulator/detail.jsp" />
         <put name="buttons" value="tiles.simulator.buttons" />                    
-    </definition>       
-    
+    </definition>  
     <!-- ============================================================== -->
     <!-- Configuration                                                   -->
     <!-- ============================================================== -->    
