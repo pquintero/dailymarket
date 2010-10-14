@@ -1,7 +1,5 @@
 package ar.com.dailyMarket.ui;
 
-import java.util.ArrayList;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -25,30 +23,11 @@ public class IndicadoresAction extends BaseAction {
 /******		VentasPorCajeroMensual		******/
     
     public ActionForward doIndicadoresVentasPorCajeroMensual(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) {	
-    	ArrayList<String> anios = new ArrayList();
-    	anios.add("2010");
-    	anios.add("2009");
-    	anios.add("2008");
-    	
-    	ArrayList<String> meses = new ArrayList();
-    	meses.add("Enero");
-    	meses.add("Febrero");
-    	meses.add("Marzo");
-    	meses.add("Abril");
-    	meses.add("Mayo");
-    	meses.add("Junio");
-    	meses.add("Julio");
-    	meses.add("Agosto");
-    	meses.add("Septiembre");
-    	meses.add("Octubre");
-    	meses.add("Noviembre");
-    	meses.add("Diciembre");
-    	
     	UserService us = new UserService();
     	HourlyBandService hbs = new HourlyBandService();
     	
-    	request.setAttribute("aniosList", anios);
-    	request.setAttribute("mesesList", meses);
+    	request.setAttribute("aniosList", StaticData.anios);
+    	request.setAttribute("mesesList", StaticData.meses);
     	request.setAttribute("cajerosList", us.getCajeros());
     	request.setAttribute("bandaList", hbs.getAllHourlyBands());
     	return mapping.findForward("showIndicadoresVentasPorCajeroMensualFilter");
@@ -67,14 +46,10 @@ public class IndicadoresAction extends BaseAction {
     
 /******		VentasPorCajeroAnual		******/
     public ActionForward doIndicadoresVentasPorCajeroAnual(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) {	
-    	ArrayList<String> anios = new ArrayList();
-    	anios.add("2010");
-    	anios.add("2009");
-    	anios.add("2008");
     	UserService us = new UserService();
     	HourlyBandService hbs = new HourlyBandService();
     	
-    	request.setAttribute("aniosList", anios);
+    	request.setAttribute("aniosList", StaticData.anios);
     	request.setAttribute("cajerosList", us.getCajeros());
     	request.setAttribute("bandaList", hbs.getAllHourlyBands());
     	return mapping.findForward("showIndicadoresVentasPorCajeroAnualFilter");
@@ -93,30 +68,11 @@ public class IndicadoresAction extends BaseAction {
 
 /******		ComparativaDeVentasPorCajeroMensual		******/
     public ActionForward doIndicadoresComparativaDeVentasPorCajeroMensual(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) {	
-    	ArrayList<String> anios = new ArrayList();
-    	anios.add("2010");
-    	anios.add("2009");
-    	anios.add("2008");
-    	
-    	ArrayList<String> meses = new ArrayList();
-    	meses.add("Enero");
-    	meses.add("Febrero");
-    	meses.add("Marzo");
-    	meses.add("Abril");
-    	meses.add("Mayo");
-    	meses.add("Junio");
-    	meses.add("Julio");
-    	meses.add("Agosto");
-    	meses.add("Septiembre");
-    	meses.add("Octubre");
-    	meses.add("Noviembre");
-    	meses.add("Diciembre");
-    	
     	UserService us = new UserService();
     	HourlyBandService hbs = new HourlyBandService();
     	
-    	request.setAttribute("aniosList", anios);
-    	request.setAttribute("mesesList", meses);
+    	request.setAttribute("aniosList", StaticData.anios);
+    	request.setAttribute("mesesList", StaticData.meses);
 //    	request.setAttribute("cajerosList", us.getCajeros());
     	request.setAttribute("bandaList", hbs.getAllHourlyBands());
     	
@@ -142,14 +98,10 @@ public class IndicadoresAction extends BaseAction {
     
 /******		ComparativaDeVentasPorCajeroAnual		******/
     public ActionForward doIndicadoresComparativaDeVentasPorCajeroAnual(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) {	
-    	ArrayList<String> anios = new ArrayList<String>();
-    	anios.add("2010");
-    	anios.add("2009");
-    	anios.add("2008");
     	UserService us = new UserService();
     	HourlyBandService hbs = new HourlyBandService();
     	
-    	request.setAttribute("aniosList", anios);
+    	request.setAttribute("aniosList", StaticData.anios);
     	request.setAttribute("cajerosList", us.getCajeros());
     	request.setAttribute("bandaList", hbs.getAllHourlyBands());
     	return mapping.findForward("showIndicadoresComparativaDeVentasPorCajeroAnualFilter");

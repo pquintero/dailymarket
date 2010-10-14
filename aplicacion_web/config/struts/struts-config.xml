@@ -244,8 +244,13 @@
 			<form-property name="dsTable" type="java.lang.String" />
 			<form-property name="dsTableArray" type="java.lang.String[]" />
 			
-			<!--	ESTADISTICA XXX	-->
-			<form-property name="xxx" type="java.lang.String" initial=""/>
+			<form-property name="month" type="java.lang.String" initial=""/>
+			<form-property name="year" type="java.lang.String" initial=""/>
+			<form-property name="bandaHorariaId" type="java.lang.Long" initial="-1"/>
+			<form-property name="productGroup" type="java.lang.String" initial=""/>
+			<form-property name="groupProductId" type="java.lang.Long" initial="-1"/>			
+			<form-property name="product" type="java.lang.String" initial=""/>
+			<form-property name="productId" type="java.lang.Long" initial="-1"/>
 			
 			<form-property name="queryDispatchName" type="java.lang.String" initial=""/>
 			<form-property name="collectionName" type="java.lang.String" initial="" />
@@ -399,6 +404,13 @@
 			<forward name="showEstadisticasVentasAnualesPorProductoFilter" path="tiles.estadisticas.ventasAnualesPorProductoFilter"/>
 			<forward name="showEstadisticasVentasMensualesPorGrupoDeProductoFilter" path="tiles.estadisticas.ventasMensualesPorGrupoDeProductoFilter"/>
 			<forward name="showEstadisticasVentasAnualesPorGrupoDeProductoFilter" path="tiles.estadisticas.ventasAnualesPorGrupoDeProductoFilter"/>
+			
+			<forward name="showEstadisticasVentasMensualesChart" path="tiles.estadisticas.chart.ventasMensuales"/>
+			<forward name="showEstadisticasVentasAnualesChart" path="tiles.estadisticas.chart.ventasAnuales"/>
+			<forward name="showEstadisticasVentasMensualesPorProductoChart" path="tiles.estadisticas.chart.ventasMensualesPorProducto"/>
+			<forward name="showEstadisticasVentasAnualesPorProductoChart" path="tiles.estadisticas.chart.ventasAnualesPorProducto"/>
+			<forward name="showEstadisticasVentasMensualesPorGrupoDeProductoChart" path="tiles.estadisticas.chart.ventasMensualesPorGrupoDeProducto"/>
+			<forward name="showEstadisticasVentasAnualesPorGrupoDeProductoChart" path="tiles.estadisticas.chart.ventasAnualesPorGrupoDeProducto"/>
 		</action>
 		
 		<action 
