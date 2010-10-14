@@ -17,7 +17,7 @@
         <property column="repositionstock" name="repositionStock"  type="java.lang.Integer"/>
         <property column="state" name="state"  type="java.lang.String"/>
         
-        <many-to-one name="groupProduct" column="groupproductid" class="ar.com.dailyMarket.model.GroupProduct"/>   	    			 
+        <many-to-one name="groupProduct" column="groupproductid" class="ar.com.tsoluciones.arcom.security.GroupProduct"/>   	    			 
     </class>   
 </hibernate-mapping>
 

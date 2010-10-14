@@ -1,5 +1,11 @@
 package ar.com.tsoluciones.emergencies.server.gui.core.telefront.action;
 
+import java.util.Collection;
+
+import org.dom4j.Document;
+import org.dom4j.DocumentHelper;
+import org.dom4j.Element;
+
 import ar.com.tsoluciones.arcom.cor.ServiceException;
 import ar.com.tsoluciones.arcom.security.Product;
 import ar.com.tsoluciones.arcom.security.services.factory.CajeroVentaFactory;
@@ -30,6 +36,22 @@ public class CajeroVentaManagerService extends TelefrontServiceFactory {
 		CajeroVentaServiceInterface cajeroService = (CajeroVentaServiceInterface) new CajeroVentaFactory().newInstance();
 		Product producto = cajeroService.getProductByCode(code);
 		return new XmlSerializableImpl(producto.toXml().asXML());
+	}
+  
+  /**
+   * Persiste una sesion de venta una vez que esta se cierra
+   *
+   * @throws ar.com.tsoluciones.arcom.cor.ServiceException
+   *          Cuando hay un error de negocios, por ejemplo, si el usuario no se puede logear
+   */
+  public XmlSerializable guardarSesionVenta(String idCaja, String idCajero, Collection<String> productos, String totalVenta) throws ServiceException {
+		CajeroVentaServiceInterface cajeroService = (CajeroVentaServiceInterface) new CajeroVentaFactory().newInstance();
+		
+		cajeroService.guardarSesionVenta(idCaja, idCajero, productos, totalVenta);
+		Document document = DocumentHelper.createDocument();
+		Element rootElement = document.addElement("sesionVenta");
+		rootElement.addElement("sesion").setText("ok");		
+		return new XmlSerializableImpl(document.asXML());
 	}
 
 }
