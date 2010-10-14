@@ -24,7 +24,7 @@ public class Configuration {
 	private int xmlReadTimeout;
 	private int xmlConnectionTimeout;
 	private int fileReadTimeout;
-	private int ctiReconnect; //solo Siemens
+	private String caja;
 	
     private Configuration() {
 		Properties prop = new Properties();
@@ -42,7 +42,7 @@ public class Configuration {
 			this.xmlConnectionTimeout = Integer.parseInt(prop.getProperty("telefront.xml.connection.timeout"));
 			this.xmlReadTimeout = Integer.parseInt(prop.getProperty("telefront.xml.read.timeout"));
 			this.fileReadTimeout = Integer.parseInt(prop.getProperty("telefront.file.read.timeout"));
-			this.ctiReconnect = Integer.parseInt(prop.getProperty("siemens.reconnect"));
+			this.caja = prop.getProperty("caja");
 
         } catch (Exception e) {
 			logInitializatonError(e);
@@ -76,10 +76,6 @@ public class Configuration {
 	public String getJTapiPeer() {
 		return JTapiPeer;
 	}
-	
-	public int getCtiReconnect() {
-		return ctiReconnect;
-	}
 
 	public File getTempDir() {
 		String tempdir;
@@ -104,6 +100,14 @@ public class Configuration {
 
 	public int getXmlReadTimeout() {
 		return xmlReadTimeout;
+	}
+
+	public String getCaja() {
+		return caja;
+	}
+
+	public void setCaja(String caja) {
+		this.caja = caja;
 	}
 	
 }

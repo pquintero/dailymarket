@@ -139,6 +139,8 @@ public class CajaFrame  extends DailyMarketFrame{
 					nuevaSesionVentaButton.setEnabled(false);
 		   }
 		}
+		//SACAAAAAAAAAAAAAAAAR
+		nuevaSesionVentaButton.setEnabled(true);
 	}
 		
 	

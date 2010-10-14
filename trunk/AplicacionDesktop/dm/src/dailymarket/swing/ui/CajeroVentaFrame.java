@@ -40,19 +40,27 @@ import javax.swing.border.TitledBorder;
 
 import javax.swing.table.DefaultTableModel;
 
+import org.dom4j.Document;
+
+import telefront.TelefrontGUI;
+
 import dailymarket.model.Caja;
 import dailymarket.model.Empleado;
 import dailymarket.model.LineaTicket;
+import dailymarket.model.ProductModel;
 import dailymarket.model.Sucursal;
 import dailymarket.model.Ticket;
 
 public class CajeroVentaFrame extends DailyMarketFrame {
 	
+	private static final String CONTROLLER_CLASS = "ar.com.tsoluciones.emergencies.server.gui.core.telefront.action.CajeroVentaManagerService";
 	protected static final int COLUMNA_CHECK_BOX = 0;
 	protected static final int COLUMNA_PRECIO_TOTAL = 5;
     protected Vector<Vector<String>> rowsProducts = new Vector<Vector<String>>();
     protected DefaultTableModel tableModelProducts;
     protected JTable tableRelations = new JTable();
+    
+    private List <String> productsCode = new ArrayList<String>();
 
     protected String cajaNumber = "1";//EL VALOR es PARAMETRO DEL CONSTRUCTOR
     
@@ -142,21 +150,34 @@ public class CajeroVentaFrame extends DailyMarketFrame {
 			
 			public void actionPerformed(ActionEvent e) {
 			
-			
-				//TRAER PRODUCTO DE LA BASE DE DATOS Y SETEARLO AL TICKET..   
-				tableModelProducts.addRow(new Object[]{ new Boolean(false),"1", "Pepsi", new Integer(2), new Double(7.8), new Double(8.5)});
-				
-				cantProd.setText("1");
-				descProducto.setText("PepsiCola 2,15 Lt");
-				//
-				
-				tableRelations.getColumn("Cancel").setCellRenderer(new MultiRenderer());
-			    tableRelations.getColumn("Cancel").setCellEditor(new MultiEditor());
-				
-				
-				subTotalVenta += new Double(8.5);
-				subtotalVentaTextfield.setText(subTotalVenta.toString());
+				 Object params[] = new String[] {scanCodProducto.getText()};
+	             Document doc = TelefrontGUI.getInstance().executeMethod(CONTROLLER_CLASS, "obtenerProducto", params);
+	             ProductModel productModel = new ProductModel();
+	             if(doc!= null){
+		            productModel.toProductModel(doc);
+					
+					//TRAER PRODUCTO DE LA BASE DE DATOS Y SETEARLO AL TICKET..  
+		            subTotalVenta += Double.valueOf(productModel.getPrice());
+					tableModelProducts.addRow(new Object[]{ new Boolean(false),"1", productModel.getDescription(), new Integer(1), Double.valueOf(productModel.getPrice()), subTotalVenta});
+					
+					agregarAProductsCode(productModel.getCode());
+
+					//				
+	//				cantProd.setText("1");
+	//				descProducto.setText(productModel.getDescription());
+					//
+					scanCodProducto.setText(null);
+					
+					tableRelations.getColumn("Cancel").setCellRenderer(new MultiRenderer());
+				    tableRelations.getColumn("Cancel").setCellEditor(new MultiEditor());
+				    totalVenta = subTotalVenta;
+					
+					
+					subtotalVentaTextfield.setText(subTotalVenta.toString());
+					totalVentaTextField.setText(totalVenta.toString());
+	             }
 			}
+
 		});
 	    			    
 		productoPanel.add(scanCodProducto);
@@ -268,6 +289,7 @@ public class CajeroVentaFrame extends DailyMarketFrame {
 				caja.setSucursal(suc);
 				
 				LineaTicket linea1 = new LineaTicket();
+				
 				linea1.setDescripcion("Coca_Cola_x_2Lts");
 				linea1.setCantidad("6");
 				linea1.setPrecioUnitario("8");
@@ -589,6 +611,23 @@ public class CajeroVentaFrame extends DailyMarketFrame {
 	public static void main(String[] args) throws IOException, SQLException{
 		new CajeroVentaFrame(null);
 	   }
+	
+	public List<String> getProductsCode() {
+		return productsCode;
+	}
+	
+	public void setProductsCode(List<String> productsCode) {
+		this.productsCode = productsCode;
+	}
+	
+	private void agregarAProductsCode(String code) {
+		productsCode.add(code);
+	}
+	
+	private void eliminarDeProductsCode(String code){
+		productsCode.remove(code);
+	}
+	
 }
 
 

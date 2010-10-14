@@ -301,7 +301,7 @@ public class UtilLectorHuellasSingleton {
 				user.setHuelladigital(huelladigital);
 				user.setId(id);
 				user.setLastName(lastName);
-				user.setName(lastName);
+				user.setName(name);
 				user.setPassword(password);
 				user.setPasswordOld(passwordOld);
 				user.setReceiveNotifications(Boolean.valueOf(receiveNotifications));

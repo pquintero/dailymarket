@@ -6,6 +6,8 @@ import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Collection;
+import java.util.Collections;
 
 import javax.swing.JButton;
 import javax.swing.JDialog;
@@ -16,6 +18,13 @@ import javax.swing.JTextField;
 import javax.swing.border.LineBorder;
 import javax.swing.border.TitledBorder;
 
+import org.dom4j.Document;
+
+import dailymarket.model.Context;
+
+
+import telefront.TelefrontGUI;
+
 
 public class FinVentaFrame extends JDialog {
 	public JFrame parentFrame;
@@ -23,6 +32,8 @@ public class FinVentaFrame extends JDialog {
 	public JTextField montoPagoVenta ;
 	public JLabel mensaje = new JLabel();
 	public boolean finVenta = false;
+	
+	private static final String CONTROLLER_CLASS = "ar.com.tsoluciones.emergencies.server.gui.core.telefront.action.CajeroVentaManagerService";
 
 	
 	public FinVentaFrame(JFrame frame, Double monto) {
@@ -90,10 +101,20 @@ public class FinVentaFrame extends JDialog {
 						mensaje.setForeground(Color.red);
 					}
 						else
-						{		
-							((CajeroVentaFrame)parentFrame).pagoVenta =  montoPago;
-							((CajeroVentaFrame)parentFrame).habilitarImprimirVenta();
-							dispose();			
+						{
+             
+							 Object params[] = new Object[] {Configuration.getInstance().getCaja(),Context.getInstance().getCurrentUser().getUser(),((CajeroVentaFrame)parentFrame).getProductsCode(),((CajeroVentaFrame)parentFrame).totalVenta.toString()};
+				             Document doc = TelefrontGUI.getInstance().executeMethod(CONTROLLER_CLASS, "guardarSesionVenta", params);
+							if(doc!=null){
+								((CajeroVentaFrame)parentFrame).pagoVenta =  montoPago;
+								((CajeroVentaFrame)parentFrame).habilitarImprimirVenta();
+								dispose();	
+							}else{
+								mensaje.setText("No se pudo registrar la venta");
+								mensaje.setForeground(Color.red);
+							}
+							
+									
 						}
 				} catch (NumberFormatException e) {
 					mensaje.setText("El valor debe ser numérico");
