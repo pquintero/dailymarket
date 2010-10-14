@@ -81,7 +81,7 @@ ArrayList<String> listaMeses = (ArrayList<String>)request.getAttribute("mesesLis
 	</tr>
 	<tr>
 		<td colspan="4">
-			<table width="40%">
+			<table  width="40%">
 				<TR>
 					<td><bean:message key="indicadores.seleccionarCajeros"/></td>
 				</TR>
@@ -96,7 +96,6 @@ ArrayList<String> listaMeses = (ArrayList<String>)request.getAttribute("mesesLis
 						</td>
 						<td>
 							<html:multibox name="IndicadoresForm" property="cajerosArray" value='<%= us.getId().toString() %>' /> 
-			   				<html:hidden name="IndicadoresForm" property="cajerosArray" value='<%= "-1" %>'/>
 						</td>
 					</tr>
 				</logic:iterate>

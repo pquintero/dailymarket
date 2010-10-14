@@ -3,6 +3,8 @@ package ar.com.dailyMarket.ui;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.struts.action.ActionError;
+import org.apache.struts.action.ActionErrors;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
@@ -73,26 +75,29 @@ public class IndicadoresAction extends BaseAction {
     	
     	request.setAttribute("aniosList", StaticData.anios);
     	request.setAttribute("mesesList", StaticData.meses);
-//    	request.setAttribute("cajerosList", us.getCajeros());
     	request.setAttribute("bandaList", hbs.getAllHourlyBands());
     	
     	((DynaActionForm)form).set("cajerosList",  us.getCajeros());
-    	String[] cajerosArray = {"",""};
-    	((DynaActionForm)form).set("cajerosArray", cajerosArray);
     	return mapping.findForward("showIndicadoresComparativaDeVentasPorCajeroMensualFilter");
     }
     
+    //Redireccionar a un jsp con el chart y un volver hacia el filtro
     public ActionForward executeComparativaDeVentasPorCajeroMensual(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) {	
-    	//Redireccionar a un jsp con el chart y un volver hacia el filtro
-//    	request.getSession().setAttribute("cajerosComparar", (String[])((DynaActionForm)form).get("cajerosArray"));
+    	if(((String[])((DynaActionForm)form).get("cajerosArray")).length < 2) {
+    		ActionErrors errors = new ActionErrors();
+            errors.add("", new ActionError("errors.cajerosComparativa"));
+            saveErrors(request, errors);
+            return doIndicadoresComparativaDeVentasPorCajeroMensual(mapping, form, request, response);
+    	}
+    	request.getSession().setAttribute("cajerosComparar", (String[])((DynaActionForm)form).get("cajerosArray"));
     	return mapping.findForward("showIndicadoresComparativaDeVentasPorCajeroMensualChart");
     }
     
     public ActionForward getCVPCMChart(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception{
 		IndicadoresService is = new IndicadoresService();
-//		String[] vec = (String[])request.getSession().getAttribute("cajerosComparar");
-		
-        MSLine msline = is.getCVPCMChart((DynaActionForm)form);
+		String[] vec = (String[])request.getSession().getAttribute("cajerosComparar");
+		request.getSession().setAttribute("cajerosComparar", null);
+        MSLine msline = is.getCVPCMChart((DynaActionForm)form, vec);
         return getXML(msline, mapping, form, request, response);
     }
     
@@ -102,19 +107,28 @@ public class IndicadoresAction extends BaseAction {
     	HourlyBandService hbs = new HourlyBandService();
     	
     	request.setAttribute("aniosList", StaticData.anios);
-    	request.setAttribute("cajerosList", us.getCajeros());
     	request.setAttribute("bandaList", hbs.getAllHourlyBands());
+    	((DynaActionForm)form).set("cajerosList",  us.getCajeros());
     	return mapping.findForward("showIndicadoresComparativaDeVentasPorCajeroAnualFilter");
     }
     
+    //Redireccionar a un jsp con el chart y un volver hacia el filtro
     public ActionForward executeComparativaDeVentasPorCajeroAnual(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) {	
-    	//Redireccionar a un jsp con el chart y un volver hacia el filtro
+    	if(((String[])((DynaActionForm)form).get("cajerosArray")).length < 2) {
+    		ActionErrors errors = new ActionErrors();
+            errors.add("", new ActionError("errors.cajerosComparativa"));
+            saveErrors(request, errors);
+            return doIndicadoresComparativaDeVentasPorCajeroMensual(mapping, form, request, response);
+    	}
+    	request.getSession().setAttribute("cajerosComparar", (String[])((DynaActionForm)form).get("cajerosArray"));
     	return mapping.findForward("showIndicadoresComparativaDeVentasPorCajeroAnualChart");
     }
     
     public ActionForward getCVPCAChart(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception{
 		IndicadoresService is = new IndicadoresService();
-        MSLine msline = is.getCVPCAChart((DynaActionForm)form);
+		String[] vec = (String[])request.getSession().getAttribute("cajerosComparar");
+		request.getSession().setAttribute("cajerosComparar", null);
+		MSLine msline = is.getCVPCAChart((DynaActionForm)form, vec);
         return getXML(msline, mapping, form, request, response);
     }
 

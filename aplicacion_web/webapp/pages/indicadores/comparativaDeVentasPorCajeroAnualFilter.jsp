@@ -5,6 +5,10 @@
 <%@ taglib uri="/tags/struts-logic" prefix="logic" %>
 <%@ taglib uri="/tags/displaytag" prefix="ds" %>
 <%@ page import="java.util.*" %>
+<%@ page import="ar.com.dailyMarket.model.*" %>
+
+<bean:define id="cajerosArray" property="cajerosArray" name="IndicadoresForm" type="java.lang.String[]"/>
+<bean:define id="cajerosList" property="cajerosList" name="IndicadoresForm" type="java.util.List"/>
 
 <% ArrayList<String> listaAnios = (ArrayList<String>) request.getAttribute("aniosList"); %>
 <TABLE class="form"  border="0" cellpadding="0" cellspacing="0">	
@@ -54,5 +58,31 @@
 			</html:select>
 		</td>
 	</tr>
-	
+		<tr align="left">
+		<td colspan="4">&nbsp;</td>
+	</tr>
+	<tr>
+		<td colspan="4">
+			<table  width="40%">
+				<TR>
+					<td><bean:message key="indicadores.seleccionarCajeros"/></td>
+				</TR>
+				<tr>
+					<td>&nbsp;</td>
+				</tr>
+				<logic:iterate id="cajero" property="cajerosList" name="IndicadoresForm">
+					<% User us = (User) cajero; %>
+					<tr>
+						<td>
+							<bean:write name="cajero" property="name"/>
+						</td>
+						<td>
+							<html:multibox name="IndicadoresForm" property="cajerosArray" value='<%= us.getId().toString() %>' /> 
+						</td>
+					</tr>
+				</logic:iterate>
+			</table>
+			
+		</td>
+	</tr>
 </TABLE>
