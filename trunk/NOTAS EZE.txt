@@ -25,3 +25,13 @@ Meti esto en el layout para que no se guarde en cache:
 					    		<input type="hidden" name="cajerosArray" value="-1">
 					    	</ds:column>        
 						</ds:table>
+
+		
+		
+		
+
+_________________________________________________________________
+Falta llenar los graficos con datos reales
+VER CACHE DE GRAFICOS
+VER GRAFICOS DE PDFs
+
