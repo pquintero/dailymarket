@@ -607,12 +607,6 @@
     <!-- ESTADISTICAS                                                   -->
     <!-- ============================================================== -->  
     
-   	<definition name="tiles.estadisticas.buttons" extends=".buttonsLayout">
-        <putList name="buttonList">
-            <item value="common.button.back" link="initAction" classtype="org.apache.struts.tiles.beans.SimpleMenuItem"/>
-        </putList>
-    </definition>
-    
     <definition name="tiles.estadisticas.ventasMensualesFilter" extends=".managerMainLayout">
         <put name="title"   value="estadisticas.ventasMensualesFilter" />
         <put name="body"    value="tiles.estadisticas.ventasMensualesFilter.body" />
@@ -622,7 +616,13 @@
         <put name="action"  value="estadisticas" />
         <put name="tabs"    value=""/>
         <put name="body"    value="/pages/estadisticas/ventasMensualesFilter.jsp" />
-        <put name="buttons" value="tiles.estadisticas.buttons" />                    
+        <put name="buttons" value="tiles.estadisticas.ventasMensuales.buttons" />                    
+    </definition>
+    <definition name="tiles.estadisticas.ventasMensuales.buttons" extends=".buttonsLayout">
+        <putList name="buttonList">
+            <item value="common.button.back" link="initAction" classtype="org.apache.struts.tiles.beans.SimpleMenuItem"/>
+            <item value="common.button.showEstadistica" link="executeEstadisticasVentasMensuales" classtype="org.apache.struts.tiles.beans.SimpleMenuItem"/>
+        </putList>
     </definition>
     
     <definition name="tiles.estadisticas.ventasAnualesFilter" extends=".managerMainLayout">
@@ -634,7 +634,13 @@
         <put name="action"  value="estadisticas" />
         <put name="tabs"    value=""/>
         <put name="body"    value="/pages/estadisticas/ventasAnualesFilter.jsp" />
-        <put name="buttons" value="tiles.estadisticas.buttons" />                    
+        <put name="buttons" value="tiles.estadisticas.ventasAnuales.buttons" />                    
+    </definition>
+   	<definition name="tiles.estadisticas.ventasAnuales.buttons" extends=".buttonsLayout">
+        <putList name="buttonList">
+            <item value="common.button.back" link="initAction" classtype="org.apache.struts.tiles.beans.SimpleMenuItem"/>
+            <item value="common.button.showEstadistica" link="executeEstadisticasVentasAnuales" classtype="org.apache.struts.tiles.beans.SimpleMenuItem"/>
+        </putList>
     </definition>
     
     <definition name="tiles.estadisticas.ventasMensualesPorProductoFilter" extends=".managerMainLayout">
@@ -646,7 +652,13 @@
         <put name="action"  value="estadisticas" />
         <put name="tabs"    value=""/>
         <put name="body"    value="/pages/estadisticas/ventasMensualesPorProductoFilter.jsp" />
-        <put name="buttons" value="tiles.estadisticas.buttons" />                    
+        <put name="buttons" value="tiles.estadisticas.ventasMensualesPorProducto.buttons" />                    
+    </definition>
+   	<definition name="tiles.estadisticas.ventasMensualesPorProducto.buttons" extends=".buttonsLayout">
+        <putList name="buttonList">
+            <item value="common.button.back" link="initAction" classtype="org.apache.struts.tiles.beans.SimpleMenuItem"/>
+            <item value="common.button.showEstadistica" link="executeEstadisticasVentasMensualesPorProducto" classtype="org.apache.struts.tiles.beans.SimpleMenuItem"/>
+        </putList>
     </definition>
     
     <definition name="tiles.estadisticas.ventasAnualesPorProductoFilter" extends=".managerMainLayout">
@@ -658,7 +670,13 @@
         <put name="action"  value="estadisticas" />
         <put name="tabs"    value=""/>
         <put name="body"    value="/pages/estadisticas/ventasAnualesPorProductoFilter.jsp" />
-        <put name="buttons" value="tiles.estadisticas.buttons" />                    
+        <put name="buttons" value="tiles.estadisticas.ventasAnualesPorProducto.buttons" />                    
+    </definition>
+   	<definition name="tiles.estadisticas.ventasAnualesPorProducto.buttons" extends=".buttonsLayout">
+        <putList name="buttonList">
+            <item value="common.button.back" link="initAction" classtype="org.apache.struts.tiles.beans.SimpleMenuItem"/>
+            <item value="common.button.showEstadistica" link="executeEstadisticasVentasAnualesPorProducto" classtype="org.apache.struts.tiles.beans.SimpleMenuItem"/>
+        </putList>
     </definition>
     
     <definition name="tiles.estadisticas.ventasMensualesPorGrupoDeProductoFilter" extends=".managerMainLayout">
@@ -670,7 +688,13 @@
         <put name="action"  value="estadisticas" />
         <put name="tabs"    value=""/>
         <put name="body"    value="/pages/estadisticas/ventasMensualesPorGrupoDeProductoFilter.jsp" />
-        <put name="buttons" value="tiles.estadisticas.buttons" />                    
+        <put name="buttons" value="tiles.estadisticas.ventasMensualesPorGrupoDeProducto.buttons" />                    
+    </definition>
+   	<definition name="tiles.estadisticas.ventasMensualesPorGrupoDeProducto.buttons" extends=".buttonsLayout">
+        <putList name="buttonList">
+            <item value="common.button.back" link="initAction" classtype="org.apache.struts.tiles.beans.SimpleMenuItem"/>
+            <item value="common.button.showEstadistica" link="executeEstadisticasVentasMensualesPorGrupoDeProducto" classtype="org.apache.struts.tiles.beans.SimpleMenuItem"/>
+        </putList>
     </definition>
     
     <definition name="tiles.estadisticas.ventasAnualesPorGrupoDeProductoFilter" extends=".managerMainLayout">
@@ -682,12 +706,123 @@
         <put name="action"  value="estadisticas" />
         <put name="tabs"    value=""/>
         <put name="body"    value="/pages/estadisticas/ventasAnualesPorGrupoDeProductoFilter.jsp" />
-        <put name="buttons" value="tiles.estadisticas.buttons" />                    
+        <put name="buttons" value="tiles.estadisticas.ventasAnualesPorGrupoDeProducto.buttons" />                    
+    </definition>
+   	<definition name="tiles.estadisticas.ventasAnualesPorGrupoDeProducto.buttons" extends=".buttonsLayout">
+        <putList name="buttonList">
+            <item value="common.button.back" link="initAction" classtype="org.apache.struts.tiles.beans.SimpleMenuItem"/>
+            <item value="common.button.showEstadistica" link="executeEstadisticasVentasAnualesPorGrupoDeProducto" classtype="org.apache.struts.tiles.beans.SimpleMenuItem"/>
+        </putList>
     </definition>
     
+    <!-- ____________________________ -->
+    <!--   Graficos de Estadisticas   -->
+    <!-- ____________________________ -->
+    
+    <definition name="tiles.estadisticas.chart.ventasMensuales" extends=".managerMainLayout">
+        <put name="title"   value="estadisticas.chart.ventasMensuales" />
+        <put name="body"    value="tiles.estadisticas.chart.ventasMensuales.body" />
+    </definition>
+	<definition name="tiles.estadisticas.chart.ventasMensuales.body" extends=".homeLayout">
+        <put name="title"   value="estadisticas.ventasMensualesFilter" />
+        <put name="action"  value="estadisticas" />
+        <put name="tabs"    value=""/>
+        <put name="body"    value="/pages/estadisticas/ventasMensualesChart.jsp" />
+        <put name="buttons" value="tiles.estadisticas.chart.ventasMensuales.buttons" />                    
+    </definition>
+    <definition name="tiles.estadisticas.chart.ventasMensuales.buttons" extends=".buttonsLayout">
+        <putList name="buttonList">
+            <item value="common.button.back" link="doEstadisticasVentasMensuales" classtype="org.apache.struts.tiles.beans.SimpleMenuItem"/>
+        </putList>
+    </definition>
+    
+    <definition name="tiles.estadisticas.chart.ventasAnuales" extends=".managerMainLayout">
+        <put name="title"   value="estadisticas.chart.ventasAnuales" />
+        <put name="body"    value="tiles.estadisticas.chart.ventasAnuales.body" />
+    </definition>
+	<definition name="tiles.estadisticas.chart.ventasAnuales.body" extends=".homeLayout">
+        <put name="title"   value="estadisticas.ventasAnualesFilter" />
+        <put name="action"  value="estadisticas" />
+        <put name="tabs"    value=""/>
+        <put name="body"    value="/pages/estadisticas/ventasAnualesChart.jsp" />
+        <put name="buttons" value="tiles.estadisticas.chart.ventasAnuales.buttons" />                    
+    </definition>
+   	<definition name="tiles.estadisticas.chart.ventasAnuales.buttons" extends=".buttonsLayout">
+        <putList name="buttonList">
+            <item value="common.button.back" link="doEstadisticasVentasAnuales" classtype="org.apache.struts.tiles.beans.SimpleMenuItem"/>
+        </putList>
+    </definition>
+    
+    <definition name="tiles.estadisticas.chart.ventasMensualesPorProducto" extends=".managerMainLayout">
+        <put name="title"   value="estadisticas.chart.ventasMensualesPorProducto" />
+        <put name="body"    value="tiles.estadisticas.chart.ventasMensualesPorProducto.body" />
+    </definition>
+	<definition name="tiles.estadisticas.chart.ventasMensualesPorProducto.body" extends=".homeLayout">
+        <put name="title"   value="estadisticas.ventasMensualesPorProductoFilter" />
+        <put name="action"  value="estadisticas" />
+        <put name="tabs"    value=""/>
+        <put name="body"    value="/pages/estadisticas/ventasMensualesPorProductoChart.jsp" />
+        <put name="buttons" value="tiles.estadisticas.chart.ventasMensualesPorProducto.buttons" />                    
+    </definition>
+   	<definition name="tiles.estadisticas.chart.ventasMensualesPorProducto.buttons" extends=".buttonsLayout">
+        <putList name="buttonList">
+            <item value="common.button.back" link="doEstadisticasVentasMensualesPorProducto" classtype="org.apache.struts.tiles.beans.SimpleMenuItem"/>
+        </putList>
+    </definition>
+    
+    <definition name="tiles.estadisticas.chart.ventasAnualesPorProducto" extends=".managerMainLayout">
+        <put name="title"   value="estadisticas.chart.ventasAnualesPorProducto" />
+        <put name="body"    value="tiles.estadisticas.chart.ventasAnualesPorProducto.body" />
+    </definition>
+	<definition name="tiles.estadisticas.chart.ventasAnualesPorProducto.body" extends=".homeLayout">
+        <put name="title"   value="estadisticas.ventasAnualesPorProductoFilter" />
+        <put name="action"  value="estadisticas" />
+        <put name="tabs"    value=""/>
+        <put name="body"    value="/pages/estadisticas/ventasAnualesPorProductoChart.jsp" />
+        <put name="buttons" value="tiles.estadisticas.chart.ventasAnualesPorProducto.buttons" />                    
+    </definition>
+   	<definition name="tiles.estadisticas.chart.ventasAnualesPorProducto.buttons" extends=".buttonsLayout">
+        <putList name="buttonList">
+            <item value="common.button.back" link="doEstadisticasVentasAnualesPorProducto" classtype="org.apache.struts.tiles.beans.SimpleMenuItem"/>
+        </putList>
+    </definition>
+    
+    <definition name="tiles.estadisticas.chart.ventasMensualesPorGrupoDeProducto" extends=".managerMainLayout">
+        <put name="title"   value="estadisticas.chart.ventasMensualesPorGrupoDeProducto" />
+        <put name="body"    value="tiles.estadisticas.chart.ventasMensualesPorGrupoDeProducto.body" />
+    </definition>
+	<definition name="tiles.estadisticas.chart.ventasMensualesPorGrupoDeProducto.body" extends=".homeLayout">
+        <put name="title"   value="estadisticas.ventasMensualesPorGrupoDeProductoFilter" />
+        <put name="action"  value="estadisticas" />
+        <put name="tabs"    value=""/>
+        <put name="body"    value="/pages/estadisticas/ventasMensualesPorGrupoDeProductoChart.jsp" />
+        <put name="buttons" value="tiles.estadisticas.chart.ventasMensualesPorGrupoDeProducto.buttons" />                    
+    </definition>
+   	<definition name="tiles.estadisticas.chart.ventasMensualesPorGrupoDeProducto.buttons" extends=".buttonsLayout">
+        <putList name="buttonList">
+            <item value="common.button.back" link="doEstadisticasVentasMensualesPorGrupoDeProducto" classtype="org.apache.struts.tiles.beans.SimpleMenuItem"/>
+        </putList>
+    </definition>
+    
+    <definition name="tiles.estadisticas.chart.ventasAnualesPorGrupoDeProducto" extends=".managerMainLayout">
+        <put name="title"   value="estadisticas.chart.ventasAnualesPorGrupoDeProducto" />
+        <put name="body"    value="tiles.estadisticas.chart.ventasAnualesPorGrupoDeProducto.body" />
+    </definition>
+	<definition name="tiles.estadisticas.chart.ventasAnualesPorGrupoDeProducto.body" extends=".homeLayout">
+        <put name="title"   value="estadisticas.ventasAnualesPorGrupoDeProductoFilter" />
+        <put name="action"  value="estadisticas" />
+        <put name="tabs"    value=""/>
+        <put name="body"    value="/pages/estadisticas/ventasAnualesPorGrupoDeProductoChart.jsp" />
+        <put name="buttons" value="tiles.estadisticas.chart.ventasAnualesPorGrupoDeProducto.buttons" />                    
+    </definition>
+   	<definition name="tiles.estadisticas.chart.ventasAnualesPorGrupoDeProducto.buttons" extends=".buttonsLayout">
+        <putList name="buttonList">
+            <item value="common.button.back" link="doEstadisticasVentasAnualesPorGrupoDeProducto" classtype="org.apache.struts.tiles.beans.SimpleMenuItem"/>
+        </putList>
+    </definition>
     
     <!-- ============================================================== -->
-    <!-- INDICADORES                                                   -->
+    <!-- INDICADORES                                                    -->
     <!-- ============================================================== -->  
     
    	<definition name="tiles.indicadores.buttons" extends=".buttonsLayout">
@@ -767,8 +902,11 @@
         <put name="body"    value="/pages/indicadores/comparativaDeVentasPorCajeroAnualFilter.jsp" />
         <put name="buttons" value="tiles.indicadores.comparativaVentasCajero.anual.buttons" />                    
     </definition>
-    
+	
+    <!-- _________________________ -->
 	<!--  Graficos de Indicadores  -->
+    <!-- _________________________ -->
+    
 	<definition name="tiles.indicadores.chart.ventasPorCajeroMensual" extends=".managerMainLayout">
         <put name="title"   value="indicadores.chart.ventasPorCajeroMensual" />
         <put name="body"    value="tiles.indicadores.chart.ventasPorCajeroMensual.body" />

@@ -1,14 +1,20 @@
+<!--VENTAS MENSUALES FILTER-->
 <%@ page language="java" %>
 
 <%@ taglib uri="/tags/struts-html" prefix="html" %>
 <%@ taglib uri="/tags/struts-bean" prefix="bean" %>
 <%@ taglib uri="/tags/struts-logic" prefix="logic" %>
 <%@ taglib uri="/tags/displaytag" prefix="ds" %>
+<%@ page import="java.util.*" %>
 
+<%
+ArrayList<String> listaAnios = (ArrayList<String>) request.getAttribute("aniosList");
+ArrayList<String> listaMeses = (ArrayList<String>)request.getAttribute("mesesList");
+%>
 
-<TABLE class="body"  border="0" cellpadding="0" cellspacing="0">	
+<TABLE class="form"  border="0" cellpadding="0" cellspacing="0">	
 	<TR> 
-		<TD> 
+		<TD colspan="4"> 
 			<ul class="errors" type="square">
 				<html:messages id="mensaje" message="true" >
 					<li><bean:write name="mensaje" /></li>
@@ -17,25 +23,55 @@
 		</TD>
 	</TR>
 	<tr>
-		<td>&nbsp;</td>
+		<td colspan="4">&nbsp;</td>
+	</tr>	
+	<TR>
+		<TD colspan="4">
+			<h1 class="formtitle"><bean:message key="estadisticas.ventasMensualesFilter"/></h1>
+		</TD>		
+	</TR>		
+	<tr align="left">
+		<td colspan="4">&nbsp;</td>
 	</tr>
-	<tr>
-		<td >
-			<table width="70%" align="left" cellpadding="0"  cellspacing="0" border="0">			
-				<tr align="center">
-					<td><bean:message key="estadisticas.ventasMensualesFilter"/></td>
-				</tr>
-
-				<tr align="left">
-					<td colspan="3">&nbsp;</td>
-					<td>
-						<input type="button" value="Ver Estadística" readonly="readonly" onclick="alert('Estadistica')">
-					</td>
-				</tr>
-				<tr align="left">
-					<td>&nbsp;</td>
-				</tr>
-			</table>
+	<tr align="left">
+		<td>&nbsp;</td>
+		<th><bean:message key="commons.year"/></th>
+		<td>&nbsp;</td>
+		<td>
+			<html:select property="year">
+				<% for(int i = 0; i < listaAnios.size(); i++) { %>
+					<html:option  value="<%= listaAnios.get(i) %>"><%= listaAnios.get(i) %></html:option>
+				<% } %>
+			</html:select>
 		</td>
 	</tr>
+	<tr align="left">
+		<td colspan="4">&nbsp;</td>
+	</tr>
+	<tr align="left">
+		<td>&nbsp;</td>
+		<th><bean:message key="commons.mes"/></th>
+		<td>&nbsp;</td>
+		<td>
+			<html:select property="month">
+				<% for(Integer i = 0; i < listaMeses.size(); i++) { %>
+					<html:option  value="<%= i.toString() %>"><%= listaMeses.get(i) %></html:option>
+				<% } %>
+			</html:select>
+		</td>
+	</tr>
+	<tr align="left">
+		<td colspan="4">&nbsp;</td>
+	</tr>
+	<tr align="left">
+		<td>&nbsp;</td>
+		<th><bean:message key="commons.bandaHoraria"/></th>
+		<td>&nbsp;</td>
+		<td>
+			<html:select property="bandaHorariaId">
+				<html:option value="-1">&nbsp;</html:option>
+				<html:options collection="bandaList" property="id" labelProperty="detail"/>
+			</html:select>
+		</td>
+	</tr>	
 </TABLE>
