@@ -35,3 +35,12 @@ Falta llenar los graficos con datos reales
 VER CACHE DE GRAFICOS
 VER GRAFICOS DE PDFs
 
+forms[0].VirtualDispatchName.value='executeMonthlySales'; 
+		forms[0].submit();
+		alert('sendOrder');
+		window.open('pages/manager/sendOrders.jsp','my_new_window','toolbar=no, location=no, directories=no, status=yes, menubar=no, scrollbars=yes, resizable=no,copyhistory=no, width=815, height=640');
+		
+		
+product.state.pending
+ 
+super.sendMail(emailTo, sb);
