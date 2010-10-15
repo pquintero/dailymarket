@@ -1,9 +1,9 @@
 package ar.com.tsoluciones.arcom.security.services;
 
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Iterator;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.hibernate.Hibernate;
 import org.hibernate.type.Type;
@@ -34,22 +34,22 @@ public class CajeroVentaService implements CajeroVentaServiceInterface {
 
 	@Transactional
 	public void guardarSesionVenta(String idCaja, String cajero,
-			Collection<String> productos, String totalVenta) {
+			String productos, String totalVenta) {
 		
 		UserServiceInterface userInterface = (UserServiceInterface) new UserServiceFactory().newInstance();
 		User user = userInterface.getUserByUserName(cajero);
+		String [] codigos = productos.split("-");
 		
 		SesionVenta sesionVenta = new SesionVenta();
 		sesionVenta.setCajero(user);
 		sesionVenta.setTotalVenta(Double.valueOf(totalVenta));
-		List<ProductoVenta> productosVenta = new ArrayList<ProductoVenta>();
-		for (Iterator iterator = productos.iterator(); iterator.hasNext();) {
-			String codeProd = (String) iterator.next();
+		Set<Product> productosVenta = new HashSet<Product>();
+		sesionVenta.setIdCaja(Long.valueOf(idCaja));
+		
+		for (int i = 0; i < codigos.length; i++) {
+			String codeProd = (String) codigos[i];
 			Product producto = getProductByCode(codeProd);
-			ProductoVenta productoVenta = new ProductoVenta();
-			productoVenta.setProducto(producto);
-			productosVenta.add(productoVenta);
-			
+			productosVenta.add(producto);
 		}
 		
 		sesionVenta.setProductos(productosVenta);

@@ -1,7 +1,5 @@
 package ar.com.tsoluciones.arcom.security.services.proxyinterface;
 
-import java.util.Collection;
-
 import ar.com.tsoluciones.arcom.security.Product;
 
 public interface CajeroVentaServiceInterface {
@@ -19,6 +17,6 @@ public interface CajeroVentaServiceInterface {
 	   *
 	   * @return void
 	   */
-	  public void guardarSesionVenta(String idCaja, String idCajero, Collection<String> productos, String totalVenta);
+	  public void guardarSesionVenta(String idCaja, String idCajero, String productos, String totalVenta);
 
 }

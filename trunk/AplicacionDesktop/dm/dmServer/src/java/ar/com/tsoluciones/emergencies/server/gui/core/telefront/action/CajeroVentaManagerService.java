@@ -1,7 +1,5 @@
 package ar.com.tsoluciones.emergencies.server.gui.core.telefront.action;
 
-import java.util.Collection;
-
 import org.dom4j.Document;
 import org.dom4j.DocumentHelper;
 import org.dom4j.Element;
@@ -44,7 +42,7 @@ public class CajeroVentaManagerService extends TelefrontServiceFactory {
    * @throws ar.com.tsoluciones.arcom.cor.ServiceException
    *          Cuando hay un error de negocios, por ejemplo, si el usuario no se puede logear
    */
-  public XmlSerializable guardarSesionVenta(String idCaja, String idCajero, Collection<String> productos, String totalVenta) throws ServiceException {
+  public XmlSerializable guardarSesionVenta(String idCaja, String idCajero, String productos, String totalVenta) throws ServiceException {
 		CajeroVentaServiceInterface cajeroService = (CajeroVentaServiceInterface) new CajeroVentaFactory().newInstance();
 		
 		cajeroService.guardarSesionVenta(idCaja, idCajero, productos, totalVenta);

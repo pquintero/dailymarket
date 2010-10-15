@@ -54,7 +54,6 @@
 		<mapping resource="ar/com/tsoluciones/arcom/security/GroupUser.hbm.xml"/>
 		<mapping resource="ar/com/tsoluciones/arcom/security/Product.hbm.xml"/>
 		<mapping resource="ar/com/tsoluciones/arcom/security/GroupProduct.hbm.xml"/>
-		<mapping resource="ar/com/tsoluciones/arcom/security/ProductoVenta.hbm.xml"/>
 		<mapping resource="ar/com/tsoluciones/arcom/security/SesionVenta.hbm.xml"/>
 
 		
