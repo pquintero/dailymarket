@@ -1,14 +1,14 @@
 package ar.com.tsoluciones.arcom.security;
 
 import java.util.Date;
-import java.util.List;
+import java.util.Set;
 
 public class SesionVenta {
 
 	private Long id;
 	private User cajero;
 	private Double totalVenta;
-	private List<ProductoVenta> productos;
+	private Set<Product> productos;
 	private Long idCaja;
 	private Date fechaInicio = new Date();
 
@@ -36,11 +36,11 @@ public class SesionVenta {
 		this.totalVenta = totalVenta;
 	}
 
-	public List<ProductoVenta> getProductos() {
+	public Set<Product> getProductos() {
 		return productos;
 	}
 
-	public void setProductos(List<ProductoVenta> productos) {
+	public void setProductos(Set<Product> productos) {
 		this.productos = productos;
 	}
 

@@ -3,7 +3,7 @@
 
 <hibernate-mapping>
     <class lazy="false" name="ar.com.tsoluciones.arcom.security.SesionVenta" table="sesionventa">
-        <id column="id" name="id" type="java.lang.Long">
+        <id column="idSesion" name="id" type="java.lang.Long">
             <generator class="identity"/>
         </id>
         
@@ -12,9 +12,9 @@
          <property column="idcaja" name="idCaja"  type="java.lang.Long"/>
          <property name="fechaInicio" type="timestamp" not-null="true"/>
          
-         <set name="productos" cascade="all-delete-orphan">
-		    <key column="sesionVenta" foreign-key="FK_pa_sesion_venta"/>
-		    <one-to-many class="ar.com.tsoluciones.arcom.security.ProductoVenta"/>
+         <set name="productos" table="productoventa">
+		    <key column="idSesion"/>
+		    <many-to-many class="ar.com.tsoluciones.arcom.security.Product" column="idProduct"/>
 	    </set>	    	    			
     </class>   
 </hibernate-mapping>
