@@ -6,8 +6,8 @@ import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.Collection;
-import java.util.Collections;
+import java.util.Iterator;
+import java.util.List;
 
 import javax.swing.JButton;
 import javax.swing.JDialog;
@@ -20,10 +20,8 @@ import javax.swing.border.TitledBorder;
 
 import org.dom4j.Document;
 
-import dailymarket.model.Context;
-
-
 import telefront.TelefrontGUI;
+import dailymarket.model.Context;
 
 
 public class FinVentaFrame extends JDialog {
@@ -102,8 +100,8 @@ public class FinVentaFrame extends JDialog {
 					}
 						else
 						{
-             
-							 Object params[] = new Object[] {Configuration.getInstance().getCaja(),Context.getInstance().getCurrentUser().getUser(),((CajeroVentaFrame)parentFrame).getProductsCode(),((CajeroVentaFrame)parentFrame).totalVenta.toString()};
+							String codigos = concatenarCodigos(((CajeroVentaFrame)parentFrame).getProductsCode());
+							 Object params[] = new Object[] {Configuration.getInstance().getCaja(),Context.getInstance().getCurrentUser().getUser(),codigos,((CajeroVentaFrame)parentFrame).totalVenta.toString()};
 				             Document doc = TelefrontGUI.getInstance().executeMethod(CONTROLLER_CLASS, "guardarSesionVenta", params);
 							if(doc!=null){
 								((CajeroVentaFrame)parentFrame).pagoVenta =  montoPago;
@@ -123,6 +121,19 @@ public class FinVentaFrame extends JDialog {
 				}
 				
 			}
+		}
+
+		private String concatenarCodigos(List<String> productsCode) {
+			String codigos = "";
+			String separador = "-";
+
+			for (Iterator iterator = productsCode.iterator(); iterator
+					.hasNext();) {
+				String codigo = (String) iterator.next();
+				codigos += codigo;
+				codigos += separador;
+			}
+			return codigos;
 		}
 	}
 
