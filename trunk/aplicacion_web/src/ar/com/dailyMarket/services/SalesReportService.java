@@ -38,10 +38,17 @@ public class SalesReportService extends BaseReportService{
 		    JasperReport jasperReport = (JasperReport) JRLoader.loadObject(SalesReportService.class.getResourceAsStream("/reports/" + report + ".jasper"));
 			
 		  //Para probar
-		    col.add(new Anual(new Integer(58), new Integer(764), "2007"));
-		    col.add(new Anual(new Integer(58), new Integer(678), "2008"));
-		    col.add(new Anual(new Integer(58), new Integer(813), "2009"));
-		    col.add(new Anual(new Integer(58), new Integer(1351), "2010"));
+		    if (tipo.equals("Anual")) {
+			    col.add(new Anual(new Integer(58), new Integer(764), "2007"));
+			    col.add(new Anual(new Integer(58), new Integer(678), "2008"));
+			    col.add(new Anual(new Integer(58), new Integer(813), "2009"));
+			    col.add(new Anual(new Integer(58), new Integer(1351), "2010"));
+		    } else {
+		    	col.add(new Anual(new Integer(58), new Integer(764), "09/09"));
+			    col.add(new Anual(new Integer(58), new Integer(678), "10/09"));
+			    col.add(new Anual(new Integer(58), new Integer(813), "11/09"));
+			    col.add(new Anual(new Integer(58), new Integer(1351), "12/09"));
+		    }
 		    
 		    return JasperRunManager.runReportToPdf(jasperReport, parameters, getDataSource(col, filters, tipo));			
         } catch (Throwable e) {

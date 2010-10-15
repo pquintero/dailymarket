@@ -206,6 +206,7 @@
 			<form-property name="groupProductId" type="java.lang.Long"/>
 			<form-property name="productId" type="java.lang.Long"/>
 			<form-property name="days" type="java.lang.Integer"/>
+			<form-property name="margen" type="java.lang.String"/>
 			
 			<form-property name="dsTable" type="java.lang.String" />
 			<form-property name="collectionName" type="java.lang.String" initial="" />

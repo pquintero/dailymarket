@@ -40,6 +40,9 @@
 	<td>&nbsp;</td>
 	<TH><bean:message key="SimulatorForm.daysSimulator"/></TH>
 	<td>&nbsp;</td>
+	<TD><html:text property="margen" size="10"  maxlength="5"/></TD>
+	<TH><bean:message key="SimulatorForm.margen"/></TH>
+	<td>&nbsp;</td>
 	<TD colspan="4"><html:text property="days" size="10"  maxlength="5"/></TD>
 </TR>
 <tr>
@@ -52,7 +55,6 @@
 </TR>
 </TABLE>
 <ds:table name="productsList" sort="list"  prop="formDisplaytag" export="false" id="row" pagesize="40" class="list"  cellspacing="0" cellpadding="3" decorator="ar.com.dailyMarket.ui.decorators.ProductDecorator">
-
         <ds:column titleKey="ProductForm.code" headerClass="listTitle" sortable="true" property="code"/>
         <ds:column titleKey="ProductForm.name" headerClass="listTitle" sortable="true" property="name"/>
         <ds:column titleKey="ProductForm.description" headerClass="listTitle" sortable="true" property="description"/>       
