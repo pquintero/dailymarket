@@ -14,9 +14,9 @@ function validateFields() {
 
 
 function validateWindows () {
-	alert('validate');
+	var bol = confirm('¿Desea cerrar la ventana?');
 	var validate = validateFields();
-	if (validate) {		
+	if (validate && bol) {		
 		window.close();
 	}				
 }
@@ -29,24 +29,21 @@ function validateWindows () {
 			<h1 class="formtitle">PRODUCTOS PENDIENTES DE PEDIDO</h1>
 		</td>
 	</tr>
-	<tr><td>&nbsp;</td></tr>
-	<tr align="center">
-		<td>&nbsp;</td>
+
+	<tr>
 		<td>
-			<a href="estadisticas.do?VirtualDispatchName=doEstadisticasVentasMensuales">Mensuales</a>
+			<%= request.getSession().getAttribute("mail").toString() %>
 		</td>
-		<td>&nbsp;</td>
+	</tr>
+	<tr>
 		<td>
-			<a href="estadisticas.do?VirtualDispatchName=doEstadisticasVentasAnuales">Anuales</a>
+			&nbsp;
 		</td>
-	</tr>		
-	<TABLE align="right" class="buttons" border="0" cellspacing="0" cellpadding="3">
-		<TR>	
-			<td width="100%">&nbsp;</td>
-		        <TD align="right"  width="130px" >        				
-		     	   <input width="130px" class="btn" value="Cerrar"
-						onclick="validateWindows()">
-		        </TD>	
-		</TR>
-	</TABLE>	
+	</tr>
+	
+	<tr>
+		<td>
+			<input width="130px" class="btn" value="Cerrar" onclick="validateWindows()">
+		</td>
+	</tr>
 </TABLE>

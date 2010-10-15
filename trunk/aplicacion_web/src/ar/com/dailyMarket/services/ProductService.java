@@ -130,7 +130,7 @@ public class ProductService extends MailService{
 		return vector;
 	}
 	
-	public void sendOrder(Long[] ids) {
+	public StringBuffer sendOrder(Long[] ids) {
 		//Actualizo estado
 		List<Product> products = new ArrayList<Product>();
 		for (int i = 0; i < ids.length; i++) {
@@ -143,10 +143,12 @@ public class ProductService extends MailService{
 		ConfigurationService configurationService = new ConfigurationService();
 		String[] emailTo = new String[1];
 		Configuration conf = configurationService.getConfiguration();
+		StringBuffer sb = createMessage(products);
 		if (conf != null) {
 			emailTo[0] = conf.getEmailDeposito();
-			super.sendMail(emailTo, createMessage(products));
-		}		 	
+			super.sendMail(emailTo, sb);
+		}
+		return sb;
 	}
 	
 	public StringBuffer createMessage (List<Product> products) {
