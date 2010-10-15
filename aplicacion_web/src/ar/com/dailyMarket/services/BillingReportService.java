@@ -38,10 +38,17 @@ public class BillingReportService extends BaseReportService{
 		    JasperReport jasperReport = (JasperReport) JRLoader.loadObject(BillingReportService.class.getResourceAsStream("/reports/" + report + ".jasper"));
 			
 		  //Para probar
-		    col.add(new AnnualBilling(new Integer(58), new Double(764.3), "2007", new Integer(1345)));
-		    col.add(new AnnualBilling(new Integer(58), new Double(678.6), "2008", new Integer(2145)));
-		    col.add(new AnnualBilling(new Integer(58), new Double(813.2), "2009", new Integer(2456)));
-		    col.add(new AnnualBilling(new Integer(58), new Double(1351.5), "2010",new Integer(2897)));
+		    if (tipo.equals("Anual")) {
+		    	col.add(new AnnualBilling(new Integer(58), new Double(764.3), "2007", new Integer(1345)));
+			    col.add(new AnnualBilling(new Integer(58), new Double(678.6), "2008", new Integer(2145)));
+			    col.add(new AnnualBilling(new Integer(58), new Double(813.2), "2009", new Integer(2456)));
+			    col.add(new AnnualBilling(new Integer(58), new Double(1351.5), "2010",new Integer(2897)));
+		    } else {
+		    	col.add(new AnnualBilling(new Integer(58), new Double(764.3), "09/09", new Integer(1345)));
+			    col.add(new AnnualBilling(new Integer(58), new Double(678.6), "10/09", new Integer(2145)));
+			    col.add(new AnnualBilling(new Integer(58), new Double(813.2), "11/09", new Integer(2456)));
+			    col.add(new AnnualBilling(new Integer(58), new Double(1351.5), "12/09",new Integer(2897)));
+		    }
 		    
 		    return JasperRunManager.runReportToPdf(jasperReport, parameters, getDataSource(col, filters, tipo));			
         } catch (Throwable e) {

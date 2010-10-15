@@ -179,16 +179,9 @@
     </definition>        
 	<definition name="tiles.simulator.buttons" extends=".buttonsLayout">
         <putList name="buttonList">
-            <item value="common.button.back" link="doHome" classtype="org.apache.struts.tiles.beans.SimpleMenuItem"/>
             <item value="common.button.execute" link="executeSimulator" classtype="org.apache.struts.tiles.beans.SimpleMenuItem"/>
         </putList>
-    </definition>	
-    
-    <definition name="button.manager.ordersPending" extends=".buttonsLayout">
-        <putList name="buttonList">
-            <item value="manager.button.sendOrder" link="sendOrder" classtype="org.apache.struts.tiles.beans.SimpleMenuItem"/>
-        </putList>
-    </definition>	  
+    </definition>	    
     <definition name="tiles.configuration.buttons" extends=".buttonsLayout">
         <putList name="buttonList">
             <item value="common.button.save" link="saveAndBack" classtype="org.apache.struts.tiles.beans.SimpleMenuItem"/>
@@ -224,7 +217,7 @@
         <put name="action"  value="manager" />
         <put name="tabs"    value=""/>
         <put name="body"    value="/pages/manager/ordersPending.jsp" />
-        <put name="buttons" value="button.manager.ordersPending" />
+        <put name="buttons" value="" />
     </definition>
 	
     <definition name="tiles.home.manager.estadisticas" extends=".managerMainLayout">

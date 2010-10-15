@@ -19,7 +19,7 @@
 		<band height="68" splitType="Stretch">
 			<image>
 				<reportElement x="0" y="0" width="555" height="58"/>
-				<imageExpression class="java.lang.String"><![CDATA[$P{imgs}.toString() + "\\images\\header\\pdfHeader.jpg"]]></imageExpression>
+				<imageExpression class="java.lang.String"><![CDATA["C:\\workspace\\aplicacion_web\\webapp\\images\\header\\pdfHeader.jpg"]]></imageExpression>
 			</image>
 		</band>
 	</title>

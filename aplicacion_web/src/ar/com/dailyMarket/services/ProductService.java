@@ -35,6 +35,11 @@ public class ProductService extends MailService{
 		product.setGroupProduct(groupProductService.getGroupProductByPK((Long)form.get("groupProductId")));
 		product.setRepositionStock((Integer)form.get("repositionStock"));
 		product.setActive(new Boolean(true));
+		if (product.getActualStock() >= product.getRepositionStock()) {
+			product.setState(Product.PRODUCT_STATE_STOCK);
+		} else {
+			product.setState(Product.PRODUCT_STATE_PENDING);
+		}
 	}
 	
 	public void save (ActionForm form) {	
