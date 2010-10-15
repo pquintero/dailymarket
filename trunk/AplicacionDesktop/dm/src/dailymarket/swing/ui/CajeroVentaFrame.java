@@ -175,6 +175,8 @@ public class CajeroVentaFrame extends DailyMarketFrame {
 					
 					subtotalVentaTextfield.setText(subTotalVenta.toString());
 					totalVentaTextField.setText(totalVenta.toString());
+	             }else{
+	            	 message.setText("No existe el producto con código " + scanCodProducto.getText());
 	             }
 			}
 
@@ -352,7 +354,7 @@ public class CajeroVentaFrame extends DailyMarketFrame {
 			
 			public void actionPerformed(ActionEvent e) {
 			
-				totalVentaTextField.setText("345");
+//				totalVentaTextField.setText("345");
 
 			}
 		});
@@ -481,7 +483,7 @@ public class CajeroVentaFrame extends DailyMarketFrame {
 	    footerPanel.add(accionesPanel);
 	    
 	    message = new JLabel();
-	    message.setText("No existe el producto de codigo 12324");
+	    message.setText("");
 	    message.setForeground(Color.red);
 		
 
@@ -535,7 +537,7 @@ public class CajeroVentaFrame extends DailyMarketFrame {
 	    finVentaButton.addActionListener(new ActionListener() {
 			
 			public void actionPerformed(ActionEvent arg0) {
-				totalVentaTextField.setText("345");
+//				totalVentaTextField.setText("345");
 
 				
 		      new FinVentaFrame(frame, Double.parseDouble(totalVentaTextField.getText()));
