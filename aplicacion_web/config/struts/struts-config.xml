@@ -51,6 +51,7 @@
 			<form-property name="dsTable" type="java.lang.String" />
 			<form-property name="dsTableArray" type="java.lang.String[]" />
 			<form-property name="productsIds" type="java.lang.Long[]"/>
+			<form-property name="envioMail" type="java.lang.Boolean" initial="false"/>
 			
 			<form-property name="queryDispatchName" type="java.lang.String" initial=""/>
 			<form-property name="collectionName" type="java.lang.String" initial="" />

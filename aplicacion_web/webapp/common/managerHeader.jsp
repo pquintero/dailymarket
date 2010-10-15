@@ -31,7 +31,7 @@ function MM_swapImage() { //v3.0
 	<link href="site.css" rel="stylesheet" type="text/css">
 	<title>DailyMarket </title>
 </head>
-<body>
+<body onload="popup()">
 <table  align="center" bgcolor="#FFFFFF" cellpadding="0" cellspacing="0" border="0" width="100%">
   	<tr>
     	<td align="left" valign="top" ><img src="images/header/tituloDailyMarket.jpg"></td>

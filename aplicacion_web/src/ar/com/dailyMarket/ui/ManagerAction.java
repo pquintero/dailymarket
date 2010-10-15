@@ -17,7 +17,11 @@ public class ManagerAction extends BaseAction {
     public ActionForward initAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) {	
     	ProductService productService = new ProductService();
     	request.setAttribute("products", productService.getProductWithoutStock());    	
-    	((DynaActionForm)form).set("productsIds", productService.getProductsIdsArray());    	
+    	((DynaActionForm)form).set("productsIds", productService.getProductsIdsArray());
+    	
+    	if (!(Boolean)((DynaActionForm)form).get("envioMail")) {
+    		request.getSession().setAttribute("mail",null);
+		}
     	return mapping.findForward("showManagerHome");
     }
     
@@ -38,7 +42,12 @@ public class ManagerAction extends BaseAction {
     
     public ActionForward sendOrder(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws ClassNotFoundException, SQLException {
     	ProductService productService = new ProductService();
-    	productService.sendOrder((Long[])((DynaActionForm)form).get("productsIds")); //desde aca enviar email al deposito con el pedido    	
+    	StringBuffer sb = productService.sendOrder((Long[])((DynaActionForm)form).get("productsIds")); //desde aca enviar email al deposito con el pedido    	
+    	
+    	//HABRIA QUE PREGUNTAR SI NO ENVIO NADA QUE NO GUARDE NADA
+    	request.getSession().setAttribute("mail",sb.toString().replaceAll("\\n", "<br>\n"));
+    	((DynaActionForm)form).set("envioMail", true);
+    	
     	return initAction(mapping, form, request, response);
     }
 }
