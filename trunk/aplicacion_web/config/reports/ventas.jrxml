@@ -2,7 +2,7 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="ventasMensuales" pageWidth="595" pageHeight="842" whenNoDataType="AllSectionsNoDetail" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" isSummaryWithPageHeaderAndFooter="true" isFloatColumnFooter="true">
 	<property name="ireport.zoom" value="1.2100000000000042"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="15"/>
+	<property name="ireport.y" value="0"/>
 	<parameter name="imgs" class="java.lang.String"/>
 	<field name="producto" class="java.lang.Integer"/>
 	<field name="ventas" class="java.lang.Number"/>
@@ -53,7 +53,7 @@
 				<textFieldExpression class="java.lang.String"><![CDATA[$F{groupProduct}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="273" y="30" width="265" height="20"/>
+				<reportElement x="273" y="31" width="265" height="20"/>
 				<textElement/>
 				<textFieldExpression class="java.lang.String"><![CDATA[$F{productFilter}]]></textFieldExpression>
 			</textField>
@@ -133,15 +133,15 @@
 		<band height="128" splitType="Stretch">
 			<bar3DChart>
 				<chart>
-					<reportElement x="173" y="12" width="200" height="100"/>
+					<reportElement x="173" y="13" width="200" height="100"/>
 					<chartTitle/>
 					<chartSubtitle/>
 					<chartLegend/>
 				</chart>
 				<categoryDataset>
 					<categorySeries>
-						<seriesExpression><![CDATA["Ventas Mensuales"]]></seriesExpression>
-						<categoryExpression><![CDATA[$F{producto}]]></categoryExpression>
+						<seriesExpression><![CDATA[""]]></seriesExpression>
+						<categoryExpression><![CDATA[$F{date}]]></categoryExpression>
 						<valueExpression><![CDATA[$F{ventas}]]></valueExpression>
 					</categorySeries>
 				</categoryDataset>
@@ -162,11 +162,6 @@
 					</valueAxisFormat>
 				</bar3DPlot>
 			</bar3DChart>
-			<staticText>
-				<reportElement x="361" y="49" width="62" height="20"/>
-				<textElement/>
-				<text><![CDATA[VENTAS]]></text>
-			</staticText>
 		</band>
 	</columnFooter>
 	<pageFooter>
