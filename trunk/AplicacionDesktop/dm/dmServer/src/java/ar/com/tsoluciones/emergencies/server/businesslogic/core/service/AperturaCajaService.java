@@ -18,25 +18,29 @@ public class AperturaCajaService implements AperturaCajaServiceInterface {
 	/**
 	 * Logea un usuario en el sistema
 	 * @throws ServiceException 
+	 * @throws ServiceException 
 	 *
 	 */
 
 	@Transactional
-	public boolean altaHuellaDigital(String username, String password, String huella, String huellaAlternativa ){
+	public User altaHuellaDigital(String username, String password, String huella, String huellaAlternativa ) throws ServiceException{
 		
 		UserServiceInterface userServiceInterface = new UserService();
 		User user = userServiceInterface.getUserByUserName(username);
 		
+		if( user == null || !user.getPassword().equals(password) )
+			throw new ServiceException("Usuario y/o Password Incorrectos. Por favor Reintente nuevamente");
+
 		// Es primer logueo?
-		if(user.getHuelladigital() == null  && user.getPassword().equals(password)){
-			
+		if( user.getHuelladigital() == null  ){
 			user.setHuelladigital(MyBase64.decode(huella));
 			user.setHuelladigitalAlternativa(MyBase64.decode(huellaAlternativa));
-			user.setDni("dniii");
 			HibernateService.updateObject(user);
-			return true;
-		}
-		return false;
+			return user;
+		}else
+			throw new ServiceException("No puede realizar el alta de su huella digital por que usted ya lo realizó alguna vez");
+
+	
 	}
 
 	public static class MyBase64 {

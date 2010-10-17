@@ -161,7 +161,7 @@ public class User {
 		  DPFPTemplate referenceTemplate = DPFPGlobal.getTemplateFactory().createTemplate();
 
 		  if(huelladigital == null)
-			  return true;
+			  return false;
 		  
 		  referenceTemplate.deserialize(huelladigital);
           
