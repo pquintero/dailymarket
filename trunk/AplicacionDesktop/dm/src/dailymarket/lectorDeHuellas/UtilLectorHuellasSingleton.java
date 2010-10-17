@@ -5,7 +5,6 @@ import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.Image;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.Map;
 import java.util.prefs.AbstractPreferences;
 import java.util.prefs.Preferences;
@@ -19,7 +18,6 @@ import javax.swing.SwingUtilities;
 import org.dom4j.Document;
 import org.dom4j.Element;
 import org.dom4j.Node;
-import org.dom4j.tree.DefaultElement;
 
 import telefront.TelefrontGUI;
 
@@ -47,6 +45,7 @@ import dailymarket.swing.ui.AperturaCajaFrame;
 import dailymarket.swing.ui.CerrarCajaFrame;
 import dailymarket.swing.ui.HuellaDigitalInterface;
 import dailymarket.swing.ui.SupervisorFrame;
+import dailymarket.swing.ui.TicketFrame;
 
 public class UtilLectorHuellasSingleton {
 	   private static final String CONTROLLER_CLASS = "ar.com.tsoluciones.emergencies.server.gui.core.telefront.action.AperturaCajaManagerService";
@@ -56,6 +55,7 @@ public class UtilLectorHuellasSingleton {
 	   public UtilLectorHuellasSingleton(){
 	   }
 	   public void start(JLabel messageLabel){
+		 
 		   if(!capturer.isStarted())
 			capturer.startCapture();
 			messageLabel.setText("Listo Para leer");
@@ -142,7 +142,6 @@ public class UtilLectorHuellasSingleton {
 			}
 
 	   public void stop(  JLabel mensajeLector){
-//		    mensajeLector.setText("Lector Offline");
 			capturer.stopCapture();
 		}
 		
@@ -152,11 +151,10 @@ public class UtilLectorHuellasSingleton {
 			JLabel mensaje = frame.getFrameMensaje();
 			JPanel imageHuellaPanel = frame.getImageHuellaPanel();
 			JLabel picture = frame.getFingerPrintPicture();
-			
 	    	DPFPFeatureExtraction featureExtractor = DPFPGlobal.getFeatureExtractionFactory().createFeatureExtraction();
 	    	
 	          try {
-	        	  //TODO MODULARIZAR TOdo este tratamiento
+	        	//TODO MODULARIZAR Todo este tratamiento
 				DPFPFeatureSet featureSet = featureExtractor.createFeatureSet(sample, DPFPDataPurpose.DATA_PURPOSE_VERIFICATION);
 				String featureSetString = MyBase64.encode(featureSet.serialize()); 
 			     
@@ -166,71 +164,83 @@ public class UtilLectorHuellasSingleton {
 	            if(frame instanceof SupervisorFrame){
 	            	
 	            	if(((SupervisorFrame)frame).getActualAction().equals(SupervisorFrame.CANCELAR_VENTA)){
-//			    		doc = TelefrontGUI.getInstance().executeMethod(CONTROLLER_CLASS, "cancelarVenta", params);
-			            if( doc == null){
-   							mensaje.setText("REALIZAR PRIMER LOGUEO");
-   							JOptionPane.showMessageDialog((Component)frame , "Este es su primer logueo en la aplicación para poder loguearse debe dar de alta 2 huellas digitales. \n " +
-   									"Para ello debe ingresar la clave proporcionada por su superior y luego hacer click en el boton \"Alta de Huella\" ");
-			            	((SupervisorFrame) frame).doFirstLogin();
+	    	            params = new String[] { ((SupervisorFrame) frame).getMotivoDeCancelacion(), featureSetString };
+			    		doc = TelefrontGUI.getInstance().executeMethod(CONTROLLER_CLASS, "cancelarVenta", params);
+			    		
+			            if( doc != null){
+			        		JOptionPane.showMessageDialog(null, "Operación realizada con éxito");
+			            }else{
+			            	((SupervisorFrame) frame ).habilitarFirma();
 			            }
+			            
 	            	}else if(((SupervisorFrame)frame).getActualAction().equals(SupervisorFrame.CANCELAR_PRODUCTOS)){
-	            		//Validar q sea supervisor
-//			    		doc = TelefrontGUI.getInstance().executeMethod(CONTROLLER_CLASS, "validarSupervisor", params);
-	            		if( doc == null){
-				            	((SupervisorFrame) frame).doFirstLogin();
+	    	            params = new String[] { featureSetString };
+
+	            		doc = TelefrontGUI.getInstance().executeMethod(CONTROLLER_CLASS, "validarSupervisor", params);
+	            		if( doc != null){
+				            mensaje.setText("Cancelando...")	;
+	            			((SupervisorFrame) frame).doCancelProducts();
+				            	
+				            }else{
+				            	mensaje.setText("El usuario es inválido");
+				            	((SupervisorFrame) frame).habilitarFirma();
 				            }
-	            	}else if(((SupervisorFrame)frame).getActualAction().equals(SupervisorFrame.OTORGAR_DESCUENTOS)){
-	            		
-	            		
+	            	}else if(((SupervisorFrame)frame).getActualAction().equals(SupervisorFrame.OTORGAR_DESCUENTOS_EMP)){
+
+	            		params = new String[] { featureSetString };
+ 	            		doc = TelefrontGUI.getInstance().executeMethod(CONTROLLER_CLASS, "validarUsuario", params);
+
+ 	            		if( doc != null){
+ 	            			((SupervisorFrame)frame).getFrameMensaje().setText("Empleado Validado");
+ 	            			((SupervisorFrame)frame).empleadoValidated();
+ 	            		}else{
+ 	            			((SupervisorFrame)frame).habilitarFirmaEmpleado();
+ 	            			((SupervisorFrame)frame).getFrameMensaje().setText("Re intente nuevamente");
+					      }
+	            	}else if(((SupervisorFrame)frame).getActualAction().equals(SupervisorFrame.OTORGAR_DESCUENTOS_SUP)){
+	            		    params = new String[] { featureSetString };
+		            		doc = TelefrontGUI.getInstance().executeMethod(CONTROLLER_CLASS, "validarSupervisor", params);
+		            	
+		            		if( doc != null){
+	 	            			((SupervisorFrame)frame).getFrameMensaje().setText("Supervisor Validado");
+	 	            			((SupervisorFrame)frame).supervisorValidated();
+					            }else{
+		 	            			((SupervisorFrame)frame).getFrameMensaje().setText("Re intente nuevamente");
+		 	            			((SupervisorFrame)frame).habilitarFirmaSupervisor();
+
+					            }
+
+
 	            	}
 	            }
 	            else if( frame instanceof CerrarCajaFrame){
 		    		System.out.println("Cerrar Caja");
-		    		//Persistir la operacion de cerrar caja
-//		    		doc = TelefrontGUI.getInstance().executeMethod(CONTROLLER_CLASS, "cerrarCaja", params);
-		    		((CerrarCajaFrame) frame).backToInitLogin();
 		    		
+		    		doc = TelefrontGUI.getInstance().executeMethod(CONTROLLER_CLASS, "cerrarCaja", params);
+
+		    		if (doc != null && doc.getRootElement().selectSingleNode("cajaCerrada") != null && doc.getRootElement().selectSingleNode("cajaCerrada").getText().equals("OK")){
+		    				new TicketFrame(frame);
+		    				((CerrarCajaFrame) frame).backToInitLogin();
+			            }
+						else{
+							((CerrarCajaFrame)frame).habilitarBotonFirmar();
+							mensaje.setText("Usuario incorrecto, Re intentenuevamente");
+						}
 		    	}else{
 		    		System.out.println("Abrir Caja");
 
 		    		doc = TelefrontGUI.getInstance().executeMethod(CONTROLLER_CLASS, "abrirCaja", params);
-		            String huellaDigital = "";
-		            
 		            if( doc != null){
-						   Element el = doc.getRootElement();
-				             Iterator itr = el.content().iterator(); 
-				             while(itr.hasNext()) {
-				                 DefaultElement element =(DefaultElement) itr.next(); 
-				                 element.getText();
-				                 element.getName();
-				                 if(element.getName().equals("huelladigital")){
-				                	huellaDigital = element.getText();
-				                 }
-				             } 
-				             
-						if(huellaDigital.equals("")){
-							((AperturaCajaFrame) frame ).doFirstLogin();
-							mensaje.setText("REALIZAR PRIMER LOGUEO");
-   							JOptionPane.showMessageDialog((Component)frame , "Este es su primer logueo en la aplicación para poder loguearse debe dar de alta 2 huellas digitales. \n Debe ingresar la clave proporcionada por su superior");
-
-						}else{
-							((AperturaCajaFrame) frame ).loguear();
-							mensaje.setText("USUARIO LOGUEADO");
-							((AperturaCajaFrame) frame ).backToInitSession();
-						}
-						
+						((AperturaCajaFrame) frame ).backToInitSession();
 						setCurrentUser(doc);
-						
-				             
 					}else{
-						//Reiniciar la captura? reiniciar el
-						//Mostrar mensaje
+						((AperturaCajaFrame) frame ).habilitarBotonFirmar();
+						mensaje.setText("Presione en fimar y apoye el dedo en el lector nuevamente");
 					}
 		    	 }
 	            
-				
-
 	            stop(new JLabel());
+
 	             
 	          } catch (DPFPImageQualityException e) {
 	        	  mensaje.setText(e.getMessage());

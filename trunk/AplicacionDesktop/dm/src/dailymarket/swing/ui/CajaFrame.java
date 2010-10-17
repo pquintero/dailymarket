@@ -9,9 +9,12 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.io.IOException;
 
+import javax.swing.Icon;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JSeparator;
 
@@ -26,40 +29,61 @@ public class CajaFrame  extends DailyMarketFrame{
     JFrame frame ;
 	
 	public CajaFrame(){
-	
 		frame = this;
-		setBounds(300, 100, 400, 400);
-		setLayout(new FlowLayout(FlowLayout.CENTER));
+		
+		setLayout(new FlowLayout(FlowLayout.CENTER,0,60));
+//		getContentPane().setBackground(Color.white);
 		
 		JPanel mainPanel = new JPanel();
 		JPanel imagePanel = new JPanel();
 
-		imagePanel.setPreferredSize(new Dimension(300,80));
+//		mainPanel.setBackground(Color.white);
+//		imagePanel.setBackground(Color.white);
+
+		java.net.URL imgURL = InitDailyMarketFrame.class.getResource("logo.png");
+		ImageIcon logoImg = new ImageIcon(imgURL);
+					
+		JLabel logoPicLabel = new JLabel(logoImg);
+		imagePanel.add(logoPicLabel);
+		
+		setBounds(20,0, 843, 640);
+		mainPanel.setPreferredSize(new Dimension(300, 500));
+		imagePanel.setPreferredSize(new Dimension(400,500));
 		
 		aperturaCajaButton = new JButton("Apertura de Caja");
-		aperturaCajaButton.setPreferredSize(new Dimension(170,30));
+		aperturaCajaButton.setPreferredSize(new Dimension(230,64));
+		aperturaCajaButton.setFont(new Font("SansSerif", Font.BOLD, 14));
+
 		aperturaCajaButton.setMnemonic(KeyEvent.VK_A);
+		Icon aperturaIcon = new ImageIcon("C:\\apertura.png");
+		aperturaCajaButton.setIcon(aperturaIcon);
 		aperturaCajaButton.addActionListener(new ActionListener() {
 			
 			public void actionPerformed(ActionEvent arg0) {
 			new AperturaCajaFrame(frame);
-			frame.setVisible(false);
+//			frame.setvisible(false);
 			}
 		});
 		
 		cierreCajaButton = new JButton("Cierre de Caja");
 		cierreCajaButton.setMnemonic(KeyEvent.VK_C);
-		cierreCajaButton.setPreferredSize(new Dimension(170,30));
+		cierreCajaButton.setFont(new Font("SansSerif", Font.BOLD, 14));
+		cierreCajaButton.setIcon(aperturaIcon);
+		cierreCajaButton.setPreferredSize(new Dimension(230,64));
 		cierreCajaButton.addActionListener(new ActionListener() {
 			
 			public void actionPerformed(ActionEvent arg0) {
 			new CerrarCajaFrame(frame);
-			frame.setVisible(false);
+//			frame.setVisible(false);
 			}
 		});
 		
-		nuevaSesionVentaButton = new JButton("Nueva Sesion de Venta");
-		nuevaSesionVentaButton.setPreferredSize(new Dimension(170,30));
+		nuevaSesionVentaButton = new JButton("  Nueva Venta");
+		nuevaSesionVentaButton.setFont(new Font("SansSerif", Font.BOLD, 14));
+
+		nuevaSesionVentaButton.setPreferredSize(new Dimension(230,64));
+		Icon carritoIcon = new ImageIcon("C:\\carrito.png");
+		nuevaSesionVentaButton.setIcon(carritoIcon);
 		nuevaSesionVentaButton.setMnemonic(KeyEvent.VK_N);
 		nuevaSesionVentaButton.addActionListener(new ActionListener() {
 			
@@ -75,19 +99,30 @@ public class CajaFrame  extends DailyMarketFrame{
 		});
 		
 		cerrarApp = new JButton("Cerrar Aplicación");
-		cerrarApp.setPreferredSize(new Dimension(170,30));
+		Icon cerrarIcon = new ImageIcon("C:\\exit.png");
+		cerrarApp.setIcon(cerrarIcon);
+		cerrarApp.setFont(new Font("SansSerif", Font.BOLD, 14));
+		cerrarApp.setPreferredSize(new Dimension(230,64));
 		cerrarApp.addActionListener(new ActionListener() {
 			
 			public void actionPerformed(ActionEvent arg0) {
-				System.exit(0);
-				dispose();
+				Object[] options = {"Si","No"};
+				int n = JOptionPane.showOptionDialog(frame,"¿Realmente quiere salir de DailyMarket?"," DailyMarket",
+				JOptionPane.YES_NO_OPTION,
+				JOptionPane.QUESTION_MESSAGE,
+				null,     
+				options,  
+				options[0]);
+				if(n == 0){
+					System.exit(0);
+					dispose();
+				}
 	
 			}
 		});
 
-		mainPanel.setPreferredSize(new Dimension(200, 250));
 		
-		mainPanel.setLayout(new FlowLayout(FlowLayout.LEFT, 10,10));
+		mainPanel.setLayout(new FlowLayout(FlowLayout.CENTER, 40,40));
 		
 		mainPanel.add(aperturaCajaButton);
 		mainPanel.add(nuevaSesionVentaButton);
@@ -100,12 +135,18 @@ public class CajaFrame  extends DailyMarketFrame{
 		
 		JLabel menuLabel = new JLabel("D A I L Y M A R K E T");
 		menuLabel.setFont(new Font("Serif", Font.BOLD, 25));
+		
+		JLabel gestionLabel = new JLabel("G e s t i ó n   E f e c t i v a   d e   S u p e r m e r c a d o s ");
+		gestionLabel.setFont(new Font("Serif", Font.BOLD, 15));
+		
+		imagePanel.setLayout( new FlowLayout(FlowLayout.CENTER, 0, 25));
 		imagePanel.add(menuLabel);
 		imagePanel.add(separador);
-
+		imagePanel.add(gestionLabel);
 		
 		getContentPane().add(imagePanel);
 		getContentPane().add(mainPanel);
+		
 		
 		setTitle(" Menu Principal ");
 		setVisible(true);
@@ -142,6 +183,7 @@ public class CajaFrame  extends DailyMarketFrame{
 		//SACAAAAAAAAAAAAAAAAR
 		nuevaSesionVentaButton.setEnabled(true);
 	}
+
 		
 	
 }

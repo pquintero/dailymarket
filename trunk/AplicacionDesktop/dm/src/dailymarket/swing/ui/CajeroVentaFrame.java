@@ -45,6 +45,7 @@ import org.dom4j.Document;
 import telefront.TelefrontGUI;
 
 import dailymarket.model.Caja;
+import dailymarket.model.Context;
 import dailymarket.model.Empleado;
 import dailymarket.model.LineaTicket;
 import dailymarket.model.ProductModel;
@@ -85,7 +86,7 @@ public class CajeroVentaFrame extends DailyMarketFrame {
     JFrame parentFrame;
 	final JScrollPane scrollRelationsPane;
     JLabel message = new JLabel();
-
+    Empleado user = Context.getInstance().getCurrentUser();
 
 	
 	public CajeroVentaFrame(JFrame p) throws IOException {
@@ -345,8 +346,6 @@ public class CajeroVentaFrame extends DailyMarketFrame {
 							e.printStackTrace();
 						}
 						}
-					
-			
 			
 		});
 		JButton calcularTotal = new JButton("Calcular Total");
@@ -395,7 +394,7 @@ public class CajeroVentaFrame extends DailyMarketFrame {
 		headerPanel.add(vendedorPanel);
 		
 		JLabel nombreVendedorLabel = new JLabel();
-		nombreVendedorLabel.setText(" Claudia Gimenez");
+		nombreVendedorLabel.setText(Context.getInstance().getCurrentUser().getName());
 		vendedorPanel.add(nombreVendedorLabel);
 		
 		//DAILYMARKET PANEL
@@ -421,7 +420,7 @@ public class CajeroVentaFrame extends DailyMarketFrame {
 		cajaPanel.add(cajaLabel);
 		
 		JLabel vendedorLabel = new JLabel();
-		vendedorLabel.setText("Cajero Leg: " + "1045");
+		vendedorLabel.setText("Cajero Leg: " + user.getDni());
 		cajaPanel.add(vendedorLabel);
 		
 		JLabel fechaLabel = new JLabel();

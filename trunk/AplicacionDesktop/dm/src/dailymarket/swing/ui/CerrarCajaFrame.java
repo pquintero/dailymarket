@@ -13,13 +13,14 @@ import java.util.Date;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.border.LineBorder;
 import javax.swing.border.TitledBorder;
 
 import dailymarket.lectorDeHuellas.UtilLectorHuellasSingleton;
+import dailymarket.model.Context;
+import dailymarket.model.Empleado;
 
 
 @SuppressWarnings("serial")
@@ -31,14 +32,15 @@ public class CerrarCajaFrame extends DailyMarketFrame implements HuellaDigitalIn
 	JLabel mensaje = new JLabel();
 	JLabel mensajeLector = new JLabel();
 
-    protected JTextField montoCierre = new JTextField();
     private SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm");
-	JTextField monto = new JTextField();
 	JTextField cajero = new JTextField("");
 	CerrarCajaFrame frame ;
+	Empleado user = Context.getInstance().getCurrentUser();
 	
 	JPanel imageHuellaPanel = new JPanel();
 	JButton cerrarButton;
+	JButton firmar = new JButton("Firmar");
+
 	
 	public CerrarCajaFrame(JFrame f){
 		
@@ -70,7 +72,8 @@ public class CerrarCajaFrame extends DailyMarketFrame implements HuellaDigitalIn
 		JTextField cajero = new JTextField();
 		cajero.setEditable(false);
 		cajero.setPreferredSize(new Dimension(180,20));
-		cajero.setText("Ottaviano, Gabriel Ignacio");
+		
+		cajero.setText((user.getLastName() != null ? user.getLastName() : "") + ", " + user.getName()!= null? user.getName() : "");
 		
 		JLabel dateAperturaCajaLabel = new JLabel("Fecha y hora de apertura :");
 		JTextField dateAperturaCaja = new JTextField();
@@ -83,28 +86,13 @@ public class CerrarCajaFrame extends DailyMarketFrame implements HuellaDigitalIn
 		dateCierreCaja.setEditable(false);
 		dateCierreCaja.setPreferredSize(new Dimension(100,20));
 		dateCierreCaja.setText(sdf.format(new Date()));
-		
-		JLabel montoAperturaLabel = new JLabel("Monto de Apertura :");
-		JTextField montoApertura = new JTextField();
-		montoApertura.setEditable(false);
-		montoApertura.setPreferredSize(new Dimension(100,20));
-		montoApertura.setText("456,89");
-		
-		JLabel montoCierreLabel = new JLabel("Monto de Cierre :");
-		montoCierre = new JTextField();
-		montoCierre.setPreferredSize(new Dimension(100,20));
-		
+				
 		formPanel.add(cajeroLabel);
 		formPanel.add(cajero);
 		formPanel.add(dateAperturaCajaLabel);
 		formPanel.add(dateAperturaCaja);
 		formPanel.add(dateCierreCajaLabel);
 		formPanel.add(dateCierreCaja);
-		formPanel.add(montoAperturaLabel);
-		formPanel.add(montoApertura);
-		formPanel.add(montoCierreLabel);
-		formPanel.add(montoCierre);
-		
 			
 		JPanel buttonsMainPanel = new JPanel();
 		buttonsMainPanel.setPreferredSize(new Dimension(500,50));
@@ -135,7 +123,6 @@ public class CerrarCajaFrame extends DailyMarketFrame implements HuellaDigitalIn
 		
 		getContentPane().add(mainPanel);
 		
-		JButton firmar = new JButton("Firmar");
 		firmar.setPreferredSize(new Dimension(80,30));
 		firmar.setMnemonic(KeyEvent.VK_F);
 		firmar.addActionListener(new firmarsButtonListener());
@@ -199,35 +186,22 @@ public class CerrarCajaFrame extends DailyMarketFrame implements HuellaDigitalIn
 	class firmarsButtonListener implements ActionListener{
 
 		public void actionPerformed(ActionEvent arg0) {
-			if( montoCierre.getText().equals("") ){
-				JOptionPane.showMessageDialog(frame, "Debe Ingresar el monto de cierre  ");
-			}else{
-				//VALIDAR Q SEA NUMERICO
-				try{
-					String monto = montoCierre.getText().replace(",", ".");
-					Double.parseDouble(monto);
-		
+			
 					mensaje.setText("Esperando su huella digital");
 					mensaje.setForeground(Color.red);
 					UtilLectorHuellasSingleton utilHuellas = new UtilLectorHuellasSingleton();
 					utilHuellas.start(mensajeLector);				
 					utilHuellas.initLogin(frame);
 
-					FIRMA_CIERRE = true;
-
+//					FIRMA_CIERRE = true;
+					firmar.setEnabled(false);
 					
-				}
-				catch (NumberFormatException e) {
-					mensaje.setText("El valor debe ser numérico");
-					mensaje.setForeground(Color.red);
-				}	
-			}
 		}
 		
   }
 
 	public String getUserName() {
-		return cajero.getText();
+		return user.getUser();
 	}
 
 	public JLabel getFingerPrintPicture() {
@@ -246,16 +220,10 @@ public class CerrarCajaFrame extends DailyMarketFrame implements HuellaDigitalIn
 		return mensajeLector;
 	}
 
-	public  void loguear(/*User*/){
+	public  void loguear(){
    	 cajero.setEditable(false);
-   	 monto.setEditable(false);
-   	
 	 FIRMA_CIERRE = true;
   	 cerrarButton.setEnabled(true);
-		 
-  	 
-  	 //	setCurrentUser(user);
-  	 
 	 }
 
 
@@ -266,14 +234,10 @@ public class CerrarCajaFrame extends DailyMarketFrame implements HuellaDigitalIn
 
 
 	public String getMonto() {
-		return monto.getText();
+		return null;
 	}
 
 	public void backToInitLogin() {
-		// TODO Auto-generated method stub
-//
-//		utilHuellas.stop(mensajeLector);
-
 		String[] disabledButtons = new String[2];
 		disabledButtons[0] = DailyMarketFrame.CERRAR_CAJA;
 		disabledButtons[1] = DailyMarketFrame.NUEVA_SESION;
@@ -283,10 +247,12 @@ public class CerrarCajaFrame extends DailyMarketFrame implements HuellaDigitalIn
 		dispose();
 		
 	}
-
+	public void habilitarBotonFirmar(){
+		firmar.setEnabled(true);	
+	}
+	
 	@Override
 	public void altaDeHuella() {
-		// TODO Auto-generated method stub
 		
 	}
 }

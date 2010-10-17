@@ -31,7 +31,7 @@ public class InitDailyMarketFrame extends DailyMarketFrame{
 
  public InitDailyMarketFrame(){
 	 
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+	setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
 	 JPanel dmLogoPanel = new JPanel();
 	 JPanel dailyMarketPanel = new JPanel();
@@ -91,7 +91,7 @@ public class InitDailyMarketFrame extends DailyMarketFrame{
 //	 addKeyListener(this);
 	 tiempo = new Timer();
 	 
-	 tiempo.schedule(new TimerProgressBar(), 0, 50);
+	 tiempo.schedule(new TimerProgressBar(), 0, 30);
  }
 
  
@@ -107,7 +107,7 @@ public  static void main(String arg[]){
 		segundos++;
 		progressBar.setValue(segundos);
 	
-		if(segundos == 30){
+		if(segundos == 100){
 			tiempo.cancel();
 			crearNuevaSesion();
 		}

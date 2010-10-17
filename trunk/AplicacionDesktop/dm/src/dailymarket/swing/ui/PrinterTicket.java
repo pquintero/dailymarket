@@ -44,7 +44,7 @@ public class PrinterTicket implements Printable{
 		TextLayout justCampo;
 		
 				
-		Font f = new Font( "Times",Font.BOLD,8 );
+		Font f = new Font( "Times",Font.BOLD,10 );
 		
 		Vector lineas = new Vector();
 		
@@ -52,11 +52,6 @@ public class PrinterTicket implements Printable{
 			TextLayout tl = new TextLayout( ticketString[con],f,new FontRenderContext(null,true,true) );	
 			lineas.add(tl);
 		}
-		
-		
-		
-		
-		
 		
 		for (int i = 0; i < lineas.size(); i++) {
 		Campo = (TextLayout)lineas.get(i);
@@ -80,38 +75,5 @@ public class PrinterTicket implements Printable{
 			return NO_SUCH_PAGE;
 }
 
-	public static void main (String[] args){
-	
-		// Creamos un objeto de impresión.
-		PrinterJob job = PrinterJob.getPrinterJob();
-		
-		// Hacemos imprimible el objeto ObjetoAImprimir
-		String texto = new String();
-		//De la manera en que esta son 28 Caracteres por linea
-		texto += "SUPERMERCADOS EL CHINO LOCO ";
-		texto += "1234567890123456789012345678";
-		texto += "Av.Rivadavia 6094 TEL: 67059 055 ";
-		texto += "Cajero: Ottaviano Gabriel ";
-		texto += "1 x Pepsi 1.5 Lt _____ 8.5 ";
-		texto += "TOTAL: 67,0";
 
-//		job.setPrintable(new PrinterTicket(texto));
-//	
-		
-		//Pondrá algo tipo Información job: sun.awt.windows.WPrinterJob@4a5ab2
-		System.out.println("Información job: " + job.toString());
-	
-		//Abre el cuadro de diálogo de la impresora, si queremos que imprima
-		//directamente sin cuadro de diálogo quitamos el if...
-		//if (job.printDialog()){
-			//Imprime, llama a la función print del objeto a imprimir
-			//en nuestro caso el Objeto ObjetoAImprimir
-			try { 
-				job.print();
-				}
-			catch (PrinterException e) {
-				System.out.println("Error de impresión: " + e);
-				}
-	//}
- }
 }
