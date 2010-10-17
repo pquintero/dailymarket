@@ -1,4 +1,5 @@
 package dailymarket.swing.ui;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
@@ -7,7 +8,6 @@ import javax.swing.JPanel;
 import javax.swing.JComponent;
 import javax.swing.JTable;
 import javax.swing.JTextArea;
-import javax.swing.JTextField;
 import javax.swing.border.EtchedBorder;
 import javax.swing.border.LineBorder;
 import javax.swing.table.DefaultTableModel;
@@ -18,6 +18,7 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
+import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
@@ -31,12 +32,22 @@ public class TabbedPane extends JPanel {
     public JComponent panel1; 
 	public JComponent panel2 ;
 	public  JComponent panel3;
+	public static boolean EMPLEADO_VALIDADO = false; 
+	public static boolean SUPERVISOR_VALIDADO = false; 
 	
 	protected JLabel imgHuella = new JLabel();
 	JLabel mensajeLector = new JLabel();
 	
 	HuellaDigitalInterface frameParent;
 	JButton aceptarButton = new JButton("Firmar");
+	
+	JButton firmaEmpleado = new JButton("Firma Empleado");
+	JButton firmaSupervisor = new JButton("Firma Supervisor");
+
+	JTextArea textArea = new JTextArea();
+	JButton aceptarSeleccionadosButton = new JButton("Aceptar Seleccionados");
+
+
 	
     public TabbedPane(DefaultTableModel tableModelProducts, HuellaDigitalInterface supervisorFrame, JLabel mensajeLector, JLabel imgHuella) {
         frameParent = supervisorFrame;
@@ -76,25 +87,24 @@ public class TabbedPane extends JPanel {
 		 cancelarVentaPanel.setLayout(fl);
 		 
 		 JLabel motivoLabel = new JLabel("Motivo ");
-		 JTextArea textArea = new JTextArea();
 		 textArea.setPreferredSize(new Dimension(500,100));
 		 textArea.setBorder(new LineBorder(Color.BLACK));
 		 
 		 cancelarVentaPanel.add(motivoLabel);
 		 cancelarVentaPanel.add(textArea);
 		 
-		 aceptarButton.setMnemonic(KeyEvent.VK_F);
 		 aceptarButton.addActionListener( new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
+					((SupervisorFrame)frameParent).getFrameMensaje().setText("Ingrese su huella digital para realizar la operación");
 					((SupervisorFrame)frameParent).setActualAction(SupervisorFrame.CANCELAR_VENTA);
 					UtilLectorHuellasSingleton utilHuellas = new UtilLectorHuellasSingleton();
 					utilHuellas.start(mensajeLector);
 					utilHuellas.initLogin(frameParent);
 					aceptarButton.setEnabled(false);
+					((SupervisorFrame)frameParent).primerLogueoCheck.setEnabled(false);
 			}
 		});
         cancelarVentaPanel.add(aceptarButton);
-        
         
         JButton terminarButton = new JButton("Finalizar Y Volver");
         terminarButton.setMnemonic(KeyEvent.VK_V);
@@ -110,35 +120,61 @@ public class TabbedPane extends JPanel {
     }
     
     protected JComponent makeDescuentosPanel(String text) {
-        
 		 JPanel descuentosPanel = new JPanel(false);
 		 descuentosPanel.setPreferredSize(new Dimension(200, 530));
 		 
 		 FlowLayout fl = new FlowLayout(FlowLayout.CENTER);
-		 fl.setHgap(20);
-		 fl.setVgap(30);
+
 		 descuentosPanel.setLayout( fl);
-         
-		 JLabel empleadoLabel = new JLabel("Empleado");
-		 JTextField empleado = new JTextField();
-		 empleado.setPreferredSize(new Dimension(100,20));
 		 
-		 JButton firmaEmpleado = new JButton("Firma Empleado");
+		java.net.URL imgURL = InitDailyMarketFrame.class.getResource("lector.gif");
+		ImageIcon lectorImg = new ImageIcon(imgURL);
+		JLabel lectorImgLabel = new JLabel(new ImageIcon(lectorImg.getImage().getScaledInstance(120, 120, Image.SCALE_SMOOTH)));
+	 
+		descuentosPanel.add(lectorImgLabel);
+		descuentosPanel.add(new JLabel(" D E S C U E N T O S     A     E M P L E A D O S"));
+    	 firmaEmpleado.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				((SupervisorFrame)frameParent).getFrameMensaje().setText("Sr Empleado apoye su dedo en el lector de huellas digitales");
+				UtilLectorHuellasSingleton lector = new UtilLectorHuellasSingleton();  
+				((SupervisorFrame)frameParent).setActualAction(SupervisorFrame.OTORGAR_DESCUENTOS_EMP);
+				lector.start(mensajeLector);
+				lector.initLogin(frameParent);
+				firmaEmpleado.setEnabled(false);
+				((SupervisorFrame)frameParent).primerLogueoCheck.setEnabled(false);
+			}
+		});
+		 
 		 firmaEmpleado.setMnemonic(KeyEvent.VK_E);
-		 JButton firmaSupervisor = new JButton("Autoriza supervisor");
-		 firmaSupervisor.setMnemonic(KeyEvent.VK_S);
-		 JButton terminar = new JButton("Finalizar y volver");
-		 terminar.setMnemonic(KeyEvent.VK_V);
+		 
+		 firmaSupervisor.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				((SupervisorFrame)frameParent).getFrameMensaje().setText("Sr Supervisor apoye su dedo en el lector de huellas digitales");
+				UtilLectorHuellasSingleton lector = new UtilLectorHuellasSingleton();
+        		((SupervisorFrame)frameParent).setActualAction(SupervisorFrame.OTORGAR_DESCUENTOS_SUP);
+        		lector.start(mensajeLector);
+				lector.initLogin(frameParent);
+				firmaSupervisor.setEnabled(false);
+				((SupervisorFrame)frameParent).primerLogueoCheck.setEnabled(false);
+			}
+		});
+		 
+		  JButton terminarButton = new JButton("Finalizar Y Volver");
+	        terminarButton.setMnemonic(KeyEvent.VK_V);
+	        terminarButton.addActionListener( new ActionListener() {
+				public void actionPerformed(ActionEvent arg0) {
+				((SupervisorFrame)frameParent).dispose();	
+				}
+			});
+		 
 		 JPanel buttonPanel = new JPanel();
 		 
 		 buttonPanel.setPreferredSize(new Dimension(580, 50));
-		 buttonPanel.add(firmaEmpleado);
 		 buttonPanel.add(firmaSupervisor);
-		 buttonPanel.add(terminar);
+		 buttonPanel.add(firmaEmpleado);
+		 buttonPanel.add(terminarButton);
 		 
-		 
-		 descuentosPanel.add(empleadoLabel);
-		 descuentosPanel.add(empleado);
 		 descuentosPanel.add(buttonPanel);
 		 
         return descuentosPanel;
@@ -149,9 +185,8 @@ public class TabbedPane extends JPanel {
     	
         JPanel panel = new JPanel(false);
         
-    	JButton aceptarButton = new JButton("Aceptar Seleccionados");
-    	aceptarButton.setMnemonic(KeyEvent.VK_A);
-    	aceptarButton.setPreferredSize(new Dimension(170,30));
+        aceptarSeleccionadosButton.setMnemonic(KeyEvent.VK_A);
+        aceptarSeleccionadosButton.setPreferredSize(new Dimension(170,30));
     	
 		//LISTA
 		 //Lista de Relaciones
@@ -196,21 +231,66 @@ public class TabbedPane extends JPanel {
     	}
     	
         	
-        aceptarButton.addActionListener(new ActionListener() {
+    	aceptarSeleccionadosButton.addActionListener(new ActionListener() {
 
         	public void actionPerformed(ActionEvent arg0) {
-		
-        		((SupervisorFrame)frameParent).dispose();
-			
+        		((SupervisorFrame)frameParent).getFrameMensaje().setText("Ingrese su huella digital para realizar la operación");
+        		((SupervisorFrame)frameParent).setActualAction(SupervisorFrame.CANCELAR_PRODUCTOS);
+        		((SupervisorFrame)frameParent).primerLogueoCheck.setEnabled(false);
+				UtilLectorHuellasSingleton utilHuellas = new UtilLectorHuellasSingleton();
+				
+				utilHuellas.start(mensajeLector);
+				utilHuellas.initLogin(frameParent);
+				aceptarSeleccionadosButton.setEnabled(false);
+
+				
 		}
 	});
-    	panel.add(aceptarButton);
+    	panel.add(aceptarSeleccionadosButton);
        
         panel.setPreferredSize(new Dimension(600, 200));
         panel.setLayout( new FlowLayout(FlowLayout.CENTER));
        
         return panel;
     }
-    
 
+	public void habilitarFirma() {
+		aceptarButton.setEnabled(true);
+		aceptarSeleccionadosButton.setEnabled(true);
+		firmaEmpleado.setEnabled(true);
+		firmaSupervisor.setEnabled(false);
+	}
+
+	public String getMotivoDeCancelacion() {
+		return textArea.getText();
+	}
+
+	public void doCancelProducts() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void deshabilitarFirmas() {
+		aceptarButton.setEnabled(false);
+		aceptarSeleccionadosButton.setEnabled(false);
+		firmaEmpleado.setEnabled(false);
+		firmaSupervisor.setEnabled(false);
+		
+	}
+
+	public void empleadoValidado() {
+		EMPLEADO_VALIDADO = true;
+		if(SUPERVISOR_VALIDADO){
+			((SupervisorFrame)frameParent).otorgarDescuento();	
+			((SupervisorFrame)frameParent).getFrameMensaje().setText("Descuento Otorgado");
+		}
+	}
+
+	public void supervisorValidado() {
+		SUPERVISOR_VALIDADO = true;
+		if(EMPLEADO_VALIDADO){
+			((SupervisorFrame)frameParent).otorgarDescuento();	
+			((SupervisorFrame)frameParent).getFrameMensaje().setText("Descuento Otorgado");
+		}
+	}
 }

@@ -2,6 +2,7 @@ package dailymarket.swing.ui;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.GridBagLayout;
@@ -10,11 +11,13 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 
 import javax.swing.JButton;
+import javax.swing.JCheckBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
+import javax.swing.JTextField;
 
 import javax.swing.border.LineBorder;
 import javax.swing.border.TitledBorder;
@@ -31,7 +34,9 @@ public class SupervisorFrame extends  DailyMarketFrame implements HuellaDigitalI
 	JLabel mensaje = new JLabel();
 	public static final String  CANCELAR_VENTA  = "cancelar_venta";
 	public static final String  CANCELAR_PRODUCTOS  = "cancelar_productos";
-	public static final String OTORGAR_DESCUENTOS = "otorgar_descuentos";
+	public static final String OTORGAR_DESCUENTOS_EMP = "otorgar_descuentos_emp";
+	public static final String OTORGAR_DESCUENTOS_SUP = "otorgar_descuentos_sup";
+
 	private String actualAction = "";
 	JLabel passwordLabel = new JLabel("Password :");
     protected JPasswordField passwordTextField = new JPasswordField();
@@ -41,6 +46,9 @@ public class SupervisorFrame extends  DailyMarketFrame implements HuellaDigitalI
 	
 	JLabel mensajeLector = new JLabel();
 	JPanel altaHuellaPanel = new JPanel();
+	JCheckBox primerLogueoCheck = new JCheckBox("Primer Logueo");
+	JTextField supervisorTextField = new JTextField();
+	JLabel supervisorLabel = new JLabel("Usuario");
 
 
 	public SupervisorFrame(DefaultTableModel tableModelProducts, JFrame frame){
@@ -67,15 +75,11 @@ public class SupervisorFrame extends  DailyMarketFrame implements HuellaDigitalI
 		add(fingerPrintPanel);
 		
         JPanel mensajesPanel = new JPanel();
-		mensajesPanel.setPreferredSize(new Dimension(790,60));
+		mensajesPanel.setPreferredSize(new Dimension(690,60));
 		mensajesPanel.setBorder(new TitledBorder(null, "Mensajes",
 				TitledBorder.DEFAULT_JUSTIFICATION, TitledBorder.DEFAULT_POSITION, null, Color.BLACK));
 //		mensajesPanel.setBackground(Color.orange);
 		
-		final JLabel mensaje = new JLabel();
-		mensaje.setForeground(Color.red);
-		mensaje.setText("Ingrese su huella digital para cerrar la caja");
-        
 		mensajesPanel.add(mensaje);
 //		getContentPane().setBackground(Color.blue);
 		
@@ -92,7 +96,11 @@ public class SupervisorFrame extends  DailyMarketFrame implements HuellaDigitalI
 		altaHuellaPanel.setBackground(new Color(0xCCCCFF));
 		altaHuellaPanel.setBorder(new TitledBorder(new LineBorder(Color.BLACK), "",
 				TitledBorder.CENTER, TitledBorder.DEFAULT_POSITION, null, null));
-
+		
+	
+		supervisorTextField.setPreferredSize(new Dimension(100,20));
+		altaHuellaPanel.add(supervisorLabel);
+		altaHuellaPanel.add(supervisorTextField);
 		altaHuellaPanel.add(passwordLabel);
 		altaHuellaPanel.add(passwordTextField);
 		altaHuellaPanel.add(altaHuellaButton);
@@ -100,13 +108,30 @@ public class SupervisorFrame extends  DailyMarketFrame implements HuellaDigitalI
 		
 		add(altaHuellaPanel);
 		add(mensajesPanel);
+		
+		primerLogueoCheck.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+			
+				if(primerLogueoCheck.isSelected()){
+					solicitudesTabbedPane.deshabilitarFirmas();
+					altaHuellaPanel.setVisible(true);
+				}else{
+					solicitudesTabbedPane.habilitarFirma();
+					altaHuellaPanel.setVisible(false);
+				}
+			}
+		});
+		
+		add(primerLogueoCheck);
 		passwordTextField.setPreferredSize(new Dimension(100,20));
 	
         altaHuellaButton.setMnemonic(KeyEvent.VK_H);
         altaHuellaButton.addActionListener( new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				if( passwordTextField.getText().equals("")  ){
-					JOptionPane.showMessageDialog(null, "Ingrese su password");
+				if( passwordTextField.getText().equals("") || supervisorTextField.getText().equals("")  ){
+					JOptionPane.showMessageDialog((Component) thisFrame, "Ingrese su usuario y password");
 				}else{
 					LectorDeHuellasFirstLogin utilHuellasFirstLogin = new LectorDeHuellasFirstLogin();
 					utilHuellasFirstLogin.start(mensaje);
@@ -145,7 +170,7 @@ public class SupervisorFrame extends  DailyMarketFrame implements HuellaDigitalI
 	}
 
 	public String getUserName() {
-		return /*Context.getUser...*/"pepe";
+		return supervisorTextField.getText();
 	}
 
 	public String getUserPassword() {
@@ -171,5 +196,46 @@ public class SupervisorFrame extends  DailyMarketFrame implements HuellaDigitalI
 		JOptionPane.showMessageDialog(this, "La password ingresada es incorrecta, re intente nuevamente");
 		passwordTextField.setEnabled(true);
 		altaHuellaButton.setEnabled(true);
+	}
+	
+	public static void main (String[] arg){
+		new SupervisorFrame(new DefaultTableModel(), new JFrame());
+	}
+
+	public void habilitarFirma() {
+		solicitudesTabbedPane.habilitarFirma();
+		primerLogueoCheck.setEnabled(true);
+		mensaje.setText("Reintente nuevamente");
+	}
+
+	public String getMotivoDeCancelacion() {
+		return solicitudesTabbedPane.getMotivoDeCancelacion();
+	}
+
+	public void doCancelProducts() {
+		solicitudesTabbedPane.doCancelProducts();
+		dispose();		
+	}
+
+	public void otorgarDescuento() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void empleadoValidated() {
+		solicitudesTabbedPane.empleadoValidado();		
+	}
+
+	public void supervisorValidated() {
+		solicitudesTabbedPane.supervisorValidado();		
+	}
+
+	public void habilitarFirmaEmpleado() {
+		solicitudesTabbedPane.firmaEmpleado.setEnabled(true);
+		
+	}
+
+	public void habilitarFirmaSupervisor() {
+		solicitudesTabbedPane.firmaSupervisor.setEnabled(true);
 	}
 }

@@ -14,6 +14,9 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 import org.dom4j.Document;
+import org.dom4j.Element;
+import org.dom4j.Node;
+
 import telefront.TelefrontGUI;
 
 import com.digitalpersona.onetouch.DPFPCaptureFeedback;
@@ -35,6 +38,10 @@ import com.digitalpersona.onetouch.processing.DPFPEnrollment;
 import com.digitalpersona.onetouch.processing.DPFPFeatureExtraction;
 import com.digitalpersona.onetouch.processing.DPFPImageQualityException;
 
+import dailymarket.model.Context;
+import dailymarket.model.Empleado;
+import dailymarket.model.GroupEmpleado;
+import dailymarket.swing.ui.AperturaCajaFrame;
 import dailymarket.swing.ui.HuellaDigitalInterface;
 
 public class LectorDeHuellasFirstLogin {
@@ -44,7 +51,7 @@ public class LectorDeHuellasFirstLogin {
        private DPFPEnrollment enroller = DPFPGlobal.getEnrollmentFactory().createEnrollment();
 
        String huella = null;
-		String huellaAlternativa = null;
+	   String huellaAlternativa = null;
 
 		
 	   public LectorDeHuellasFirstLogin(){
@@ -117,16 +124,18 @@ public class LectorDeHuellasFirstLogin {
 								Object params[] = new String[] { usuario, password, huella , huellaAlternativa};
 					            Document doc = TelefrontGUI.getInstance().executeMethod(CONTROLLER_CLASS, "altaHuellaDigital", params);
 
-					            if (doc.getRootElement().selectSingleNode("firstLogin").getText().equals("OK")){
+					            if (doc != null  ){
 					            	mensaje.setText("Huella Digital guardada con exito!!!");
 						            frame.loguear();
 						            stop(mensajeLector);
+									setCurrentUser(doc);
 					            }
 					            	
 								else{
-									mensaje.setText("No se pudo guardar la huella!!!");
+									mensaje.setText("Presione en fimar y apoye el dedo en el lector nuevamente");
+									((AperturaCajaFrame)frame).habilitarBotonFirmar();
 					            	stop(mensajeLector);
-					            	frame.altaDeHuella();
+//					            	frame.altaDeHuella();
 								}
 							}
 							
@@ -209,6 +218,14 @@ public class LectorDeHuellasFirstLogin {
 	   public void stop(  JLabel mensajeLector){
 		    mensajeLector.setText("Lector Offline");
 			capturer.stopCapture();
+			
+		}
+	   public void stop2(  JLabel mensajeLector){
+		    mensajeLector.setText("Lector Offline");
+			capturer.stopCapture();
+			 huella = null;
+			huellaAlternativa = null;
+			enroller.clear();
 		}
 		
 
@@ -239,7 +256,53 @@ public class LectorDeHuellasFirstLogin {
 		     }
 		
 		 }
+		 /**
+			 * Setea el usuario actual en el contexto de sesión del cliente.
+			 * @param doc Representación XML del usuario.
+			 */
+			public static void setCurrentUser(Document doc) {
+				Element root = doc.getRootElement();
+				
+				//Setear todos los valores necesarios para el cajero
+				
+				Empleado user = new Empleado();
+				
+				Long id = Long.valueOf(root.selectSingleNode("id").getStringValue());
+				String username = root.selectSingleNode("user").getStringValue();
+				String name = root.selectSingleNode("name").getStringValue();
+				String lastName = root.selectSingleNode("lastName").getStringValue();
+				String password = root.selectSingleNode("password").getStringValue();
+				String passwordOld = root.selectSingleNode("passwordOld").getStringValue();
+				String dni = root.selectSingleNode("dni").getStringValue();
+				String dateCreated = root.selectSingleNode("dateCreated").getStringValue();
+				String huelladigital = root.selectSingleNode("huelladigital").getStringValue();
+				
+				Node groupUser = root.selectSingleNode("groupUser");
+				Long idGroup = Long.valueOf(groupUser.selectSingleNode("id").getStringValue());
+				String nameGroup = groupUser.selectSingleNode("name").getStringValue();
+				String descriptionGroup = groupUser.selectSingleNode("description").getStringValue();
+				String email = root.selectSingleNode("email").getStringValue();
+				String receiveNotifications = root.selectSingleNode("receiveNotifications").getStringValue();
+				
+				user.setDateCreated(dateCreated);
+				user.setDni(dni);
+				user.setEmail(email);
+				user.setHuelladigital(huelladigital);
+				user.setId(id);
+				user.setLastName(lastName);
+				user.setName(name);
+				user.setPassword(password);
+				user.setPasswordOld(passwordOld);
+				user.setReceiveNotifications(Boolean.valueOf(receiveNotifications));
+				user.setUser(username);
+				GroupEmpleado groupEmpleado = new GroupEmpleado();
+				groupEmpleado.setDescription(descriptionGroup);
+				groupEmpleado.setId(idGroup);
+				groupEmpleado.setName(nameGroup);
+				user.setGroupEmpleado(groupEmpleado);
 
+				Context.getInstance().setCurrentUser(user);
+			}
 		
 	
 	}
