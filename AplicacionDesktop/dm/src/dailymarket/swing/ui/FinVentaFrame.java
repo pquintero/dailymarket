@@ -19,6 +19,7 @@ import javax.swing.border.LineBorder;
 import javax.swing.border.TitledBorder;
 
 import org.dom4j.Document;
+import org.dom4j.Element;
 
 import telefront.TelefrontGUI;
 import dailymarket.model.Context;
@@ -106,12 +107,16 @@ public class FinVentaFrame extends JDialog {
 							if(doc!=null){
 								((CajeroVentaFrame)parentFrame).pagoVenta =  montoPago;
 								((CajeroVentaFrame)parentFrame).habilitarImprimirVenta();
+								
+								Element root = doc.getRootElement();
+								Long id = Long.valueOf(root.selectSingleNode("sesion").getStringValue());
+								((CajeroVentaFrame)parentFrame).idSesionVenta =  id;
+								
 								dispose();	
 							}else{
 								mensaje.setText("No se pudo registrar la venta");
 								mensaje.setForeground(Color.red);
 							}
-							
 									
 						}
 				} catch (NumberFormatException e) {

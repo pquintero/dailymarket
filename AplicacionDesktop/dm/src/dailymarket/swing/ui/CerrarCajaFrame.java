@@ -251,7 +251,7 @@ public class CerrarCajaFrame extends DailyMarketFrame implements HuellaDigitalIn
 		firmar.setEnabled(true);	
 	}
 	
-	@Override
+
 	public void altaDeHuella() {
 		
 	}

@@ -17,6 +17,7 @@ import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Vector;
 
@@ -63,14 +64,14 @@ public class CajeroVentaFrame extends DailyMarketFrame {
     
     private List <String> productsCode = new ArrayList<String>();
 
-    protected String cajaNumber = "1";//EL VALOR es PARAMETRO DEL CONSTRUCTOR
+    protected String cajaNumber = Configuration.getInstance().getCaja();//EL VALOR es PARAMETRO DEL CONSTRUCTOR
     
     protected JTextField scanCodProducto;
     protected Double totalVenta = new Double(0);
     protected Double subTotalVenta = new Double(0);
     public Double pagoVenta = new Double(0);
+    public Long idSesionVenta;
 
-    
     protected JTextField totalVentaTextField = new JTextField();
     protected JTextField subtotalVentaTextfield = new JTextField();
     protected JTextField descProducto = new JTextField();
@@ -141,7 +142,7 @@ public class CajeroVentaFrame extends DailyMarketFrame {
 		fl2.setAlignment(FlowLayout.LEFT);
 		productoPanel.setLayout(fl2);
 		
-		JLabel codigoProducto = new JLabel("Codigo Producto ");
+		JLabel codigoProducto = new JLabel("Código Producto ");
 		productoPanel.add(codigoProducto);
 		
 		scanCodProducto = new JTextField();
@@ -151,36 +152,8 @@ public class CajeroVentaFrame extends DailyMarketFrame {
 			
 			public void actionPerformed(ActionEvent e) {
 			
-				 Object params[] = new String[] {scanCodProducto.getText()};
-	             Document doc = TelefrontGUI.getInstance().executeMethod(CONTROLLER_CLASS, "obtenerProducto", params);
-	             ProductModel productModel = new ProductModel();
-	             if(doc!= null){
-		            productModel.toProductModel(doc);
-					
-					//TRAER PRODUCTO DE LA BASE DE DATOS Y SETEARLO AL TICKET..  
-		            subTotalVenta += Double.valueOf(productModel.getPrice());
-					tableModelProducts.addRow(new Object[]{ new Boolean(false),"1", productModel.getDescription(), new Integer(1), Double.valueOf(productModel.getPrice()), subTotalVenta});
-					
-					agregarAProductsCode(productModel.getCode());
-
-					//				
-	//				cantProd.setText("1");
-	//				descProducto.setText(productModel.getDescription());
-					//
-					scanCodProducto.setText(null);
-					
-					tableRelations.getColumn("Cancel").setCellRenderer(new MultiRenderer());
-				    tableRelations.getColumn("Cancel").setCellEditor(new MultiEditor());
-				    totalVenta = subTotalVenta;
-					
-					
-					subtotalVentaTextfield.setText(subTotalVenta.toString());
-					totalVentaTextField.setText(totalVenta.toString());
-	             }else{
-	            	 message.setText("No existe el producto con código " + scanCodProducto.getText());
-	             }
+				 agregarProductoSesion();
 			}
-
 		});
 	    			    
 		productoPanel.add(scanCodProducto);
@@ -198,6 +171,7 @@ public class CajeroVentaFrame extends DailyMarketFrame {
 		
 		cantProd = new JTextField();
 		cantProd.setPreferredSize(new Dimension(45, 20));
+		cantProd.setText("1");
 		productoPanel.add(cantProd);
 		
 		JButton ingresarProdButton = new JButton("Ingresar Producto Manualmente");
@@ -206,9 +180,7 @@ public class CajeroVentaFrame extends DailyMarketFrame {
 		ingresarProdButton.addActionListener(new ActionListener() {
 			
 			public void actionPerformed(ActionEvent arg0) {
-				scanCodProducto.setText("");
-				descProducto.setText("");
-				cantProd.setText("");
+				agregarProductoSesion();
 			}
 		});
 		
@@ -275,60 +247,91 @@ public class CajeroVentaFrame extends DailyMarketFrame {
 
 			private String[] makeTicket(Ticket t) {
 
-				Sucursal suc = new Sucursal();
-				suc.setCuit("23-94237098-9");
-				suc.setDireccion("Suipacha 234");
-				suc.setNombre("Lider_Oriental");
-				suc.setTelefono("4982-7021");
+				Object params[] = new String[] {Configuration.getInstance().getSucursal()};
+		        Document doc = TelefrontGUI.getInstance().executeMethod(CONTROLLER_CLASS, "obtenerSucursal", params);
 				
-				Empleado cajero = new Empleado();
-				cajero.setLastName("Gimenez");
-				cajero.setDni("15-489892");
-				cajero.setName("Patricia");
+				Sucursal suc = new Sucursal();
+				suc.toSucursalModel(doc);
+				
+//				suc.setCuit("23-94237098-9");
+//				suc.setDireccion("Suipacha 234");
+//				suc.setNombre("Lider_Oriental");
+//				suc.setTelefono("4982-7021");
+				
+				Empleado cajero = Context.getInstance().getCurrentUser();
+				
+//				cajero.setLastName("Gimenez");
+//				cajero.setDni("15-489892");
+//				cajero.setName("Patricia");
 				
 				Caja caja = new Caja();
 				caja.setCajero(cajero);
-				caja.setNroCaja("1");
+				caja.setNroCaja(Configuration.getInstance().getCaja());
 				caja.setSucursal(suc);
 				
-				LineaTicket linea1 = new LineaTicket();
-				
-				linea1.setDescripcion("Coca_Cola_x_2Lts");
-				linea1.setCantidad("6");
-				linea1.setPrecioUnitario("8");
-				linea1.setPrecioTotal("32");
-		
-				LineaTicket linea2 = new LineaTicket();
-				linea2.setDescripcion("Galletitas_Costa_Chocolate_x_400_gramos");
-				linea2.setCantidad("1");
-				linea2.setPrecioUnitario("3");
-				linea2.setPrecioTotal("3");
-		
+				Vector productos = tableModelProducts.getDataVector();
 				List<LineaTicket> lista = new ArrayList<LineaTicket>();
 				
-				lista.add(linea1);
-				lista.add(linea2);
+				for (int i = 0; i < productos.size(); i++) {
+					LineaTicket linea = new LineaTicket();
+					Vector producto = (Vector)productos.get(i);
+					linea.setDescripcion(producto.get(2).toString());
+					linea.setCantidad(producto.get(3).toString());
+					linea.setPrecioUnitario(producto.get(4).toString());
+					linea.setPrecioTotal(producto.get(5).toString());
+					lista.add(linea);
+				}
+				
+//				linea1.setDescripcion("Coca_Cola_x_2Lts");
+//				linea1.setCantidad("6");
+//				linea1.setPrecioUnitario("8");
+//				linea1.setPrecioTotal("32");
+//		
+//				LineaTicket linea2 = new LineaTicket();
+//				linea2.setDescripcion("Galletitas_Costa_Chocolate_x_400_gramos");
+//				linea2.setCantidad("1");
+//				linea2.setPrecioUnitario("3");
+//				linea2.setPrecioTotal("3");
+//		
+//				
+//				
+//				lista.add(linea1);
+//				lista.add(linea2);
 				
 				Ticket ticket = new Ticket();
 				ticket.setCaja(caja);
-				ticket.setNroTicket("000001");
+				ticket.setNroTicket(idSesionVenta.toString());
 				ticket.setLineas(lista);
-				ticket.setTotal("35");
-				ticket.setSubtotal("35");
+				ticket.setTotal(totalVenta.toString());
+				ticket.setSubtotal(subTotalVenta.toString());
 				
-				int cantFija = 15;//HEADER y FOOTER DEL TICKETñ
+				int cantFija = 12;//HEADER y FOOTER DEL TICKETñ
 				int cantDinamica = ticket.getLineas().size();
 				
-				String lineaTicket[] = new String[/*cantFija + cantDinamica*/8];
+				String lineaTicket[] = new String[cantFija + cantDinamica];
 				
 				lineaTicket[0]= ticket.getCaja().getSucursal().getNombre().toUpperCase();
-				lineaTicket[1]= ticket.getCaja().getSucursal().getDireccion().toUpperCase() ;
+				lineaTicket[1]= ticket.getCaja().getSucursal().getDireccion().toUpperCase();
 				lineaTicket[2]= ".";
 				lineaTicket[3]= "EMPLEADO:" + ticket.getCaja().getCajero().getDni() + " - " + ticket.getCaja().getCajero().getLastName();
 				lineaTicket[4]= "CAJA:" + ticket.getCaja().getNroCaja();
 				lineaTicket[5]= "CUIT-NRO: " + ticket.getCaja().getSucursal().getCuit().toUpperCase();
 				lineaTicket[6]= "NRO-TICKET: " + ticket.getNroTicket().toUpperCase();
-				lineaTicket[7]= "FECHA: " + (new Date()).toString().toUpperCase()  ;
+				SimpleDateFormat sdf = new java.text.SimpleDateFormat("dd/MM/yyyy HH:mm:ss"); 
+				lineaTicket[7]= "FECHA: " + sdf.format(new Date());
+				lineaTicket[8] = "Lista de productos";
+				lineaTicket[9] = "					";
+				
+				int i = 10;
+				for (Iterator iterator = ticket.getLineas().iterator(); iterator.hasNext();) {
+					LineaTicket linea = (LineaTicket) iterator.next();
+					lineaTicket[i] = linea.toString();
+					i++;
+				}
+				
+				lineaTicket[i] = "					";
+				i++;
+				lineaTicket[i] = "TOTAL: " + ticket.getTotal() + " pesos";
 				
 				
 				return lineaTicket;
@@ -353,7 +356,7 @@ public class CajeroVentaFrame extends DailyMarketFrame {
 			
 			public void actionPerformed(ActionEvent e) {
 			
-//				totalVentaTextField.setText("345");
+				totalVentaTextField.setText(totalVenta.toString());
 
 			}
 		});
@@ -394,14 +397,16 @@ public class CajeroVentaFrame extends DailyMarketFrame {
 		headerPanel.add(vendedorPanel);
 		
 		JLabel nombreVendedorLabel = new JLabel();
-		nombreVendedorLabel.setText(Context.getInstance().getCurrentUser().getName());
+
+		nombreVendedorLabel.setText(Context.getInstance().getCurrentUser().getName() + " " + Context.getInstance().getCurrentUser().getLastName());
+
 		vendedorPanel.add(nombreVendedorLabel);
 		
 		//DAILYMARKET PANEL
 		dailyMarkeyPanel.setLayout(new FlowLayout());
 		
 		JLabel supermercadoLabel = new JLabel();
-		supermercadoLabel.setText("------SUPER LIDER ORIENTAL---------");
+		supermercadoLabel.setText("------DAILYMARKET---------");
 		supermercadoLabel.setFont(new Font("Serif", Font.BOLD, 20));
 		supermercadoLabel.setForeground(Color.BLUE);
 		dailyMarkeyPanel.add(supermercadoLabel);
@@ -420,7 +425,9 @@ public class CajeroVentaFrame extends DailyMarketFrame {
 		cajaPanel.add(cajaLabel);
 		
 		JLabel vendedorLabel = new JLabel();
-		vendedorLabel.setText("Cajero Leg: " + user.getDni());
+
+		vendedorLabel.setText("Cajero DNI: " + Context.getInstance().getCurrentUser().getDni());
+
 		cajaPanel.add(vendedorLabel);
 		
 		JLabel fechaLabel = new JLabel();
@@ -627,6 +634,45 @@ public class CajeroVentaFrame extends DailyMarketFrame {
 	
 	private void eliminarDeProductsCode(String code){
 		productsCode.remove(code);
+	}
+	
+	private void agregarProductoSesion() {
+		
+		if( cantProd.getText() == null || "".equals(cantProd.getText()))
+			return;
+		
+		for (int i = 0; i < Integer.valueOf(cantProd.getText()); i++) {
+			
+			Object params[] = new String[] {scanCodProducto.getText()};
+	         Document doc = TelefrontGUI.getInstance().executeMethod(CONTROLLER_CLASS, "obtenerProducto", params);
+	         ProductModel productModel = new ProductModel();
+	         if(doc!= null){
+	            productModel.toProductModel(doc);
+				
+				//TRAER PRODUCTO DE LA BASE DE DATOS Y SETEARLO AL TICKET..  
+	            subTotalVenta += Double.valueOf(productModel.getPrice());
+				tableModelProducts.addRow(new Object[]{ new Boolean(false),"1", productModel.getDescription(), new Integer(1), Double.valueOf(productModel.getPrice()), subTotalVenta});
+				
+				agregarAProductsCode(productModel.getCode());
+	
+				//				
+	//				cantProd.setText("1");
+	//				descProducto.setText(productModel.getDescription());
+				//
+				
+				tableRelations.getColumn("Cancel").setCellRenderer(new MultiRenderer());
+			    tableRelations.getColumn("Cancel").setCellEditor(new MultiEditor());
+			    totalVenta = subTotalVenta;
+				
+				
+				subtotalVentaTextfield.setText(subTotalVenta.toString());
+				totalVentaTextField.setText(totalVenta.toString());
+	         }else{
+	        	 message.setText("No existe el producto con código " + scanCodProducto.getText());
+	         }
+		}
+		scanCodProducto.setText(null);
+		cantProd.setText("1");
 	}
 	
 }
