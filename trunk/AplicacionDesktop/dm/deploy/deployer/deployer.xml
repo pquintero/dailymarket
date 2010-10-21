@@ -1,0 +1,91 @@
+<?xml version='1.0' encoding='windows-1252'?>
+
+<project default="deploy" name="DM Client deployer" basedir="">
+
+  <property file="deployer.properties"/>
+  <property name="deploy.temp" value="deploytemp"/>
+  <property name="jar.temp" value="jartemp"/>
+
+  <property environment="env"/>
+  <property name="catalina.home" value="${env.CATALINA_HOME}"/>
+
+  <property name="webapps.dir" value="${catalina.home}/webapps" />
+  <property name="client.dir" value="${webapps.dir}/ROOT/${instance}" />
+  
+  <!-- Fecha -->
+  <tstamp>
+    <format property="today" pattern="yyyyMMddHHmmss" locale="es"/>
+  </tstamp>
+
+  <target name="deploy">
+    <!-- Si no esta definida download.dir, uso la url del server -->
+    <condition property="download.dir" value="${server.dir}">
+      <not><isset property="download.dir"/></not>      
+    </condition>    
+    
+    <mkdir dir="${jar.temp}"/>
+    <mkdir dir="${deploy.temp}"/>
+
+    <unzip dest="${deploy.temp}" src="../package/client.zip"/>
+    <unzip dest="${jar.temp}" src="${deploy.temp}/DM.jar"/>
+
+    <!-- reemplazo los valores propios del deploy -->
+    <replace dir="${jar.temp}" summary="true" includes="**/*.txt,**/*.properties,**/*.xml,**/*.jnlp">
+      <replacefilter token="%server.core.base.dir%" value="${server.dir}/${emergencies.dir}"/>
+      <replacefilter token="%server.download.dir%" value="${download.dir}/${instance}"/>
+    </replace>
+
+    <replace dir="${deploy.temp}" summary="true" includes="**/*.txt,**/*.properties,**/*.xml,**/*.jnlp">
+      <replacefilter token="%server.core.base.dir%" value="${server.dir}/${emergencies.dir}"/>
+      <replacefilter token="%server.download.dir%" value="${download.dir}/${instance}"/>
+      <replacefilter token="%instance%" value="${instance}"/>
+      <replacefilter token="%caja%" value="${caja}"/>
+      <replacefilter token="%sucursal%" value="${sucursal}"/>
+
+    </replace>
+
+    <jar destfile="${deploy.temp}\DM.jar" compress="true">
+      <zipfileset dir="${jar.temp}"/>
+    </jar>
+
+    <signjar jar="${deploy.temp}\DM.jar" alias="Fahrenheit" keystore="Proyecto911.keystore" storepass="Proyecto911"/>
+
+    <delete dir="${jar.temp}" failonerror="yes"/>
+
+    <!-- Desplegar en tomcat -->
+
+    <!-- Backup de previos paquetes, si existen -->
+    <available file="${client.dir}" type="dir" property="previous.deploy.exists"/>
+    <antcall target="backup" />
+
+    <!-- Vaciar previas aplicaciones -->
+    <delete dir="${client.dir}" />
+
+    <!-- Recrear directorios -->
+    <mkdir dir="${client.dir}" />
+
+    <!-- Copiar paquetes parametrizados -->
+    <copy todir="${client.dir}" >
+    	<fileset dir="${deploy.temp}" />
+    </copy>
+
+    <delete dir="${deploy.temp}" failonerror="yes"/>
+    <delete dir="${jar.temp}" failonerror="yes"/>
+
+  </target>
+
+  <!-- Backup de previo deploy -->
+  <target name="backup" if="previous.deploy.exists">
+
+    <zip destfile="${webapps.dir}\${today}-${instance}.zip">
+      <fileset dir="${client.dir}">
+        <include name="**/*.*"/>
+      </fileset>
+    </zip>
+
+  </target>
+
+    <target name="manualSign">
+        <signjar jar="c:\Dev\Java\Projects\EMERGENCIES V 1.2\client_ciudad\DM.jar" alias="Fahrenheit" keystore="Proyecto911.keystore" storepass="Proyecto911"/>
+    </target>
+</project>

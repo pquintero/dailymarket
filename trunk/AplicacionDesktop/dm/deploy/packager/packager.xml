@@ -1,0 +1,146 @@
+<project default="package" name="DM Client Packager" basedir=".">
+
+    <property file="packager.properties"/>
+
+    <property name="classes.outdir" value="..\..\classes"/>
+    <property name="deploy.outdir" value="..\package"/>
+    <property name="lib.dir" value="..\..\lib"/>
+    <property name="src.dir" value="..\..\src"/>
+    <property name="conf.dir" value="..\conf"/>
+
+    <property name="deploy.temp" value="temp"/>
+
+	<target name="init">
+    	<mkdir dir="${deploy.outdir}"/>
+	</target>
+
+    <target name="package" depends="clean, compile">
+
+        <copy todir="${deploy.outdir}" failonerror="yes" overwrite="true">
+            <fileset dir=".">
+                <include name="*.jnlp"/>
+                <include name="911icon.gif"/>
+                <include name="readme.txt"/>
+            </fileset>
+        </copy>
+
+        <copy todir="${deploy.outdir}" failonerror="yes" overwrite="true">
+            <fileset dir="${lib.dir}">
+                <include name="**/*.jar"/>
+                <include name="**/*.zip"/>
+                <exclude name="**/javaws.jar"/>
+            </fileset>
+        </copy>
+
+        <copy todir="${deploy.temp}" failonerror="yes" overwrite="true">
+            <fileset dir="${conf.dir}">
+                <include name="**/*.*"/>
+            </fileset>
+        </copy>
+
+        <copy file="DM.jnlp" tofile="${deploy.outdir}\DM.jnlp"/>
+
+        <replace file="${deploy.outdir}\DM.jnlp">
+            <replacefilter token="%version%" value="${client.version}"/>
+        </replace>
+
+        <!-- reemplazo los valores propios del deploy -->
+        <replace dir="${deploy.temp}" summary="true"
+            includes="**/*.txt,**/*.properties,**/*.xml,**/*.jnlp">
+            <replacefilter token="%client.version%" value="${client.version}"/>
+            <replacefilter token="%server.version%" value="${server.version}"/>
+        </replace>
+
+        <replace dir="${deploy.outdir}" summary="true"
+            includes="**/*.txt,**/*.properties,**/*.xml,**/*.jnlp">
+            <replacefilter token="%client.version%" value="${client.version}"/>
+            <replacefilter token="%server.version%" value="${server.version}"/>
+        </replace>
+
+        <jar destfile="${deploy.outdir}/DM.jar" compress="true">
+            <zipfileset dir="${deploy.temp}"/>
+        </jar>
+
+        <delete dir="${deploy.temp}"/>
+        <mkdir dir="${deploy.temp}"/>
+
+        <copy todir="${deploy.temp}">
+            <fileset dir="${deploy.outdir}">
+                <include name="**/*.*"/>
+            </fileset>
+        </copy>
+
+        <delete dir="${deploy.outdir}"/>
+        <mkdir dir="${deploy.outdir}"/>
+
+        <!-- Firmar todos los jars -->
+        <signjar alias="Fahrenheit" keystore="Proyecto911.keystore" storepass="Proyecto911">
+            <fileset dir="${deploy.temp}">
+                <include name="*.jar"/>
+            </fileset>
+        </signjar>
+
+        <!-- Empaquetar deploy en un zip -->
+        <zip destfile="${deploy.outdir}\client.zip" compress="true">
+            <fileset dir="${deploy.temp}">
+                <include name="**/*.*"/>
+            </fileset>
+        </zip>
+
+        <!-- Borrar archivos del deploy -->
+        <delete dir="${deploy.temp}" failonerror="yes"/>
+        <delete>
+            <fileset dir="${deploy.outdir}">
+                <exclude name="client.zip"/>
+            </fileset>
+        </delete>
+
+    </target>
+
+    <path id="classpath">
+        <pathelement path="${deploy.temp}"/>
+        <fileset dir="${lib.dir}">
+            <include name="**/*.jar"/>
+            <include name="**/*.zip"/>
+        </fileset>
+    </path>
+
+    <!-- Compila toda la aplicacion-->
+    <target name="compile" depends="init">
+        <mkdir dir="${deploy.temp}"/>
+
+        <javac destdir="${deploy.temp}" debug="on" failonerror="yes" source="1.5" target="1.5">
+            <classpath refid="classpath"/>
+            <src path="${src.dir}"/>
+        </javac>
+
+        <!-- copiar los archivos asociados -->
+        <copy todir="${deploy.temp}" failonerror="yes" overwrite="true">
+            <fileset dir="${src.dir}">
+                <exclude name="**/*.java"/>
+                <exclude name="**/*.scc"/>
+            </fileset>
+        </copy>
+
+        <copy todir="${deploy.temp}" failonerror="yes" overwrite="true">
+            <fileset dir=".">
+                <include name="readme.txt"/>
+            </fileset>
+        </copy>
+    </target>
+
+    <target name="clean">
+        <delete dir="${deploy.temp}" failonerror="yes"/>
+        <delete dir="${deploy.outdir}" failonerror="yes"/>
+    </target>
+
+    <target name="javadoc" depends="init">
+        <javadoc destdir="${deploy.outdir}/docs"
+            access="protected" charset="ISO-8859-1" encoding="ISO-8859-1"
+            classpathref="classpath">
+            <packageset dir="${src.dir}">
+                <include name="ar/**"/>
+            </packageset>
+        </javadoc>
+    </target>
+</project>
