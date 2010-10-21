@@ -25,6 +25,7 @@ public class Configuration {
 	private int xmlConnectionTimeout;
 	private int fileReadTimeout;
 	private String caja;
+	private String sucursal;
 	
     private Configuration() {
 		Properties prop = new Properties();
@@ -43,6 +44,7 @@ public class Configuration {
 			this.xmlReadTimeout = Integer.parseInt(prop.getProperty("telefront.xml.read.timeout"));
 			this.fileReadTimeout = Integer.parseInt(prop.getProperty("telefront.file.read.timeout"));
 			this.caja = prop.getProperty("caja");
+			this.sucursal = prop.getProperty("sucursal");
 
         } catch (Exception e) {
 			logInitializatonError(e);
@@ -109,5 +111,15 @@ public class Configuration {
 	public void setCaja(String caja) {
 		this.caja = caja;
 	}
+
+	public String getSucursal() {
+		return sucursal;
+	}
+
+	public void setSucursal(String sucursal) {
+		this.sucursal = sucursal;
+	}
+	
+	
 	
 }
