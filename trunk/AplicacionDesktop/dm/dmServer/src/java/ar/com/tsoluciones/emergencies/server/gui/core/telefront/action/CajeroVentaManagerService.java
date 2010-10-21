@@ -6,6 +6,7 @@ import org.dom4j.Element;
 
 import ar.com.tsoluciones.arcom.cor.ServiceException;
 import ar.com.tsoluciones.arcom.security.Product;
+import ar.com.tsoluciones.arcom.security.Sucursal;
 import ar.com.tsoluciones.arcom.security.services.factory.CajeroVentaFactory;
 import ar.com.tsoluciones.arcom.security.services.proxyinterface.CajeroVentaServiceInterface;
 import ar.com.tsoluciones.telefront.dispatcher.XmlSerializable;
@@ -45,11 +46,24 @@ public class CajeroVentaManagerService extends TelefrontServiceFactory {
   public XmlSerializable guardarSesionVenta(String idCaja, String idCajero, String productos, String totalVenta) throws ServiceException {
 		CajeroVentaServiceInterface cajeroService = (CajeroVentaServiceInterface) new CajeroVentaFactory().newInstance();
 		
-		cajeroService.guardarSesionVenta(idCaja, idCajero, productos, totalVenta);
+		Long id = cajeroService.guardarSesionVenta(idCaja, idCajero, productos, totalVenta);
 		Document document = DocumentHelper.createDocument();
 		Element rootElement = document.addElement("sesionVenta");
-		rootElement.addElement("sesion").setText("ok");		
+		rootElement.addElement("sesion").setText(id.toString());		
 		return new XmlSerializableImpl(document.asXML());
+	}
+  
+  /**
+   * Obtiene una sucursal
+   *
+   * @param code Codigo del producto
+   * @throws ar.com.tsoluciones.arcom.cor.ServiceException
+   *          Cuando hay un error de negocios, por ejemplo, si el usuario no se puede logear
+   */
+  public XmlSerializable obtenerSucursal(String idSucursal) throws ServiceException {
+		CajeroVentaServiceInterface cajeroService = (CajeroVentaServiceInterface) new CajeroVentaFactory().newInstance();
+		Sucursal sucursal = cajeroService.obtenerSucursal(new Long(idSucursal));
+		return new XmlSerializableImpl(sucursal.toXml().asXML());
 	}
 
 }

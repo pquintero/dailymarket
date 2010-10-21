@@ -9,7 +9,7 @@
 		<property name="hibernate.dialect">org.hibernate.dialect.MySQLDialect</property>
 		<property name="hibernate.connection.driver_class">com.mysql.jdbc.Driver</property>
 		<property name="hibernate.connection.url">
-			jdbc:mysql://localhost/dailymarket?autoReconnect=true</property>
+			jdbc:mysql://localhost/dailymarket2?autoReconnect=true</property>
 		<property name="hibernate.connection.username">root</property>
 		<property name="hibernate.connection.password">daily</property>
 
@@ -54,8 +54,9 @@
 		<mapping resource="ar/com/tsoluciones/arcom/security/GroupUser.hbm.xml"/>
 		<mapping resource="ar/com/tsoluciones/arcom/security/Product.hbm.xml"/>
 		<mapping resource="ar/com/tsoluciones/arcom/security/GroupProduct.hbm.xml"/>
+		<mapping resource="ar/com/tsoluciones/arcom/security/ProductoVenta.hbm.xml"/>
 		<mapping resource="ar/com/tsoluciones/arcom/security/SesionVenta.hbm.xml"/>
-
+		<mapping resource="ar/com/tsoluciones/arcom/security/Sucursal.hbm.xml"/>
 		
 
 	</session-factory>

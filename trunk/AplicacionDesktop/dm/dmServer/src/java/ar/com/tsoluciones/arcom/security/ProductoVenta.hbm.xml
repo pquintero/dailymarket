@@ -7,7 +7,7 @@
             <generator class="identity"/>
         </id>
 				
-		 <many-to-one name="producto" not-null="true" class="ar.com.tsoluciones.arcom.security.Product" fetch="join" foreign-key="FK_producto_producto_venta"/>
-		 <many-to-one name="sesionVenta" class="ar.com.tsoluciones.arcom.security.SesionVenta" not-null="true" fetch="select" foreign-key="FK_sesion_venta_producto_venta"/>		    	    			
+		 <many-to-one name="producto" column="idProduct" not-null="true" class="ar.com.tsoluciones.arcom.security.Product" fetch="join" foreign-key="FK_producto_producto_venta"/>
+		 <many-to-one name="sesionVenta" column="idSesion" class="ar.com.tsoluciones.arcom.security.SesionVenta" not-null="true" fetch="select" foreign-key="FK_sesion_venta_producto_venta"/>		    	    			
     </class>   
 </hibernate-mapping>

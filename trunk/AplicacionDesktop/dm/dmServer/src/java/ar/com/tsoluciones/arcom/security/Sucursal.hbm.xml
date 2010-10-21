@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 2.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+    <class lazy="false" name="ar.com.tsoluciones.arcom.security.Sucursal" table="sucursal">
+        <id column="idSucursal" name="id" type="java.lang.Long">
+            <generator class="identity"/>
+        </id>
+		
+		<property column="nombre" name="nombre"  type="java.lang.String"/>
+		<property column="direccion" name="direccion"  type="java.lang.String"/>
+		<property column="telefono" name="telefono"  type="java.lang.String"/>
+		<property column="cuit" name="cuit"  type="java.lang.String"/>
+    </class>   
+</hibernate-mapping>
