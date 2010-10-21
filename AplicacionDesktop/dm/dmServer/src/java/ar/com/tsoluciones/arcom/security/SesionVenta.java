@@ -8,7 +8,7 @@ public class SesionVenta {
 	private Long id;
 	private User cajero;
 	private Double totalVenta;
-	private Set<Product> productos;
+	private Set<ProductoVenta> productos;
 	private Long idCaja;
 	private Date fechaInicio = new Date();
 
@@ -36,11 +36,11 @@ public class SesionVenta {
 		this.totalVenta = totalVenta;
 	}
 
-	public Set<Product> getProductos() {
+	public Set<ProductoVenta> getProductos() {
 		return productos;
 	}
 
-	public void setProductos(Set<Product> productos) {
+	public void setProductos(Set<ProductoVenta> productos) {
 		this.productos = productos;
 	}
 

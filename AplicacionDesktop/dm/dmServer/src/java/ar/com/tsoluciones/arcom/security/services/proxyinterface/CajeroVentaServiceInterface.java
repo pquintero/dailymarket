@@ -1,6 +1,8 @@
 package ar.com.tsoluciones.arcom.security.services.proxyinterface;
 
 import ar.com.tsoluciones.arcom.security.Product;
+import ar.com.tsoluciones.arcom.security.SesionVenta;
+import ar.com.tsoluciones.arcom.security.Sucursal;
 
 public interface CajeroVentaServiceInterface {
 	
@@ -17,6 +19,9 @@ public interface CajeroVentaServiceInterface {
 	   *
 	   * @return void
 	   */
-	  public void guardarSesionVenta(String idCaja, String idCajero, String productos, String totalVenta);
+	  public Long guardarSesionVenta(String idCaja, String idCajero, String productos, String totalVenta);
+	  
+	  public SesionVenta obtenerSesionVenta(Long id) ;
+	public Sucursal obtenerSucursal(Long id);
 
 }

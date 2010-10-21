@@ -1,11 +1,11 @@
 package ar.com.tsoluciones.arcom.security.services;
 
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
 import org.hibernate.Hibernate;
+import org.hibernate.LockMode;
 import org.hibernate.type.Type;
 
 import ar.com.tsoluciones.arcom.hibernate.HibernateService;
@@ -13,6 +13,7 @@ import ar.com.tsoluciones.arcom.hibernate.Transactional;
 import ar.com.tsoluciones.arcom.security.Product;
 import ar.com.tsoluciones.arcom.security.ProductoVenta;
 import ar.com.tsoluciones.arcom.security.SesionVenta;
+import ar.com.tsoluciones.arcom.security.Sucursal;
 import ar.com.tsoluciones.arcom.security.User;
 import ar.com.tsoluciones.arcom.security.services.factory.UserServiceFactory;
 import ar.com.tsoluciones.arcom.security.services.proxyinterface.CajeroVentaServiceInterface;
@@ -33,7 +34,7 @@ public class CajeroVentaService implements CajeroVentaServiceInterface {
 	}
 
 	@Transactional
-	public void guardarSesionVenta(String idCaja, String cajero,
+	public Long guardarSesionVenta(String idCaja, String cajero,
 			String productos, String totalVenta) {
 		
 		UserServiceInterface userInterface = (UserServiceInterface) new UserServiceFactory().newInstance();
@@ -43,19 +44,42 @@ public class CajeroVentaService implements CajeroVentaServiceInterface {
 		SesionVenta sesionVenta = new SesionVenta();
 		sesionVenta.setCajero(user);
 		sesionVenta.setTotalVenta(Double.valueOf(totalVenta));
-		Set<Product> productosVenta = new HashSet<Product>();
+		Set<ProductoVenta> productosVenta = new HashSet<ProductoVenta>();
 		sesionVenta.setIdCaja(Long.valueOf(idCaja));
+		
+//		sesionVenta.setProductos(productosVenta);
+		
+		HibernateService.updateObject(sesionVenta);
 		
 		for (int i = 0; i < codigos.length; i++) {
 			String codeProd = (String) codigos[i];
 			Product producto = getProductByCode(codeProd);
-			productosVenta.add(producto);
+			ProductoVenta productoVenta = new ProductoVenta();
+			productoVenta.setProducto(producto);
+			productoVenta.setSesionVenta(sesionVenta);
+			productosVenta.add(productoVenta);
+			HibernateService.updateObject(productoVenta);
 		}
 		
-		sesionVenta.setProductos(productosVenta);
+		return sesionVenta.getId();
 		
-		HibernateService.updateObject(sesionVenta);
+	}
+	
+	
+	public SesionVenta obtenerSesionVenta(Long id) {
 		
+
+		SesionVenta sesionVenta = HibernateService.getObject(SesionVenta.class, id, LockMode.NONE);
+		return sesionVenta;
+		
+	}
+	
+	public Sucursal obtenerSucursal(Long id) {
+
+		Sucursal sucursal = HibernateService.getObject(Sucursal.class, id,
+				LockMode.NONE);
+		return sucursal;
+
 	}
 
 }
