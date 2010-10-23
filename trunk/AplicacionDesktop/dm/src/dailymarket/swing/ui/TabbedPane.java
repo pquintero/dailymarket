@@ -47,15 +47,16 @@ public class TabbedPane extends JPanel {
 	JTextArea textArea = new JTextArea();
 	JButton aceptarSeleccionadosButton = new JButton("Aceptar Seleccionados");
 
-
+	DefaultTableModel tableModelProducts;
 	
-    public TabbedPane(DefaultTableModel tableModelProducts, HuellaDigitalInterface supervisorFrame, JLabel mensajeLector, JLabel imgHuella) {
+    public TabbedPane(DefaultTableModel productsList, HuellaDigitalInterface supervisorFrame, JLabel mensajeLector, JLabel imgHuella) {
         frameParent = supervisorFrame;
-    	
+         tableModelProducts = productsList;
+        
         JTabbedPane tabbedPane = new JTabbedPane();
         tabbedPane.setPreferredSize(new Dimension(600, 200));
         
-        panel1 = makeCancelarProductosPanel("", tableModelProducts);
+        panel1 = makeCancelarProductosPanel("");
         tabbedPane.addTab("Cancelar Productos", null, panel1,
                 "Cancelacion de los pedidos seleccionados por el cajero");
         tabbedPane.setMnemonicAt(0, KeyEvent.VK_1);
@@ -181,7 +182,7 @@ public class TabbedPane extends JPanel {
     }
     
     
-    protected JComponent makeCancelarProductosPanel(String text, DefaultTableModel tableModelProducts) {
+    protected JComponent makeCancelarProductosPanel(String text) {
     	
         JPanel panel = new JPanel(false);
         
@@ -209,12 +210,14 @@ public class TabbedPane extends JPanel {
        tableSelecteds.setModel(tableModelSelecteds);
         tableModelSelecteds.setDataVector(
                new Object[][] {},
-               new Object[] { "Cancel","Descripcion", "Cantidad", "Precio", "Total" });
+               new Object[] { "Cancel","Descripcion", "Cantidad", "Precio", "Total","nroRow" });
 	    
        tableSelecteds.getColumnModel().getColumn(1).setPreferredWidth(185);
        tableSelecteds.getColumnModel().getColumn(2).setPreferredWidth(3);
        tableSelecteds.getColumnModel().getColumn(3).setPreferredWidth(5);
        tableSelecteds.getColumnModel().getColumn(4).setPreferredWidth(5);
+       tableSelecteds.getColumnModel().getColumn(5).setPreferredWidth(0);
+
        tableSelecteds.setFont(new Font("Serif", Font.CENTER_BASELINE, 15));
 
 	    panel.add(scrollRelationsPane);
@@ -222,8 +225,8 @@ public class TabbedPane extends JPanel {
 	    //Agrego rows en true, las seleccionadas por el cajero
     	for(int i = 0 ; i < tableModelProducts.getRowCount(); i++ ){
     		if( (Boolean) tableModelProducts.getValueAt(i, 0)){
-				tableModelSelecteds.addRow(new Object[]{ new Boolean(false),tableModelProducts.getValueAt(i, 1), tableModelProducts.getValueAt(i, 2),
-						tableModelProducts.getValueAt(i, 3), tableModelProducts.getValueAt(i, 4)});
+    			tableModelSelecteds.addRow(new Object[]{ new Boolean(false),tableModelProducts.getValueAt(i, 2), tableModelProducts.getValueAt(i, 3),
+				tableModelProducts.getValueAt(i, 4), tableModelProducts.getValueAt(i, 5), i});
 				
 				tableSelecteds.getColumn("Cancel").setCellRenderer(new MultiRenderer());
 				tableSelecteds.getColumn("Cancel").setCellEditor(new MultiEditor());
@@ -244,9 +247,18 @@ public class TabbedPane extends JPanel {
 				aceptarSeleccionadosButton.setEnabled(false);
 
 				
-		}
-	});
+			}
+		});
+	  	  JButton terminarButton = new JButton("Finalizar Y Volver");
+	      terminarButton.setMnemonic(KeyEvent.VK_V);
+	      terminarButton.addActionListener( new ActionListener() {
+				public void actionPerformed(ActionEvent arg0) {
+				((SupervisorFrame)frameParent).dispose();	
+				}
+			});
+	  
     	panel.add(aceptarSeleccionadosButton);
+    	panel.add(terminarButton);
        
         panel.setPreferredSize(new Dimension(600, 200));
         panel.setLayout( new FlowLayout(FlowLayout.CENTER));
@@ -258,7 +270,7 @@ public class TabbedPane extends JPanel {
 		aceptarButton.setEnabled(true);
 		aceptarSeleccionadosButton.setEnabled(true);
 		firmaEmpleado.setEnabled(true);
-		firmaSupervisor.setEnabled(false);
+		firmaSupervisor.setEnabled(true);
 	}
 
 	public String getMotivoDeCancelacion() {
@@ -266,7 +278,26 @@ public class TabbedPane extends JPanel {
 	}
 
 	public void doCancelProducts() {
-		// TODO Auto-generated method stub
+
+		int cantCancel = 0;
+		for(int i = 0 ; i < tableModelSelecteds.getRowCount(); i++ ){
+    		if( (Boolean) tableModelSelecteds.getValueAt(i, 0)){
+    	/*
+    	 * ABE ACA SE SACAN LOS PRODUCTOS DE LA LISTA
+    	 * PARA SACARLOS LE PASO EL NUMERO DE LA FILA
+    	 * 
+    	 * TE queda sacr el objeto de la session asi no se persiste. y actualizar el Monto Total (decrementar)
+    	 * 
+    	 */
+    			
+    		tableModelProducts.removeRow( new Integer(((String)tableModelSelecteds.getValueAt(i, 5).toString())) - cantCancel);
+
+    		tableSelecteds.getColumn("Cancel").setCellRenderer(new MultiRenderer());
+			tableSelecteds.getColumn("Cancel").setCellEditor(new MultiEditor());
+			cantCancel++;	
+    		}
+    	}
+		
 		
 	}
 
