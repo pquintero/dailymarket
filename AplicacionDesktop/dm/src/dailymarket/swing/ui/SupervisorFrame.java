@@ -78,10 +78,8 @@ public class SupervisorFrame extends  DailyMarketFrame implements HuellaDigitalI
 		mensajesPanel.setPreferredSize(new Dimension(690,60));
 		mensajesPanel.setBorder(new TitledBorder(null, "Mensajes",
 				TitledBorder.DEFAULT_JUSTIFICATION, TitledBorder.DEFAULT_POSITION, null, Color.BLACK));
-//		mensajesPanel.setBackground(Color.orange);
 		
 		mensajesPanel.add(mensaje);
-//		getContentPane().setBackground(Color.blue);
 		
 		JPanel messageFingerPrintPanel = new JPanel();
 		messageFingerPrintPanel.setPreferredSize(new Dimension(180,60));
