@@ -21,6 +21,13 @@
         <put name="body"        value=".portal.body" />
     </definition>	
 	
+	<definition name=".mailMainLayout" path="/layouts/mainLayout.jsp">
+        <put name="title"       value="" />
+        <put name="header"      value="/common/mailHeader.jsp" />
+        <put name="footer"      value="/common/footer.jsp" />
+        <put name="body"        value=".portal.body" />
+    </definition>
+	
     <definition name=".errorLayout" path="/layouts/errorLayout.jsp">
         <put name="title"       value="" />
         <put name="body"        value=".portal.body" />
@@ -219,6 +226,25 @@
         <put name="body"    value="/pages/manager/ordersPending.jsp" />
         <put name="buttons" value="" />
     </definition>
+    
+    <definition name="tiles.home.manager.confirmMail" extends=".mailMainLayout">
+        <put name="title"   value="ordersPending.title" />
+        <put name="body"    value="tiles.home.manager.confirmMail.body" />
+    </definition>
+    <definition name="tiles.home.manager.confirmMail.body" extends=".homeLayout">
+   		<put name="title"   value="ordersPending.title" />
+        <put name="action"  value="manager" />
+        <put name="tabs"    value=""/>
+        <put name="body"    value="/pages/manager/confirmMail.jsp" />
+        <put name="buttons" value="tiles.home.manager.confirmMail.buttons" />
+    </definition>
+	<definition name="tiles.home.manager.confirmMail.buttons" extends=".buttonsLayout">
+        <putList name="buttonList">
+            <item value="common.button.cancel" link="cancelMail" classtype="org.apache.struts.tiles.beans.SimpleMenuItem"/>
+            <item value="common.button.sendMail" link="sendOrder" classtype="org.apache.struts.tiles.beans.SimpleMenuItem"/>
+        </putList>
+    </definition> 
+	
 	
     <definition name="tiles.home.manager.estadisticas" extends=".managerMainLayout">
         <put name="title"   value="estadisticas.home" />

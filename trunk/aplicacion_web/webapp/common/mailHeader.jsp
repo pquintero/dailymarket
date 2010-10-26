@@ -31,7 +31,7 @@ function MM_swapImage() { //v3.0
 	<link href="site.css" rel="stylesheet" type="text/css">
 	<title>DailyMarket </title>
 </head>
-<body>
+<body onload="popup()">
 <table  align="center" bgcolor="#FFFFFF" cellpadding="0" cellspacing="0" border="0" width="100%">
   	<tr>
     	<td align="left" valign="top" ><img src="images/header/tituloDailyMarket.jpg"></td>
@@ -43,7 +43,7 @@ function MM_swapImage() { //v3.0
 			<table cellpadding="0" class="bullets" cellspacing="0" border="0" align="right">
     			<tr>
        				<td>
-						<a href="manager.do?VirtualDispatchName=initAction" ><img src="images/header/home.jpg"   name="home"  border="0" alt="Ir a Inicio"></a></td>
+						<a><img src="images/header/home.jpg"   name="home"  border="0" alt="Ir a Inicio"></a></td>
 					<td>&nbsp;</td>
 	   				<td><a href="logout.do?VirtualDispatchName=doLogout" ><img src="images/header/exit.jpg" name="boton3" border="0" alt="Salir"></a></td>
     			</tr>
@@ -52,40 +52,9 @@ function MM_swapImage() { //v3.0
 	</tr>
 	<tr>
 		<td align="left" valign="top" >
-			<h1 class="formtitle">MANAGER</h1>
+			<h1 class="formtitle">Mail de Productos pendientes</h1>
 		</TD> 
 	</TR>		
-	<tr>
-		<td align="center">
-			<table class="bullets" width="800" align="center" cellpadding="0"  cellspacing="0" border="0">			
-				<TR>
-					<td width="25"></td>
-					<TD class="inciarOrdenLeft"> 
-						<a href="manager.do?VirtualDispatchName=initAction">Emisión</a>
-					</TD>
-					
-					<td width="25"></td>
-					<TD class="inciarOrdenLeft"> 
-						<a href="manager.do?VirtualDispatchName=doHomeReportes">Reportes</a>
-					</TD>
-				 
-					<td width="25"></td>
-					<TD class="inciarOrdenLeft"> 
-						<a href="manager.do?VirtualDispatchName=doHomeEstadisticas">Estadísticas</a>
-					</TD>
-				
-					<td width="25"></td>
-					<TD class="inciarOrdenLeft"> 
-						<a href="manager.do?VirtualDispatchName=doHomeIndicadores">Indicadores</a>
-				
-					<td width="25"></td>
-					<TD class="inciarOrdenLeft"> 
-						<a href="simulator.do?VirtualDispatchName=initAction">Simulador de Compras</a>
-					</TD> 	
-				</tr>				
-			</table>
-		</td>
-	</tr>
 	<tr>
     	<td class="logout2" colspan="3" bgcolor="#FFFFFF"  align="right"></td>
 	</tr>
