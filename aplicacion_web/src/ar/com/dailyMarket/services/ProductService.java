@@ -6,6 +6,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.StringTokenizer;
 
 import javax.naming.Context;
 import javax.naming.InitialContext;
@@ -130,25 +131,32 @@ public class ProductService extends MailService{
 		return vector;
 	}
 	
-	public StringBuffer sendOrder(Long[] ids) {
-		//Actualizo estado
+	public List<Product> getProductsFromArray(Long[] ids) {
 		List<Product> products = new ArrayList<Product>();
+		for (Long productid : ids) {
+			products.add(getProductByPK(productid));
+		}
+		return products;
+	}
+	
+	public void sendOrder(Long[] ids, String to, String from, String subject, String body) {
+		//Actualizo estado
 		for (int i = 0; i < ids.length; i++) {
 			Product product = getProductByPK((Long)ids[i]);
 			product.setState(Product.PRODUCT_STATE_SEND);
 			save(product);
-			products.add(product);
 		}
-		//Envío emal a deposito con el pedido
-		ConfigurationService configurationService = new ConfigurationService();
-		String[] emailTo = new String[1];
-		Configuration conf = configurationService.getConfiguration();
-		StringBuffer sb = createMessage(products);
-		if (conf != null) {
-			emailTo[0] = conf.getEmailDeposito();
-			super.sendMail(emailTo, sb);
+		
+		List<String> emailTo = new ArrayList<String>();
+		
+		StringTokenizer st = new StringTokenizer(to, ";");
+    	for (int i = 0; st.hasMoreTokens(); i++) {
+			String next = st.nextToken();
+			emailTo.add(next);
 		}
-		return sb;
+    	
+    	//TODO SACAR SUBJECT Y FROM DE initSendMail()
+//		super.sendMail((String[]) emailTo.toArray(), new StringBuffer(body));
 	}
 	
 	public StringBuffer createMessage (List<Product> products) {
@@ -176,4 +184,14 @@ public class ProductService extends MailService{
 		product.setActive(false);
 		save(product);
 	}
+
+	public String getMaildestinataries() {
+		ConfigurationService configurationService = new ConfigurationService();
+		Configuration conf = configurationService.getConfiguration();
+		if (conf != null) {
+			return conf.getEmailDeposito();
+		}
+		return "";
+	}
+
 }

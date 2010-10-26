@@ -51,10 +51,14 @@
 			<form-property name="dsTable" type="java.lang.String" />
 			<form-property name="dsTableArray" type="java.lang.String[]" />
 			<form-property name="productsIds" type="java.lang.Long[]"/>
-			<form-property name="envioMail" type="java.lang.Boolean" initial="false"/>
 			
 			<form-property name="queryDispatchName" type="java.lang.String" initial=""/>
 			<form-property name="collectionName" type="java.lang.String" initial="" />
+			
+			<form-property name="mailBody" type="java.lang.String" initial="" />
+			<form-property name="mailTo" type="java.lang.String" initial="" />
+			<form-property name="mailSubject" type="java.lang.String" initial="" />
+			<form-property name="mailFrom" type="java.lang.String" initial="" />
 		</form-bean>
 		
 		<form-bean name="FilterUserForm" type="org.apache.struts.action.DynaActionForm">
@@ -358,7 +362,7 @@
             path="/manager" 
             type="ar.com.dailyMarket.ui.ManagerAction" 
             parameter="VirtualDispatchName"
-            scope="request" 
+            scope="session" 
             validate="false"
             name="ManagerForm">
 			
@@ -368,6 +372,7 @@
 			<forward name="showEstadisticasHome" path="/estadisticas.do"/>
 			<forward name="showIndicadoresHome" path="/indicadores.do"/>
 			<forward name="showReportesHome" path="/reportes.do"/>
+			<forward name="showConfirmMail" path="tiles.home.manager.confirmMail"/>
 		</action>
 		
 		<action 

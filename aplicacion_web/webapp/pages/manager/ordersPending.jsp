@@ -2,14 +2,7 @@
 <%@ taglib uri="/tags/struts-bean" prefix="bean" %>
 <%@ taglib uri="/tags/displaytag" prefix="ds" %>
 
-<link href="../../site.css" rel="stylesheet" type="text/css">
-
-<bean:define id="envioMail" property="envioMail" name="ManagerForm" type="java.lang.Boolean"/>
-<html:hidden property="envioMail"/>
-
 <script type="text/javascript">
-
-
 	function isAllUnselected() {
 		var ids = document.getElementsByName("transportersIds");
 		var i = 0;
@@ -26,14 +19,8 @@
 	}
 	
 	function sendOrder() {
-		document.forms[0].VirtualDispatchName.value='sendOrder';
+		document.forms[0].VirtualDispatchName.value='redirectToConfirmSendOrder';
 		document.forms[0].submit();
-	}
-
-	function popup(){
-		if(document.getElementById("envioMail").value == "true") {
-			window.open('pages/manager/sendOrders.jsp','my_new_window','toolbar=no, location=no, directories=no, status=yes, menubar=no, scrollbars=yes, resizable=no,copyhistory=no, width=815, height=640');
-		}
 	}
 </script>
 
