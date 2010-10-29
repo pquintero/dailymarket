@@ -132,4 +132,87 @@ CREATE TABLE `dailymarket`.`sesionventa` (
 )
 
 
+Agregar en el ABM del producto el campo código de producto
+
+########## EJECUCION DE LA CARGA MASIVA
+
+- para el 2009 en UserAction cambiar el metodo     	//CARGA DE SESION VENTA
+    	userService.cargaMasivaDeSesiones(100, 2009); pasaron de 80 a 100 las ventas maximas por dia
+		
+- para el 2010 en UserAction cambiar el metodo     	//CARGA DE SESION VENTA
+    	userService.cargaMasivaDeSesiones(120, 2010); pasaron de 80 a 120 las ventas maximas por dia
+		
+	Cambiar en UserService 			GregorianCalendar gcUltima = new GregorianCalendar(anio, 9, 29); que es la fecha de hoy
+	
+	
+
+	public void cargaMasivaDeSesiones(int maximoVentasPorDia, int anio) {
+		
+		try {
+			GregorianCalendar gc = new GregorianCalendar(anio,0,1);
+			SimpleDateFormat sf = new SimpleDateFormat("dd/MM/yyyy");
+			System.out.println("Se crean ventas desde " + sf.format(gc.getTime()));
+			GregorianCalendar gcUltima = new GregorianCalendar(anio, 11, 31);
+			
+			int cantidadVentasPorDia = (10 +new Random().nextInt(maximoVentasPorDia));  
+			UserService userService = new UserService();
+			ProductService productService = new ProductService();
+			
+			User user = userService.getUser("abe");
+			
+			while (gc.getTime().before(gcUltima.getTime())) {
+					
+					for (int i = 0; i < cantidadVentasPorDia; i++) {
+						
+						Double totalVenta = new Double(0);
+						
+						SesionVenta sesionVenta = new SesionVenta();
+						sesionVenta.setCajero(user);
+						sesionVenta.setFechaInicio(gc.getTime());
+						sesionVenta.setIdCaja(new Long(1));
+						
+						HibernateHelper.currentSession().saveOrUpdate(sesionVenta);
+						HibernateHelper.currentSession().flush();		
+						
+						for (int j = 1; j < 9; j++) {
+							Product product = productService.getProductByPK(new Long(j));
+							int cant = (new Random().nextInt(11)); 
+							for (int k = 0; k < cant; k++) {	//cantidad del mismo producto
+								
+								ProductoVenta productoVenta = new ProductoVenta();
+								productoVenta.setProducto(product);
+								productoVenta.setSesionVenta(sesionVenta);
+								HibernateHelper.currentSession().saveOrUpdate(productoVenta);
+								HibernateHelper.currentSession().flush();
+								
+								totalVenta+= product.getPrice();
+							}
+
+							
+						}
+						
+						sesionVenta.setTotalVenta(totalVenta);
+						
+						HibernateHelper.currentSession().saveOrUpdate(sesionVenta);
+						HibernateHelper.currentSession().flush();	
+						
+					}
+					
+					gc.add(GregorianCalendar.DAY_OF_YEAR, 1);
+				
+			}
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+
+		
+		
+		
+		
+	}
+		
+
+
 	
