@@ -44,3 +44,92 @@ forms[0].VirtualDispatchName.value='executeMonthlySales';
 product.state.pending
  
 super.sendMail(emailTo, sb);
+
+_____________________________________________________________
+______________________________________________________________
+
+
+En la pantalla actualmente se filtra por grupo de producto y/o producto, ademas de que se ingresan los dias a 
+simular (para el TamPedido) y los dias de margen (para el StockReposicion)
+ 
+Hoy es 25 de octubre
+Si pongo que simule 6 dias, estoy diciendo que por seis dias quiero tener merca
+Entonces:
+Voy a 25 de octubre del 2009 y me voy moviendo dia por dia, incrementando para CADA producto filtrado la cantidad vendida.
+Una vez que termino de recorrer los dias, a esa cantidad le sumo o le resto el crecimiento (puede ser + o -). Eso me da el 
+tamaño de pedido de cada producto.
+Por otro lado, con los dias de margen, estoy diciendo, bueno, dos dias antes de quedarme sin stock, quiero que ya me aparezca 
+para poder hacer el pedido (siempre estimando), osea, que dos días antes debe aparecer en la lista (del home del manager) 
+de emision de pedido.
+Ahi lo que tenes que hacer, cuando vas recorriendo los dias de las ventas a simular, preguntar si faltan dos dias para terminar
+de simular, si es asi, incrementas esos dias (configurados en el margen de dias) y eso (sumando el crecimiento) te da el SR.
+ 
+Con respecto al creciemiento del super, lo haria desde, por ejemplo este caso, 25 de octubre del año pasado a hoy
+
+
+
+------..--..--..--..--..--..
+1- Armar mapeo de cosas que carga la app descktop
+2- Check en jsp para ver los elementos a simular, campo donde se ponen los valores devueltos por simulador con opcion de cambiarlo.
+	(filtras productos o grupo de productos y recien ahi das la opcion de simular?)
+	Boton "filtrar" (trae productos ejerciendo filtros)
+	Boton de "simular" (simula)
+	Boton "Aplicar cambios" (aplica cambios en los productos, con o sin check, mientras tenga algo en los campos)
+3- Armar algoritmo de simulacion
+4- Armar base de datos con datos de 2 o 3 años de ventas
+
+
+por cada año pedido (contar año actual)
+	ver ventas de ese año 
+Calcular porcentajes de diferencias (n-1)
+CALCULAR MEDIA DE PORCENTAJES ?
+
+por cada producto
+	por la cantidad de años pedidos
+		desde la fecha pedida hasta esa misma fecha mas los dias pedidos(del año i)
+		Traer ventas entre esas fechas
+		TP Total de ventas
+		SR totals ventas - ventas en los n ultimos dias
+
+	CALCULAR MEDIA DE VENTAS Y SR?
+	MULTIPLICAR CON MEDIA DE PORCENTAJES?
+____________________________________________________________________________
+
+<tr><td>
+	<TABLE align="right" class="buttons" border="0" cellspacing="0" cellpadding="3">
+		<TR>	
+			<td width="100%">&nbsp;</td>
+			<TD align="right"  width="130px" >        				
+			   <input width="130px" class="btn" value="Enviar Pedido"
+					 onclick="sendOrder();">
+			</TD>	
+		</TR>
+	</TABLE>
+</td></tr>
+
+____________________________________________________________________________
+
+DIFERENCIAS
+
+- en producto.hbm de DESCKTOP no tiene la propiedad activo
+- home de manager, los check andan mal. AllUnselected no esta en el formulario. Usar multibox
+
+
+CREATE TABLE `dailymarket`.`productoventa` (
+  `id` INTEGER UNSIGNED NOT NULL AUTO_INCREMENT,
+  `idProduct` INTEGER UNSIGNED NOT NULL,
+  `idSesion` INTEGER UNSIGNED NOT NULL,
+  PRIMARY KEY (`id`)
+)
+
+CREATE TABLE `dailymarket`.`sesionventa` (
+  `idSesion` INTEGER UNSIGNED NOT NULL AUTO_INCREMENT,
+  `cajeroid` INTEGER UNSIGNED,
+  `totalventa` DOUBLE,
+  `idcaja` INTEGER UNSIGNED,
+  `fechainicio` TIMESTAMP NOT NULL,
+  PRIMARY KEY (`idSesion`)
+)
+
+
+	
