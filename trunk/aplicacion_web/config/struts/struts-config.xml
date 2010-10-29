@@ -213,6 +213,7 @@
 			<form-property name="days" type="java.lang.Integer"/>
 			<form-property name="margen" type="java.lang.String"/>
 			<form-property name="yearFrom" type="java.lang.String"/>
+			<form-property name="simulatedDay" type="java.lang.String"/>
 			
 			<form-property name="productsArray" type="java.lang.String[]"/>
 			<form-property name="simulatedSizeOfPurchaseArray" type="java.lang.String[]"/>

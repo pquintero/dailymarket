@@ -1,5 +1,8 @@
 package ar.com.dailyMarket.services;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
@@ -43,12 +46,19 @@ public class SimulatorService extends MailService{
 		Integer dias = (Integer) form.get("days");
 		String margen = (String) form.get("margen");
 		String yearFrom = (String) form.get("yearFrom");
+		DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
+		Date simulatedDay;
+		try {
+			simulatedDay = df.parse((String) form.get("simulatedDay"));
+		} catch (ParseException e) {
+			simulatedDay = new Date();
+		}
 		
 		Double porcentaje = calcularPorcentaje(yearFrom);
 		
 		for (int i = 0; i < productsIds.length; i++) {
 			if (checks.contains(productsIds[i])) {
-				String[] res = simularProducto(productsIds[i], dias, Integer.valueOf(margen), yearFrom, porcentaje);
+				String[] res = simularProducto(productsIds[i], dias, Integer.valueOf(margen), yearFrom, porcentaje, simulatedDay);
 				ssopa[i]=res[0];
 				srsa[i]=res[1];
 			} else {
@@ -69,7 +79,7 @@ public class SimulatorService extends MailService{
 		Integer yearHoy = hoy.get(GregorianCalendar.YEAR);
 		
 		ArrayList<Integer> ventas = new ArrayList<Integer>();
-		for (Integer aux = yearDesde.intValue(); aux <= yearHoy; aux++) {
+		for (Integer aux = yearDesde.intValue(); aux.intValue() <= yearHoy.intValue(); aux++) {
 			ventas.add(ventasAnio(aux));
 		}
 		Double sumatoria = 0D;
@@ -80,21 +90,24 @@ public class SimulatorService extends MailService{
 			if (primera.intValue() == 0) {
 				primera = 1;
 			}
-			sumatoria += new Double(venta / primera);
+			sumatoria += new Double((venta.doubleValue() / primera.doubleValue()));
 			primera = venta.intValue();
 		}
 		
-		return sumatoria/ventas.size();
+		return sumatoria/(ventas.size() - 1);
 	}
 
 	//Devuelve el promedio de ventas en los años pedidos
-	private String[] simularProducto(String productoId, Integer dias, Integer margen, String yearFrom, Double porcentaje) {
+	private String[] simularProducto(String productoId, Integer dias, Integer margen, String yearFrom, Double porcentaje, Date simulated) {
 		String[] res = {"",""};
 		Product producto = (Product) HibernateHelper.currentSession().load(Product.class, Long.valueOf(productoId));
 		GregorianCalendar hoy = new GregorianCalendar();
-		GregorianCalendar cal = new GregorianCalendar(Integer.valueOf(yearFrom), 0, 1);
+		hoy.setTime(simulated);
+		GregorianCalendar cal = new GregorianCalendar(Integer.valueOf(yearFrom), 
+									hoy.get(GregorianCalendar.MONTH), 
+									hoy.get(GregorianCalendar.DAY_OF_MONTH));
 		
-		int years = 0;
+		Integer years = 0;
 		ArrayList<Integer> tpList = new ArrayList<Integer>();
 		ArrayList<Integer> srList = new ArrayList<Integer>();
 		
@@ -115,7 +128,9 @@ public class SimulatorService extends MailService{
 			srList.add(sr);
 			
 			cal.add(GregorianCalendar.YEAR, 1);
-			cal.set(cal.get(GregorianCalendar.YEAR), 0, 1);
+			cal.set(cal.get(GregorianCalendar.YEAR),
+					hoy.get(GregorianCalendar.MONTH), 
+					hoy.get(GregorianCalendar.DAY_OF_MONTH));
 			years++;
 		}
 		
@@ -126,7 +141,7 @@ public class SimulatorService extends MailService{
 			aux+= tpi;
 		}
 		
-		res[0] = new Integer(new Double(new Double(aux / i) * porcentaje).intValue()).toString();
+		res[0] = new Integer(new Double(new Double(aux.doubleValue() / i.doubleValue()) * porcentaje).intValue()).toString();
 		
 		aux = 0;
 		i = 0;
@@ -134,7 +149,7 @@ public class SimulatorService extends MailService{
 			Integer sri = iterator.next();
 			aux+= sri;
 		}
-		res[1] = new Integer(new Double(new Double(aux / i) * porcentaje).intValue()).toString();
+		res[1] = new Integer(new Double(new Double(aux.doubleValue() / i.doubleValue()) * porcentaje).intValue()).toString();
 		
 		return res;
 	}
@@ -148,8 +163,8 @@ public class SimulatorService extends MailService{
 	}
 	
 	private Integer ventasAnio(Integer year) {
-		GregorianCalendar desde = new GregorianCalendar(year, 0, 1);
-		GregorianCalendar hasta = new GregorianCalendar(year, 11, 31);
+		GregorianCalendar desde = new GregorianCalendar(year.intValue(), 0, 1);
+		GregorianCalendar hasta = new GregorianCalendar(year.intValue(), 11, 31);
 		
 		Criteria c = HibernateHelper.currentSession().createCriteria(ProductoVenta.class);
 		Criteria c2 = c.createCriteria("sesionVenta");
@@ -158,7 +173,7 @@ public class SimulatorService extends MailService{
 		
 		return c.list().size();
 	}
-
+	
 	public void aplicarCambios(ActionForm form) {
 		String[] productsIds = (String[]) ((DynaActionForm)form).get("productsArray");
 		List<String> checks =  Arrays.asList(((String[]) ((DynaActionForm)form).get("simuladorArray")));

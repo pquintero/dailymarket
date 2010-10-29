@@ -73,12 +73,15 @@
 			<td>&nbsp;</td>
 			<TH><bean:message key="SimulatorForm.yearFrom"/></TH>
 			<td>&nbsp;</td>
-			<TD colspan="4">
+			<TD>
 				<html:select property="yearFrom">
 					<html:option value="2009">2009</html:option>
 					<html:option value="2008">2008</html:option>
 				</html:select>
 			</TD>
+			<TH><bean:message key="SimulatorForm.simulatedDate"/></TH>
+			<td>&nbsp;</td>
+			<TD><html:text property="simulatedDay" size="10"  maxlength="10"/></TD>
 		</TR>
 		<tr>
 			<td colspan="7">&nbsp;</td>	
