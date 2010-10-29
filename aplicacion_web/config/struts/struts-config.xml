@@ -212,9 +212,11 @@
 			<form-property name="productId" type="java.lang.Long"/>
 			<form-property name="days" type="java.lang.Integer"/>
 			<form-property name="margen" type="java.lang.String"/>
+			<form-property name="yearFrom" type="java.lang.String"/>
 			
-			<form-property name="sizeOfPurchaseArray" type="java.lang.String[]"/>
-			<form-property name="repositionStockArray" type="java.lang.String[]"/>
+			<form-property name="productsArray" type="java.lang.String[]"/>
+			<form-property name="simulatedSizeOfPurchaseArray" type="java.lang.String[]"/>
+			<form-property name="simulatedRepositionStockArray" type="java.lang.String[]"/>
 			<form-property name="simuladorArray" type="java.lang.String[]"/>
 			
 			<form-property name="dsTable" type="java.lang.String" />
@@ -590,7 +592,7 @@
             type="ar.com.dailyMarket.ui.SimulatorAction" 
             validate="false"
             parameter="VirtualDispatchName"
-            scope="request"
+            scope="session"
             name="SimulatorForm">
 			
 			<set-property property="initMethod" value="initAction"/>
