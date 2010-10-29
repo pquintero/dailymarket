@@ -213,6 +213,10 @@
 			<form-property name="days" type="java.lang.Integer"/>
 			<form-property name="margen" type="java.lang.String"/>
 			
+			<form-property name="sizeOfPurchaseArray" type="java.lang.String[]"/>
+			<form-property name="repositionStockArray" type="java.lang.String[]"/>
+			<form-property name="simuladorArray" type="java.lang.String[]"/>
+			
 			<form-property name="dsTable" type="java.lang.String" />
 			<form-property name="collectionName" type="java.lang.String" initial="" />
 		</form-bean>

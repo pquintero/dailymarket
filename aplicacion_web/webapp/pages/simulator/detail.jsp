@@ -4,6 +4,7 @@
 <%@ taglib uri="/tags/struts-bean" prefix="bean" %>
 <%@ taglib uri="/tags/struts-logic" prefix="logic" %>
 <%@ taglib uri="/tags/displaytag" prefix="ds" %>
+<%@ page import="ar.com.dailyMarket.model.Product" %>
 
 <TABLE class="form" cellSpacing="0" cellPadding="0" border="0">
 <TR> 
@@ -36,6 +37,25 @@
 <tr>
 	<td colspan="7">&nbsp;</td>	
 </tr>
+<tr>
+	<td colspan="7">
+	<tr><td>
+	<TABLE align="right" class="buttons" border="0" cellspacing="0" cellpadding="3">
+		<TR>	
+			<td width="100%">&nbsp;</td>
+			<TD align="right"  width="130px" >        				
+			   <input width="130px" class="btn" value="Enviar Pedido"
+					 onclick="sendOrder();">
+			</TD>	
+		</TR>
+	</TABLE>
+</td></tr>
+	</td>	
+</tr>
+
+<tr>
+	<td colspan="7">SI HAY PRODUCTOS SE MUESTRA ESTO</td>	
+</tr>
 <TR>
 	<td>&nbsp;</td>
 	<TH><bean:message key="SimulatorForm.daysSimulator"/></TH>
@@ -48,6 +68,8 @@
 <tr>
 	<td colspan="7">&nbsp;</td>	
 </tr>
+
+
 <TR> 
     <TD colspan="7" align="left" valign="top"> 
 		<h1 class="formtitle"><bean:message key="simulator.result"/></h1>
@@ -58,6 +80,21 @@
         <ds:column titleKey="ProductForm.code" headerClass="listTitle" sortable="true" property="code"/>
         <ds:column titleKey="ProductForm.name" headerClass="listTitle" sortable="true" property="name"/>
         <ds:column titleKey="ProductForm.description" headerClass="listTitle" sortable="true" property="description"/>       
-        <ds:column titleKey="ProductForm.sizePurchase" headerClass="listTitle" sortable="true" property="sizeOfPurchase"/>		
-        <ds:column titleKey="ProductForm.repositionStock" headerClass="listTitle" sortable="true" property="repositionStock"/>              
+        <ds:column titleKey="ProductForm.sizePurchase" headerClass="listTitle">
+        	<html:text property="sizeOfPurchaseArray"/>
+        </ds:column>		
+        <ds:column titleKey="ProductForm.repositionStock" headerClass="listTitle">
+        	<html:text property="repositionStockArray"/>
+        </ds:column>
+        <ds:column headerClass="listTitle">
+        	<html:multibox property="simuladorArray" value="<%= ((Product)row).getId().toString() %>"/>
+        </ds:column>
 </ds:table>
+
+<tr>
+	<td colspan="7">Boton Simular</td>	
+</tr>
+
+<tr>
+	<td colspan="7">Boton Aplicar Cambios</td>	
+</tr>
