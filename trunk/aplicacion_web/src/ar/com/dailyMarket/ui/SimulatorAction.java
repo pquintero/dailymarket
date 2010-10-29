@@ -19,9 +19,16 @@ public class SimulatorAction extends BaseAction {
 	
 	public ActionForward initAction (ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) {
 		setProductAndGroupProduct(request);
-		request.setAttribute("products", new ArrayList<Product>());
+		request.setAttribute("productsList", new ArrayList<Product>());
 		return mapping.findForward("showSimulator");
 	}
+	
+    public ActionForward executeFilter (ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
+    	SimulatorService simulatorService = new SimulatorService();
+    	request.setAttribute("productsList", simulatorService.executeFilter((DynaActionForm)form));    	
+    	setProductAndGroupProduct(request);
+    	return mapping.findForward("showSimulator");
+    }
 	
 	public ActionForward executeSimulator (ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
 		SimulatorService simulatorService = new SimulatorService();
