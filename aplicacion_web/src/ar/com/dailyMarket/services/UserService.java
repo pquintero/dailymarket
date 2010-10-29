@@ -1,17 +1,24 @@
 package ar.com.dailyMarket.services;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Random;
 
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.DynaActionForm;
 import org.hibernate.Criteria;
+import org.hibernate.HibernateException;
 import org.hibernate.criterion.MatchMode;
 import org.hibernate.criterion.Restrictions;
 
 import ar.com.dailyMarket.model.GroupUser;
+import ar.com.dailyMarket.model.Product;
+import ar.com.dailyMarket.model.ProductoVenta;
+import ar.com.dailyMarket.model.SesionVenta;
 import ar.com.dailyMarket.model.User;
 
 public class UserService {
@@ -143,5 +150,68 @@ public class UserService {
 		User user = (User)HibernateHelper.currentSession().createCriteria(User.class).add(Restrictions.eq("user", userStr)).uniqueResult();
 		user.setActive(false);
 		save(user);
+	}
+	
+	public void cargaMasivaDeSesiones(int maximoVentasPorDia, int anio) {
+		
+		try {
+			GregorianCalendar gc = new GregorianCalendar(anio,0,1);
+			SimpleDateFormat sf = new SimpleDateFormat("dd/MM/yyyy");
+			System.out.println("Se crean ventas desde " + sf.format(gc.getTime()));
+			GregorianCalendar gcUltima = new GregorianCalendar(anio, 11, 31);
+			
+			int cantidadVentasPorDia = (1 +new Random().nextInt(maximoVentasPorDia));  
+			UserService userService = new UserService();
+			ProductService productService = new ProductService();
+			
+			User user = userService.getUser("abe");
+			
+			while (gc.getTime().before(gcUltima.getTime())) {
+					
+					for (int i = 0; i < cantidadVentasPorDia; i++) {
+						
+						Double totalVenta = new Double(0);
+						
+						SesionVenta sesionVenta = new SesionVenta();
+						sesionVenta.setCajero(user);
+						sesionVenta.setFechaInicio(gc.getTime());
+						sesionVenta.setIdCaja(new Long(1));
+						
+						HibernateHelper.currentSession().save(sesionVenta);
+						
+						for (int j = 1; j < 9; j++) {
+							Product product = productService.getProductByPK(new Long(j));
+							int cant = (new Random().nextInt(11)); 
+							for (int k = 0; k < cant; k++) {	//cantidad del mismo producto
+								
+								ProductoVenta productoVenta = new ProductoVenta();
+								productoVenta.setProducto(product);
+								productoVenta.setSesionVenta(sesionVenta);
+								HibernateHelper.currentSession().save(productoVenta);
+								
+								totalVenta+= product.getPrice();
+							}
+
+							
+						}
+						
+						sesionVenta.setTotalVenta(totalVenta);
+						
+						HibernateHelper.currentSession().update(sesionVenta);
+						HibernateHelper.currentSession().flush();
+						
+					}
+					
+					gc.add(GregorianCalendar.DAY_OF_YEAR, 1);
+				
+			}
+		} catch (Exception e) {
+		}
+		
+
+		
+		
+		
+		
 	}
 }
