@@ -13,6 +13,7 @@ import java.util.List;
 import org.apache.commons.lang.StringUtils;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.DynaActionForm;
+import org.hibernate.CacheMode;
 import org.hibernate.Criteria;
 import org.hibernate.criterion.Restrictions;
 
@@ -34,10 +35,11 @@ public class SimulatorService extends MailService{
 			c.createCriteria("groupProduct").add(Restrictions.eq("id", groupProductId));
 		}
 		c.add(Restrictions.eq("active", new Boolean(true)));
+		c.setCacheMode(CacheMode.IGNORE);
 		List products = (List)c.list();		
 		return products.isEmpty() ? new ArrayList() : products;
 	}
-
+	
 	public void executeSimulation(DynaActionForm form) {
 		String[] productsIds = (String[]) form.get("productsArray");
 		List<String> checks =  Arrays.asList(((String[]) form.get("simuladorArray")));
@@ -119,7 +121,7 @@ public class SimulatorService extends MailService{
 				//obtener ventas del producto para ese dia
 				aux = ventasDia(producto, cal.getTime());
 				tp += aux;
-				if (cal.get(GregorianCalendar.DAY_OF_YEAR) < (hoy.get(GregorianCalendar.DAY_OF_YEAR) - margen)){
+				if (cal.get(GregorianCalendar.DAY_OF_YEAR) < (hoy.get(GregorianCalendar.DAY_OF_YEAR) + dias - margen)){
 					sr += aux;
 				}
 				cal.add(GregorianCalendar.DATE, 1);
@@ -141,7 +143,8 @@ public class SimulatorService extends MailService{
 			aux+= tpi;
 		}
 		
-		res[0] = new Integer(new Double(new Double(aux.doubleValue() / i.doubleValue()) * porcentaje).intValue()).toString();
+		Integer x = new Integer(new Double(new Double(aux.doubleValue() / i.doubleValue()) * porcentaje).intValue());
+		res[0] = x.toString();
 		
 		aux = 0;
 		i = 0;
@@ -149,7 +152,10 @@ public class SimulatorService extends MailService{
 			Integer sri = iterator.next();
 			aux+= sri;
 		}
-		res[1] = new Integer(new Double(new Double(aux.doubleValue() / i.doubleValue()) * porcentaje).intValue()).toString();
+		
+		Integer y = new Integer(new Double(new Double(aux.doubleValue() / i.doubleValue()) * porcentaje).intValue());
+		res[1] = new Integer(x-y).toString();
+		
 		
 		return res;
 	}

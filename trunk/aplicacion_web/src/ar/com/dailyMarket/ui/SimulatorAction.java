@@ -21,6 +21,7 @@ public class SimulatorAction extends BaseAction {
 	
 	public ActionForward initAction (ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) {
 		//TODO Inicializar todo el formulario
+		((DynaActionForm)form).initialize(mapping);
 		((DynaActionForm)form).set("margen","");
 		((DynaActionForm)form).set("yearFrom","2009");
 		((DynaActionForm)form).set("days",0);

@@ -12,7 +12,10 @@ public class ProductDecorator extends TableDecorator {
 			state = "SOLICITADO";
 		} else if (state.equals(Product.PRODUCT_STATE_PENDING)) {
 			state = "ENVÍO PENDIENTE";
-		}		
+		} else if (state.equals(Product.PRODUCT_STATE_STOCK)) {
+			state = "CON STOCK";
+		} 	
+	 	
 		return state;
 	}
 	
