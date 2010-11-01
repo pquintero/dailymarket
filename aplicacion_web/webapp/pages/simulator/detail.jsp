@@ -93,11 +93,11 @@
 					<TR>	
 						<td width="100%">&nbsp;</td>
 						<TD align="right"  width="130px" >        				
-						   <input width="130px" class="btn" value="Ejecutar Simulación"
+						   <input width="130px" class="btn" value="Ejecutar Simulación" readonly="readonly"
 								 onclick="forms[0].VirtualDispatchName.value='executeSimulator'; forms[0].submit();">
 						</TD>	
 						<TD align="right"  width="130px" >        				
-						   <input width="130px" class="btn" value="Aplicar Cambios"
+						   <input width="130px" class="btn" value="Aplicar Cambios" readonly="readonly"
 								 onclick="forms[0].VirtualDispatchName.value='aplicarCambios'; forms[0].submit();">
 						</TD>	
 					</TR>
