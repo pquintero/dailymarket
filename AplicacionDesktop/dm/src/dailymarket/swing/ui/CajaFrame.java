@@ -55,7 +55,8 @@ public class CajaFrame  extends DailyMarketFrame{
 		aperturaCajaButton.setFont(new Font("SansSerif", Font.BOLD, 14));
 
 		aperturaCajaButton.setMnemonic(KeyEvent.VK_A);
-		Icon aperturaIcon = new ImageIcon("C:\\apertura.png");
+		java.net.URL imgAperturaURL = InitDailyMarketFrame.class.getResource("apertura.png");
+		Icon aperturaIcon = new ImageIcon(imgAperturaURL);
 		aperturaCajaButton.setIcon(aperturaIcon);
 		aperturaCajaButton.addActionListener(new ActionListener() {
 			
@@ -82,7 +83,8 @@ public class CajaFrame  extends DailyMarketFrame{
 		nuevaSesionVentaButton.setFont(new Font("SansSerif", Font.BOLD, 14));
 
 		nuevaSesionVentaButton.setPreferredSize(new Dimension(230,64));
-		Icon carritoIcon = new ImageIcon("C:\\carrito.png");
+		java.net.URL imgCarritoURL = InitDailyMarketFrame.class.getResource("carrito.png");
+		Icon carritoIcon = new ImageIcon(imgCarritoURL);
 		nuevaSesionVentaButton.setIcon(carritoIcon);
 		nuevaSesionVentaButton.setMnemonic(KeyEvent.VK_N);
 		nuevaSesionVentaButton.addActionListener(new ActionListener() {
@@ -99,7 +101,9 @@ public class CajaFrame  extends DailyMarketFrame{
 		});
 		
 		cerrarApp = new JButton("Cerrar Aplicación");
-		Icon cerrarIcon = new ImageIcon("C:\\exit.png");
+		java.net.URL imgCerrarURL = InitDailyMarketFrame.class.getResource("exit.png");
+
+		Icon cerrarIcon = new ImageIcon(imgCerrarURL);
 		cerrarApp.setIcon(cerrarIcon);
 		cerrarApp.setFont(new Font("SansSerif", Font.BOLD, 14));
 		cerrarApp.setPreferredSize(new Dimension(230,64));
@@ -180,8 +184,7 @@ public class CajaFrame  extends DailyMarketFrame{
 					nuevaSesionVentaButton.setEnabled(false);
 		   }
 		}
-		//SACAAAAAAAAAAAAAAAAR
-		nuevaSesionVentaButton.setEnabled(true);
+
 	}
 
 		
