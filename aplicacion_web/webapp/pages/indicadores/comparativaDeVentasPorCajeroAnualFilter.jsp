@@ -13,7 +13,7 @@
 <% ArrayList<String> listaAnios = (ArrayList<String>) request.getAttribute("aniosList"); %>
 <TABLE class="form"  border="0" cellpadding="0" cellspacing="0">	
 	<TR> 
-		<TD colspan="4"> 
+		<TD colspan="2"> 
 			<ul class="errors" type="square">
 				<html:messages id="mensaje" message="true" >
 					<li><bean:write name="mensaje" /></li>
@@ -22,21 +22,19 @@
 		</TD>
 	</TR>
 	<tr>
-		<td colspan="4">&nbsp;</td>
+		<td colspan="2">&nbsp;</td>
 	</tr>
 	<TR> 
-		<TD colspan="4">
+		<TD colspan="2">
 			<h1 class="formtitle"><bean:message key="indicadores.comparativaDeVentasPorCajeroAnualFilter"/></h1>
 		</TD>		
 	</TR>	
-	<tr align="left">
-		<td colspan="4">&nbsp;</td>
+	<tr>
+		<td colspan="2">&nbsp;</td>
 	</tr>
-	<tr align="left">
-		<td>&nbsp;</td>
-		<th><bean:message key="commons.year"/></th>
-		<td>&nbsp;</td>
-		<td>
+	<tr>
+		<th style="width:100px;padding-left:40px;"><bean:message key="commons.year"/></th>
+		<td width="100px;">
 			<html:select property="year">
 				<% for(int i = 0; i < listaAnios.size(); i++) { %>
 					<html:option  value="<%= listaAnios.get(i) %>"><%= listaAnios.get(i) %></html:option>
@@ -44,45 +42,45 @@
 			</html:select>
 		</td>
 	</tr>
-	<tr align="left">
-		<td colspan="4">&nbsp;</td>
+	<tr>
+		<td colspan="2">&nbsp;</td>
 	</tr>
-	<tr align="left">
-		<td>&nbsp;</td>
-		<th><bean:message key="commons.bandaHoraria"/></th>
-		<td>&nbsp;</td>
-		<td>
+	<tr>
+		<th style="width:100px;padding-left:40px;"><bean:message key="commons.bandaHoraria"/></th>
+		<td width="100px;">
 			<html:select property="bandaHorariaId">
 				<html:option value="-1">&nbsp;</html:option>
 				<html:options collection="bandaList" property="id" labelProperty="detail"/>
 			</html:select>
 		</td>
 	</tr>
-		<tr align="left">
-		<td colspan="4">&nbsp;</td>
+	<tr>
+		<td colspan="2">&nbsp;</td>
 	</tr>
 	<tr>
-		<td colspan="4">
-			<table  width="40%">
+		<td colspan="2">&nbsp;</td>
+	</tr>
+	<tr>
+		<td colspan="2">
+			<table  width="100%">
 				<TR>
-					<td><bean:message key="indicadores.seleccionarCajeros"/></td>
+					<th style="width:250px;padding-left:40px;" width="200px;" colspan="2"><bean:message key="indicadores.seleccionarCajeros"/></th>
 				</TR>
 				<tr>
-					<td>&nbsp;</td>
+					<td colspan="2">&nbsp;</td>
 				</tr>
 				<logic:iterate id="cajero" property="cajerosList" name="IndicadoresForm">
 					<% User us = (User) cajero; %>
 					<tr>
-						<td>
+						<th style="width:250px;padding-left:40px;">
 							<bean:write name="cajero" property="name"/>
-						</td>
+						</th>
 						<td>
 							<html:multibox name="IndicadoresForm" property="cajerosArray" value='<%= us.getId().toString() %>' /> 
 						</td>
 					</tr>
 				</logic:iterate>
-			</table>
-			
+			</table>			
 		</td>
 	</tr>
 </TABLE>

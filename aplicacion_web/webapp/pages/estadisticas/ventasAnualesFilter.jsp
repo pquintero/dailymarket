@@ -13,7 +13,7 @@ ArrayList<String> listaAnios = (ArrayList<String>) request.getAttribute("aniosLi
 
 <TABLE class="form"  border="0" cellpadding="0" cellspacing="0">	
 	<TR> 
-		<TD colspan="4"> 
+		<TD colspan="2"> 
 			<ul class="errors" type="square">
 				<html:messages id="mensaje" message="true" >
 					<li><bean:write name="mensaje" /></li>
@@ -22,20 +22,18 @@ ArrayList<String> listaAnios = (ArrayList<String>) request.getAttribute("aniosLi
 		</TD>
 	</TR>
 	<tr>
-		<td colspan="4">&nbsp;</td>
+		<td colspan="2">&nbsp;</td>
 	</tr>	
 	<TR>
-		<TD colspan="4">
+		<TD colspan="2">
 			<h1 class="formtitle"><bean:message key="estadisticas.ventasAnualesFilter"/></h1>
 		</TD>		
 	</TR>		
 	<tr align="left">
-		<td colspan="4">&nbsp;</td>
+		<td colspan="2">&nbsp;</td>
 	</tr>
 	<tr align="left">
-		<td>&nbsp;</td>
-		<th><bean:message key="commons.year"/></th>
-		<td>&nbsp;</td>
+		<th style="width:100px;padding-left:40px;"><bean:message key="commons.year"/></th>
 		<td>
 			<html:select property="year">
 				<% for(int i = 0; i < listaAnios.size(); i++) { %>
@@ -45,12 +43,10 @@ ArrayList<String> listaAnios = (ArrayList<String>) request.getAttribute("aniosLi
 		</td>
 	</tr>
 	<tr align="left">
-		<td colspan="4">&nbsp;</td>
+		<td colspan="2">&nbsp;</td>
 	</tr>
 	<tr align="left">
-		<td>&nbsp;</td>
-		<th><bean:message key="commons.bandaHoraria"/></th>
-		<td>&nbsp;</td>
+		<th style="width:100px;padding-left:40px;"><bean:message key="commons.bandaHoraria"/></th>
 		<td>
 			<html:select property="bandaHorariaId">
 				<html:option value="-1">&nbsp;</html:option>
