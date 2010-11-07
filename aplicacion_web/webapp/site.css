@@ -9,7 +9,7 @@ padding:0 0 0 0;
 margin:0 0 0 0;
 font-family: Verdana, Arial;
 font-size:11px;
-background-color:#BABABA;
+background-color:#FFFFFF;
 }
 
 
@@ -704,6 +704,20 @@ font-size:12px;
 font-weight:bold;
 }
 
+TABLE.body TD.selectOption{
+text-align:left;
+height:28px;
+background-image:url(images/common/bullet.gif);
+background-position:left;
+padding-left:10px;
+color:#666666;
+background-repeat:no-repeat;
+font-family:Arial, Helvetica, sans-serif;
+text-transform:uppercase;
+font-size:12px;
+font-weight:bolder;
+}
+
 TABLE.body TD.linkButton{border:1px solid #C9DDEB;
 text-align:center;
 height:28px;
@@ -1367,4 +1381,17 @@ TABLE.agregarViaje TR.date { background-color:#dbeefb;}
 .autocomplete-pat {
     width:5em; /* set width here or else widget will expand to fit its container */
     padding-bottom:2em;
+}
+
+
+TABLE.form  TD.explicacion{
+font-family: sans-serif;
+font-size: 11px;
+color:#475358;
+padding-left:15px;
+text-align: left;
+}
+TABLE.form a.reportesboton {
+background:url(images/common/btnOrden.jpg) no-repeat center left;
+padding-left:15px;
 }

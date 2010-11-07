@@ -24,20 +24,20 @@
 		</TD>		
 	</TR>
 	<tr align=center>
-		<td>&nbsp;</td>
+		<td width="60px;">&nbsp;</td>
 		<td>
-			<a href="reportes.do?VirtualDispatchName=doReporteVentasMensuales">Mensuales</a>
+			<a class="reportesboton" href="reportes.do?VirtualDispatchName=doReporteVentasMensuales">Mensuales</a>
 		</td>		
 		<td>&nbsp;</td>
 		<td>
-			<a href="reportes.do?VirtualDispatchName=doReporteVentasAnuales">Anuales</a>
+			<a class="reportesboton" href="reportes.do?VirtualDispatchName=doReporteVentasAnuales">Anuales</a>
 		</td>
 	</tr>
 	<tr>				
 		<td>&nbsp;</td>
-		<TD class="title">Refleja las ventas de productos en un período anual</TD>
+		<TD class="explicacion">Refleja las ventas de productos en un período anual</TD>
 		<td>&nbsp;</td>		
-		<TD class="title">Refleja las ventas de productos en un período mensual</TD>		
+		<TD class="explicacion">Refleja las ventas de productos en un período mensual</TD>		
 	</tr>
 	<tr><td colspan="4">&nbsp;</td></tr>
 	<TR> 
@@ -48,18 +48,18 @@
 	<tr align="center">
 		<td>&nbsp;</td>
 		<td>
-			<a href="reportes.do?VirtualDispatchName=doReporteFacturacionMensual">Mensual</a>
+			<a class="reportesboton" href="reportes.do?VirtualDispatchName=doReporteFacturacionMensual">Mensual</a>
 		</td>		
 		<td>&nbsp;</td>
 		<td>
-			<a href="reportes.do?VirtualDispatchName=doReporteFacturacionAnual">Anual</a>
+			<a class="reportesboton" href="reportes.do?VirtualDispatchName=doReporteFacturacionAnual">Anual</a>
 		</td>
 	</tr>
 	<tr>				
 		<td>&nbsp;</td>
-		<TD class="title">Refleja la facturación en un período anual</TD>
+		<TD class="explicacion">Refleja la facturación en un período anual</TD>
 		<td>&nbsp;</td>		
-		<TD class="title">Refleja la facturación en un período mensual</TD>		
+		<TD class="explicacion">Refleja la facturación en un período mensual</TD>		
 	</tr>
 	<tr><td colspan="4">&nbsp;</td></tr>
 	<TR> 
@@ -70,17 +70,17 @@
 	<tr align="center">
 		<td>&nbsp;</td>
 		<td>
-			<a href="reportes.do?VirtualDispatchName=doReporteListadoPrecios">De Precios</a>
+			<a class="reportesboton" href="reportes.do?VirtualDispatchName=doReporteListadoPrecios">De Precios</a>
 		</td>
 		<td>&nbsp;</td>
 		<td>
-			<a href="reportes.do?VirtualDispatchName=doReporteListadoCodigos">De Códigos de Barra</a>
+			<a class="reportesboton" href="reportes.do?VirtualDispatchName=doReporteListadoCodigos">De Códigos de Barra</a>
 		</td>
 	</tr>
 	<tr>				
 		<td>&nbsp;</td>
-		<TD class="title">Lista los precios de los productos involucrados</TD>		
+		<TD class="explicacion">Lista los precios de los productos involucrados</TD>		
 		<td>&nbsp;</td>
-		<TD class="title">Lista los códigos de barra de los productos involucrados</TD>			
+		<TD class="explicacion">Lista los códigos de barra de los productos involucrados</TD>			
 	</tr>	
 </TABLE>

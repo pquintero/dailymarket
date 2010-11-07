@@ -60,28 +60,55 @@ function MM_swapImage() { //v3.0
 			<table class="bullets" width="800" align="center" cellpadding="0"  cellspacing="0" border="0">			
 				<TR>
 					<td width="25"></td>
-					<TD class="inciarOrdenLeft"> 
-						<a href="manager.do?VirtualDispatchName=initAction">Emisión</a>
-					</TD>
-					
+					<% if (((String)request.getSession().getAttribute("tab")).equals("emision")) { %>
+						<TD class="selectOption"> 
+							<a href="manager.do?VirtualDispatchName=initAction">Emisión</a>
+						</TD>
+					<%} else { %>
+						<TD class="inciarOrdenLeft"> 
+							<a href="manager.do?VirtualDispatchName=initAction">Emisión</a>
+						</TD>
+					<%} %>
 					<td width="25"></td>
-					<TD class="inciarOrdenLeft"> 
-						<a href="manager.do?VirtualDispatchName=doHomeReportes">Reportes</a>
-					</TD>
-				 
+					<% if (((String)request.getSession().getAttribute("tab")).equals("reportes")) { %>
+						<TD class="selectOption"> 
+							<a href="manager.do?VirtualDispatchName=doHomeReportes">Reportes</a>
+						</TD>
+				 	<%} else { %>
+				 		<TD class="inciarOrdenLeft"> 
+							<a href="manager.do?VirtualDispatchName=doHomeReportes">Reportes</a>
+						</TD>
+					<% } %>
 					<td width="25"></td>
-					<TD class="inciarOrdenLeft"> 
-						<a href="manager.do?VirtualDispatchName=doHomeEstadisticas">Estadísticas</a>
-					</TD>
-				
+					<% if (((String)request.getSession().getAttribute("tab")).equals("estadisticas")) { %>
+						<TD class="selectOption"> 
+							<a href="manager.do?VirtualDispatchName=doHomeEstadisticas">Estadísticas</a>
+						</TD>
+					<%} else { %>
+						<TD class="inciarOrdenLeft"> 
+							<a href="manager.do?VirtualDispatchName=doHomeEstadisticas">Estadísticas</a>
+						</TD>
+					<% } %>
 					<td width="25"></td>
-					<TD class="inciarOrdenLeft"> 
-						<a href="manager.do?VirtualDispatchName=doHomeIndicadores">Indicadores</a>
-				
+					<% if (((String)request.getSession().getAttribute("tab")).equals("indicadores")) { %>
+						<TD class="selectOption"> 
+							<a href="manager.do?VirtualDispatchName=doHomeIndicadores">Indicadores</a>
+						</TD>
+					<% } else { %>
+						<TD class="inciarOrdenLeft"> 
+							<a href="manager.do?VirtualDispatchName=doHomeIndicadores">Indicadores</a>
+						</TD>
+					<% } %>
 					<td width="25"></td>
-					<TD class="inciarOrdenLeft"> 
-						<a href="simulator.do?VirtualDispatchName=initAction">Simulador de Compras</a>
-					</TD> 	
+					<% if (((String)request.getSession().getAttribute("tab")).equals("simulador")) { %>
+						<TD class="selectOption"> 
+							<a href="simulator.do?VirtualDispatchName=initAction">Simulador de Compras</a>
+						</TD> 	
+					<% } else { %>
+						<TD class="inciarOrdenLeft"> 
+							<a href="simulator.do?VirtualDispatchName=initAction">Simulador de Compras</a>
+						</TD>
+					<% } %>
 				</tr>				
 			</table>
 		</td>
@@ -90,5 +117,4 @@ function MM_swapImage() { //v3.0
     	<td class="logout2" colspan="3" bgcolor="#FFFFFF"  align="right"></td>
 	</tr>
 </table>
-</body>				
-				
+</body>						

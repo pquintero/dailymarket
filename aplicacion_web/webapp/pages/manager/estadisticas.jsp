@@ -25,20 +25,20 @@
 		</TD>		
 	</TR>
 	<tr align="center">
-		<td>&nbsp;</td>
+		<td width="60px;">&nbsp;</td>
 		<td>
-			<a href="estadisticas.do?VirtualDispatchName=doEstadisticasVentasMensuales">Mensuales</a>
+			<a class="reportesboton" href="estadisticas.do?VirtualDispatchName=doEstadisticasVentasMensuales">Mensuales</a>
 		</td>
 		<td>&nbsp;</td>
 		<td>
-			<a href="estadisticas.do?VirtualDispatchName=doEstadisticasVentasAnuales">Anuales</a>
+			<a class="reportesboton" href="estadisticas.do?VirtualDispatchName=doEstadisticasVentasAnuales">Anuales</a>
 		</td>
 	</tr>
 	<tr>				
 		<td>&nbsp;</td>
-		<TD class="title">Refleja las ventas totales efectuadas en un periodo mensual</TD>	
+		<TD class="explicacion">Refleja las ventas totales efectuadas en un periodo mensual</TD>	
 		<td>&nbsp;</td>			
-		<TD class="title">Refleja las ventas totales efectuadas en un periodo anual</TD>
+		<TD class="explicacion">Refleja las ventas totales efectuadas en un periodo anual</TD>
 	</tr>
 	<tr align="center">
 		<td colspan="4">&nbsp;</td>
@@ -51,18 +51,18 @@
 	<tr align="center">
 		<td>&nbsp;</td>
 		<td>
-			<a href="estadisticas.do?VirtualDispatchName=doEstadisticasVentasMensualesPorProducto">Mensuales</a>
+			<a class="reportesboton" href="estadisticas.do?VirtualDispatchName=doEstadisticasVentasMensualesPorProducto">Mensuales</a>
 		</td>
 		<td>&nbsp;</td>
 		<td>
-			<a href="estadisticas.do?VirtualDispatchName=doEstadisticasVentasAnualesPorProducto">Anuales</a>
+			<a class="reportesboton" href="estadisticas.do?VirtualDispatchName=doEstadisticasVentasAnualesPorProducto">Anuales</a>
 		</td>		
 	</tr>
 	<tr>				
 		<td>&nbsp;</td>
-		<TD class="title">Refleja las ventas por producto efectuadas en un periodo mensual</TD>
+		<TD class="explicacion">Refleja las ventas por producto efectuadas en un periodo mensual</TD>
 		<td>&nbsp;</td>				
-		<TD class="title">Refleja las ventas por producto efectuadas en un periodo anual</TD>
+		<TD class="explicacion">Refleja las ventas por producto efectuadas en un periodo anual</TD>
 	</tr>
 	<tr align="center">
 		<td colspan="4">&nbsp;</td>
@@ -75,17 +75,17 @@
 	<tr align="center">
 		<td>&nbsp;</td>
 		<td>
-			<a href="estadisticas.do?VirtualDispatchName=doEstadisticasVentasMensualesPorGrupoDeProducto">Mensuales</a>
+			<a class="reportesboton" href="estadisticas.do?VirtualDispatchName=doEstadisticasVentasMensualesPorGrupoDeProducto">Mensuales</a>
 		</td>
 		<td>&nbsp;</td>
 		<td>
-			<a href="estadisticas.do?VirtualDispatchName=doEstadisticasVentasAnualesPorGrupoDeProducto">Anuales</a>
+			<a class="reportesboton" href="estadisticas.do?VirtualDispatchName=doEstadisticasVentasAnualesPorGrupoDeProducto">Anuales</a>
 		</td>	
 	</tr>
 	<tr>				
 		<td>&nbsp;</td>
-		<TD class="title">Refleja las ventas por grupo de producto efectuadas en un periodo mensual</TD>
+		<TD class="explicacion">Refleja las ventas por grupo de producto efectuadas en un periodo mensual</TD>
 		<td>&nbsp;</td>				
-		<TD class="title">Refleja las ventas por grupo de producto efectuadas en un periodo anual</TD>		
+		<TD class="explicacion">Refleja las ventas por grupo de producto efectuadas en un periodo anual</TD>		
 	</tr>	
 </TABLE>

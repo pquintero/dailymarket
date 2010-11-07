@@ -25,18 +25,18 @@
 		</TD>		
 	</TR>
 	<tr>				
-		<td>&nbsp;</td>
+		<td width="60px;">&nbsp;</td>
 		<td>
-			<a href="indicadores.do?VirtualDispatchName=doIndicadoresVentasPorCajeroMensual">Mensuales</a>
+			<a class="reportesboton" href="indicadores.do?VirtualDispatchName=doIndicadoresVentasPorCajeroMensual">Mensuales</a>
 		</td>		
 		<td>
-			<a href="indicadores.do?VirtualDispatchName=doIndicadoresVentasPorCajeroAnual">Anuales</a>
+			<a class="reportesboton" href="indicadores.do?VirtualDispatchName=doIndicadoresVentasPorCajeroAnual">Anuales</a>
 		</td>		
 	</tr>
 	<tr>				
 		<td>&nbsp;</td>
-		<TD class="title">Refleja las ventas por cajero de forma mensual</TD>		
-		<TD class="title">Refleja las ventas por cajero de forma anual</TD>		
+		<TD class="explicacion">Refleja las ventas por cajero de forma mensual</TD>		
+		<TD class="explicacion">Refleja las ventas por cajero de forma anual</TD>		
 	</tr>
 	<tr>
 		<td colspan="3">&nbsp;</td>
@@ -49,15 +49,15 @@
 	<tr>
 		<td>&nbsp;</td>
 		<td>
-			<a href="indicadores.do?VirtualDispatchName=doIndicadoresComparativaDeVentasPorCajeroMensual">Mensual</a>
+			<a class="reportesboton" href="indicadores.do?VirtualDispatchName=doIndicadoresComparativaDeVentasPorCajeroMensual">Mensual</a>
 		</td>
 		<td>
-			<a href="indicadores.do?VirtualDispatchName=doIndicadoresComparativaDeVentasPorCajeroAnual">Anual</a>
+			<a class="reportesboton" href="indicadores.do?VirtualDispatchName=doIndicadoresComparativaDeVentasPorCajeroAnual">Anual</a>
 		</td>
 	</tr>
 	<tr>				
 		<td>&nbsp;</td>
-		<TD class="title">Refleja una comparativa de ventas mensuales entre cajeros de forma mensual</TD>		
-		<TD class="title">Refleja una comparativa de ventas mensuales entre cajeros de forma anual</TD>		
+		<TD class="explicacion">Refleja una comparativa de ventas mensuales entre cajeros de forma mensual</TD>		
+		<TD class="explicacion">Refleja una comparativa de ventas mensuales entre cajeros de forma anual</TD>		
 	</tr>	
 </TABLE>
