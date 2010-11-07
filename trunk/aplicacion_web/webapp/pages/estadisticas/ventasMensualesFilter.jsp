@@ -34,24 +34,15 @@ ArrayList<String> listaMeses = (ArrayList<String>)request.getAttribute("mesesLis
 		<td colspan="4">&nbsp;</td>
 	</tr>
 	<tr align="left">
-		<td>&nbsp;</td>
-		<th><bean:message key="commons.year"/></th>
-		<td>&nbsp;</td>
-		<td>
+		<th style="width:100px;padding-left:40px;"><bean:message key="commons.year"/></th>
+		<td width="120px;">
 			<html:select property="year">
 				<% for(int i = 0; i < listaAnios.size(); i++) { %>
 					<html:option  value="<%= listaAnios.get(i) %>"><%= listaAnios.get(i) %></html:option>
 				<% } %>
 			</html:select>
 		</td>
-	</tr>
-	<tr align="left">
-		<td colspan="4">&nbsp;</td>
-	</tr>
-	<tr align="left">
-		<td>&nbsp;</td>
-		<th><bean:message key="commons.mes"/></th>
-		<td>&nbsp;</td>
+		<th style="width:100px;padding-left:40px;"><bean:message key="commons.mes"/></th>
 		<td>
 			<html:select property="month">
 				<% for(Integer i = 0; i < listaMeses.size(); i++) { %>
@@ -64,10 +55,8 @@ ArrayList<String> listaMeses = (ArrayList<String>)request.getAttribute("mesesLis
 		<td colspan="4">&nbsp;</td>
 	</tr>
 	<tr align="left">
-		<td>&nbsp;</td>
-		<th><bean:message key="commons.bandaHoraria"/></th>
-		<td>&nbsp;</td>
-		<td>
+		<th style="width:100px;padding-left:40px;"><bean:message key="commons.bandaHoraria"/></th>
+		<td width="120px;" colspan="3">
 			<html:select property="bandaHorariaId">
 				<html:option value="-1">&nbsp;</html:option>
 				<html:options collection="bandaList" property="id" labelProperty="detail"/>
