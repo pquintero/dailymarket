@@ -21,7 +21,7 @@
 			<img 
 				src="images/common/eliminar.gif" 
 				onclick="document.location='filterHourlyBand.do?VirtualDispatchName=delete&id=<%=((HourlyBand)row).getId()%>'" 
-				alt='<bean:message key="common.edit"/>'
+				alt='<bean:message key="common.delete"/>'
 				style="cursor: pointer;"/>
     	</ds:column>        
 </ds:table>

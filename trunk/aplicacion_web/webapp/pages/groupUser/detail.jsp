@@ -6,23 +6,29 @@
 
 <TABLE class="form" cellSpacing="0" cellPadding="0" border="0">
 <TR> 
-    <TD colspan="7" align="left" valign="top"> 
+    <TD colspan="2" align="left" valign="top"> 
 		<h1 class="formtitle"><bean:message key="EditLayout.main"/></h1>
     </TD> 
 </TR>
+<tr>
+	<td colspan="2">&nbsp;</td>
+</tr>
 <TR> 
-	<TD colspan="7"> 
+	<TD colspan="2"> 
 		<html:errors/>
 	</TD>
 </TR> 
 
 <TR> 
-	<TH class="required"><bean:message key="GroupUserForm.name"/></TH>
+	<TH style="width:100px;padding-left:40px;"><bean:message key="GroupUserForm.name"/></TH>
 	<TD><html:text property="name" size="30"  maxlength="20"/></TD>	
 </TR>
-
+<tr>
+	<td colspan="2">&nbsp;</td>
+</tr>
+	
 <TR> 
-	<TH class="required"><bean:message key="GroupUserForm.description"/></TH>
+	<TH style="width:100px;padding-left:40px;"><bean:message key="GroupUserForm.description"/></TH>
 	<TD><html:text property="description" size="30"  maxlength="20"/></TD>	
 </TR>
 </TABLE>

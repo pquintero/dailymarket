@@ -5,23 +5,17 @@
 
 <TABLE class="searchform" cellSpacing="0" cellPadding="6" border="0">
 	<TR> 
-		<TD colspan="3"> 
+		<TD colspan="2"> 
 			<html:errors/>
 		</TD>
 	</TR> 
-	<TR> 
-	   <td>
-	   	<TABLE class="searchform" cellSpacing="0" cellPadding="6" border="0">
-	    	<tr>
-	    		<TH><bean:message key="GroupUserForm.name"/></TH>
-	            <TD width="150px"><html:text property="name"/></TD>
-	        </tr>
-	        <tr>
-	    		<TH><bean:message key="GroupUserForm.description"/></TH>
-	            <TD width="150px"><html:text property="description"/></TD>
-	        </tr>
-		</table>
-		</td>
-	</TR>
+	<tr>
+		<TH style="width:100px;padding-left:40px;"><bean:message key="GroupUserForm.name"/></TH>
+	    <TD><html:text property="name"/></TD>
+	</tr>
+	<tr>
+		<TH style="width:100px;padding-left:40px;"><bean:message key="GroupUserForm.description"/></TH>
+	    <TD><html:text property="description"/></TD>
+	</tr>	
 </TABLE>
 

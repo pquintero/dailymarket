@@ -184,11 +184,7 @@
             <item value="common.button.search" link="executeQuery" classtype="org.apache.struts.tiles.beans.SimpleMenuItem"/>
         </putList>
     </definition>        
-    <definition name="tiles.configuration.buttons" extends=".buttonsLayout">
-        <putList name="buttonList">
-            <item value="common.button.save" link="saveAndBack" classtype="org.apache.struts.tiles.beans.SimpleMenuItem"/>
-        </putList>
-    </definition>     
+   
     <!-- ============================================================== -->
     <!-- Home                                                           -->
     <!-- ============================================================== -->
@@ -495,7 +491,7 @@
         <put name="action"  value="configuration" />
         <put name="tabs"    value=""/>
         <put name="body"    value="/pages/configuration/configuration.jsp" />
-        <put name="buttons" value="tiles.configuration.buttons" />                    
+        <put name="buttons" value="" />                    
     </definition>            
     
     <!-- ============================================================== -->

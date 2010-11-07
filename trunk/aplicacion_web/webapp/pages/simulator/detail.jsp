@@ -12,25 +12,22 @@
 
 <TABLE class="form" cellSpacing="0" cellPadding="0" border="0">
 	<TR> 
-	    <TD colspan="7" align="left" valign="top"> 
+	    <TD colspan="4" align="left" valign="top"> 
 			<h1 class="formtitle"><bean:message key="simulator.home"/></h1>
 	    </TD> 
 	</TR>
 	<tr>
-		<td colspan="7">&nbsp;</td>	
+		<td colspan="4">&nbsp;</td>	
 	</tr>
 	<TR>
-		<td>&nbsp;</td>
-		<TH><bean:message key="ProductForm.groupProduct"/></TH>
-		<td>&nbsp;</td>
-		<TD>
+		<TH style="width:100px;padding-left:40px;"><bean:message key="ProductForm.groupProduct"/></TH>
+		<TD width="100px;">
 			<html:select property="groupProductId">						
 				<OPTION VALUE="-1">Seleccione</OPTION>
 				<html:options collection="groupsProduct" property="id" labelProperty="name" />				
 			</html:select>
 		</TD>
-		<TH><bean:message key="reportes.ventasAnuales.producto"/></TH>
-		<td>&nbsp;</td>
+		<TH style="width:100px;padding-left:40px;"><bean:message key="reportes.ventasAnuales.producto"/></TH>
 		<TD>
 			<html:select property="productId">						
 				<OPTION VALUE="-1">Seleccione</OPTION>
@@ -39,10 +36,10 @@
 		</TD>
 	</TR>
 	<tr>
-		<td colspan="7">&nbsp;</td>	
+		<td colspan="4">&nbsp;</td>	
 	</tr>
 	<tr>
-		<td colspan="7">
+		<td colspan="4">
 			<TABLE align="right" class="buttons" border="0" cellspacing="0" cellpadding="3">
 				<TR>	
 					<td width="100%">&nbsp;</td>
@@ -57,38 +54,31 @@
 	
 <!--	SI SE APLICO EL FILTRO SE MUESTRA LO SIGUIENTE	-->
 	<logic:notEmpty name="productsList">
-		<TR>
-			<td>&nbsp;</td>
-			<TH><bean:message key="SimulatorForm.daysSimulator"/></TH>
-			<td>&nbsp;</td>
-			<TD><html:text property="days" size="10"  maxlength="5"/></TD>
-			<TH><bean:message key="SimulatorForm.margen"/></TH>
-			<td>&nbsp;</td>
+		<TR>		
+			<TH style="width:100px;padding-left:40px;"><bean:message key="SimulatorForm.daysSimulator"/></TH>
+			<TD width="100px;"><html:text property="days" size="10"  maxlength="5"/></TD>
+			<TH style="width:100px;padding-left:40px;"><bean:message key="SimulatorForm.margen"/></TH>
 			<TD><html:text property="margen" size="10"  maxlength="5"/></TD>
 		</TR>
 		<tr>
-			<td colspan="7">&nbsp;</td>	
+			<td colspan="4">&nbsp;</td>	
 		</tr>
 		<TR>
-			<td>&nbsp;</td>
-			<TH><bean:message key="SimulatorForm.yearFrom"/></TH>
-			<td>&nbsp;</td>
-			<TD>
+			<TH style="width:100px;padding-left:40px;"><bean:message key="SimulatorForm.yearFrom"/></TH>			
+			<TD width="100px;">
 				<html:select property="yearFrom">
 					<html:option value="2009">2009</html:option>
 					<html:option value="2008">2008</html:option>
 				</html:select>
 			</TD>
-			<TH><bean:message key="SimulatorForm.simulatedDate"/></TH>
-			<td>&nbsp;</td>
+			<TH style="width:100px;padding-left:40px;"><bean:message key="SimulatorForm.simulatedDate"/></TH>
 			<TD><html:text property="simulatedDay" size="10"  maxlength="10"/></TD>
 		</TR>
 		<tr>
-			<td colspan="7">&nbsp;</td>	
-		</tr>
-		
+			<td colspan="4">&nbsp;</td>	
+		</tr>		
 		<tr>
-			<td colspan="7">
+			<td colspan="4">
 				<TABLE align="right" class="buttons" border="0" cellspacing="0" cellpadding="3">
 					<TR>	
 						<td width="100%">&nbsp;</td>
@@ -105,38 +95,44 @@
 			</td>	
 		</tr>
 		<tr>
-			<td colspan="7">&nbsp;</td>	
+			<td colspan="4">&nbsp;</td>	
 		</tr>
 		<TR> 
-		    <TD colspan="7" align="left" valign="top"> 
+		    <TD colspan="4" align="left" valign="top"> 
 				<h1 class="formtitle"><bean:message key="simulator.result"/></h1>
 		    </TD> 
 		</TR>
-		<% Integer i = 0; %>
-		<ds:table name="productsList" sort="list"  prop="formDisplaytag" export="false" id="row" pagesize="40" class="list"  cellspacing="0" cellpadding="3" decorator="ar.com.dailyMarket.ui.decorators.ProductDecorator">
-		        <ds:column titleKey="ProductForm.code" headerClass="listTitle" property="code"/>
-		        <ds:column titleKey="ProductForm.name" headerClass="listTitle" property="name"/>
-		        <ds:column titleKey="ProductForm.description" headerClass="listTitle" property="description"/>       
-		        
-		        <ds:column titleKey="simulator.ActualSizeOfPurchase" headerClass="listTitle">
-		        	<%= ((Product)row).getSizeOfPurchase() %>
-		        </ds:column>		
-		        <ds:column titleKey="simulator.ActualRepositionStock" headerClass="listTitle">
-		        	<%= ((Product)row).getRepositionStock() %>
-		        </ds:column>
-		        <ds:column titleKey="simulator.SimulatedSizeOfPurchase" headerClass="listTitle">
-		        	<html:text property="simulatedSizeOfPurchaseArray" value="<%= ssop[i] %>"/>
-		        </ds:column>
-		        <ds:column titleKey="simulator.SimulatedRepositionStock" headerClass="listTitle">
-		        	<html:text property="simulatedRepositionStockArray" value="<%= srs[i] %>"/>
-		        </ds:column>
-		        
-		        <ds:column headerClass="listTitle" titleKey="empty">
-		        	<html:hidden property="productsArray" value="<%= ((Product)row).getId().toString() %>"/>
-		        	<html:multibox property="simuladorArray" value="<%= ((Product)row).getId().toString() %>"/>
-		        </ds:column>
-		        
-		        <% i++; %>
-		</ds:table>
+
+	<table width="100%" align="left" style="margin-left: 15px; clear:right;">
+		<tr>
+			<td>
+				<% Integer i = 0; %>
+				<ds:table name="productsList" sort="list"  prop="formDisplaytag" export="false" id="row" pagesize="40" class="list"  cellspacing="0" cellpadding="3" decorator="ar.com.dailyMarket.ui.decorators.ProductDecorator">
+				        <ds:column titleKey="ProductForm.code" headerClass="listTitle" property="code"/>
+				        <ds:column titleKey="ProductForm.name" headerClass="listTitle" property="name"/>
+				        <ds:column titleKey="ProductForm.description" headerClass="listTitle" property="description"/>       
+				        
+				        <ds:column titleKey="simulator.ActualSizeOfPurchase" headerClass="listTitle">
+				        	<%= ((Product)row).getSizeOfPurchase() %>
+				        </ds:column>		
+				        <ds:column titleKey="simulator.ActualRepositionStock" headerClass="listTitle">
+				        	<%= ((Product)row).getRepositionStock() %>
+				        </ds:column>
+				        <ds:column titleKey="simulator.SimulatedSizeOfPurchase" headerClass="listTitle">
+				        	<html:text property="simulatedSizeOfPurchaseArray" value="<%= ssop[i] %>"/>
+				        </ds:column>
+				        <ds:column titleKey="simulator.SimulatedRepositionStock" headerClass="listTitle">
+				        	<html:text property="simulatedRepositionStockArray" value="<%= srs[i] %>"/>
+				        </ds:column>
+				        
+				        <ds:column headerClass="listTitle" titleKey="empty">
+				        	<html:hidden property="productsArray" value="<%= ((Product)row).getId().toString() %>"/>
+				        	<html:multibox property="simuladorArray" value="<%= ((Product)row).getId().toString() %>"/>
+				        </ds:column>
+				        
+				        <% i++; %>
+				</ds:table>
+			</td>
+		</tr>
 	</logic:notEmpty>
 </TABLE>

@@ -58,36 +58,65 @@ function MM_swapImage() { //v3.0
 	<tr>
 		<td align="center">
 			<table class="bullets" width="800" align="center" cellpadding="0"  cellspacing="0" border="0">			
-				<TR>
+				<TR>					
 					<td width="25"></td>
-					<TD class="inciarOrdenLeft"> 
-						<a href="filterGroupUser.do?VirtualDispatchName=showFilter">Grupo de Usuario</a>
-					</TD>
-				 
+					<%if (((String)request.getSession().getAttribute("tab")).equals("groupUser")) {%>
+						<TD class="selectOption"> 
+							<a href="filterGroupUser.do?VirtualDispatchName=showFilter">Grupo de Usuario</a>
+						</TD>
+					<%} else { %>
+				 		<TD class="inciarOrdenLeft"> 
+							<a href="filterGroupUser.do?VirtualDispatchName=showFilter">Grupo de Usuario</a>
+						</TD>
+					<%} %>
 					<td width="25"></td>
-					<TD class="inciarOrdenLeft"> 
-						<a href="filterUser.do?VirtualDispatchName=showFilter">Usuario</a>
-					</TD>
-				
+					<%if (((String)request.getSession().getAttribute("tab")).equals("user")) {%>
+						<TD class="selectOption"> 
+							<a href="filterUser.do?VirtualDispatchName=showFilter">Usuario</a>
+						</TD>
+					<%} else { %>
+						<TD class="inciarOrdenLeft"> 
+							<a href="filterUser.do?VirtualDispatchName=showFilter">Usuario</a>
+						</TD>
+					<%} %>
 					<td width="25"></td>
-					<TD class="inciarOrdenLeft"> 
-						<a href="filterGroupProduct.do?VirtualDispatchName=showFilter">Grupo de Producto</a>
-				
+					<%if (((String)request.getSession().getAttribute("tab")).equals("groupProduct")) {%>
+						<TD class="selectOption"> 
+							<a href="filterGroupProduct.do?VirtualDispatchName=showFilter">Grupo de Producto</a>
+					<% } else { %>
+						<TD class="inciarOrdenLeft"> 
+							<a href="filterGroupProduct.do?VirtualDispatchName=showFilter">Grupo de Producto</a>
+					<%} %>
 					<td width="25"></td>
-					<TD class="inciarOrdenLeft"> 
-						<a href="filterProduct.do?VirtualDispatchName=showFilter">Producto</a>
-					</TD> 	
-				
+					<%if (((String)request.getSession().getAttribute("tab")).equals("product")) {%>
+						<TD class="selectOption"> 
+							<a href="filterProduct.do?VirtualDispatchName=showFilter">Producto</a>
+						</TD>
+					<% } else { %> 	
+						<TD class="inciarOrdenLeft"> 
+							<a href="filterProduct.do?VirtualDispatchName=showFilter">Producto</a>
+						</TD>
+					<%} %>
 					<td width="25"></td>
-					<TD class="inciarOrdenLeft"> 
-						<a href="filterHourlyBand.do?VirtualDispatchName=showFilter">Banda Horaria</a>
-					</TD>
-				
+					<%if (((String)request.getSession().getAttribute("tab")).equals("hourlyBand")) {%>
+						<TD class="selectOption"> 
+							<a href="filterHourlyBand.do?VirtualDispatchName=showFilter">Banda Horaria</a>
+						</TD>
+					<% } else { %>
+						<TD class="inciarOrdenLeft"> 
+							<a href="filterHourlyBand.do?VirtualDispatchName=showFilter">Banda Horaria</a>
+						</TD>
+					<% } %>
 					<td width="25"></td>
-					<td class="inciarOrdenLeft"> 
-						<a href="configuration.do?VirtualDispatchName=initAction">Configuraciones</a>
-					</td>	
-					
+					<%if (((String)request.getSession().getAttribute("tab")).equals("configuration")) {%>
+						<td class="selectOption"> 
+							<a href="configuration.do?VirtualDispatchName=initAction">Configuraciones</a>
+						</td>	
+					<% } else { %>
+						<td class="inciarOrdenLeft"> 
+							<a href="configuration.do?VirtualDispatchName=initAction">Configuraciones</a>
+						</td>
+					<%} %>
 				</tr>				
 			</table>
 		</td>

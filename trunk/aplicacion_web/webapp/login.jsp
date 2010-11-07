@@ -9,7 +9,7 @@
 <link href="site.css" rel="stylesheet" type="text/css">
 </head>
 <body marginheight="0" bottommargin="0" leftmargin="0" topmargin="0" rightmargin="0">
-<table align="center" bgcolor="#FFFFFF" cellpadding="0" cellspacing="0" border="0" width="98%">
+<table align="center" bgcolor="#FFFFFF" cellpadding="0" cellspacing="0" border="0" width="100%">
 	<tr>
 		<!-- header -->
 		<td colspan="3" align="center" background="images/login/pixelHead.jpg"><img src="images/login/logoDailyMarket.jpg"></td>
@@ -38,15 +38,9 @@
 		  		</tr>
 			</table>
 			<table cellpadding="0" width="100%" cellspacing="0" border="0">
-					 		<tr>
-					  			<td width="950px"  height="15"><img src="images/login/linea.jpg" width="950px"></td>
-								<td background="images/login/lineapx.jpg"></td>
+					 		<tr>					  			
+								<td width="100%" background="images/login/linea.jpg">&nbsp;</td>
 					 		</tr>				
-						</table>
-						<table  width="50%" align="left" cellpadding="0" cellspacing="0" border="0">
-							<tr>
-								<td colspan="2" height="350"></td>
-							</tr>										
 						</table>
    		</TD>
    	</tr>
