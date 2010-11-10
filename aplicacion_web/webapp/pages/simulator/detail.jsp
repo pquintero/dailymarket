@@ -9,6 +9,56 @@
 <bean:define id="ssop" property="simulatedSizeOfPurchaseArray" name="SimulatorForm" type="java.lang.String[]"></bean:define>
 <bean:define id="srs" property="simulatedRepositionStockArray" name="SimulatorForm" type="java.lang.String[]"></bean:define>
 
+<script type="text/javascript" src="yui/yahoo-min.js"></script>
+<script type="text/javascript" src="yui/event-min.js"></script>
+
+<script type="text/javascript">
+var combo = eval(<bean:write property="comboProductos" name="SimulatorForm" filter="false"/>);
+var productId = <bean:write property='productId' name='SimulatorForm' filter='false'/>;
+
+function init() {
+	changeCombo(document.getElementById("groupProducts"));
+    if(productId != -1) {
+		var products = document.getElementById("products");
+		for(var i=0; i < products.options.length; i++){
+			if(products.options[i].value == productId){
+				products.selectedIndex = i;
+				break;
+			}
+		}
+    }
+}
+
+YAHOO.util.Event.onDOMReady(init);
+
+function changeCombo(grupoProd) {
+	var products = document.getElementById("products");
+   	products.options.length = 0;
+   	
+   	if (grupoProd[grupoProd.selectedIndex].value == -1) {
+		products.options[0]=new Option("TODOS", -1, true);
+		var j = 1;
+		for(var i = 0; i < combo.length; i++){
+			var jsonPr = eval(combo[i]);
+			products.options[j] = new Option(jsonPr.product, jsonPr.productId, false);
+			j++;
+		}
+		products.selectedIndex = 0;
+	} else {
+		products.options[0] = new Option("TODOS", -1, true);
+		var j = 1;
+		for(var i = 0; i  < combo.length; i++) {
+			var jsonPr = eval(combo[i]);
+			if(jsonPr.groupId == grupoProd[grupoProd.selectedIndex].value) {
+				products.options[j] = new Option(jsonPr.product, jsonPr.productId, false);
+				j++;
+			}
+		}
+		products.selectedIndex = 0;
+	}
+}
+
+</script>
 
 <TABLE class="form" cellSpacing="0" cellPadding="0" border="0">
 	<TR> 
@@ -22,16 +72,14 @@
 	<TR>
 		<TH style="width:100px;padding-left:40px;"><bean:message key="ProductForm.groupProduct"/></TH>
 		<TD width="100px;">
-			<html:select property="groupProductId">						
-				<OPTION VALUE="-1">Seleccione</OPTION>
+			<html:select property="groupProductId" styleId="groupProducts" onchange="changeCombo(this)">						
+				<OPTION VALUE="-1">TODOS</OPTION>
 				<html:options collection="groupsProduct" property="id" labelProperty="name" />				
 			</html:select>
 		</TD>
 		<TH style="width:100px;padding-left:40px;"><bean:message key="reportes.ventasAnuales.producto"/></TH>
 		<TD>
-			<html:select property="productId">						
-				<OPTION VALUE="-1">Seleccione</OPTION>
-				<html:options collection="products" property="id" labelProperty="name" />				
+			<html:select property="productId" styleId="products">						
 			</html:select>
 		</TD>
 	</TR>
@@ -103,36 +151,37 @@
 		    </TD> 
 		</TR>
 
-	<table width="100%" align="left" style="margin-left: 15px; clear:right;">
-		<tr>
-			<td>
-				<% Integer i = 0; %>
-				<ds:table name="productsList" sort="list"  prop="formDisplaytag" export="false" id="row" pagesize="40" class="list"  cellspacing="0" cellpadding="3" decorator="ar.com.dailyMarket.ui.decorators.ProductDecorator">
-				        <ds:column titleKey="ProductForm.code" headerClass="listTitle" property="code"/>
-				        <ds:column titleKey="ProductForm.name" headerClass="listTitle" property="name"/>
-				        <ds:column titleKey="ProductForm.description" headerClass="listTitle" property="description"/>       
-				        
-				        <ds:column titleKey="simulator.ActualSizeOfPurchase" headerClass="listTitle">
-				        	<%= ((Product)row).getSizeOfPurchase() %>
-				        </ds:column>		
-				        <ds:column titleKey="simulator.ActualRepositionStock" headerClass="listTitle">
-				        	<%= ((Product)row).getRepositionStock() %>
-				        </ds:column>
-				        <ds:column titleKey="simulator.SimulatedSizeOfPurchase" headerClass="listTitle">
-				        	<html:text property="simulatedSizeOfPurchaseArray" value="<%= ssop[i] %>"/>
-				        </ds:column>
-				        <ds:column titleKey="simulator.SimulatedRepositionStock" headerClass="listTitle">
-				        	<html:text property="simulatedRepositionStockArray" value="<%= srs[i] %>"/>
-				        </ds:column>
-				        
-				        <ds:column headerClass="listTitle" titleKey="empty">
-				        	<html:hidden property="productsArray" value="<%= ((Product)row).getId().toString() %>"/>
-				        	<html:multibox property="simuladorArray" value="<%= ((Product)row).getId().toString() %>"/>
-				        </ds:column>
-				        
-				        <% i++; %>
-				</ds:table>
-			</td>
-		</tr>
+		<table width="100%" align="left" style="margin-left: 15px; clear:right;">
+			<tr>
+				<td>
+					<% Integer i = 0; %>
+					<ds:table name="productsList" sort="list"  prop="formDisplaytag" export="false" id="row" pagesize="40" class="list"  cellspacing="0" cellpadding="3" decorator="ar.com.dailyMarket.ui.decorators.ProductDecorator">
+					        <ds:column titleKey="ProductForm.code" headerClass="listTitle" property="code"/>
+					        <ds:column titleKey="ProductForm.name" headerClass="listTitle" property="name"/>
+					        <ds:column titleKey="ProductForm.description" headerClass="listTitle" property="description"/>       
+					        
+					        <ds:column titleKey="simulator.ActualSizeOfPurchase" headerClass="listTitle">
+					        	<%= ((Product)row).getSizeOfPurchase() %>
+					        </ds:column>		
+					        <ds:column titleKey="simulator.ActualRepositionStock" headerClass="listTitle">
+					        	<%= ((Product)row).getRepositionStock() %>
+					        </ds:column>
+					        <ds:column titleKey="simulator.SimulatedSizeOfPurchase" headerClass="listTitle">
+					        	<html:text property="simulatedSizeOfPurchaseArray" value="<%= ssop[i] %>"/>
+					        </ds:column>
+					        <ds:column titleKey="simulator.SimulatedRepositionStock" headerClass="listTitle">
+					        	<html:text property="simulatedRepositionStockArray" value="<%= srs[i] %>"/>
+					        </ds:column>
+					        
+					        <ds:column headerClass="listTitle" titleKey="empty">
+					        	<html:hidden property="productsArray" value="<%= ((Product)row).getId().toString() %>"/>
+					        	<html:multibox property="simuladorArray" value="<%= ((Product)row).getId().toString() %>"/>
+					        </ds:column>
+					        
+					        <% i++; %>
+					</ds:table>
+				</td>
+			</tr>
+		</table>
 	</logic:notEmpty>
 </TABLE>
