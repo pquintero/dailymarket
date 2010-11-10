@@ -193,5 +193,12 @@ public class ProductService extends MailService{
 		}
 		return "";
 	}
-
+	
+	@SuppressWarnings("unchecked")
+	public List<Product> getProductsByGroup(Long groupId) {
+		Criteria c = HibernateHelper.currentSession().createCriteria(Product.class);
+		c.add(Restrictions.eq("active", new Boolean(true)));
+		c.createCriteria("groupProduct").add(Restrictions.eq("id", groupId));
+		return c.list();
+	}
 }

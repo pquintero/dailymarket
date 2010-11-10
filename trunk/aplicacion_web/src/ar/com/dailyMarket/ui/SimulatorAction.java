@@ -6,29 +6,52 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import net.sf.json.*;
+
 import org.apache.commons.lang.StringUtils;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 import org.apache.struts.action.DynaActionForm;
 
+import ar.com.dailyMarket.model.GroupProduct;
 import ar.com.dailyMarket.model.Product;
 import ar.com.dailyMarket.services.GroupProductService;
 import ar.com.dailyMarket.services.ProductService;
 import ar.com.dailyMarket.services.SimulatorService;
+import ar.com.dailyMarket.util.CombSelect;
 
 public class SimulatorAction extends BaseAction {
 	
 	public ActionForward initAction (ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) {
-		//TODO Inicializar todo el formulario
+		this.initialize(mapping, form, request);
+		return mapping.findForward("showSimulator");
+	}
+	
+	//TODO no Harcodear nada
+	public void initialize(ActionMapping mapping, ActionForm form, HttpServletRequest request) {
+		ProductService productService = new ProductService();
 		((DynaActionForm)form).initialize(mapping);
 		((DynaActionForm)form).set("margen","");
 		((DynaActionForm)form).set("yearFrom","2009");
 		((DynaActionForm)form).set("days",0);
 		((DynaActionForm)form).set("simuladorArray", new String[0]);
-		setProductAndGroupProduct(request);
+		
+		List<GroupProduct> gp = new GroupProductService().getAllGroupProduct();
+    	JSONArray json = new JSONArray();
+		for (GroupProduct groupProduct : gp) {
+			for (Product product : productService.getProductsByGroup(groupProduct.getId())) {
+				json.add(new CombSelect(groupProduct.getName(), 
+						groupProduct.getId(), 
+						product.getName(), 
+						product.getId())
+				);
+			}
+		}
+		((DynaActionForm)form).set("comboProductos", json.toString());
+		
+		setGroupProduct(request);
 		request.setAttribute("productsList", new ArrayList<Product>());
-		return mapping.findForward("showSimulator");
 	}
 	
     public ActionForward executeFilter (ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
@@ -44,7 +67,7 @@ public class SimulatorAction extends BaseAction {
     	((DynaActionForm)form).set("simulatedSizeOfPurchaseArray", array);
     	((DynaActionForm)form).set("simulatedRepositionStockArray", array);
     	
-    	setProductAndGroupProduct(request);
+    	setGroupProduct(request);
     	return mapping.findForward("showSimulator");
     }
 	
@@ -57,7 +80,7 @@ public class SimulatorAction extends BaseAction {
 		
 		simulatorService.executeSimulation((DynaActionForm)form);
 		
-    	setProductAndGroupProduct(request);
+    	setGroupProduct(request);
     	return mapping.findForward("showSimulator");
 	}
 	
@@ -71,11 +94,8 @@ public class SimulatorAction extends BaseAction {
 		return mapping.findForward("redirectFilter");
     }
 	
-	private void setProductAndGroupProduct (HttpServletRequest request) {
+	private void setGroupProduct (HttpServletRequest request) {
     	GroupProductService groupProductService = new GroupProductService();
-    	ProductService productService = new ProductService();
-    	
-    	request.setAttribute("products", productService.getAllProducts());
     	request.setAttribute("groupsProduct", groupProductService.getAllGroupProduct());
     }     
 }
