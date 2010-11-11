@@ -18,20 +18,4 @@ public class ProductDecorator extends TableDecorator {
 	 	
 		return state;
 	}
-	
-	public String getCheck(){
-    	Product product = (Product) this.getCurrentRowObject();
-    	Long[] productsIds = (Long[])this.getPageContext().getAttribute("productsIds");
-    	int i = 0;
-    	if (product.getState().equals(Product.PRODUCT_STATE_PENDING)) {
-	    	while (i < productsIds.length) {
-	    		if(productsIds[i].equals(product.getId())) 
-	    			return "<input type=\"checkbox\" onclick=\"isAllUnselected();\" name=\"productsIds\" value=\""+product.getId()+"\" checked>";
-	    		i++;
-			}
-	    	return "<input type=\"checkbox\" onclick=\"isAllUnselected();\" name=\"productsIds\" value=\""+product.getId()+"\">";
-    	} else {
-    		return "&nbsp;";
-    	}
-    }  	
 }

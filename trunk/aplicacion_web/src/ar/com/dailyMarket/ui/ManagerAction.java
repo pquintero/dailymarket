@@ -26,7 +26,7 @@ public class ManagerAction extends BaseAction {
     	ProductService productService = new ProductService();
     	request.setAttribute("products", productService.getProductWithoutStock());    	
     	((DynaActionForm)form).set("productsIds", productService.getProductsIdsArray());
-    	//TODO ver porque a veces se llena mal el vector de ids (como si estuvieran pendientes algunos ya mandados)
+    	//FIXME IMPORTANTE ver porque cada ves que se refresca viene distinto el estado de los Productos
     	return mapping.findForward("showManagerHome");
     }
     
@@ -49,7 +49,7 @@ public class ManagerAction extends BaseAction {
     	//Armar mail sin enviarlo 
     	//validar si hay ids seleccionados?
     	ProductService productService = new ProductService();
-    	List<Product> products = productService.getProductsFromArray((Long[])((DynaActionForm)form).get("productsIds"));
+    	List<Product> products = productService.getProductsFromArray((String[])((DynaActionForm)form).get("productsIds"));
     	
     	String body = productService.createMessage(products).toString();
     	((DynaActionForm)form).set("mailBody", body);
@@ -85,7 +85,8 @@ public class ManagerAction extends BaseAction {
     		//TODO save errors
     		return redirectToConfirmSendOrder(mapping, form, request, response);
     	}
-    	productService.sendOrder((Long[])((DynaActionForm)form).get("productsIds"), to, from, subject, body); //desde aca enviar email al deposito con el pedido    	
+    	
+    	productService.sendOrder((String[])((DynaActionForm)form).get("productsIds"), to, from, subject, body); //desde aca enviar email al deposito con el pedido    	
     	return initAction(mapping, form, request, response);
     }
     

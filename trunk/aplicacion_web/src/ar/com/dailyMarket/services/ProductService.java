@@ -12,6 +12,7 @@ import javax.naming.Context;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.DynaActionForm;
 import org.hibernate.Criteria;
@@ -120,13 +121,13 @@ public class ProductService extends MailService{
 		return c.list();
 	}
 	
-	public Long[] getProductsIdsArray() {
+	public String[] getProductsIdsArray() {
 		List <Product> list = getProductWithoutStock();
-		Long[] vector = new Long[list.size()];
+		String[] vector = new String[list.size()];
 		int i = 0;
-		
-		for (Iterator<Product> iterator = list.iterator(); iterator.hasNext();i++) {
-			vector[i]= iterator.next().getId();
+		for (Product prod : list) {
+			vector[i]= prod.getId().toString();
+			i++;
 		}
 		return vector;
 	}
@@ -139,13 +140,18 @@ public class ProductService extends MailService{
 		return products;
 	}
 	
-	public void sendOrder(Long[] ids, String to, String from, String subject, String body) {
-		//Actualizo estado
-		for (int i = 0; i < ids.length; i++) {
-			Product product = getProductByPK((Long)ids[i]);
-			product.setState(Product.PRODUCT_STATE_SEND);
-			save(product);
+	public List<Product> getProductsFromArray(String[] ids) {
+		List<Product> products = new ArrayList<Product>();
+		for (String productidStr : ids) {
+			Long id = Long.valueOf(productidStr);
+			if (id > 0) {
+				products.add(getProductByPK(id));
+			}
 		}
+		return products;
+	}
+	
+	public void sendOrder(String[] idsStr, String to, String from, String subject, String body) {
 		
 		List<String> emailTo = new ArrayList<String>();
 		
@@ -157,6 +163,16 @@ public class ProductService extends MailService{
     	
     	//TODO SACAR SUBJECT Y FROM DE initSendMail()
 //		super.sendMail((String[]) emailTo.toArray(), new StringBuffer(body));
+    	
+    	//Actualizo estado LUEGO DE ENVIAR MAIL
+    	for (int i = 0; i < idsStr.length; i++) {
+    		Long id = Long.valueOf(idsStr[i]);
+			if (id > 0) {
+	    		Product product = getProductByPK(Long.valueOf(idsStr[i]));
+	    		product.setState(Product.PRODUCT_STATE_SEND);
+	    		save(product);
+			}
+    	}
 	}
 	
 	public StringBuffer createMessage (List<Product> products) {

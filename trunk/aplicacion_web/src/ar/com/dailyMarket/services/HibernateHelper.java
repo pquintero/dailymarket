@@ -25,12 +25,10 @@ public class HibernateHelper {
         }
     }
 
-    @SuppressWarnings("unchecked")
-	public static final ThreadLocal session = new ThreadLocal();
+    public static final ThreadLocal<Session> session = new ThreadLocal<Session>();
 
-    @SuppressWarnings("unchecked")
-	public static Session currentSession() throws HibernateException {
-        Session s = (Session) session.get();
+    public static Session currentSession() throws HibernateException {
+        Session s = session.get();
         // Open a new Session, if this Thread has none yet
         if (s == null) {
             log.debug("currentSession: Creando la sesion.");
@@ -40,9 +38,8 @@ public class HibernateHelper {
         return s;
     }
 
-    @SuppressWarnings("unchecked")
-	public static void closeSession() throws HibernateException {
-        Session s = (Session) session.get();
+    public static void closeSession() throws HibernateException {
+        Session s = session.get();
         session.set(null);
         if (s != null) {
             log.debug("closeSession: Cerrando la sesion.");
