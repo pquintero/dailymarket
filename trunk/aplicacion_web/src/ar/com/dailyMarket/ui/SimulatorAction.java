@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServletResponse;
 import net.sf.json.*;
 
 import org.apache.commons.lang.StringUtils;
+import org.apache.struts.action.ActionErrors;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
@@ -19,6 +20,7 @@ import ar.com.dailyMarket.model.Product;
 import ar.com.dailyMarket.services.GroupProductService;
 import ar.com.dailyMarket.services.ProductService;
 import ar.com.dailyMarket.services.SimulatorService;
+import ar.com.dailyMarket.ui.validator.Validator;
 import ar.com.dailyMarket.util.CombSelect;
 
 public class SimulatorAction extends BaseAction {
@@ -72,7 +74,9 @@ public class SimulatorAction extends BaseAction {
     }
 	
 	public ActionForward executeSimulator (ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
-		if (!StringUtils.isNotEmpty((String) ((DynaActionForm)form).get("margen"))) {
+		ActionErrors errors = validateForm((DynaActionForm)form, request);
+		if (!errors.isEmpty()) {
+			saveErrors(request, errors);
 			return executeFilter(mapping, form, request, response);
 		}
 		SimulatorService simulatorService = new SimulatorService();
@@ -98,4 +102,11 @@ public class SimulatorAction extends BaseAction {
     	GroupProductService groupProductService = new GroupProductService();
     	request.setAttribute("groupsProduct", groupProductService.getAllGroupProduct());
     }     
+	
+	private ActionErrors validateForm(DynaActionForm form, HttpServletRequest request) {
+		ActionErrors errors = new ActionErrors();
+    	Validator.isInteger(form.get("margen"), errors, request, getResources(request).getMessage("SimulatorForm.daysSimulator"), true);
+    	Validator.isInteger(form.get("days"), errors, request, getResources(request).getMessage("SimulatorForm.margen"), true);
+    	return errors;
+	}
 }

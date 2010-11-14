@@ -3,6 +3,7 @@ package ar.com.dailyMarket.ui;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.struts.action.ActionErrors;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
@@ -11,6 +12,7 @@ import org.apache.struts.action.DynaActionForm;
 import ar.com.dailyMarket.model.Configuration;
 import ar.com.dailyMarket.services.ConfigurationService;
 import ar.com.dailyMarket.services.UserService;
+import ar.com.dailyMarket.ui.validator.Validator;
 
 public class ConfigurationAction extends BaseAction {
 	
@@ -38,6 +40,12 @@ public class ConfigurationAction extends BaseAction {
 	
 	public ActionForward saveAndBack (ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) {
 		ConfigurationService configurationService = new ConfigurationService();
+		ActionErrors errors = validateForm((DynaActionForm)form, request);
+		if (!errors.isEmpty()) {
+			saveErrors(request, errors);
+			setAtributesInRequest(request);
+			return mapping.findForward("showConfiguration");
+		}
 		configurationService.save((DynaActionForm)form);
 		return initAction(mapping, form, request, response);
 	}
@@ -52,5 +60,11 @@ public class ConfigurationAction extends BaseAction {
 		UserService userService = new UserService();
 		userService.deleteNotificationInUser((Long)((DynaActionForm)form).get("userId"));		
 		return initAction(mapping, form, request, response);
-	}	
+	}
+	
+	private ActionErrors validateForm(DynaActionForm form, HttpServletRequest request) {    	
+    	ActionErrors errors = new ActionErrors();
+    	Validator.isInteger(form.get("timer"), errors, request, getResources(request).getMessage("ConfigrationForm.timerAlarm"), true);    	
+    	return errors;
+    }
 }

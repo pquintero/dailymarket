@@ -86,7 +86,7 @@ public class UserService {
 			c.add(Restrictions.eq("id", Long.parseLong(id)));
 		}
 		if (dni != null) {
-			c.add(Restrictions.ilike("dni", dni,MatchMode.ANYWHERE));
+			c.add(Restrictions.eq("dni", dni));
 		}
 		if (groupUser != null) {
 			c.createCriteria("groupUser").add(Restrictions.eq("id", groupUser));
