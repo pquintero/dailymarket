@@ -32,7 +32,7 @@ public class HomeAction extends BaseAction {
     	String user = request.getRemoteUser();
     	UserService userService = new UserService();
     	String role = userService.getRoleInUser(user);
-    	
+    	setLocale(request, new Locale("es"));
     	if(GroupUser.ROLE_ADMIN.equals(role)) {
     		return mapping.findForward("showAdminHome");
     	}

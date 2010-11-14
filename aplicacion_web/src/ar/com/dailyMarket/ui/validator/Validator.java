@@ -6,7 +6,9 @@ import org.apache.commons.validator.Field;
 import org.apache.commons.validator.GenericValidator;
 import org.apache.commons.validator.ValidatorAction;
 import org.apache.commons.validator.ValidatorUtil;
+import org.apache.struts.action.ActionError;
 import org.apache.struts.action.ActionErrors;
+import org.apache.struts.action.ActionMessage;
 import org.apache.struts.validator.FieldChecks;
 import org.apache.struts.validator.Resources;
 
@@ -31,10 +33,44 @@ public class Validator extends FieldChecks {
 				}
 			} catch (Exception e) {
 				errors.add(field.getKey(),
-						Resources.getActionError(request, va, field));
+				Resources.getActionError(request, va, field));
 				return false;
 			}
 		}
 		return true;
+	}
+	
+	public static void isDouble(Object value, ActionErrors errors, HttpServletRequest request, String propertyName, boolean required) {
+		if (required) {
+			isEmpty(value, errors, request, propertyName);
+		}
+		if (!value.toString().equals("")) {
+			try {
+				Double.parseDouble(value.toString());
+			} catch (NumberFormatException e) {
+				ActionMessage message = new ActionMessage("El campo " + propertyName + " debe ser un número");
+				errors.add("propertyName", message);
+			}						
+		}
+	}
+	
+	public static void isInteger (Object value, ActionErrors errors, HttpServletRequest request, String propertyName, boolean required) {
+		if (required) {
+			isEmpty(value, errors, request, propertyName);	
+		}
+		if (!value.toString().equals("")) {				
+			try {
+				Integer.parseInt(value.toString());
+			} catch (NumberFormatException e) {
+				ActionError error = new ActionError("errors.isInteger",propertyName);
+				errors.add(propertyName, error);
+			}
+		}
+	}
+	
+	public static void isEmpty(Object value, ActionErrors errors, HttpServletRequest request, String propertyName) {
+		if (value == null || value.toString().trim().equals("")) {			
+			errors.add(propertyName, new ActionError("errors.isRequired", propertyName));
+		}
 	}
 }

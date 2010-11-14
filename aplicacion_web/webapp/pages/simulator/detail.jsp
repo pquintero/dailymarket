@@ -66,6 +66,11 @@ function changeCombo(grupoProd) {
 			<h1 class="formtitle"><bean:message key="simulator.home"/></h1>
 	    </TD> 
 	</TR>
+	<TR> 
+		<TD colspan="4"> 
+			<html:errors/>
+		</TD>
+	</TR> 
 	<tr>
 		<td colspan="4">&nbsp;</td>	
 	</tr>
