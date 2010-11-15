@@ -23,7 +23,7 @@ public class AlarmService extends MailService {
 		StringBuffer message = new StringBuffer();		
 		
 		if (!products.isEmpty()) {
-			message.append("Productos sin emitir pedido desde hace mas " + timer.toString() +" días\n");
+			message.append("Productos sin emitir pedido desde hace mas de" + timer.toString() +" días\n");
 			for (Iterator<Product> it = products.iterator(); it.hasNext();) {
 				Product product = it.next();
 				message.append("\tProducto: " + product.getName() + " - Código " + product.getCode() + " - Desde " + product.getDateWithoutStock() + "\n");

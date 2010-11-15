@@ -1,7 +1,10 @@
 package ar.com.dailyMarket.ui;
 
+import java.io.IOException;
 import java.sql.SQLException;
+import java.util.InvalidPropertiesFormatException;
 import java.util.List;
+import java.util.Properties;
 import java.util.StringTokenizer;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -45,26 +48,26 @@ public class ManagerAction extends BaseAction {
     	return mapping.findForward("showReportesHome");
     }        
     
-    public ActionForward redirectToConfirmSendOrder(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws ClassNotFoundException, SQLException {
+    public ActionForward redirectToConfirmSendOrder(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws ClassNotFoundException, SQLException, InvalidPropertiesFormatException, IOException {
     	//Armar mail sin enviarlo 
     	//validar si hay ids seleccionados?
     	ProductService productService = new ProductService();
     	List<Product> products = productService.getProductsFromArray((String[])((DynaActionForm)form).get("productsIds"));
+    	User u = new UserService().getUser(request.getRemoteUser());
     	
     	String body = productService.createMessage(products).toString();
     	((DynaActionForm)form).set("mailBody", body);
     	
     	//Preguntar juani por n destinatarios por configuracion
-    	String to = productService.getMaildestinataries() + ";"; //Concatenados con ';'
+    	String to = productService.getMaildestinataries() + ";" + u.getEmail() + ";"; //ENVÍO AL DEPOSITO Y AL USUARIO Q HIZO EL PEDIDO
     	((DynaActionForm)form).set("mailTo", to);
     	
     	//TODO ver from y subject
-//    	BaseAction.class.getResourceAsStream("/mail/mail-properties.xml");
-    	
-    	User u = new UserService().getUser(request.getRemoteUser());
-    	((DynaActionForm)form).set("mailFrom", u.getEmail());
-    	
-    	((DynaActionForm)form).set("mailSubject", "Productos Pendientes de Pedido");
+    	Properties props = new Properties();
+		props.loadFromXML(BaseAction.class.getResourceAsStream("/mail/mail-properties.xml"));
+    	    	
+    	((DynaActionForm)form).set("mailFrom", (String) props.get("from"));    	
+    	((DynaActionForm)form).set("mailSubject", (String) props.get("subjectPending"));
     	
     	return mapping.findForward("showConfirmMail");
     }
@@ -73,7 +76,7 @@ public class ManagerAction extends BaseAction {
     	return initAction(mapping, form, request, response);
     }
     
-    public ActionForward sendOrder(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws ClassNotFoundException, SQLException {
+    public ActionForward sendOrder(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws ClassNotFoundException, SQLException, InvalidPropertiesFormatException, IOException {
     	//Mandar mail con los datos del form, previamente validar datos
     	ProductService productService = new ProductService();
     	String body = (String)((DynaActionForm)form).get("mailBody");
@@ -95,11 +98,7 @@ public class ManagerAction extends BaseAction {
     	if(!StringUtils.isNotEmpty(body)) {
     		//body vacio
     		return false;
-    	}
-    	if(!StringUtils.isNotEmpty(subject)) {
-    		//subject vacio
-    		return false;
-    	}
+    	}    	
     	if(!StringUtils.isNotEmpty(to)) {
     		//to vacio
     		return false;
