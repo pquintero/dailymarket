@@ -12,7 +12,6 @@ import javax.naming.Context;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
 
-import org.apache.commons.lang.StringUtils;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.DynaActionForm;
 import org.hibernate.Criteria;
@@ -21,6 +20,7 @@ import org.hibernate.criterion.Restrictions;
 
 import ar.com.dailyMarket.model.Configuration;
 import ar.com.dailyMarket.model.Product;
+import ar.com.dailyMarket.model.User;
 
 import com.mysql.jdbc.Statement;
 
@@ -151,19 +151,14 @@ public class ProductService extends MailService{
 		return products;
 	}
 	
-	public void sendOrder(String[] idsStr, String to, String from, String subject, String body) {
-		
-		List<String> emailTo = new ArrayList<String>();
-		
+	public void sendOrder(String[] idsStr, String to, String from, String subject, String body) {								
 		StringTokenizer st = new StringTokenizer(to, ";");
+		String[] emailTo = new String[st.countTokens()];
     	for (int i = 0; st.hasMoreTokens(); i++) {
-			String next = st.nextToken();
-			emailTo.add(next);
+			emailTo[i] = (String)st.nextToken();
 		}
     	
-    	//TODO SACAR SUBJECT Y FROM DE initSendMail()
-//		super.sendMail((String[]) emailTo.toArray(), new StringBuffer(body));
-    	
+		super.sendMail(emailTo, new StringBuffer(body));
     	//Actualizo estado LUEGO DE ENVIAR MAIL
     	for (int i = 0; i < idsStr.length; i++) {
     		Long id = Long.valueOf(idsStr[i]);
@@ -179,7 +174,8 @@ public class ProductService extends MailService{
 		StringBuffer message = new StringBuffer();		
 		
 		if (!products.isEmpty()) {
-			message.append("Pedido de Mercadería: \n\n");
+			message.append("PRODUCTOS PENDIENTE DE MERCADERIA: \n\n");
+			message.append("Pedido: \n\n");
 			for (Iterator<Product> it = products.iterator(); it.hasNext();) {
 				Product product = it.next();
 				message.append("\tCódigo: " + product.getCode() + " - Producto: " + product.getName() + " - Tamaño de Pedido: " + product.getSizeOfPurchase() + "\n");
