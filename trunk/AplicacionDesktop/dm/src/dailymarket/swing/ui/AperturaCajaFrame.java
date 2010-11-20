@@ -47,6 +47,7 @@ public class AperturaCajaFrame extends DailyMarketFrame implements HuellaDigital
 	JLabel cajeroLabel = new JLabel("Nombre de Usuario :");
 	JLabel lectorImgLabel = new JLabel();
 	JButton volverButton = new JButton("Volver");
+	private Double MONTO_CONSTANTE_APERTURA = new Double(575);
 	
 	public AperturaCajaFrame(JFrame f){
 		
@@ -268,7 +269,7 @@ public class AperturaCajaFrame extends DailyMarketFrame implements HuellaDigital
 	}
 
 	public String getMonto() {
-		return null;
+		return MONTO_CONSTANTE_APERTURA.toString();
 	}
 
 	public void backToInitSession() {
