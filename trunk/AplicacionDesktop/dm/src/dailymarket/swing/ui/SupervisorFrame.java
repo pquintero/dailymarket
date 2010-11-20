@@ -233,4 +233,9 @@ public class SupervisorFrame extends  DailyMarketFrame implements HuellaDigitalI
 	public void habilitarFirmaSupervisor() {
 		solicitudesTabbedPane.firmaSupervisor.setEnabled(true);
 	}
+
+	public void cancelarVenta() {
+		((CajeroVentaFrame)parentFrame).cancelarVenta();
+		
+	}
 }
