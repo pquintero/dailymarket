@@ -67,7 +67,6 @@ public class CajeroVentaFrame extends DailyMarketFrame {
     private List <String> productsCode = new ArrayList<String>();
     private List <ProductModel> productos = new ArrayList<ProductModel>();
 
-
     protected String cajaNumber = Configuration.getInstance().getCaja();
     protected JTextField scanCodProducto;
     protected Double totalVenta = new Double(0);
@@ -647,9 +646,16 @@ public class CajeroVentaFrame extends DailyMarketFrame {
 				totalVentaTextField.setText(totalVenta.toString());
 				
 				imagePanel.remove(picLabel);
+				ImageIcon productoImg = null;
+
 				if(productModel.getFoto()!=null){
-					ImageIcon productoImg = new ImageIcon(productModel.getFoto());
-					
+					 productoImg = new ImageIcon(productModel.getFoto());
+				}
+					else{
+						java.net.URL imgURL = InitDailyMarketFrame.class.getResource("sinImg.jpg");
+						 productoImg = new ImageIcon(imgURL);
+					}
+						
 					picLabel = new JLabel(new ImageIcon(productoImg.getImage().getScaledInstance(180, 140, Image.SCALE_SMOOTH)));
 					imagePanel.add(picLabel);
 					picLabel.repaint();
@@ -658,7 +664,6 @@ public class CajeroVentaFrame extends DailyMarketFrame {
 					picLabel.validate();
 					imagePanel.validate();
 					ventaProductoPanel.validate();
-				}
 				
 	         }else{
 	        	 message.setText("No existe el producto con código " + scanCodProducto.getText());
@@ -678,6 +683,16 @@ public class CajeroVentaFrame extends DailyMarketFrame {
 		OTORGAR_DESCUENTO  = true;
 		totalVenta = OTORGAR_DESCUENTO ? subTotalVenta*DESCUENTO_EMPLEADO : subTotalVenta;
 		totalVentaTextField.setText(totalVenta.toString());
+	}
+	public void cancelarVenta() {
+		dispose();
+		try {
+			new CajeroVentaFrame(parentFrame);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
+		
 	}
 }
 
