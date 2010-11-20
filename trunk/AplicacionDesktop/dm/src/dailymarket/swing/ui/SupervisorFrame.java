@@ -30,7 +30,7 @@ import dailymarket.model.ProductModel;
 
 
 public class SupervisorFrame extends  DailyMarketFrame implements HuellaDigitalInterface {
-	JFrame parentFrame ;
+	CajeroVentaFrame parentFrame ;
 	JPanel imageHuellaPanel = new JPanel();
 	protected JLabel imgHuella = new JLabel();
 	JLabel mensaje = new JLabel();
@@ -53,10 +53,10 @@ public class SupervisorFrame extends  DailyMarketFrame implements HuellaDigitalI
 	JLabel supervisorLabel = new JLabel("Usuario");
 
 
-	public SupervisorFrame(DefaultTableModel tableModelProducts, JFrame frame, List<ProductModel> products, Double subT){
+	public SupervisorFrame(DefaultTableModel tableModelProducts, CajeroVentaFrame frame, List<ProductModel> products){
 		
 		parentFrame = frame;
-		solicitudesTabbedPane = new TabbedPane(tableModelProducts, this, mensajeLector, imgHuella, products, subT);
+		solicitudesTabbedPane = new TabbedPane(tableModelProducts, this, mensajeLector, imgHuella, products, frame);
         thisFrame = this;
         setLocationRelativeTo(parentFrame);
         add(solicitudesTabbedPane, BorderLayout.CENTER);

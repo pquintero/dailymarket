@@ -52,12 +52,12 @@ public class TabbedPane extends JPanel {
 
 	DefaultTableModel tableModelProducts;
     private List <ProductModel> productos = new ArrayList<ProductModel>();
-    private Double subTotal;
+    private CajeroVentaFrame cajaFrame;
 	
-    public TabbedPane(DefaultTableModel productsList, HuellaDigitalInterface supervisorFrame, JLabel mensajeLector, JLabel imgHuella, List<ProductModel> products, Double subTotalVenta) {
+    public TabbedPane(DefaultTableModel productsList, HuellaDigitalInterface supervisorFrame, JLabel mensajeLector, JLabel imgHuella, List<ProductModel> products,  CajeroVentaFrame cajeroFrame) {
          frameParent = supervisorFrame;
          tableModelProducts = productsList;
-        
+         cajaFrame = cajeroFrame;
         JTabbedPane tabbedPane = new JTabbedPane();
         tabbedPane.setPreferredSize(new Dimension(600, 200));
         
@@ -80,9 +80,7 @@ public class TabbedPane extends JPanel {
         
         tabbedPane.setTabLayoutPolicy(JTabbedPane.SCROLL_TAB_LAYOUT);
         productos = products;
-        subTotal = subTotalVenta;
-        
-    }
+   }
     
     protected JComponent makeCancelarVentaPanel(String text) {
     	
@@ -290,9 +288,8 @@ public class TabbedPane extends JPanel {
 
     		tableModelProducts.removeRow( new Integer(((String)tableModelSelecteds.getValueAt(i, 5).toString())) - cantCancel);
     		ProductModel pm = productos.get(new Integer(((String)tableModelSelecteds.getValueAt(i, 5).toString())) - cantCancel);
-    		subTotal -= pm.getPrice();
-    		
-			productos.remove(new Integer(((String)tableModelSelecteds.getValueAt(i, 5).toString())) - cantCancel);
+    		productos.remove(new Integer(((String)tableModelSelecteds.getValueAt(i, 5).toString())) - cantCancel);
+			cajaFrame.decrementarSubtotal(pm.getPrice()*pm.getCantidad());
 			
     		tableSelecteds.getColumn("Cancel").setCellRenderer(new MultiRenderer());
 			tableSelecteds.getColumn("Cancel").setCellEditor(new MultiEditor());
