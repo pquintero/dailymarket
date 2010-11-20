@@ -104,7 +104,8 @@ public class FinVentaFrame extends JDialog {
 						else{
 							List<String> productCode = new ArrayList<String>();
 							for( ProductModel  pm :((CajeroVentaFrame)parentFrame).getProductos()){
-								productCode.add(pm.getCode());
+								for(int i = 0 ; i< pm.getCantidad(); i++)
+								  productCode.add(pm.getCode());
 							}
 							
 							String codigos = concatenarCodigos(productCode);
