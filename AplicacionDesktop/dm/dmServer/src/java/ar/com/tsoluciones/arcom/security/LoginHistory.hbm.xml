@@ -9,9 +9,9 @@
         
          <many-to-one name="cajero" column="cajeroid" class="ar.com.tsoluciones.arcom.security.User"/>
          <property column="montoapertura" name="montoApertura"  type="java.lang.Double"/>
-         <property name="fechaApertura" type="timestamp" not-null="true"/>
+         <property name="fechaApertura" type="timestamp" />
          <property column="montocierre" name="montoCierre"  type="java.lang.Double"/>
-         <property name="fechaCierre" type="timestamp" not-null="true"/>
+         <property name="fechaCierre" type="timestamp" />
          <property column="idcaja" name="idCaja"  type="java.lang.Long"/>
     </class>   
 </hibernate-mapping>
