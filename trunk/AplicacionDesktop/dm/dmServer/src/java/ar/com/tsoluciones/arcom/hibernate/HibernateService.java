@@ -125,6 +125,25 @@ public class HibernateService {
             throw he;
         }
     }
+    
+    /**
+     * Busca el objeto de la clase especificada y filtra por el campo indicado.
+     *
+     * @param type  clase a buscar
+     * @param field campo a filtrar
+     * @param value valor a filtrar
+     * @param field valor que tiene que ser nulo
+     * @return Lista de objetos que concuerdan con la condicion
+     * @throws HibernateException error al buscar
+     */
+    public static <T> List<T> findByTwoFilter(Class<T> type, String field, Long value, String fieldIsNull) throws HibernateException {
+        try {
+            return findByCriteria(type, CriteriaSpecification.DISTINCT_ROOT_ENTITY, Restrictions.eq(field, value), Restrictions.isNull(fieldIsNull));
+        } catch (HibernateException he) {
+            Log.hibernate.error("Could not find " + type + " where " + field + " = " + value, he);
+            throw he;
+        }
+    }
 
     /**
      * Busca el objeto de la clase especificada y filtra por el campo de tipo long especificado
