@@ -252,16 +252,7 @@ public class CajeroVentaFrame extends DailyMarketFrame {
 				Sucursal suc = new Sucursal();
 				suc.toSucursalModel(doc);
 				
-//				suc.setCuit("23-94237098-9");
-//				suc.setDireccion("Suipacha 234");
-//				suc.setNombre("Lider_Oriental");
-//				suc.setTelefono("4982-7021");
-				
 				Empleado cajero = Context.getInstance().getCurrentUser();
-				
-//				cajero.setLastName("Gimenez");
-//				cajero.setDni("15-489892");
-//				cajero.setName("Patricia");
 				
 				Caja caja = new Caja();
 				caja.setCajero(cajero);
@@ -280,22 +271,6 @@ public class CajeroVentaFrame extends DailyMarketFrame {
 					linea.setPrecioTotal(producto.get(4).toString());
 					lista.add(linea);
 				}
-				
-//				linea1.setDescripcion("Coca_Cola_x_2Lts");
-//				linea1.setCantidad("6");
-//				linea1.setPrecioUnitario("8");
-//				linea1.setPrecioTotal("32");
-//		
-//				LineaTicket linea2 = new LineaTicket();
-//				linea2.setDescripcion("Galletitas_Costa_Chocolate_x_400_gramos");
-//				linea2.setCantidad("1");
-//				linea2.setPrecioUnitario("3");
-//				linea2.setPrecioTotal("3");
-//		
-//				
-//				
-//				lista.add(linea1);
-//				lista.add(linea2);
 				
 				Ticket ticket = new Ticket();
 				ticket.setCaja(caja);
@@ -318,7 +293,7 @@ public class CajeroVentaFrame extends DailyMarketFrame {
 				lineaTicket[6]= "NRO-TICKET: " + ticket.getNroTicket().toUpperCase();
 				SimpleDateFormat sdf = new java.text.SimpleDateFormat("dd/MM/yyyy HH:mm:ss"); 
 				lineaTicket[7]= "FECHA: " + sdf.format(new Date());
-				lineaTicket[8] = "Lista de productos";
+				lineaTicket[8] = "Lista de Productos";
 				lineaTicket[9] = "					";
 				
 				int i = 10;
@@ -328,10 +303,9 @@ public class CajeroVentaFrame extends DailyMarketFrame {
 					i++;
 				}
 				
-				lineaTicket[i] = "			f		";
+				lineaTicket[i] = "			 		";
 				i++;
 				lineaTicket[i] = "TOTAL: " + ticket.getTotal() + " pesos";
-				
 				
 				return lineaTicket;
 			}
@@ -355,9 +329,7 @@ public class CajeroVentaFrame extends DailyMarketFrame {
 			
 			public void actionPerformed(ActionEvent e) {
 				totalVentaTextField.setText(subTotalVenta.toString());
-
 //				totalVentaTextField.setText(totalVenta.toString());
-
 			}
 		});
 		ticketPanel.add(calcularTotal);
