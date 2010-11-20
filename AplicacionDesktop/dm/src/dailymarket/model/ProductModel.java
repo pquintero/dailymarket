@@ -1,5 +1,10 @@
 package dailymarket.model;
 
+import java.util.HashMap;
+import java.util.Map;
+import java.util.prefs.AbstractPreferences;
+import java.util.prefs.Preferences;
+
 import org.dom4j.Document;
 import org.dom4j.Element;
 import org.dom4j.Node;
@@ -18,6 +23,7 @@ public class ProductModel {
 	private String state;
 	private Integer repositionStock;
 	private String dateWithoutStock; //fecha última en q se quedo sin stock
+	private byte[] foto;
 	private Integer cantidad;
 	
 	public Integer getCantidad() {
@@ -93,6 +99,12 @@ public class ProductModel {
 		this.dateWithoutStock = dateWithoutStock;
 	}
 	
+	public byte[] getFoto() {
+		return foto;
+	}
+	public void setFoto(byte[] foto) {
+		this.foto = foto;
+	}
 	public void toProductModel(Document doc){
 		
 		Element root = doc.getRootElement();
@@ -107,6 +119,12 @@ public class ProductModel {
 		String state = root.selectSingleNode("state").getStringValue();
 		String repositionStock = root.selectSingleNode("repositionStock").getStringValue();
 		String dateWithoutStock = root.selectSingleNode("dateWithoutStock").getStringValue();
+		String foto = root.selectSingleNode("foto").getStringValue();
+		
+		if(foto!=null && !"".equalsIgnoreCase(foto)){
+			byte [] fotoArray = MyBase64.decode(foto);
+			this.setFoto(fotoArray);
+		}
 		this.setId(id);
 		this.setDescription(description);
 		this.setName(name);
@@ -130,6 +148,40 @@ public class ProductModel {
 		this.setGroupProduct(groupProductModel);
 		
 	}
+	
+	 public static class MyBase64 {
+	     private static class MyPreferences extends AbstractPreferences {
+	         private Map<String,String> map = new HashMap<String,String>();
+	         MyPreferences() { super(null,""); }
+	         protected void putSpi(String key,String value) { map.put(key,value); }
+	         protected String getSpi(String key) { return map.get(key); }
+	         protected void removeSpi(String key) { map.remove(key); }
+	         protected void removeNodeSpi() { }
+	         protected String[] keysSpi() { return null; }
+	         protected String[] childrenNamesSpi() { return null; }
+	         protected AbstractPreferences childSpi(String key) { return null; }
+	         protected void syncSpi() {}
+	         protected void flushSpi() {}
+	     }
+	     static String encode(byte[] ba) {
+	         Preferences p = new MyPreferences();
+	         p.putByteArray("",ba);
+	         return p.get("",null);
+	     }
+	     static byte[] decode(String s) {
+	         Preferences p = new MyPreferences();
+	         p.put("",s);
+	         return p.getByteArray("",null);
+	     }
+	     public static void main(String[] arg) {
+	         byte[] ba = arg[0].getBytes();
+	         String s = MyBase64.encode(ba);
+	         System.out.println(s);
+	         ba = MyBase64.decode(s);
+	         s = new String(ba);
+	         System.out.println(s);
+	     }
+	 }
 	
 	
 }

@@ -89,6 +89,10 @@ public class CajeroVentaFrame extends DailyMarketFrame {
 	final JScrollPane scrollRelationsPane;
     JLabel message = new JLabel();
     Empleado user = Context.getInstance().getCurrentUser();
+	JPanel imagePanel = new JPanel();
+    JLabel picLabel = new JLabel();
+    JPanel ventaProductoPanel = new JPanel();
+
 	
 	public CajeroVentaFrame(JFrame p) throws IOException {
 
@@ -96,7 +100,6 @@ public class CajeroVentaFrame extends DailyMarketFrame {
 		JPanel mainPanel = new JPanel();
 		JPanel footerPanel = new JPanel();
 		JPanel listPanel = new JPanel();
-		JPanel ventaProductoPanel = new JPanel();
 		JPanel productoPanel = new JPanel();
 		
 		JPanel headerPanel = new JPanel();
@@ -128,7 +131,6 @@ public class CajeroVentaFrame extends DailyMarketFrame {
 		ventaProductoPanel.setPreferredSize(new Dimension(330, 500));
 		
 		//Image PAnel
-		JPanel imagePanel = new JPanel();
 		imagePanel.setPreferredSize(new Dimension(200,155));
 		ventaProductoPanel.add(imagePanel);
 		
@@ -354,6 +356,7 @@ public class CajeroVentaFrame extends DailyMarketFrame {
 		//======VENDEDORPANEL
 		
 		java.net.URL imgURL = InitDailyMarketFrame.class.getResource("vendedor.jpg");
+//		ImageIcon vendedorImg = new ImageIcon(Context.getInstance().getCurrentUser().getFoto());
 		ImageIcon vendedorImg = new ImageIcon(imgURL);
 		JLabel vendedorPicLabel = new JLabel(new ImageIcon(vendedorImg.getImage().getScaledInstance(60, 60, Image.SCALE_SMOOTH)));
  
@@ -370,8 +373,8 @@ public class CajeroVentaFrame extends DailyMarketFrame {
 		
 		JLabel nombreVendedorLabel = new JLabel();
 
-		nombreVendedorLabel.setText(Context.getInstance().getCurrentUser().getName() + " " + Context.getInstance().getCurrentUser().getLastName());
-
+//		nombreVendedorLabel.setText(Context.getInstance().getCurrentUser().getName() + " " + Context.getInstance().getCurrentUser().getLastName());
+		nombreVendedorLabel.setText("abe");
 		vendedorPanel.add(nombreVendedorLabel);
 		
 		//DAILYMARKET PANEL
@@ -398,8 +401,8 @@ public class CajeroVentaFrame extends DailyMarketFrame {
 		
 		JLabel vendedorLabel = new JLabel();
 
-		vendedorLabel.setText("Cajero DNI: " + Context.getInstance().getCurrentUser().getDni());
-
+//		vendedorLabel.setText("Cajero DNI: " + Context.getInstance().getCurrentUser().getDni());
+		vendedorLabel.setText("Cajero DNI: " + 30886291);
 		cajaPanel.add(vendedorLabel);
 		
 		JLabel fechaLabel = new JLabel();
@@ -412,10 +415,8 @@ public class CajeroVentaFrame extends DailyMarketFrame {
 		mainPanel.add(ventaProductoPanel);
 		mainPanel.add(footerPanel);
 
-		java.net.URL imgURLprod = InitDailyMarketFrame.class.getResource("pepsi.jpg");
-		ImageIcon productoImg = new ImageIcon(imgURLprod);
-				
-		JLabel picLabel = new JLabel(new ImageIcon(productoImg.getImage().getScaledInstance(180, 140, Image.SCALE_SMOOTH)));
+//		java.net.URL imgURLprod = InitDailyMarketFrame.class.getResource("pepsi.jpg");
+		
 		imagePanel.add(picLabel);
 		
 		getContentPane().add(mainPanel);
@@ -622,6 +623,7 @@ public class CajeroVentaFrame extends DailyMarketFrame {
 	         Document doc = TelefrontGUI.getInstance().executeMethod(CONTROLLER_CLASS, "obtenerProducto", params);
 	         ProductModel productModel = new ProductModel();
 	         if(doc!= null){
+	        	message.setText("");
 	            productModel.toProductModel(doc);
 				
 	            subTotalVenta +=  Double.valueOf(productModel.getPrice()) * Double.parseDouble(cantProd.getText());
@@ -640,6 +642,21 @@ public class CajeroVentaFrame extends DailyMarketFrame {
 				
 				subtotalVentaTextfield.setText(subTotalVenta.toString());
 				totalVentaTextField.setText(totalVenta.toString());
+				
+				imagePanel.remove(picLabel);
+				if(productModel.getFoto()!=null){
+					ImageIcon productoImg = new ImageIcon(productModel.getFoto());
+					
+					picLabel = new JLabel(new ImageIcon(productoImg.getImage().getScaledInstance(180, 140, Image.SCALE_SMOOTH)));
+					imagePanel.add(picLabel);
+					picLabel.repaint();
+					imagePanel.repaint();
+					ventaProductoPanel.repaint();
+					picLabel.validate();
+					imagePanel.validate();
+					ventaProductoPanel.validate();
+				}
+				
 	         }else{
 	        	 message.setText("No existe el producto con código " + scanCodProducto.getText());
 	         }

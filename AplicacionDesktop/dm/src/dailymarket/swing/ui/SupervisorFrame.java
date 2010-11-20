@@ -112,7 +112,6 @@ public class SupervisorFrame extends  DailyMarketFrame implements HuellaDigitalI
 		
 		primerLogueoCheck.addActionListener(new ActionListener() {
 			
-			@Override
 			public void actionPerformed(ActionEvent e) {
 			
 				if(primerLogueoCheck.isSelected()){

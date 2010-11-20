@@ -154,7 +154,6 @@ public class TabbedPane extends JPanel {
 		 firmaEmpleado.setMnemonic(KeyEvent.VK_E);
 		 
 		 firmaSupervisor.addActionListener(new ActionListener() {
-			@Override
 			public void actionPerformed(ActionEvent e) {
 				((SupervisorFrame)frameParent).getFrameMensaje().setText("Sr Supervisor apoye su dedo en el lector de huellas digitales");
 				UtilLectorHuellasSingleton lector = new UtilLectorHuellasSingleton();
