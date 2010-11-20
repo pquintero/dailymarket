@@ -34,8 +34,13 @@ public class BaseReportService {
     	Map<String, String> filters = new HashMap<String, String>();
     	filters.put("periodo",form.get("yearFrom") + " - " + form.get("yearTo"));
     	filters.put("productFilter", product != null ? product.getName() : "Todos");
+    	filters.put("productId", product != null ? product.getId().toString() : "-1");
+    	filters.put("groupProductId", groupProduct != null ? groupProduct.getId().toString() : "-1");
     	filters.put("groupProduct", groupProduct != null ? groupProduct.getName() : "Todos");
     	filters.put("hourlyBand", hourlyBand != null ? hourlyBand.getDetail() : "Todas");
+    	filters.put("hourlyBandId", hourlyBand != null ? hourlyBand.getId().toString() : "-1");
+    	filters.put("anioDesde", (String)form.get("yearFrom"));
+    	filters.put("anioHasta", (String)form.get("yearTo"));
     	return filters;
     }
 	
