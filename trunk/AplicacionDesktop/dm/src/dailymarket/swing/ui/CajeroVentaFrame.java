@@ -274,10 +274,10 @@ public class CajeroVentaFrame extends DailyMarketFrame {
 				for (int i = 0; i < productos.size(); i++) {
 					LineaTicket linea = new LineaTicket();
 					Vector producto = (Vector)productos.get(i);
-					linea.setDescripcion(producto.get(2).toString());
-					linea.setCantidad(producto.get(3).toString());
-					linea.setPrecioUnitario(producto.get(4).toString());
-					linea.setPrecioTotal(producto.get(5).toString());
+					linea.setDescripcion(producto.get(1).toString());
+					linea.setCantidad(producto.get(2).toString());
+					linea.setPrecioUnitario(producto.get(3).toString());
+					linea.setPrecioTotal(producto.get(4).toString());
 					lista.add(linea);
 				}
 				
@@ -328,7 +328,7 @@ public class CajeroVentaFrame extends DailyMarketFrame {
 					i++;
 				}
 				
-				lineaTicket[i] = "					";
+				lineaTicket[i] = "			f		";
 				i++;
 				lineaTicket[i] = "TOTAL: " + ticket.getTotal() + " pesos";
 				
