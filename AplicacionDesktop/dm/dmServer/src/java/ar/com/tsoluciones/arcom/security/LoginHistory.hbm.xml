@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 2.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+    <class lazy="false" name="ar.com.tsoluciones.arcom.security.LoginHistory" table="loginhistory">
+        <id column="idHistory" name="id" type="java.lang.Long">
+            <generator class="identity"/>
+        </id>
+        
+         <many-to-one name="cajero" column="cajeroid" class="ar.com.tsoluciones.arcom.security.User"/>
+         <property column="montoapertura" name="montoApertura"  type="java.lang.Double"/>
+         <property name="fechaApertura" type="timestamp" not-null="true"/>
+         <property column="montocierre" name="montoCierre"  type="java.lang.Double"/>
+         <property name="fechaCierre" type="timestamp" not-null="true"/>
+         <property column="idcaja" name="idCaja"  type="java.lang.Long"/>
+    </class>   
+</hibernate-mapping>

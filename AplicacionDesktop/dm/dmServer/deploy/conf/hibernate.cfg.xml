@@ -57,6 +57,7 @@
 		<mapping resource="ar/com/tsoluciones/arcom/security/ProductoVenta.hbm.xml"/>
 		<mapping resource="ar/com/tsoluciones/arcom/security/SesionVenta.hbm.xml"/>
 		<mapping resource="ar/com/tsoluciones/arcom/security/Sucursal.hbm.xml"/>
+		<mapping resource="ar/com/tsoluciones/arcom/security/LoginHistory.hbm.xml"/>
 
 
 

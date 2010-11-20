@@ -1,13 +1,18 @@
 package ar.com.tsoluciones.emergencies.server.gui.core.telefront.action;
 
+import java.util.Date;
+
 import org.dom4j.Document;
 import org.dom4j.DocumentHelper;
 import org.dom4j.Element;
 
 import ar.com.tsoluciones.arcom.cor.ServiceException;
 import ar.com.tsoluciones.arcom.security.GroupUser;
+import ar.com.tsoluciones.arcom.security.LoginHistory;
 import ar.com.tsoluciones.arcom.security.User;
+import ar.com.tsoluciones.arcom.security.services.factory.CajeroVentaFactory;
 import ar.com.tsoluciones.arcom.security.services.factory.UserServiceFactory;
+import ar.com.tsoluciones.arcom.security.services.proxyinterface.CajeroVentaServiceInterface;
 import ar.com.tsoluciones.arcom.security.services.proxyinterface.UserServiceInterface;
 import ar.com.tsoluciones.emergencies.server.businesslogic.core.service.factory.AperturaCajaServiceFactory;
 import ar.com.tsoluciones.emergencies.server.businesslogic.core.service.proxyinterface.AperturaCajaServiceInterface;
@@ -38,11 +43,19 @@ public class AperturaCajaManagerService extends TelefrontServiceFactory {
    * @throws ar.com.tsoluciones.arcom.cor.ServiceException
    *          Cuando hay un error de negocios, por ejemplo, si el usuario no se puede logear
    */
-  public XmlSerializable abrirCaja(String username, String montoApertura, String fecha, String huellaDigital) throws ServiceException {
+  public XmlSerializable abrirCaja(String username, String montoApertura, String idCaja, String huellaDigital) throws ServiceException {
 		UserServiceInterface userInterface = (UserServiceInterface) new UserServiceFactory().newInstance();
 		
 		User user = searchUserByFingerPrint(huellaDigital, userInterface);
-
+		
+		CajeroVentaServiceInterface cajeroVentaServiceInterface = (CajeroVentaServiceInterface) new CajeroVentaFactory().newInstance();
+		LoginHistory loginHistory = new LoginHistory();
+		loginHistory.setCajero(user);
+		loginHistory.setFechaApertura(new Date());
+		loginHistory.setMontoApertura(new Double(montoApertura));
+		loginHistory.setIdCaja(new Long(idCaja));
+		
+		cajeroVentaServiceInterface.saveLoginHistory(loginHistory);
 		Session session = new Session(this.getHttpSession());
 		session.setUser(user);
 
@@ -77,7 +90,7 @@ public class AperturaCajaManagerService extends TelefrontServiceFactory {
 	    return new XmlSerializableImpl(u.toXml().asXML());
 		
 	}
-	public XmlSerializable cerrarCaja(String username, String montoApertura, String fecha, String huellaDigital) throws ServiceException {
+	public XmlSerializable cerrarCaja(String username, String montoCierre, String fecha, String huellaDigital) throws ServiceException {
 		UserServiceInterface userInterface = (UserServiceInterface) new UserServiceFactory().newInstance();
 		User user = userInterface.getUserByUserName(username);
 		
@@ -86,6 +99,14 @@ public class AperturaCajaManagerService extends TelefrontServiceFactory {
 		
 		Document document = DocumentHelper.createDocument();
 	    Element rootElement = document.addElement("cerrarCaja");
+	    
+	    CajeroVentaServiceInterface cajeroVentaServiceInterface = (CajeroVentaServiceInterface) new CajeroVentaFactory().newInstance();
+		
+	    LoginHistory loginHistory = cajeroVentaServiceInterface.getLoginHistory(user);
+		loginHistory.setFechaCierre(new Date());
+		loginHistory.setMontoCierre(new Double(montoCierre));
+		
+		cajeroVentaServiceInterface.updateLoginHistory(loginHistory);
 			
 	    rootElement.addElement("cajaCerrada").setText("OK");
 	    return new XmlSerializableImpl(document.asXML());

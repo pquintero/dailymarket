@@ -5,11 +5,14 @@ import java.util.List;
 import java.util.Set;
 
 import org.hibernate.Hibernate;
+import org.hibernate.HibernateException;
 import org.hibernate.LockMode;
 import org.hibernate.type.Type;
 
+import ar.com.tsoluciones.arcom.cor.InternalErrorException;
 import ar.com.tsoluciones.arcom.hibernate.HibernateService;
 import ar.com.tsoluciones.arcom.hibernate.Transactional;
+import ar.com.tsoluciones.arcom.security.LoginHistory;
 import ar.com.tsoluciones.arcom.security.Product;
 import ar.com.tsoluciones.arcom.security.ProductoVenta;
 import ar.com.tsoluciones.arcom.security.SesionVenta;
@@ -85,6 +88,35 @@ public class CajeroVentaService implements CajeroVentaServiceInterface {
 				LockMode.NONE);
 		return sucursal;
 
+	}
+
+	public void saveLoginHistory(LoginHistory loginHistory) {
+		try {
+			HibernateService.saveObject(loginHistory);
+		} catch (HibernateException e) {
+			throw new InternalErrorException("Error al intentar persistir el objeto LoginHistory", e);
+		}
+		
+	}
+
+	public void updateLoginHistory(LoginHistory loginHistory) {
+		try {
+			HibernateService.updateObject(loginHistory);
+		} catch (HibernateException e) {
+			throw new InternalErrorException("Error al intentar actualizar el objeto LoginHistory", e);
+		}
+		
+	}
+
+	public LoginHistory getLoginHistory(User user) {
+		
+		List<LoginHistory> l = Cast.castList(LoginHistory.class, HibernateService.findByTwoFilter(LoginHistory.class, "cajeroid", user.getId(), "fecha_cierre"));
+
+		if (l == null || l.size() == 0)
+			return null;
+
+		LoginHistory listedLoginHistory = l.get(0);
+		return listedLoginHistory;
 	}
 
 }
