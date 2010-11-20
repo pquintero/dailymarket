@@ -100,7 +100,6 @@ public class TicketFrame extends JDialog {
 		
 		JButton imprimirButton = new JButton("Imprimir");
 		imprimirButton.addActionListener(new ActionListener() {
-			@Override
 			public void actionPerformed(ActionEvent e) {
 
 				imprimirTicket(s);
