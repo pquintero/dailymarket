@@ -1,4 +1,4 @@
-<project name="F911 Server Packager" default="package" basedir="../..">
+<project name="DM Server Packager" default="package" basedir="../..">
 
 	<!--======================================================================-->
 	<!-- Publico -->
@@ -15,7 +15,7 @@
 
 	<property file="./deploy/packager/packager.properties"/>
 
-	<property name="app.name" value="F911" />
+	<property name="app.name" value="DM" />
 
 	<property name="build.outdir" value="deploy/package"/>
 	<property name="src.dir" value="src/java"/>
@@ -125,7 +125,7 @@
 
 	<!-- Genera el war de la aplicacion para realizar el deploy -->
 	<target name="war" depends="compile">
-		<echo message="Construyendo deploy de F911 Server"/>
+		<echo message="Construyendo deploy de DM Server"/>
 
 		<mkdir dir="${build.outdir}"/>
 

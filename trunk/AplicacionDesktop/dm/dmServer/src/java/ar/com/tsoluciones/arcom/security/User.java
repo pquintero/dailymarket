@@ -38,6 +38,7 @@ public class User {
 	private boolean receiveNotifications;
 	private byte[] huelladigital;
 	private byte[] huelladigitalAlternativa;
+	private byte[] foto;
 
 	
 	public Long getId() {
@@ -133,6 +134,7 @@ public class User {
 		root.addElement("dateCreated").setText(dateCreated != null ? String.valueOf(dateCreated):"");
 		root.addElement("huelladigital").setText( huelladigital != null ? MyBase64.encode(huelladigital):"");
 		root.addElement("huelladigitalAlternativa").setText( huelladigitalAlternativa != null ? MyBase64.encode(huelladigitalAlternativa):"");
+		root.addElement("foto").setText( foto != null ? MyBase64.encode(foto):"");
 		
 		Element groupUserEl = root.addElement("groupUser");
 		groupUserEl.addElement("id").setText(groupUser.getId().toString());
@@ -210,9 +212,28 @@ public class User {
 		  this.huelladigitalAlternativa = this.toByteArray(huellaBlob);
 		 }
 	
+	public byte[] getFoto() {
+		return foto;
+	}
 	
+	 /** Don't invoke this.  Used by Hibernate only. */
+	 public Blob getFotoBlob() {
+		 if(foto != null)
+	  return Hibernate.createBlob(this.foto);
+		 else
+			 return null;
+	 }
 	
-	 private byte[] toByteArray(Blob fromBlob) {
+	public void setFoto(byte[] foto) {
+		this.foto = foto;
+	}
+	
+	public void setFotoBlob(Blob fotoBlob) {
+		if(fotoBlob!= null)
+		  this.foto = this.toByteArray(fotoBlob);
+		 }
+	
+	private byte[] toByteArray(Blob fromBlob) {
 		  ByteArrayOutputStream baos = new ByteArrayOutputStream();
 		  try {
 		   return toByteArrayImpl(fromBlob, baos);

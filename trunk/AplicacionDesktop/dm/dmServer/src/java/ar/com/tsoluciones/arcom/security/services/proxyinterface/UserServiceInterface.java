@@ -51,6 +51,13 @@ public interface UserServiceInterface
    * @throws ServiceException Cuando algo sale mal
    */
   public User getUserByUserName(String username);
+  
+  /**
+   * Actualiza un usuario físicamente
+   *
+   * @param entity Usuario a eliminar
+   */
+  public void update(User entity);
 
   
 }

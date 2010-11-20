@@ -1,10 +1,18 @@
 package ar.com.tsoluciones.arcom.security;
 
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.sql.Blob;
+import java.sql.SQLException;
 import java.util.Date;
 
 import org.dom4j.Document;
 import org.dom4j.DocumentHelper;
 import org.dom4j.Element;
+import org.hibernate.Hibernate;
+
+import ar.com.tsoluciones.arcom.security.User.MyBase64;
 
 public class Product {
 	
@@ -23,6 +31,7 @@ public class Product {
 	private String state;
 	private Integer repositionStock;
 	private Date dateWithoutStock; //fecha última en q se quedo sin stock
+	private byte[] foto;
 	
 	public Long getId() {
 		return id;
@@ -91,6 +100,69 @@ public class Product {
 		this.repositionStock = repositionStock;
 	}	
 	
+	public byte[] getFoto() {
+		return foto;
+	}
+	
+	 /** Don't invoke this.  Used by Hibernate only. */
+	 public Blob getFotoBlob() {
+		 if(foto != null)
+	  return Hibernate.createBlob(this.foto);
+		 else
+			 return null;
+	 }
+	
+	public void setFoto(byte[] foto) {
+		this.foto = foto;
+	}
+	
+	public void setFotoBlob(Blob fotoBlob) {
+		if(fotoBlob!= null)
+		  this.foto = this.toByteArray(fotoBlob);
+		 }
+	
+	
+	private byte[] toByteArray(Blob fromBlob) {
+		  ByteArrayOutputStream baos = new ByteArrayOutputStream();
+		  try {
+		   return toByteArrayImpl(fromBlob, baos);
+		  } catch (SQLException e) {
+		   throw new RuntimeException(e);
+		  } catch (IOException e) {
+		   throw new RuntimeException(e);
+		  } finally {
+		   if (baos != null) {
+		    try {
+		     baos.close();
+		    } catch (IOException ex) {
+		    }
+		   }
+		  }
+		 }
+
+	 private byte[] toByteArrayImpl(Blob fromBlob, ByteArrayOutputStream baos)
+	  throws SQLException, IOException {
+	  byte[] buf = new byte[4000];
+	  InputStream is = fromBlob.getBinaryStream();
+	  try {
+	   for (;;) {
+	    int dataSize = is.read(buf);
+
+	    if (dataSize == -1)
+	     break;
+	    baos.write(buf, 0, dataSize);
+	   }
+	  } finally {
+	   if (is != null) {
+	    try {
+	     is.close();
+	    } catch (IOException ex) {
+	    }
+	   }
+	  }
+	  return baos.toByteArray();
+	 }
+	
 	/**
 	 * <p>
 	 * Retorna una representación mínima del producto.
@@ -117,7 +189,9 @@ public class Product {
 		Element groupUserEl = root.addElement("groupProduct");
 		groupUserEl.addElement("id").setText(groupProduct.getId().toString());
 		groupUserEl.addElement("name").setText(groupProduct.getName());
-		groupUserEl.addElement("description").setText(groupProduct.getDescription());		
+		groupUserEl.addElement("description").setText(groupProduct.getDescription());
+		
+		root.addElement("foto").setText( foto != null ? MyBase64.encode(foto):"");
 
 	    return doc;
 	}

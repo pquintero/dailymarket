@@ -8,13 +8,13 @@
 	<!--======================================================================= -->
 
 	<property name="temp.dir" value="temp"/>
-	<property name="F911.dir" value="${temp.dir}\${context.F911}"/>
+	<property name="DM.dir" value="${temp.dir}\${context.DM}"/>
 
 	<!-- Destino del deploy -->
 	<property environment="env"/>
 	<property name="catalina.home" value="${env.CATALINA_HOME}"/>
 	<property name="webapps.dir" value="${catalina.home}\webapps"/>
-	<property name="F911.dest" value="${webapps.dir}\${context.F911}" />
+	<property name="DM.dest" value="${webapps.dir}\${context.DM}" />
 	
 	<!-- Fecha -->
 	<tstamp>
@@ -28,12 +28,12 @@
 	<!-- Deploys -->
 	<target name="deploy" depends="clean">
 
-		<mkdir dir="${F911.dir}"/>
+		<mkdir dir="${DM.dir}"/>
 
-		<!--unzip src="../package/F911.zip" dest="${F911.dir}"/-->
+		<!--unzip src="../package/DM.zip" dest="${DM.dir}"/-->
 
-		<copy overwrite="true" todir="${F911.dir}">
-			<fileset dir="../package/F911">
+		<copy overwrite="true" todir="${DM.dir}">
+			<fileset dir="../package/DM">
 				<include name="**/*.*"/>
 			</fileset>
 		</copy>
@@ -41,29 +41,29 @@
 		
 		<!-- Reemplazos de configuracion -->
 		<antcall target="procesar-filtros">
-			<param name="dir-classes" value="${F911.dir}"/>
+			<param name="dir-classes" value="${DM.dir}"/>
 		</antcall>
 
 
 		<!-- Backup de previos paquetes, si existen -->
-		<available file="${F911.dest}" type="dir" property="previous.F911.exists"/>
+		<available file="${DM.dest}" type="dir" property="previous.F911.exists"/>
 
 		<antcall target="F911.backup" />
 
 		<!-- Vaciar previas aplicaciones -->
-		<delete dir="${F911.dest}" />
+		<delete dir="${DM.dest}" />
 
 		<!-- Recrear directorios -->
-		<mkdir dir="${F911.dest}" />
+		<mkdir dir="${DM.dest}" />
 
 		<!-- Copiar paquetes parametrizados -->
-		<move file="${F911.dir}" todir="${webapps.dir}" />
+		<move file="${DM.dir}" todir="${webapps.dir}" />
 		<antcall target="clean" />
 	</target>
 
 	<target name="F911.backup" if="previous.F911.exists">
-		<zip destfile="${webapps.dir}\${today}-${context.F911}.zip">
-			<fileset dir="${F911.dest}">
+		<zip destfile="${webapps.dir}\${today}-${context.DM}.zip">
+			<fileset dir="${DM.dest}">
 				<include name="**/*.*"/>
 			</fileset>
 		</zip>
@@ -83,12 +83,12 @@
 			<replacefilter token="%sql.emergenciesDatabase%" value="${sql.emergenciesDatabase}"/>
 			<replacefilter token="%sql.username%" value="${sql.username}"/>
 			<replacefilter token="%sql.password%" value="${sql.password}"/>
-			<replacefilter token="%context.name%" value="${context.F911}"/>
-			<replacefilter token="%emergencies.log%" value="${catalina.home}\logs\${context.F911}.log"/>
-			<replacefilter token="%hibernate.log%" value="${catalina.home}\logs\${context.F911}-hibernate.log"/>
-			<replacefilter token="%cache.log%" value="${catalina.home}\logs\${context.F911}-cache.log"/>
-			<replacefilter token="%sql.log%" value="${catalina.home}\logs\${context.F911}-sql.log"/>
-			<replacefilter token="%exceededOperations.log%" value="${catalina.home}\logs\${context.F911}-exceededOperations.log"/>
+			<replacefilter token="%context.name%" value="${context.DM}"/>
+			<replacefilter token="%emergencies.log%" value="${catalina.home}\logs\${context.DM}.log"/>
+			<replacefilter token="%hibernate.log%" value="${catalina.home}\logs\${context.DM}-hibernate.log"/>
+			<replacefilter token="%cache.log%" value="${catalina.home}\logs\${context.DM}-cache.log"/>
+			<replacefilter token="%sql.log%" value="${catalina.home}\logs\${context.DM}-sql.log"/>
+			<replacefilter token="%exceededOperations.log%" value="${catalina.home}\logs\${context.DM}-exceededOperations.log"/>
 
 		</replace>
 

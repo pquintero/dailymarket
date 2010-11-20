@@ -105,4 +105,12 @@ public class UserService implements UserServiceInterface {
 		}
 	}
 
+	public void update(User entity) {
+		try {
+			HibernateService.updateObject(entity);
+		} catch (HibernateException e) {
+			throw new InternalErrorException("Error al intentar actualizar el objeto User", e);
+		}
+	}
+
 }
