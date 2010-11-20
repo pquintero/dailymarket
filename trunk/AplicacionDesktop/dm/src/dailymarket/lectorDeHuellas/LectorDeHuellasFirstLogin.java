@@ -41,6 +41,7 @@ import com.digitalpersona.onetouch.processing.DPFPImageQualityException;
 import dailymarket.model.Context;
 import dailymarket.model.Empleado;
 import dailymarket.model.GroupEmpleado;
+import dailymarket.model.ProductModel.MyBase64;
 import dailymarket.swing.ui.AperturaCajaFrame;
 import dailymarket.swing.ui.HuellaDigitalInterface;
 
@@ -276,6 +277,13 @@ public class LectorDeHuellasFirstLogin {
 				String dni = root.selectSingleNode("dni").getStringValue();
 				String dateCreated = root.selectSingleNode("dateCreated").getStringValue();
 				String huelladigital = root.selectSingleNode("huelladigital").getStringValue();
+				
+				String foto = root.selectSingleNode("foto").getStringValue();
+				
+				if(foto!=null && !"".equalsIgnoreCase(foto)){
+					byte [] fotoArray = MyBase64.decode(foto);
+					user.setFoto(fotoArray);
+				}
 				
 				Node groupUser = root.selectSingleNode("groupUser");
 				Long idGroup = Long.valueOf(groupUser.selectSingleNode("id").getStringValue());

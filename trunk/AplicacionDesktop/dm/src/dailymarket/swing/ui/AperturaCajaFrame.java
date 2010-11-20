@@ -140,7 +140,6 @@ public class AperturaCajaFrame extends DailyMarketFrame implements HuellaDigital
 		checkFirstLogon.setSelected(false);
 		checkFirstLogon.addActionListener( new ActionListener() {
 			
-			@Override
 			public void actionPerformed(ActionEvent e) {
 				if(checkFirstLogon.isSelected()){
 					passwordLabel.setVisible(true);
