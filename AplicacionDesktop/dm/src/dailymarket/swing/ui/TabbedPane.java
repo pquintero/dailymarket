@@ -232,8 +232,8 @@ public class TabbedPane extends JPanel {
 	    //Agrego rows en true, las seleccionadas por el cajero
     	for(int i = 0 ; i < tableModelProducts.getRowCount(); i++ ){
     		if( (Boolean) tableModelProducts.getValueAt(i, 0)){
-    			tableModelSelecteds.addRow(new Object[]{ new Boolean(false),tableModelProducts.getValueAt(i, 2), tableModelProducts.getValueAt(i, 3),
-				tableModelProducts.getValueAt(i, 4), tableModelProducts.getValueAt(i, 5), i});
+    			tableModelSelecteds.addRow(new Object[]{ new Boolean(false),tableModelProducts.getValueAt(i, 1), tableModelProducts.getValueAt(i, 2),
+				tableModelProducts.getValueAt(i, 3), tableModelProducts.getValueAt(i, 4), i});
 				
 				tableSelecteds.getColumn("Cancel").setCellRenderer(new MultiRenderer());
 				tableSelecteds.getColumn("Cancel").setCellEditor(new MultiEditor());
