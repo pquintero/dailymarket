@@ -406,7 +406,7 @@ public class CajeroVentaFrame extends DailyMarketFrame {
 		dailyMarkeyPanel.setLayout(new FlowLayout());
 		
 		JLabel supermercadoLabel = new JLabel();
-		supermercadoLabel.setText("------DAILYMARKET---------");
+		supermercadoLabel.setText("------------DAILYMARKET----------------");
 		supermercadoLabel.setFont(new Font("Serif", Font.BOLD, 20));
 		supermercadoLabel.setForeground(Color.BLUE);
 		dailyMarkeyPanel.add(supermercadoLabel);
@@ -652,7 +652,7 @@ public class CajeroVentaFrame extends DailyMarketFrame {
 	         if(doc!= null){
 	            productModel.toProductModel(doc);
 				
-	            subTotalVenta += Double.valueOf(productModel.getPrice());
+	            subTotalVenta +=  Double.valueOf(productModel.getPrice()) * Double.parseDouble(cantProd.getText());
 				tableModelProducts.addRow(new Object[]{ new Boolean(false), productModel.getDescription(), cantProd.getText(), Double.valueOf(productModel.getPrice()), Double.valueOf(productModel.getPrice()) * Double.parseDouble(cantProd.getText()) });
 				productModel.setCantidad(Integer.parseInt(cantProd.getText()));
 				agregarAProductsCode(productModel.getCode());
@@ -673,6 +673,7 @@ public class CajeroVentaFrame extends DailyMarketFrame {
 	         }
 		
 		scanCodProducto.setText(null);
+		cantProd.setText("1");
 	
 	}
 
