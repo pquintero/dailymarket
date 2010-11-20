@@ -13,6 +13,7 @@ import javax.swing.border.LineBorder;
 import javax.swing.table.DefaultTableModel;
 
 import dailymarket.lectorDeHuellas.UtilLectorHuellasSingleton;
+import dailymarket.model.ProductModel;
 
 import java.awt.Color;
 import java.awt.Dimension;
@@ -22,6 +23,8 @@ import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Vector;
 
 public class TabbedPane extends JPanel {
@@ -48,9 +51,11 @@ public class TabbedPane extends JPanel {
 	JButton aceptarSeleccionadosButton = new JButton("Aceptar Seleccionados");
 
 	DefaultTableModel tableModelProducts;
+    private List <ProductModel> productos = new ArrayList<ProductModel>();
+    private Double subTotal;
 	
-    public TabbedPane(DefaultTableModel productsList, HuellaDigitalInterface supervisorFrame, JLabel mensajeLector, JLabel imgHuella) {
-        frameParent = supervisorFrame;
+    public TabbedPane(DefaultTableModel productsList, HuellaDigitalInterface supervisorFrame, JLabel mensajeLector, JLabel imgHuella, List<ProductModel> products, Double subTotalVenta) {
+         frameParent = supervisorFrame;
          tableModelProducts = productsList;
         
         JTabbedPane tabbedPane = new JTabbedPane();
@@ -74,7 +79,9 @@ public class TabbedPane extends JPanel {
         add(tabbedPane);
         
         tabbedPane.setTabLayoutPolicy(JTabbedPane.SCROLL_TAB_LAYOUT);
-  
+        productos = products;
+        subTotal = subTotalVenta;
+        
     }
     
     protected JComponent makeCancelarVentaPanel(String text) {
@@ -245,8 +252,6 @@ public class TabbedPane extends JPanel {
 				utilHuellas.start(mensajeLector);
 				utilHuellas.initLogin(frameParent);
 				aceptarSeleccionadosButton.setEnabled(false);
-
-				
 			}
 		});
 	  	  JButton terminarButton = new JButton("Finalizar Y Volver");
@@ -281,17 +286,14 @@ public class TabbedPane extends JPanel {
 
 		int cantCancel = 0;
 		for(int i = 0 ; i < tableModelSelecteds.getRowCount(); i++ ){
-    		if( (Boolean) tableModelSelecteds.getValueAt(i, 0)){
-    	/*
-    	 * ABE ACA SE SACAN LOS PRODUCTOS DE LA LISTA
-    	 * PARA SACARLOS LE PASO EL NUMERO DE LA FILA
-    	 * 
-    	 * TE queda sacr el objeto de la session asi no se persiste. y actualizar el Monto Total (decrementar)
-    	 * 
-    	 */
-    			
-    		tableModelProducts.removeRow( new Integer(((String)tableModelSelecteds.getValueAt(i, 5).toString())) - cantCancel);
+    		if( (Boolean) tableModelSelecteds.getValueAt(i, 0) ){
 
+    		tableModelProducts.removeRow( new Integer(((String)tableModelSelecteds.getValueAt(i, 5).toString())) - cantCancel);
+    		ProductModel pm = productos.get(new Integer(((String)tableModelSelecteds.getValueAt(i, 5).toString())) - cantCancel);
+    		subTotal -= pm.getPrice();
+    		
+			productos.remove(new Integer(((String)tableModelSelecteds.getValueAt(i, 5).toString())) - cantCancel);
+			
     		tableSelecteds.getColumn("Cancel").setCellRenderer(new MultiRenderer());
 			tableSelecteds.getColumn("Cancel").setCellEditor(new MultiEditor());
 			cantCancel++;	

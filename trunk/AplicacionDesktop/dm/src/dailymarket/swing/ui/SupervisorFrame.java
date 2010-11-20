@@ -9,6 +9,7 @@ import java.awt.GridBagLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
+import java.util.List;
 
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
@@ -24,6 +25,7 @@ import javax.swing.border.TitledBorder;
 import javax.swing.table.DefaultTableModel;
 
 import dailymarket.lectorDeHuellas.LectorDeHuellasFirstLogin;
+import dailymarket.model.ProductModel;
 
 
 
@@ -51,13 +53,14 @@ public class SupervisorFrame extends  DailyMarketFrame implements HuellaDigitalI
 	JLabel supervisorLabel = new JLabel("Usuario");
 
 
-	public SupervisorFrame(DefaultTableModel tableModelProducts, JFrame frame){
+	public SupervisorFrame(DefaultTableModel tableModelProducts, JFrame frame, List<ProductModel> products, Double subT){
+		
 		parentFrame = frame;
-		solicitudesTabbedPane = new TabbedPane(tableModelProducts, this, mensajeLector, imgHuella);
+		solicitudesTabbedPane = new TabbedPane(tableModelProducts, this, mensajeLector, imgHuella, products, subT);
         thisFrame = this;
-        
+        setLocationRelativeTo(parentFrame);
         add(solicitudesTabbedPane, BorderLayout.CENTER);
-        setBounds(100,100,830,360);
+        setBounds(50,100,830,360);
         setLayout(new FlowLayout(FlowLayout.LEFT ));
         
         JPanel fingerPrintPanel = new JPanel();
@@ -194,10 +197,6 @@ public class SupervisorFrame extends  DailyMarketFrame implements HuellaDigitalI
 		JOptionPane.showMessageDialog(this, "La password ingresada es incorrecta, re intente nuevamente");
 		passwordTextField.setEnabled(true);
 		altaHuellaButton.setEnabled(true);
-	}
-	
-	public static void main (String[] arg){
-		new SupervisorFrame(new DefaultTableModel(), new JFrame());
 	}
 
 	public void habilitarFirma() {
