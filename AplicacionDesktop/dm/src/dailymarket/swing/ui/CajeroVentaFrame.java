@@ -507,7 +507,7 @@ public class CajeroVentaFrame extends DailyMarketFrame {
 			
 			public void actionPerformed(ActionEvent arg0) {
 //				new ModificacionSesionVentaFrame(frame);	
-				new SupervisorFrame(tableModelProducts , frame, productos, subTotalVenta);
+				new SupervisorFrame(tableModelProducts , (CajeroVentaFrame)frame, productos);
 				scanCodProducto.requestFocus();
 
 			}
@@ -676,7 +676,11 @@ public class CajeroVentaFrame extends DailyMarketFrame {
 		cantProd.setText("1");
 	
 	}
-
+	public void decrementarSubtotal(Double valor){
+		subTotalVenta -= valor;
+		subtotalVentaTextfield.setText(subTotalVenta.toString());
+		totalVentaTextField.setText(subTotalVenta.toString());
+	}
 }
 
 
