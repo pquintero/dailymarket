@@ -194,7 +194,7 @@ public class CerrarCajaFrame extends DailyMarketFrame implements HuellaDigitalIn
 
 
 	public String getMonto() {
-		return null;
+		return "20";
 	}
 
 	public void backToInitLogin() {
