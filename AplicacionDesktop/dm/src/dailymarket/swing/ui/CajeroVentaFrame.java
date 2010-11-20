@@ -63,9 +63,10 @@ public class CajeroVentaFrame extends DailyMarketFrame {
     protected JTable tableRelations = new JTable();
     
     private List <String> productsCode = new ArrayList<String>();
+    private List <ProductModel> productos = new ArrayList<ProductModel>();
 
-    protected String cajaNumber = Configuration.getInstance().getCaja();//EL VALOR es PARAMETRO DEL CONSTRUCTOR
-    
+
+    protected String cajaNumber = Configuration.getInstance().getCaja();
     protected JTextField scanCodProducto;
     protected Double totalVenta = new Double(0);
     protected Double subTotalVenta = new Double(0);
@@ -88,7 +89,6 @@ public class CajeroVentaFrame extends DailyMarketFrame {
 	final JScrollPane scrollRelationsPane;
     JLabel message = new JLabel();
     Empleado user = Context.getInstance().getCurrentUser();
-
 	
 	public CajeroVentaFrame(JFrame p) throws IOException {
 
@@ -148,7 +148,6 @@ public class CajeroVentaFrame extends DailyMarketFrame {
 		scanCodProducto = new JTextField();
 		scanCodProducto.setPreferredSize(new Dimension(120, 20));
 	    scanCodProducto.addActionListener(new ActionListener() {
-
 			
 			public void actionPerformed(ActionEvent e) {
 			
@@ -355,8 +354,9 @@ public class CajeroVentaFrame extends DailyMarketFrame {
 		calcularTotal.addActionListener(new ActionListener() {
 			
 			public void actionPerformed(ActionEvent e) {
-			
-				totalVentaTextField.setText(totalVenta.toString());
+				totalVentaTextField.setText(subTotalVenta.toString());
+
+//				totalVentaTextField.setText(totalVenta.toString());
 
 			}
 		});
@@ -468,14 +468,13 @@ public class CajeroVentaFrame extends DailyMarketFrame {
 	    tableRelations.setModel(tableModelProducts);
         tableModelProducts.setDataVector(
                 new Object[][] {},
-                new Object[] { "Cancel", "Item", "Descripcion", "Cantidad", "Precio", "Total" });
+                new Object[] { "Cancel",  "Descripcion", "Cantidad", "Precio", "Total" });
 	    
         tableRelations.getColumnModel().getColumn(0).setPreferredWidth(3);
-        tableRelations.getColumnModel().getColumn(1).setPreferredWidth(3);
-        tableRelations.getColumnModel().getColumn(2).setPreferredWidth(185);
-        tableRelations.getColumnModel().getColumn(3).setPreferredWidth(3);
+        tableRelations.getColumnModel().getColumn(1).setPreferredWidth(190);
+        tableRelations.getColumnModel().getColumn(2).setPreferredWidth(5);
+        tableRelations.getColumnModel().getColumn(3).setPreferredWidth(5);
         tableRelations.getColumnModel().getColumn(4).setPreferredWidth(5);
-        tableRelations.getColumnModel().getColumn(5).setPreferredWidth(5);
         tableRelations.setFont(new Font("Serif", Font.CENTER_BASELINE, 15));
 
 	    listPanel.add(scrollRelationsPane);
@@ -508,9 +507,9 @@ public class CajeroVentaFrame extends DailyMarketFrame {
 			
 			public void actionPerformed(ActionEvent arg0) {
 //				new ModificacionSesionVentaFrame(frame);	
-//				scanCodProducto.requestFocus();
-//				
-				new SupervisorFrame(tableModelProducts , frame);
+				new SupervisorFrame(tableModelProducts , frame, productos, subTotalVenta);
+				scanCodProducto.requestFocus();
+
 			}
 		});
 	    accionesPanel.add(modificarSesionVenta);
@@ -524,15 +523,12 @@ public class CajeroVentaFrame extends DailyMarketFrame {
 			
 			public void actionPerformed(ActionEvent arg0) {
 				
-				//LO hago asi? o limpio todo lo anterior?
 				try {
 					new CajeroVentaFrame(parentFrame);
 				} catch (IOException e) {
 					e.printStackTrace();
 				}
 				dispose();
-				
-			
 			}
 		});
 	    accionesPanel.add(nuevaVentaButton);
@@ -620,6 +616,10 @@ public class CajeroVentaFrame extends DailyMarketFrame {
 		new CajeroVentaFrame(null);
 	   }
 	
+	public List<ProductModel> getProductos(){
+		return productos;
+	}
+	
 	public List<String> getProductsCode() {
 		return productsCode;
 	}
@@ -636,12 +636,15 @@ public class CajeroVentaFrame extends DailyMarketFrame {
 		productsCode.remove(code);
 	}
 	
+	private void agregarProducto(ProductModel prod) {
+		productos.add(prod);
+	}
+	
+	
 	private void agregarProductoSesion() {
 		
 		if( cantProd.getText() == null || "".equals(cantProd.getText()))
 			return;
-		
-		for (int i = 0; i < Integer.valueOf(cantProd.getText()); i++) {
 			
 			Object params[] = new String[] {scanCodProducto.getText()};
 	         Document doc = TelefrontGUI.getInstance().executeMethod(CONTROLLER_CLASS, "obtenerProducto", params);
@@ -649,16 +652,13 @@ public class CajeroVentaFrame extends DailyMarketFrame {
 	         if(doc!= null){
 	            productModel.toProductModel(doc);
 				
-				//TRAER PRODUCTO DE LA BASE DE DATOS Y SETEARLO AL TICKET..  
 	            subTotalVenta += Double.valueOf(productModel.getPrice());
-				tableModelProducts.addRow(new Object[]{ new Boolean(false),"1", productModel.getDescription(), new Integer(1), Double.valueOf(productModel.getPrice()), subTotalVenta});
+				tableModelProducts.addRow(new Object[]{ new Boolean(false), productModel.getDescription(), cantProd.getText(), Double.valueOf(productModel.getPrice()), Double.valueOf(productModel.getPrice()) * Double.parseDouble(cantProd.getText()) });
 				
 				agregarAProductsCode(productModel.getCode());
+				agregarProducto(productModel);
 	
-				//				
-	//				cantProd.setText("1");
-	//				descProducto.setText(productModel.getDescription());
-				//
+				descProducto.setText(productModel.getDescription());
 				
 				tableRelations.getColumn("Cancel").setCellRenderer(new MultiRenderer());
 			    tableRelations.getColumn("Cancel").setCellEditor(new MultiEditor());
@@ -670,11 +670,11 @@ public class CajeroVentaFrame extends DailyMarketFrame {
 	         }else{
 	        	 message.setText("No existe el producto con código " + scanCodProducto.getText());
 	         }
-		}
+		
 		scanCodProducto.setText(null);
-		cantProd.setText("1");
-	}
 	
+	}
+
 }
 
 

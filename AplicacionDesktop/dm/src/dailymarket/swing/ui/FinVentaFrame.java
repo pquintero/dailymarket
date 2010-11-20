@@ -6,6 +6,7 @@ import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
@@ -23,6 +24,7 @@ import org.dom4j.Element;
 
 import telefront.TelefrontGUI;
 import dailymarket.model.Context;
+import dailymarket.model.ProductModel;
 
 
 public class FinVentaFrame extends JDialog {
@@ -99,12 +101,16 @@ public class FinVentaFrame extends JDialog {
 						mensaje.setText("El Pago no supera el monto de la venta");
 						mensaje.setForeground(Color.red);
 					}
-						else
-						{
-							String codigos = concatenarCodigos(((CajeroVentaFrame)parentFrame).getProductsCode());
-							 Object params[] = new Object[] {Configuration.getInstance().getCaja(),Context.getInstance().getCurrentUser().getUser(),codigos,((CajeroVentaFrame)parentFrame).totalVenta.toString()};
-				             Document doc = TelefrontGUI.getInstance().executeMethod(CONTROLLER_CLASS, "guardarSesionVenta", params);
-							if(doc!=null){
+						else{
+							List<String> productCode = new ArrayList<String>();
+							for( ProductModel  pm :((CajeroVentaFrame)parentFrame).getProductos()){
+								productCode.add(pm.getCode());
+							}
+							
+							String codigos = concatenarCodigos(productCode);
+							Object params[] = new Object[] {Configuration.getInstance().getCaja(),Context.getInstance().getCurrentUser().getUser(),codigos,((CajeroVentaFrame)parentFrame).totalVenta.toString()};
+				            Document doc = TelefrontGUI.getInstance().executeMethod(CONTROLLER_CLASS, "guardarSesionVenta", params);
+							if(doc != null){
 								((CajeroVentaFrame)parentFrame).pagoVenta =  montoPago;
 								((CajeroVentaFrame)parentFrame).habilitarImprimirVenta();
 								

@@ -52,9 +52,10 @@ public class AperturaCajaFrame extends DailyMarketFrame implements HuellaDigital
 		
 		parentFrame = f;
 		frame = this;
-		setAlwaysOnTop(true);
+//		setAlwaysOnTop(true);
+//		
 		setTitle("Apertura  Caja ");
-		
+		setLocationRelativeTo(parentFrame);
 		JPanel mainPanel = new JPanel();
 		mainPanel.setPreferredSize(new Dimension(500,400));
 		mainPanel.setLayout(new FlowLayout(FlowLayout.CENTER));
@@ -170,7 +171,7 @@ public class AperturaCajaFrame extends DailyMarketFrame implements HuellaDigital
 		volverButton.addActionListener(new volverButtonListener());
 		
 		getContentPane().setLayout(new FlowLayout(FlowLayout.CENTER));
-		setBounds(200, 100, 600, 350);
+		setBounds(100, 100, 600, 350);
 		setVisible(true);
 
 	}
