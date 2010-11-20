@@ -19,7 +19,6 @@
         <copy todir="${deploy.outdir}" failonerror="yes" overwrite="true">
             <fileset dir=".">
                 <include name="*.jnlp"/>
-                <include name="911icon.gif"/>
                 <include name="readme.txt"/>
             </fileset>
         </copy>
