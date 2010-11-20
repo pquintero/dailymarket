@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
+<properties>
+<comment>Propiedades del MAIL DAILYMARKET</comment>
+<entry key="mail.smtp.port">465</entry>
+<entry key="mail.smtp.socketFactory.port">465</entry>
+<entry key="mail.smtp.socketFactory.class">javax.net.ssl.SSLSocketFactory</entry>
+<entry key="mail.smtp.auth">true</entry>
+<entry key="mail.smtp.host">smtp.gmail.com</entry>
+<entry key="mail.pop3.socketFactory.class">javax.net.ssl.SSLSocketFactory</entry>
+<entry key="mail.pop3.socket.fallback">true</entry>
+<entry key="from">tecnosolutions.dailymarket@gmail.com</entry>
+<entry key="user">tecnosolutions.dailymarket@gmail.com</entry>
+<entry key="password">dailymarket</entry>
+<entry key="subject">Notificación de DAILYMARKET</entry>
+
+</properties>
