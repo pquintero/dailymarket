@@ -57,6 +57,12 @@ public class CajeroVentaService implements CajeroVentaServiceInterface {
 		for (int i = 0; i < codigos.length; i++) {
 			String codeProd = (String) codigos[i];
 			Product producto = getProductByCode(codeProd);
+			
+			//Se actualiza el stock del producto
+			int stockActualizado = producto.getActualStock()-1;
+			producto.setActualStock(stockActualizado);
+			HibernateService.updateObject(producto);
+			
 			ProductoVenta productoVenta = new ProductoVenta();
 			productoVenta.setProducto(producto);
 			productoVenta.setSesionVenta(sesionVenta);
