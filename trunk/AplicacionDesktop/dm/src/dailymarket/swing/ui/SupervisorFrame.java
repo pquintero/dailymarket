@@ -52,7 +52,6 @@ public class SupervisorFrame extends  DailyMarketFrame implements HuellaDigitalI
 	JTextField supervisorTextField = new JTextField();
 	JLabel supervisorLabel = new JLabel("Usuario");
 
-
 	public SupervisorFrame(DefaultTableModel tableModelProducts, CajeroVentaFrame frame, List<ProductModel> products){
 		
 		parentFrame = frame;
@@ -214,8 +213,8 @@ public class SupervisorFrame extends  DailyMarketFrame implements HuellaDigitalI
 	}
 
 	public void otorgarDescuento() {
-		// TODO Auto-generated method stub
-		
+		((CajeroVentaFrame)parentFrame).otorgarDescuento();
+
 	}
 
 	public void empleadoValidated() {

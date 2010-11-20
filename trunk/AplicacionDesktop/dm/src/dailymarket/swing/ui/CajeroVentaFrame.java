@@ -56,6 +56,8 @@ import dailymarket.model.Ticket;
 public class CajeroVentaFrame extends DailyMarketFrame {
 	
 	private static final String CONTROLLER_CLASS = "ar.com.tsoluciones.emergencies.server.gui.core.telefront.action.CajeroVentaManagerService";
+	private static final Double DESCUENTO_EMPLEADO = new Double(0.85); // DEscuento del 15 Porciento
+
 	protected static final int COLUMNA_CHECK_BOX = 0;
 	protected static final int COLUMNA_PRECIO_TOTAL = 5;
     protected Vector<Vector<String>> rowsProducts = new Vector<Vector<String>>();
@@ -89,7 +91,9 @@ public class CajeroVentaFrame extends DailyMarketFrame {
 	final JScrollPane scrollRelationsPane;
     JLabel message = new JLabel();
     Empleado user = Context.getInstance().getCurrentUser();
-	JPanel imagePanel = new JPanel();
+    private boolean OTORGAR_DESCUENTO = false; 
+   
+    JPanel imagePanel = new JPanel();
     JLabel picLabel = new JLabel();
     JPanel ventaProductoPanel = new JPanel();
 
@@ -330,8 +334,8 @@ public class CajeroVentaFrame extends DailyMarketFrame {
 		calcularTotal.addActionListener(new ActionListener() {
 			
 			public void actionPerformed(ActionEvent e) {
-				totalVentaTextField.setText(subTotalVenta.toString());
-//				totalVentaTextField.setText(totalVenta.toString());
+				totalVenta = OTORGAR_DESCUENTO ? subTotalVenta*DESCUENTO_EMPLEADO : subTotalVenta;
+				totalVentaTextField.setText(totalVenta.toString());
 			}
 		});
 		ticketPanel.add(calcularTotal);
@@ -637,10 +641,9 @@ public class CajeroVentaFrame extends DailyMarketFrame {
 				
 				tableRelations.getColumn("Cancel").setCellRenderer(new MultiRenderer());
 			    tableRelations.getColumn("Cancel").setCellEditor(new MultiEditor());
-			    totalVenta = subTotalVenta;
-				
 				
 				subtotalVentaTextfield.setText(subTotalVenta.toString());
+				totalVenta = OTORGAR_DESCUENTO ? subTotalVenta*DESCUENTO_EMPLEADO : subTotalVenta;
 				totalVentaTextField.setText(totalVenta.toString());
 				
 				imagePanel.remove(picLabel);
@@ -668,7 +671,13 @@ public class CajeroVentaFrame extends DailyMarketFrame {
 	public void decrementarSubtotal(Double valor){
 		subTotalVenta -= valor;
 		subtotalVentaTextfield.setText(subTotalVenta.toString());
-		totalVentaTextField.setText(subTotalVenta.toString());
+		totalVenta = OTORGAR_DESCUENTO ? subTotalVenta*DESCUENTO_EMPLEADO : subTotalVenta;
+		totalVentaTextField.setText(totalVenta.toString());
+	}
+	public void otorgarDescuento(){
+		OTORGAR_DESCUENTO  = true;
+		totalVenta = OTORGAR_DESCUENTO ? subTotalVenta*DESCUENTO_EMPLEADO : subTotalVenta;
+		totalVentaTextField.setText(totalVenta.toString());
 	}
 }
 
