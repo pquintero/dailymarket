@@ -23,5 +23,7 @@ public interface CajeroVentaServiceInterface {
 	  
 	  public SesionVenta obtenerSesionVenta(Long id) ;
 	public Sucursal obtenerSucursal(Long id);
+	
+	public void actualizarProducto(Product product);
 
 }

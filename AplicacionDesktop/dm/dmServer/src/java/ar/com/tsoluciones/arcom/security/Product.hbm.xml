@@ -16,6 +16,7 @@
         <property column="datewithoutstock" name="dateWithoutStock"  type="java.util.Date"/>	 
         <property column="repositionstock" name="repositionStock"  type="java.lang.Integer"/>
         <property column="state" name="state"  type="java.lang.String"/>
+        <property column="foto" name="fotoBlob"  type="blob"/>	
         
         <many-to-one name="groupProduct" column="groupproductid" class="ar.com.tsoluciones.arcom.security.GroupProduct"/>   	    			 
     </class>   

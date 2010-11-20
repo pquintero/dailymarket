@@ -65,6 +65,11 @@ public class CajeroVentaService implements CajeroVentaServiceInterface {
 		
 	}
 	
+	@Transactional
+	public void actualizarProducto(Product product){
+		HibernateService.updateObject(product);
+	}
+	
 	
 	public SesionVenta obtenerSesionVenta(Long id) {
 		
