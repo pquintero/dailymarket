@@ -170,6 +170,8 @@ public class UtilLectorHuellasSingleton {
 			    		
 			            if( doc != null){
 			        		JOptionPane.showMessageDialog(null, "Operación realizada con éxito");
+			            	((SupervisorFrame) frame ).cancelarVenta();
+
 			            }else{
 			            	((SupervisorFrame) frame ).habilitarFirma();
 			            }
