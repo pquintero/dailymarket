@@ -44,6 +44,7 @@ import dailymarket.model.GroupEmpleado;
 import dailymarket.model.ProductModel.MyBase64;
 import dailymarket.swing.ui.AperturaCajaFrame;
 import dailymarket.swing.ui.CerrarCajaFrame;
+import dailymarket.swing.ui.Configuration;
 import dailymarket.swing.ui.HuellaDigitalInterface;
 import dailymarket.swing.ui.SupervisorFrame;
 import dailymarket.swing.ui.TicketFrame;
@@ -218,7 +219,7 @@ public class UtilLectorHuellasSingleton {
 	            }
 	            else if( frame instanceof CerrarCajaFrame){
 		    		System.out.println("Cerrar Caja");
-		    		
+		    		params = new String[] { user, ((CerrarCajaFrame)frame).getMonto(), "", featureSetString };
 		    		doc = TelefrontGUI.getInstance().executeMethod(CONTROLLER_CLASS, "cerrarCaja", params);
 
 		    		if (doc != null && doc.getRootElement().selectSingleNode("cajaCerrada") != null && doc.getRootElement().selectSingleNode("cajaCerrada").getText().equals("OK")){
@@ -231,7 +232,7 @@ public class UtilLectorHuellasSingleton {
 						}
 		    	}else{
 		    		System.out.println("Abrir Caja");
-
+		    		params = new String[] { user, ((AperturaCajaFrame)frame).getMonto(), Configuration.getInstance().getCaja(), featureSetString };
 		    		doc = TelefrontGUI.getInstance().executeMethod(CONTROLLER_CLASS, "abrirCaja", params);
 		            if( doc != null){
 						((AperturaCajaFrame) frame ).backToInitSession();
