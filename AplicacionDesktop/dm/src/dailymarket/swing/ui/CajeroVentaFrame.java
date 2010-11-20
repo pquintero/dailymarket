@@ -654,8 +654,9 @@ public class CajeroVentaFrame extends DailyMarketFrame {
 				
 	            subTotalVenta += Double.valueOf(productModel.getPrice());
 				tableModelProducts.addRow(new Object[]{ new Boolean(false), productModel.getDescription(), cantProd.getText(), Double.valueOf(productModel.getPrice()), Double.valueOf(productModel.getPrice()) * Double.parseDouble(cantProd.getText()) });
-				
+				productModel.setCantidad(Integer.parseInt(cantProd.getText()));
 				agregarAProductsCode(productModel.getCode());
+			
 				agregarProducto(productModel);
 	
 				descProducto.setText(productModel.getDescription());

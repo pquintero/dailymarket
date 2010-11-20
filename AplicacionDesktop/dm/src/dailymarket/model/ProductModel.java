@@ -18,6 +18,14 @@ public class ProductModel {
 	private String state;
 	private Integer repositionStock;
 	private String dateWithoutStock; //fecha última en q se quedo sin stock
+	private Integer cantidad;
+	
+	public Integer getCantidad() {
+		return cantidad;
+	}
+	public void setCantidad(Integer cantidad) {
+		this.cantidad = cantidad;
+	}
 	public Long getId() {
 		return id;
 	}
