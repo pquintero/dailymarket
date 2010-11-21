@@ -74,7 +74,7 @@ public class ReportesAction extends BaseAction {
       		response.setHeader("Content-Disposition","attachment; filename=" + reportName + ".pdf" + "\"");
       		List col = new ArrayList();
       		Map<String, String> filters = rrs.getFilters((DynaActionForm)form);      		
-      		byte[] bytes = rrs.runReport((DynaBean)form, col,reportName, filters, "Mensual");
+      		byte[] bytes = rrs.runReport((DynaBean)form, col,reportName, filters, "Mensual");      		
       		executeReport(bytes, response);    	    
       	    return null;
       	} catch (Exception fe){
@@ -95,13 +95,8 @@ public class ReportesAction extends BaseAction {
       		response.setHeader("Content-Disposition","attachment; filename=" + reportName + ".pdf" + "\"");
       		List col = new ArrayList();
       		Map<String, String> filters = ars.getFilters((DynaActionForm)form);
-      		byte[] bytes = ars.runReport((DynaBean)form, col,reportName, filters, "Anual");
-      		OutputStream stream = response.getOutputStream();
-      		stream.write(bytes);
-			stream.flush();
-			stream.close();
-      		response.setContentType("aplication/pdf");
-      	    response.setContentLength(bytes.length);    	    
+      		byte[] bytes = ars.runReport((DynaBean)form, col,reportName, filters, "Anual");      		
+      		executeReport(bytes, response);    	    
       	    return null;
       	} catch (Exception fe){
       	    log.error("Error en la generacion del reporte", fe);
@@ -113,7 +108,8 @@ public class ReportesAction extends BaseAction {
     }   
     
     //facturacion Mensual
-    public ActionForward executeMonthlyBilling(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) {
+    @SuppressWarnings("unchecked")
+	public ActionForward executeMonthlyBilling(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) {
     	BillingReportService mrs = new BillingReportService();
     	String reportName = "facturacion";
         try {
@@ -133,7 +129,8 @@ public class ReportesAction extends BaseAction {
     }
     
     //facturacion Anual
-    public ActionForward executeAnnualBilling(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) {
+    @SuppressWarnings("unchecked")
+	public ActionForward executeAnnualBilling(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) {
     	BillingReportService ars = new BillingReportService();
     	String reportName = "facturacion";
         try {

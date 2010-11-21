@@ -3,7 +3,6 @@ package ar.com.dailyMarket.services;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collection;
-import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -26,7 +25,6 @@ import org.hibernate.Criteria;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 
-import ar.com.dailyMarket.model.GroupProduct;
 import ar.com.dailyMarket.model.HourlyBand;
 import ar.com.dailyMarket.model.Product;
 import ar.com.dailyMarket.model.ProductoVenta;
@@ -51,7 +49,7 @@ public class SalesReportService extends BaseReportService{
         try {
 		    JasperReport jasperReport = (JasperReport) JRLoader.loadObject(SalesReportService.class.getResourceAsStream("/reports/" + report + ".jasper"));
 			
-		    setDataReport(col, filters, tipo);		    			    		    
+		    setDataReport(col, filters, tipo);
 		    return JasperRunManager.runReportToPdf(jasperReport, parameters, getDataSource(col, filters, tipo));			
         } catch (Throwable e) {
 			e.printStackTrace();
@@ -151,7 +149,7 @@ public class SalesReportService extends BaseReportService{
     	Calendar calHasta = GregorianCalendar.getInstance();   	
     	setFilterFechas(filters, tipo, calDesde, calHasta);
     	
-    	List<SesionVenta> ventas = getVentas(calDesde, calHasta, filters);    	    	    	
+    	List<SesionVenta> ventas = getVentas(calDesde, calHasta, filters);    	
     	if (tipo.equals("Anual")) {
     		setDataAnual(ventas, col, filters, calDesde, calHasta);
     	} else {
@@ -177,14 +175,14 @@ public class SalesReportService extends BaseReportService{
     			prodPorAnio = sVenta.getProductos().size();
     	    	ventasPorAnio = 1;    	    	
     		} else {
-    			prodPorAnio =+ sVenta.getProductos().size();
+    			prodPorAnio += sVenta.getProductos().size();
     			ventasPorAnio++;
     		}    		
-    	}    	    	    	
+    	}  
     	if (!ventas.isEmpty()) {
     		//guardo el último
-        	col.add(new Ventas(prodPorAnio, ventasPorAnio, anio.toString()));
-    	}    	
+    		col.add(new Ventas(prodPorAnio, ventasPorAnio, anio.toString()));
+    	}
     }
     
     @SuppressWarnings("unchecked")
@@ -207,7 +205,7 @@ public class SalesReportService extends BaseReportService{
     			prodPorAnio = sVenta.getProductos().size();
     	    	ventasPorAnio = 1;    	    	
     		} else {
-    			prodPorAnio =+ sVenta.getProductos().size();
+    			prodPorAnio += sVenta.getProductos().size();
     			ventasPorAnio++;
     		}    		
     	}
