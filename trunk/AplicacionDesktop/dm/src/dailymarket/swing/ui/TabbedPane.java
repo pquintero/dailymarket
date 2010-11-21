@@ -216,7 +216,7 @@ public class TabbedPane extends JPanel {
                new Object[][] {},
                new Object[] { "Cancel","Descripcion", "Cantidad", "Precio", "Total","nroRow" });
 	    
-       tableSelecteds.getColumnModel().getColumn(1).setPreferredWidth(185);
+       tableSelecteds.getColumnModel().getColumn(1).setPreferredWidth(200);
        tableSelecteds.getColumnModel().getColumn(2).setPreferredWidth(3);
        tableSelecteds.getColumnModel().getColumn(3).setPreferredWidth(5);
        tableSelecteds.getColumnModel().getColumn(4).setPreferredWidth(5);

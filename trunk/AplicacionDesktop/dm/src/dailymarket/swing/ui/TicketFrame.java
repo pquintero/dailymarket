@@ -4,11 +4,11 @@ import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.WindowAdapter;
 import java.awt.print.PrinterException;
 import java.awt.print.PrinterJob;
-import java.io.IOException;
-import java.sql.SQLException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 
 
 import javax.swing.JButton;
@@ -20,7 +20,7 @@ import javax.swing.JTextField;
 
 import dailymarket.model.Context;
 
-public class TicketFrame extends JDialog {
+public class TicketFrame extends JFrame {
 	
 	public JFrame parentFrame;
 	
@@ -28,15 +28,17 @@ public class TicketFrame extends JDialog {
 	
 	public TicketFrame(HuellaDigitalInterface frame){
 		
-		super((JFrame)frame, true);
+//		super((JFrame)frame, true);
+		setAlwaysOnTop(true);
 		parentFrame = (JFrame)frame;
 		setTitle("Ticket de Cierre");
 		setLocationRelativeTo((JFrame)frame);
 		
 		s = new String[10];
 		s[0] = "T i c k e t  d e  C i e r r e";
+		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
 		
-		JLabel fechaLabel = new JLabel("Fecha:         2010-10-16                   ");
+		JLabel fechaLabel = new JLabel("Fecha:         " + sdf.format(new Date()));
 		s[1] = fechaLabel.getText();
 		
 		JLabel fechaAperturaLabel = new JLabel("Hora de Apertura: " );
@@ -61,9 +63,9 @@ public class TicketFrame extends JDialog {
 		JTextField cajeroTextField = new JTextField();
 		cajeroTextField.setPreferredSize(new Dimension(120,20));
 		cajeroTextField.setEditable(false);
-//		cajeroTextField.setText(Context.getInstance().getCurrentUser().getName());
+		cajeroTextField.setText(Context.getInstance().getCurrentUser().getName() + " " + Context.getInstance().getCurrentUser().getLastName());
 		
-		s[4] = cajeroLabel.getText()+ ""/*cajeroTextField.getText()*/;
+		s[4] = cajeroLabel.getText()+ cajeroTextField.getText();
 		
 		
 		JLabel montoFacturadoLabel = new JLabel("Monto Facturado: ");
