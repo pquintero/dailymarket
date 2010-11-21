@@ -15,6 +15,7 @@ import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.DynaActionForm;
 import org.hibernate.CacheMode;
 import org.hibernate.Criteria;
+import org.hibernate.Transaction;
 import org.hibernate.criterion.Restrictions;
 
 import ar.com.dailyMarket.model.Product;
@@ -26,6 +27,8 @@ public class SimulatorService extends MailService{
 	public List<Product> executeFilter(DynaActionForm form) {		
 		Long productId = form.get("productId") != null && ((Long)form.get("productId")).longValue() != new Long(-1) ? (Long)form.get("productId") : null;				
 		Long groupProductId = form.get("groupProductId") != null && ((Long)form.get("groupProductId")).longValue() != new Long(-1).longValue() ? (Long)form.get("groupProductId") : null;
+		
+		HibernateHelper.closeSession();
 		
 		Criteria c = HibernateHelper.currentSession().createCriteria(Product.class);
 		if (productId != null) {
@@ -187,18 +190,43 @@ public class SimulatorService extends MailService{
 		String[] srsa = (String[]) ((DynaActionForm)form).get("simulatedRepositionStockArray");
 		ProductService ps = new ProductService();
 		
-		for (int i = 0; i < productsIds.length; i++) {
-			if (checks.contains(productsIds[i])) {
-				Product pr = (Product) ps.getProductByPK(Long.valueOf(productsIds[i]));
-				if (StringUtils.isNumeric(ssopa[i]) && !StringUtils.isEmpty(ssopa[i]) && Integer.valueOf(ssopa[i])>0) {
-					pr.setSizeOfPurchase(Integer.valueOf(ssopa[i]));
+		Transaction tx = null;
+		try {
+			HibernateHelper.closeSession();
+		    tx = HibernateHelper.currentSession().beginTransaction();
+		    
+		    for (int i = 0; i < productsIds.length; i++) {
+				if (checks.contains(productsIds[i])) {
+					Product pr = ps.getProductByPK(Long.valueOf(productsIds[i]));
+					if (StringUtils.isNumeric(ssopa[i]) && StringUtils.isNotEmpty(ssopa[i]) && Integer.valueOf(ssopa[i])>0) {
+						pr.setSizeOfPurchase(Integer.valueOf(ssopa[i]));
+					}
+					if (StringUtils.isNumeric(srsa[i]) && StringUtils.isNotEmpty(srsa[i]) && Integer.valueOf(srsa[i]) > 0) {
+						pr.setRepositionStock(Integer.valueOf(srsa[i]));
+					}
+					
+					//TODO ver el signo < o <=????? del primero
+					// Ver 2
+					if (StringUtils.equals(Product.PRODUCT_STATE_STOCK, pr.getState()) && pr.getActualStock() < pr.getRepositionStock()) {
+						pr.setState(Product.PRODUCT_STATE_PENDING);
+					} else if ((StringUtils.equals(Product.PRODUCT_STATE_PENDING, pr.getState()) || StringUtils.equals(Product.PRODUCT_STATE_SEND, pr.getState())) 
+							&& pr.getActualStock() >= pr.getRepositionStock()) {
+						pr.setState(Product.PRODUCT_STATE_STOCK);
+					}
+					
+					
+					HibernateHelper.currentSession().update(pr);
 				}
-				if (StringUtils.isNumeric(srsa[i]) && !StringUtils.isEmpty(srsa[i]) && Integer.valueOf(srsa[i]) > 0) {
-					pr.setRepositionStock(Integer.valueOf(srsa[i]));
-				}
-				HibernateHelper.currentSession().update(pr);
-				HibernateHelper.currentSession().flush();	
 			}
+		    
+		    tx.commit();
+		}
+		catch (RuntimeException e) {
+		    if (tx != null) tx.rollback();
+		    e.printStackTrace();
+		}
+		finally {
+		    tx = null;
 		}
 	}
 }

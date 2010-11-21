@@ -1,28 +1,19 @@
 package ar.com.dailyMarket.services;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.StringTokenizer;
 
-import javax.naming.Context;
-import javax.naming.InitialContext;
-import javax.naming.NamingException;
-
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.DynaActionForm;
 import org.hibernate.Criteria;
+import org.hibernate.Transaction;
 import org.hibernate.criterion.MatchMode;
 import org.hibernate.criterion.Restrictions;
 
 import ar.com.dailyMarket.model.Configuration;
 import ar.com.dailyMarket.model.Product;
-import ar.com.dailyMarket.model.User;
-
-import com.mysql.jdbc.Statement;
 
 public class ProductService extends MailService{
 	
@@ -37,6 +28,8 @@ public class ProductService extends MailService{
 		product.setGroupProduct(groupProductService.getGroupProductByPK((Long)form.get("groupProductId")));
 		product.setRepositionStock((Integer)form.get("repositionStock"));
 		product.setActive(new Boolean(true));
+		
+		//FIXME que pasa si actualizas un producto despues de haber mandado el mail y el estado haya pasado a enviado????
 		if (product.getActualStock() >= product.getRepositionStock()) {
 			product.setState(Product.PRODUCT_STATE_STOCK);
 		} else {
@@ -88,8 +81,8 @@ public class ProductService extends MailService{
 			c.createCriteria("groupProduct").add(Restrictions.eq("id", groupProduct));
 		}
 		c.add(Restrictions.eq("active", new Boolean(true)));
-		List products = (List)c.list();		
-		return products.isEmpty() ? new ArrayList() : products;
+		List<Product> products = c.list();		
+		return products.isEmpty() ? new ArrayList<Product>() : products;
 	}
 	
 	@SuppressWarnings("unchecked")
@@ -97,36 +90,67 @@ public class ProductService extends MailService{
 		/* actualizo el estado antes de verlo
 		*  lo tengo q hacer xq NO tengo forma de saber cuando recibi mercaderia
 		*/				
+//		try {
+//			Context initCtx = new InitialContext();
+//			Context envCtx = (Context)initCtx.lookup("java:comp/env");
+//		    String url = (String) envCtx.lookup("urlDataBase"); //obtengo del contexto la url de la base
+//		    String usr = (String) envCtx.lookup("usrDataBase");
+//		    String pass = (String) envCtx.lookup("passDataBase");
+//		    
+//			Class.forName("com.mysql.jdbc.Driver");
+//			Connection con = DriverManager.getConnection(url, usr, pass);
+//			Statement stmt = (Statement) con.createStatement();
+//			stmt.executeUpdate("update product set state = \"" + Product.PRODUCT_STATE_STOCK + "\" where actualstock >= repositionstock;");
+//		} catch (SQLException e) {			
+//			e.printStackTrace();
+//		} catch (ClassNotFoundException e) {
+//			e.printStackTrace();
+//		} catch (NamingException e) {
+//			e.printStackTrace();
+//		}
+		
+		Transaction tx = null;
 		try {
-			Context initCtx = new InitialContext();
-			Context envCtx = (Context)initCtx.lookup("java:comp/env");
-		    String url = (String) envCtx.lookup("urlDataBase"); //obtengo del contexto la url de la base
-		    String usr = (String) envCtx.lookup("usrDataBase");
-		    String pass = (String) envCtx.lookup("passDataBase");
+			HibernateHelper.closeSession();
+		    tx = HibernateHelper.currentSession().beginTransaction();
 		    
-			Class.forName("com.mysql.jdbc.Driver");
-			Connection con = DriverManager.getConnection(url, usr,pass);
-			Statement stmt = (Statement) con.createStatement();
-			stmt.executeUpdate("update product set state = \"" + Product.PRODUCT_STATE_STOCK + "\" where actualstock >= repositionstock;");
-		} catch (SQLException e) {			
-			e.printStackTrace();
-		} catch (ClassNotFoundException e) {
-			e.printStackTrace();
-		} catch (NamingException e) {
-			e.printStackTrace();
-		} 						
+		    //TODO ACTUALIZO ESTADO A LOS PRODUCTOS CON STOCK (Mayor estricto????? o mayor o igual???)
+		    Criteria productosCriteria = HibernateHelper.currentSession().createCriteria(Product.class)
+		    							.add(Restrictions.gtProperty("actualStock", "repositionStock"));
+		    List<Product> productList = productosCriteria.list();
+		    
+		    for (Iterator<Product> iterator = productList.iterator(); iterator.hasNext();) {
+		    	Product product = iterator.next();
+		    	product.setState(Product.PRODUCT_STATE_STOCK);
+	    		HibernateHelper.currentSession().update(product);
+			}
+		    
+		    tx.commit();
+		}
+		catch (RuntimeException e) {
+		    if (tx != null) tx.rollback();
+		    e.printStackTrace();
+		}
+		finally {
+		    tx = null;
+		}
+		//TODO Menor o igual???? o solo menor????
 		Criteria c = HibernateHelper.currentSession().createCriteria(Product.class);
 		c.add(Restrictions.leProperty("actualStock", "repositionStock"));
 		c.add(Restrictions.eq("active", new Boolean(true)));
 		return c.list();
 	}
 	
-	public String[] getProductsIdsArray() {
-		List <Product> list = getProductWithoutStock();
+	public String[] getProductsIdsArray(List<Product> list) {
 		String[] vector = new String[list.size()];
 		int i = 0;
 		for (Product prod : list) {
-			vector[i]= prod.getId().toString();
+			HibernateHelper.currentSession().refresh(prod);
+			if (Product.PRODUCT_STATE_PENDING.equals(prod.getState())) {
+				vector[i] = prod.getId().toString();
+			} else {
+				vector[i] = "-1";
+			}
 			i++;
 		}
 		return vector;
@@ -151,23 +175,38 @@ public class ProductService extends MailService{
 		return products;
 	}
 	
-	public void sendOrder(String[] idsStr, String to, String from, String subject, String body) {								
+	public void sendOrder(String[] idsStr, String to, String subject, String body) {								
 		StringTokenizer st = new StringTokenizer(to, ";");
 		String[] emailTo = new String[st.countTokens()];
     	for (int i = 0; st.hasMoreTokens(); i++) {
 			emailTo[i] = (String)st.nextToken();
 		}
     	
-		super.sendMail(emailTo, new StringBuffer(body));
-    	//Actualizo estado LUEGO DE ENVIAR MAIL
-    	for (int i = 0; i < idsStr.length; i++) {
-    		Long id = Long.valueOf(idsStr[i]);
-			if (id > 0) {
-	    		Product product = getProductByPK(Long.valueOf(idsStr[i]));
-	    		product.setState(Product.PRODUCT_STATE_SEND);
-	    		save(product);
-			}
-    	}
+		super.sendMail(emailTo, new StringBuffer(body), subject);
+    	
+		//Actualizo estado LUEGO DE ENVIAR MAIL
+		Transaction tx = null;
+		try {
+			HibernateHelper.closeSession();
+		    tx = HibernateHelper.currentSession().beginTransaction();
+		    
+		    for (int i = 0; i < idsStr.length; i++) {
+	    		Long id = Long.valueOf(idsStr[i]);
+				if (id > 0) {
+		    		Product product = getProductByPK(id);
+		    		product.setState(Product.PRODUCT_STATE_SEND);
+		    		HibernateHelper.currentSession().update(product);
+				}
+	    	}
+		    tx.commit();
+		}
+		catch (RuntimeException e) {
+		    if (tx != null) tx.rollback();
+		    e.printStackTrace();
+		}
+		finally {
+		    tx = null;
+		}
 	}
 	
 	public StringBuffer createMessage (List<Product> products) {

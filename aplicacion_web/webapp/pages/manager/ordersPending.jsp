@@ -6,10 +6,24 @@
 <%@ page import="ar.com.dailyMarket.model.Product" %>
 
 <script type="text/javascript">
-	function sendOrder() {
+function validarSendOrder() {
+	var ids = document.getElementsByName("productsIds");
+	for (var i = 0; i < ids.length; i++) {
+		if (ids[i].checked) {
+			return true;
+		}
+	}
+	return false;
+}
+
+function sendOrder() {
+	if(validarSendOrder()) {
 		document.forms[0].VirtualDispatchName.value='redirectToConfirmSendOrder';
 		document.forms[0].submit();
+	} else {
+		alert("Debe seleccionar algún producto con Stock" + '\n' + "Faltante para poder enviar el Pedido");
 	}
+}
 </script>
 
 <TABLE class="form" cellSpacing="0" cellPadding="0" border="0">
@@ -35,7 +49,7 @@
 		        		<html:multibox property="productsIds" value="<%= ((Product)row).getId().toString() %>"/>
 		        		<html:hidden property="productsIds" value="-1"/>
 		        	<% } else {%>
-		        		&nbsp;
+		        		<html:hidden property="productsIds" value="-1"/>
 		        	<% } %>
 		        </ds:column>
 			</ds:table>
@@ -46,7 +60,7 @@
 			<TR>	
 				<td width="100%">&nbsp;</td>
 		        <TD align="right"  width="130px" >        				
-		     	   <input width="130px" class="btn" value="Enviar Pedido"
+		     	   <input width="130px" class="btn" value="Enviar Pedido" readonly="readonly"
 						 onclick="sendOrder();">
 		        </TD>	
 			</TR>

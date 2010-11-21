@@ -24,9 +24,11 @@
 			}
 %>
     <TITLE>.:: DAILYMARKET :: <%=retVal%> ::.</TITLE>
-    <META HTTP-EQUIV="Pragma" CONTENT="no-cache"/>
-	<META HTTP-EQUIV="Expires" CONTENT="-1"/>
     <META HTTP-EQUIV="Content-Type" content="text/html; charset=iso-8859-1"/>
+	<META HTTP-EQUIV="Expires" CONTENT="-1"/>
+    <META HTTP-EQUIV="Cache-Control" CONTENT="no-store, no-cache, must-revalidate, post-check=0, pre-check=0"/>
+    <META HTTP-EQUIV="Pragma" CONTENT="no-cache"/>  
+	
 	<script type="text/javascript" src="functions.js"></script>
 	<script type="text/javascript" src="ieupdateV2.js"></script>
     <LINK href="site.css" type="text/css" rel="stylesheet">
@@ -89,11 +91,4 @@
 		</tr>
 </table>
 </BODY>
-
-
-<HEAD>
-    <META HTTP-EQUIV="Expires" CONTENT="-1"/>
-    <META HTTP-EQUIV="Cache-Control" CONTENT="no-store, no-cache, must-revalidate, post-check=0, pre-check=0"/>
-    <META HTTP-EQUIV="Pragma" CONTENT="no-cache"/>  
-</HEAD>
 </html:html>
