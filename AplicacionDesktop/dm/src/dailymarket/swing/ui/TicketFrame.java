@@ -9,10 +9,7 @@ import java.awt.print.PrinterJob;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-
-
 import javax.swing.JButton;
-import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -94,7 +91,7 @@ public class TicketFrame extends JFrame {
 		s[7] = montoAEntregar.getText() + montoAEntregarTextField.getText();
 
 		
-		s[8] = "-----------------";
+		s[8] = "----------------------------";
 		s[9] = fechaLabel.getText();
 		
 		JPanel buttonPanel = new JPanel();
@@ -103,9 +100,7 @@ public class TicketFrame extends JFrame {
 		JButton imprimirButton = new JButton("Imprimir");
 		imprimirButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-
 				imprimirTicket(s);
-				
 				dispose();	
 			}
 		});
@@ -129,15 +124,10 @@ public class TicketFrame extends JFrame {
 		add(buttonPanel);
 		
 		JFrame.setDefaultLookAndFeelDecorated(true);
-//     	this.setDefaultCloseOperation(0);
-//	    this.addWindowListener(new WindowAdapter() {});
-	    
 		setResizable(false);
 		
 		setBounds(300,150,250,320);
 		setVisible(true);
-		
-		
 	}
 	private void imprimirTicket(String[] s) {
 		PrinterJob job = PrinterJob.getPrinterJob();
@@ -152,7 +142,5 @@ public class TicketFrame extends JFrame {
 	public static void main(String[] args){
 		new TicketFrame(null);
 	   }
-	
-
 
 }

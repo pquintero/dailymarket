@@ -25,14 +25,11 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JMenu;
-import javax.swing.JMenuBar;
-import javax.swing.JMenuItem;
+
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
-import javax.swing.KeyStroke;
 
 import javax.swing.border.EtchedBorder;
 import javax.swing.border.LineBorder;
@@ -290,32 +287,23 @@ public class CajeroVentaFrame extends DailyMarketFrame {
 				ticket.setTotal(totalVenta.toString());
 				ticket.setSubtotal(subTotalVenta.toString());
 
-				int cantFija = 12;// HEADER y FOOTER DEL TICKETñ
+				int cantFija =  OTORGAR_DESCUENTO ? 15 + 1:  15 + 0 ;// HEADER y FOOTER DEL TICKET
 				int cantDinamica = ticket.getLineas().size();
 
 				String lineaTicket[] = new String[cantFija + cantDinamica];
 
-				lineaTicket[0] = ticket.getCaja().getSucursal().getNombre()
-						.toUpperCase();
-				lineaTicket[1] = ticket.getCaja().getSucursal().getDireccion()
-						.toUpperCase();
-				lineaTicket[2] = ".";
-				lineaTicket[3] = "EMPLEADO:"
-						+ ticket.getCaja().getCajero().getDni() + " - "
-						+ ticket.getCaja().getCajero().getLastName();
-				lineaTicket[4] = "CAJA:" + ticket.getCaja().getNroCaja();
-				lineaTicket[5] = "CUIT-NRO: "
-						+ ticket.getCaja().getSucursal().getCuit()
-								.toUpperCase();
-				lineaTicket[6] = "NRO-TICKET: "
-						+ ticket.getNroTicket().toUpperCase();
-				SimpleDateFormat sdf = new java.text.SimpleDateFormat(
-						"dd/MM/yyyy HH:mm:ss");
-				lineaTicket[7] = "FECHA: " + sdf.format(new Date());
-				lineaTicket[8] = "Lista de Productos";
-				lineaTicket[9] = "					";
+				lineaTicket[0] = ticket.getCaja().getSucursal().getNombre().toUpperCase();
+				lineaTicket[1] = ticket.getCaja().getSucursal().getDireccion().toUpperCase();
+				lineaTicket[2] = "    ";
+				lineaTicket[3] = "Empleado: "+ ticket.getCaja().getCajero().getLastName() + ", " + ticket.getCaja().getCajero().getName();
+				lineaTicket[4] = "Caja:" + ticket.getCaja().getNroCaja();
+				lineaTicket[5] = "CUIT-NRO: "+ ticket.getCaja().getSucursal().getCuit().toUpperCase();
+				lineaTicket[6] = "Nro-Ticket: "+ ticket.getNroTicket().toUpperCase();
+				SimpleDateFormat sdf = new java.text.SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
+				lineaTicket[7] = "Fecha: " + sdf.format(new Date());
+				lineaTicket[8] = "					";
 
-				int i = 10;
+				int i = 9;
 				for (Iterator iterator = ticket.getLineas().iterator(); iterator
 						.hasNext();) {
 					LineaTicket linea = (LineaTicket) iterator.next();
@@ -323,9 +311,16 @@ public class CajeroVentaFrame extends DailyMarketFrame {
 					i++;
 				}
 
-				lineaTicket[i] = "			 		";
-				i++;
-				lineaTicket[i] = "TOTAL: " + ticket.getTotal() + " pesos";
+				lineaTicket[i++] = "				";
+				lineaTicket[i++] = "SubTotal $" + ticket.getSubtotal();
+				if( OTORGAR_DESCUENTO ){
+					Double desc = Truncar(((new Double(1) - DESCUENTO_EMPLEADO )*subTotalVenta),2);
+					lineaTicket[i++] = "Descuento -$" + desc.toString() ;
+				}
+				lineaTicket[i++] = "-------------------------------";
+				lineaTicket[i++] = "TOTAL $" + ticket.getTotal() ;
+				lineaTicket[i++] = "   ";
+				lineaTicket[i++] = "Su Vuelto $" + Truncar((pagoVenta - totalVenta),2) ;
 
 				return lineaTicket;
 			}
@@ -704,8 +699,7 @@ public class CajeroVentaFrame extends DailyMarketFrame {
 		subTotalVenta -= valor;
 		subTotalVenta = Truncar(subTotalVenta, 2);
 		subtotalVentaTextfield.setText(subTotalVenta.toString());
-		totalVenta = OTORGAR_DESCUENTO ? subTotalVenta * DESCUENTO_EMPLEADO
-				: subTotalVenta;
+		totalVenta = OTORGAR_DESCUENTO ? subTotalVenta * DESCUENTO_EMPLEADO: subTotalVenta;
 		totalVenta = Truncar(totalVenta, 2);
 		totalVentaTextField.setText(totalVenta.toString());
 
@@ -713,8 +707,7 @@ public class CajeroVentaFrame extends DailyMarketFrame {
 
 	public void otorgarDescuento() {
 		OTORGAR_DESCUENTO = true;
-		totalVenta = OTORGAR_DESCUENTO ? subTotalVenta * DESCUENTO_EMPLEADO
-				: subTotalVenta;
+		totalVenta = OTORGAR_DESCUENTO ? subTotalVenta * DESCUENTO_EMPLEADO: subTotalVenta;
 		totalVenta = Truncar(totalVenta, 2);
 		totalVentaTextField.setText(totalVenta.toString());
 	}
@@ -737,4 +730,5 @@ public class CajeroVentaFrame extends DailyMarketFrame {
 
 		return nD;
 	}
+	
 }

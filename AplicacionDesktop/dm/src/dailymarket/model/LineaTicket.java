@@ -42,8 +42,7 @@ public class LineaTicket {
 	
 	@Override
 	public String toString() {
-		// TODO Auto-generated method stub
-		return descripcion + "  " +  cantidad + " " + precioUnitario + " " + precioTotal;
+		return descripcion.substring(0, 10) + "  " +  cantidad + " X $" + precioUnitario + " $" + precioTotal;
 	}
 	
 }
