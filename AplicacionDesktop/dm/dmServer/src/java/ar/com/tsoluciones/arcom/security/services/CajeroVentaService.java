@@ -116,7 +116,9 @@ public class CajeroVentaService implements CajeroVentaServiceInterface {
 
 	public LoginHistory getLoginHistory(User user) {
 		
-		List<LoginHistory> l = Cast.castList(LoginHistory.class, HibernateService.findByTwoFilter(LoginHistory.class, "cajero", user.getId(), "fechaCierre"));
+
+		List<LoginHistory> l = Cast.castList(LoginHistory.class, HibernateService.findByTwoFilter(LoginHistory.class, "cajero.id", user.getId(), "fechaCierre"));
+
 
 		if (l == null || l.size() == 0)
 			return null;

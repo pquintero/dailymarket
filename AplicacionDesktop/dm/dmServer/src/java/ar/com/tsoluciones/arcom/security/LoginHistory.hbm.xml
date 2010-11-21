@@ -11,7 +11,7 @@
          <property column="montoapertura" name="montoApertura"  type="java.lang.Double"/>
          <property name="fechaApertura" type="timestamp" />
          <property column="montocierre" name="montoCierre"  type="java.lang.Double"/>
-         <property name="fechaCierre" type="timestamp" />
+         <property name="fechaCierre" type="timestamp"/>
          <property column="idcaja" name="idCaja"  type="java.lang.Long"/>
     </class>   
 </hibernate-mapping>
