@@ -46,6 +46,9 @@ public class MailService {
 	public void initSendMail(String[] emailTo, String msg, String subject) throws InvalidPropertiesFormatException, IOException, MessagingException {
 		Properties props = new Properties();
 		props.loadFromXML(BaseAction.class.getResourceAsStream("/mail/mail-properties.xml"));
+		if ("".equals(subject)) {
+			subject = (String) props.get("subject");
+		}
     	this.sendMail(props, emailTo, subject, msg, (String)props.get("from"));
 	}
 	

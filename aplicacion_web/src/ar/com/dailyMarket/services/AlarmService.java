@@ -15,7 +15,7 @@ public class AlarmService extends MailService {
 		String time = conf != null ? conf.getTimer().toString() : null;
 		if (time != null) {
 			String[] emails = userService.getEmailsToNotifications();    	     	    	    
-			super.sendMail(emails, new StringBuffer(createMessage(productService.getProductWithoutStock(), time)));
+			super.sendMail(emails, new StringBuffer(createMessage(productService.getProductWithoutStock(), time)), "");
 		}		
 	}				
 
