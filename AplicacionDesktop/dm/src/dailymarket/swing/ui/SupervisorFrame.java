@@ -61,6 +61,7 @@ public class SupervisorFrame extends  DailyMarketFrame implements HuellaDigitalI
         add(solicitudesTabbedPane, BorderLayout.CENTER);
         setBounds(50,100,830,360);
         setLayout(new FlowLayout(FlowLayout.LEFT ));
+        setAlwaysOnTop(true);
         
         JPanel fingerPrintPanel = new JPanel();
         fingerPrintPanel.setLayout(new FlowLayout(FlowLayout.CENTER));
