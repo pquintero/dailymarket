@@ -51,15 +51,7 @@ public class SalesReportService extends BaseReportService{
         try {
 		    JasperReport jasperReport = (JasperReport) JRLoader.loadObject(SalesReportService.class.getResourceAsStream("/reports/" + report + ".jasper"));
 			
-		    if (tipo.equals("Anual")) {
-			    setDataReportAnual(col, filters);		    	
-		    } else {
-		    	col.add(new Ventas(new Integer(58), new Integer(764), "09/09"));
-			    col.add(new Ventas(new Integer(58), new Integer(678), "10/09"));
-			    col.add(new Ventas(new Integer(58), new Integer(813), "11/09"));
-			    col.add(new Ventas(new Integer(58), new Integer(1351), "12/09"));
-		    }
-		    
+		    setDataReport(col, filters, tipo);		    			    		    
 		    return JasperRunManager.runReportToPdf(jasperReport, parameters, getDataSource(col, filters, tipo));			
         } catch (Throwable e) {
 			e.printStackTrace();
@@ -152,32 +144,33 @@ public class SalesReportService extends BaseReportService{
             currentValue = iterator.hasNext() ? iterator.next() : null; 
             return (currentValue != null);
         }
-    } 
+    }     
     
-    private void setDataReportAnual(Collection col, Map<String, String> filters) {
-    	Calendar calDesde = new GregorianCalendar();
-    	Calendar calHasta = new GregorianCalendar();
+    private void setDataReport(Collection col, Map<String, String> filters, String tipo) {
+    	Calendar calDesde = GregorianCalendar.getInstance(); 
+    	Calendar calHasta = GregorianCalendar.getInstance();   	
+    	setFilterFechas(filters, tipo, calDesde, calHasta);
     	
-    	calDesde.setTime(new Date());
-    	calDesde.set(Calendar.MONTH, 0);
-    	calDesde.set(Calendar.DAY_OF_MONTH, 1);    	
-    	calHasta.setTime(calDesde.getTime());
-    	calHasta.set(Calendar.YEAR, Integer.parseInt(filters.get("anioHasta")));
-    	calHasta.set(Calendar.MONTH, 11);
-    	calHasta.set(Calendar.DAY_OF_MONTH, 31);
-    	calDesde.set(Calendar.YEAR, Integer.parseInt(filters.get("anioDesde")));
-    	
-    	List<SesionVenta> ventas = getVentasAnuales(calDesde, calHasta, filters);    	    	
-    	
+    	List<SesionVenta> ventas = getVentas(calDesde, calHasta, filters);    	    	    	
+    	if (tipo.equals("Anual")) {
+    		setDataAnual(ventas, col, filters, calDesde, calHasta);
+    	} else {
+    		setDataMensual(ventas, col, filters, calDesde, calHasta);
+    	}
+    }
+    
+    @SuppressWarnings("unchecked")
+	private void setDataAnual(List<SesionVenta> ventas, Collection col, Map<String, String> filters, Calendar calDesde, Calendar calHasta) {    	
     	Integer prodPorAnio = 0;
     	Integer ventasPorAnio = 0;
     	Integer anio = 0;
+    	
     	for (Iterator<SesionVenta> it = ventas.iterator(); it.hasNext(); ) {    		
     		SesionVenta sVenta = it.next();
     		Calendar calVenta = new GregorianCalendar();
     		calVenta.setTime(sVenta.getFechaInicio());
     		if (anio < calVenta.get(Calendar.YEAR)) {
-    			if (anio != 0) {
+    			if (anio != 0) {    				
     				col.add(new Ventas(prodPorAnio, ventasPorAnio, anio.toString()));    				    			
     			}  
     			anio = calVenta.get(Calendar.YEAR);
@@ -187,7 +180,7 @@ public class SalesReportService extends BaseReportService{
     			prodPorAnio =+ sVenta.getProductos().size();
     			ventasPorAnio++;
     		}    		
-    	}
+    	}    	    	    	
     	if (!ventas.isEmpty()) {
     		//guardo el último
         	col.add(new Ventas(prodPorAnio, ventasPorAnio, anio.toString()));
@@ -195,7 +188,61 @@ public class SalesReportService extends BaseReportService{
     }
     
     @SuppressWarnings("unchecked")
-	private List<SesionVenta> getVentasAnuales (Calendar calDesde, Calendar calHasta, Map<String, String> filters) {
+	private void setDataMensual(List<SesionVenta> ventas, Collection col, Map<String, String> filters, Calendar calDesde, Calendar calHasta) {
+    	Integer prodPorAnio = 0;
+    	Integer ventasPorAnio = 0;
+    	Integer mes = -1;
+    	Integer anio =0;
+    	
+    	for (Iterator<SesionVenta> it = ventas.iterator(); it.hasNext(); ) {    		
+    		SesionVenta sVenta = it.next();
+    		Calendar calVenta = new GregorianCalendar();
+    		calVenta.setTime(sVenta.getFechaInicio());
+    		if (mes < calVenta.get(Calendar.MONTH) || anio < calVenta.get(Calendar.YEAR)) {
+    			if (mes != -1) {    				
+    				col.add(new Ventas(prodPorAnio, ventasPorAnio, getRealMes(mes) + "/" + anio.toString()));    				    			
+    			}  
+    			anio = calVenta.get(Calendar.YEAR);
+    			mes = calVenta.get(Calendar.MONTH);
+    			prodPorAnio = sVenta.getProductos().size();
+    	    	ventasPorAnio = 1;    	    	
+    		} else {
+    			prodPorAnio =+ sVenta.getProductos().size();
+    			ventasPorAnio++;
+    		}    		
+    	}
+    	if (!ventas.isEmpty()) {
+    		//guardo el último
+        	col.add(new Ventas(prodPorAnio, ventasPorAnio, getRealMes(mes) + "/" + anio.toString()));
+    	}
+    }
+    
+    private String getRealMes(Integer calendarMes) {
+    	Integer realMes = calendarMes + 1;
+    	if (realMes.toString().length() > 1) {
+    		return realMes.toString();
+    	}
+    	return "0" + realMes.toString();
+    }
+    
+    private void setFilterFechas(Map<String, String> filters, String tipo, Calendar fechaDesde, Calendar fechaHasta) {    	    	    	    	    	        	    	   
+    	if (tipo.equals("Anual")) {
+    		fechaDesde.set(Calendar.MONTH, 0);
+    		fechaHasta.set(Calendar.MONTH, 11);
+    	} else {
+    		fechaDesde.set(Calendar.MONTH, Integer.parseInt(filters.get("mesDesde"))-1); //los meses los toma desde 0
+    		fechaHasta.set(Calendar.MONTH, Integer.parseInt(filters.get("mesHasta"))-1);
+    	}    	
+    	fechaDesde.set(Calendar.YEAR, Integer.parseInt(filters.get("anioDesde")));
+    	fechaHasta.set(Calendar.YEAR, Integer.parseInt(filters.get("anioHasta")));
+    	fechaDesde.set(Calendar.DAY_OF_MONTH, fechaDesde.getActualMinimum(Calendar.DAY_OF_MONTH));    	    
+    	fechaHasta.set(Calendar.DAY_OF_MONTH, fechaHasta.getActualMaximum(Calendar.DAY_OF_MONTH));
+    	fechaDesde.set(Calendar.HOUR, 01);
+    	fechaHasta.set(Calendar.HOUR, 23);
+    }
+    
+    @SuppressWarnings("unchecked")
+	private List<SesionVenta> getVentas (Calendar calDesde, Calendar calHasta, Map<String, String> filters) {
     	String productId = filters.get("productId");
     	String groupProductId = filters.get("groupProductId");
     	String hourlyBandId = filters.get("hourlyBandId");
@@ -250,5 +297,5 @@ public class SalesReportService extends BaseReportService{
     	} else {
     		return ventas;
     	}    	
-    }
+    }        
 }

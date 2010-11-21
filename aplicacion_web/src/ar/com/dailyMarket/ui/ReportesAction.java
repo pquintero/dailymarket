@@ -66,13 +66,14 @@ public class ReportesAction extends BaseAction {
     }
     
     //Ventas Mensuales
-    public ActionForward executeMonthlySales(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) {
+    @SuppressWarnings("unchecked")
+	public ActionForward executeMonthlySales(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) {
     	SalesReportService rrs = new SalesReportService();
     	String reportName = "ventas";
         try {
       		response.setHeader("Content-Disposition","attachment; filename=" + reportName + ".pdf" + "\"");
       		List col = new ArrayList();
-      		Map<String, String> filters = rrs.getFilters((DynaActionForm)form);
+      		Map<String, String> filters = rrs.getFilters((DynaActionForm)form);      		
       		byte[] bytes = rrs.runReport((DynaBean)form, col,reportName, filters, "Mensual");
       		executeReport(bytes, response);    	    
       	    return null;
@@ -86,7 +87,8 @@ public class ReportesAction extends BaseAction {
     }        
     
     //Ventas Anuales
-    public ActionForward executeAnnualSales(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) {
+    @SuppressWarnings("unchecked")
+	public ActionForward executeAnnualSales(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) {
     	SalesReportService ars = new SalesReportService();
     	String reportName = "ventas";
         try {

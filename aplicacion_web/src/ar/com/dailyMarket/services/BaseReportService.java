@@ -41,6 +41,9 @@ public class BaseReportService {
     	filters.put("hourlyBandId", hourlyBand != null ? hourlyBand.getId().toString() : "-1");
     	filters.put("anioDesde", (String)form.get("yearFrom"));
     	filters.put("anioHasta", (String)form.get("yearTo"));
+    	//en el anual vienen en "" en el mensual con el respectivo valor
+    	filters.put("mesDesde", (String)((DynaActionForm)form).get("monthFrom"));
+  		filters.put("mesHasta", (String)((DynaActionForm)form).get("monthTo"));
     	return filters;
     }
 	
