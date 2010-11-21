@@ -19,12 +19,12 @@ import ar.com.dailyMarket.ui.BaseAction;
 
 public class MailService {
 	
-	public void sendMail(String[] emailTo, StringBuffer message) {
+	public void sendMail(String[] emailTo, StringBuffer message, String subject) {
 		if ((message == null) || (message.toString().equals(""))) {
 	    	return;
 	    }
 		try {
-			initSendMail(emailTo, message.toString());
+			initSendMail(emailTo, message.toString(), subject);
 		} catch (InvalidPropertiesFormatException e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
@@ -43,15 +43,10 @@ public class MailService {
 		return (Session) envCtx.lookup("mail/Session");
 	}
 	
-	public void initSendMail(String[] emailTo, String msg) throws InvalidPropertiesFormatException, IOException, MessagingException {
-
+	public void initSendMail(String[] emailTo, String msg, String subject) throws InvalidPropertiesFormatException, IOException, MessagingException {
 		Properties props = new Properties();
 		props.loadFromXML(BaseAction.class.getResourceAsStream("/mail/mail-properties.xml"));
-
-		String from = (String) props.get("from");
-		String subject = (String) props.get("subject");
-
-    	this.sendMail(props, emailTo, subject, msg, from);
+    	this.sendMail(props, emailTo, subject, msg, (String)props.get("from"));
 	}
 	
 	private void sendMail(Properties props, String recipients[], String subject, String message, String from) throws MessagingException {

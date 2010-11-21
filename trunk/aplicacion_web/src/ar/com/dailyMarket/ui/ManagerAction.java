@@ -27,8 +27,10 @@ public class ManagerAction extends BaseAction {
 
     public ActionForward initAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) {	
     	ProductService productService = new ProductService();
-    	request.setAttribute("products", productService.getProductWithoutStock());    	
-    	((DynaActionForm)form).set("productsIds", productService.getProductsIdsArray());
+    	
+    	List<Product> productos = productService.getProductWithoutStock();
+    	request.setAttribute("products", productos);    	
+    	((DynaActionForm)form).set("productsIds", productService.getProductsIdsArray(productos));
     	//FIXME IMPORTANTE ver porque cada ves que se refresca viene distinto el estado de los Productos
     	return mapping.findForward("showManagerHome");
     }
@@ -58,16 +60,15 @@ public class ManagerAction extends BaseAction {
     	String body = productService.createMessage(products).toString();
     	((DynaActionForm)form).set("mailBody", body);
     	
-    	//Preguntar juani por n destinatarios por configuracion
     	String to = productService.getMaildestinataries() + ";" + u.getEmail() + ";"; //ENVÍO AL DEPOSITO Y AL USUARIO Q HIZO EL PEDIDO
     	((DynaActionForm)form).set("mailTo", to);
     	
-    	//TODO ver from y subject
     	Properties props = new Properties();
-		props.loadFromXML(BaseAction.class.getResourceAsStream("/mail/mail-properties.xml"));
-    	    	
+		
+    	props.loadFromXML(BaseAction.class.getResourceAsStream("/mail/mail-properties.xml"));
+    	//el from lo agrego para que se vea readonly
     	((DynaActionForm)form).set("mailFrom", (String) props.get("from"));    	
-    	((DynaActionForm)form).set("mailSubject", (String) props.get("subjectPending"));
+    	((DynaActionForm)form).set("mailSubject", (String) props.get("subject"));
     	
     	return mapping.findForward("showConfirmMail");
     }
@@ -78,22 +79,23 @@ public class ManagerAction extends BaseAction {
     
     public ActionForward sendOrder(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws ClassNotFoundException, SQLException, InvalidPropertiesFormatException, IOException {
     	//Mandar mail con los datos del form, previamente validar datos
+    	//FIXME que solo se mande una vez, solucionar problema con f5
+    	
     	ProductService productService = new ProductService();
     	String body = (String)((DynaActionForm)form).get("mailBody");
     	String to = (String) ((DynaActionForm)form).get("mailTo");
-    	String from = (String) ((DynaActionForm)form).get("mailFrom");
     	String subject = (String) ((DynaActionForm)form).get("mailSubject");
     	
-    	if(!validarSendOrder(body, to, from, subject)) {
+    	if(!validarSendOrder(body, to, subject)) {
     		//TODO save errors
     		return redirectToConfirmSendOrder(mapping, form, request, response);
     	}
     	
-    	productService.sendOrder((String[])((DynaActionForm)form).get("productsIds"), to, from, subject, body); //desde aca enviar email al deposito con el pedido    	
+    	productService.sendOrder((String[])((DynaActionForm)form).get("productsIds"), to, subject, body); //desde aca enviar email al deposito con el pedido    	
     	return initAction(mapping, form, request, response);
     }
     
-    public boolean validarSendOrder(String body, String to, String from, String subject) {
+    public boolean validarSendOrder(String body, String to, String subject) {
     	//TODO errors
     	if(!StringUtils.isNotEmpty(body)) {
     		//body vacio
@@ -103,14 +105,6 @@ public class ManagerAction extends BaseAction {
     		//to vacio
     		return false;
     	}
-    	if(!StringUtils.isNotEmpty(from)) {
-    		//from vacio
-    		return false;
-    	}
-    	if (!isEmail(from)) {
-    		//mail de emisor invalido
-			return false;
-		}
     	
     	StringTokenizer st = new StringTokenizer(to, ";");
     	while (st.hasMoreTokens()) {
