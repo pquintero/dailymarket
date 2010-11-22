@@ -19,13 +19,15 @@ import javax.swing.JTextField;
 import javax.swing.border.LineBorder;
 import javax.swing.border.TitledBorder;
 
+import nl.jj.swingx.gui.modal.JModalDialog;
+
 import dailymarket.lectorDeHuellas.UtilLectorHuellasSingleton;
 import dailymarket.model.Context;
 import dailymarket.model.Empleado;
 
 
 @SuppressWarnings("serial")
-public class CerrarCajaFrame extends DailyMarketFrame implements HuellaDigitalInterface{
+public class CerrarCajaFrame extends JModalDialog implements HuellaDigitalInterface{
 
 	protected JFrame parentFrame;
 	protected JLabel imgHuella = new JLabel();
@@ -50,6 +52,15 @@ public class CerrarCajaFrame extends DailyMarketFrame implements HuellaDigitalIn
 		JPanel mainPanel = new JPanel();
 		mainPanel.setPreferredSize(new Dimension(500,400));
 		mainPanel.setLayout(new FlowLayout(FlowLayout.CENTER));
+		
+		JFrame.setDefaultLookAndFeelDecorated(true);
+     	this.setDefaultCloseOperation(0);
+	    
+		setResizable(false);
+		
+		java.net.URL img = InitDailyMarketFrame.class.getResource("dm.ico");
+		ImageIcon logoImg = new ImageIcon(img);
+		this.setIconImage(logoImg.getImage());
 		
 		JPanel cierrePanel = new JPanel();
 		cierrePanel.setPreferredSize(new Dimension(500,130));

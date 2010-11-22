@@ -13,7 +13,6 @@ import java.util.List;
 
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
-import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -24,12 +23,14 @@ import javax.swing.border.LineBorder;
 import javax.swing.border.TitledBorder;
 import javax.swing.table.DefaultTableModel;
 
+import nl.jj.swingx.gui.modal.JModalDialog;
+
 import dailymarket.lectorDeHuellas.LectorDeHuellasFirstLogin;
 import dailymarket.model.ProductModel;
 
 
 
-public class SupervisorFrame extends  DailyMarketFrame implements HuellaDigitalInterface {
+public class SupervisorFrame extends  JModalDialog implements HuellaDigitalInterface {
 	CajeroVentaFrame parentFrame ;
 	JPanel imageHuellaPanel = new JPanel();
 	protected JLabel imgHuella = new JLabel();
@@ -51,17 +52,19 @@ public class SupervisorFrame extends  DailyMarketFrame implements HuellaDigitalI
 	JCheckBox primerLogueoCheck = new JCheckBox("Primer Logueo");
 	JTextField supervisorTextField = new JTextField();
 	JLabel supervisorLabel = new JLabel("Usuario");
+	LectorDeHuellasFirstLogin utilHuellasFirstLogin  = null;
 
 	public SupervisorFrame(DefaultTableModel tableModelProducts, CajeroVentaFrame frame, List<ProductModel> products){
 		
+		setAlwaysOnTop(true);
 		parentFrame = frame;
 		solicitudesTabbedPane = new TabbedPane(tableModelProducts, this, mensajeLector, imgHuella, products, frame);
+		
         thisFrame = this;
         setLocationRelativeTo(parentFrame);
         add(solicitudesTabbedPane, BorderLayout.CENTER);
         setBounds(50,100,830,360);
         setLayout(new FlowLayout(FlowLayout.LEFT ));
-        setAlwaysOnTop(true);
         
         JPanel fingerPrintPanel = new JPanel();
         fingerPrintPanel.setLayout(new FlowLayout(FlowLayout.CENTER));
@@ -133,7 +136,7 @@ public class SupervisorFrame extends  DailyMarketFrame implements HuellaDigitalI
 				if( passwordTextField.getText().equals("") || supervisorTextField.getText().equals("")  ){
 					JOptionPane.showMessageDialog((Component) thisFrame, "Ingrese su usuario y password");
 				}else{
-					LectorDeHuellasFirstLogin utilHuellasFirstLogin = new LectorDeHuellasFirstLogin();
+					utilHuellasFirstLogin = new LectorDeHuellasFirstLogin();
 					utilHuellasFirstLogin.start(mensaje);
 					utilHuellasFirstLogin.init(thisFrame);
 					altaHuellaButton.setEnabled(false);
@@ -238,6 +241,14 @@ public class SupervisorFrame extends  DailyMarketFrame implements HuellaDigitalI
 	public void cancelarVenta() {
 		((CajeroVentaFrame)parentFrame).cancelarVenta();
 		dispose();
+		
+	}
+
+	public void stopLector() {
+		if(utilHuellasFirstLogin!= null){
+			utilHuellasFirstLogin.stop(mensajeLector);
+			utilHuellasFirstLogin = null;
+		}
 		
 	}
 }

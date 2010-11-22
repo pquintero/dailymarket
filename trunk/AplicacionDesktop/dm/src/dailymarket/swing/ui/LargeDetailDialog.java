@@ -61,7 +61,8 @@ public class LargeDetailDialog extends JModalDialog {
 		super(owner);
 		this.setTitle(title);
 		setBounds(100, 100, 311, 203);
-
+		setAlwaysOnTop(true); 
+		
 		this.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
 		this.setLocationRelativeTo(owner);
 

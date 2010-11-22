@@ -34,7 +34,7 @@ public class TabbedPane extends JPanel {
     protected Vector<Vector<String>> rowsProducts = new Vector<Vector<String>>();
     public JComponent panel1; 
 	public JComponent panel2 ;
-	public  JComponent panel3;
+	public JComponent panel3;
 	public static boolean EMPLEADO_VALIDADO = false; 
 	public static boolean SUPERVISOR_VALIDADO = false; 
 	
@@ -53,11 +53,12 @@ public class TabbedPane extends JPanel {
 	DefaultTableModel tableModelProducts;
     private List <ProductModel> productos = new ArrayList<ProductModel>();
     private CajeroVentaFrame cajaFrame;
+    UtilLectorHuellasSingleton utilHuellas = null;
 	
     public TabbedPane(DefaultTableModel productsList, HuellaDigitalInterface supervisorFrame, JLabel mensajeLector, JLabel imgHuella, List<ProductModel> products,  CajeroVentaFrame cajeroFrame) {
-         frameParent = supervisorFrame;
-         tableModelProducts = productsList;
-         cajaFrame = cajeroFrame;
+        frameParent = supervisorFrame;
+        tableModelProducts = productsList;
+        cajaFrame = cajeroFrame;
         JTabbedPane tabbedPane = new JTabbedPane();
         tabbedPane.setPreferredSize(new Dimension(600, 200));
         
@@ -80,6 +81,7 @@ public class TabbedPane extends JPanel {
         
         tabbedPane.setTabLayoutPolicy(JTabbedPane.SCROLL_TAB_LAYOUT);
         productos = products;
+       
    }
     
     protected JComponent makeCancelarVentaPanel(String text) {
@@ -101,13 +103,16 @@ public class TabbedPane extends JPanel {
 		 
 		 aceptarButton.addActionListener( new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-					((SupervisorFrame)frameParent).getFrameMensaje().setText("Ingrese su huella digital para realizar la operación");
-					((SupervisorFrame)frameParent).setActualAction(SupervisorFrame.CANCELAR_VENTA);
-					UtilLectorHuellasSingleton utilHuellas = new UtilLectorHuellasSingleton();
-					utilHuellas.start(mensajeLector);
-					utilHuellas.initLogin(frameParent);
-					aceptarButton.setEnabled(false);
-					((SupervisorFrame)frameParent).primerLogueoCheck.setEnabled(false);
+				habilitarBotonesOtorgarDescuentosPanel();
+				habilitarBotonesCancelVentaPanel();
+				((SupervisorFrame)frameParent).getFrameMensaje().setText("Ingrese su huella digital para realizar la operación");
+				((SupervisorFrame)frameParent).setActualAction(SupervisorFrame.CANCELAR_VENTA);
+				resetLector();
+				utilHuellas = new UtilLectorHuellasSingleton();
+				utilHuellas.start(mensajeLector);
+				utilHuellas.initLogin(frameParent);
+				aceptarButton.setEnabled(false);
+				((SupervisorFrame)frameParent).primerLogueoCheck.setEnabled(false);
 			}
 		});
         cancelarVentaPanel.add(aceptarButton);
@@ -116,7 +121,9 @@ public class TabbedPane extends JPanel {
         terminarButton.setMnemonic(KeyEvent.VK_V);
         terminarButton.addActionListener( new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-			((SupervisorFrame)frameParent).dispose();	
+				((SupervisorFrame)frameParent).stopLector();
+			 	resetLector();
+		    	((SupervisorFrame)frameParent).dispose();	
 			}
 		});
         
@@ -141,13 +148,19 @@ public class TabbedPane extends JPanel {
 		descuentosPanel.add(new JLabel(" D E S C U E N T O S     A     E M P L E A D O S"));
     	 firmaEmpleado.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				habilitarBotonesCancelProductsPanel();
+				habilitarBotonesCancelVentaPanel();
 				((SupervisorFrame)frameParent).getFrameMensaje().setText("Sr Empleado apoye su dedo en el lector de huellas digitales");
-				UtilLectorHuellasSingleton lector = new UtilLectorHuellasSingleton();  
+				resetLector();
+				utilHuellas = new UtilLectorHuellasSingleton();  
 				((SupervisorFrame)frameParent).setActualAction(SupervisorFrame.OTORGAR_DESCUENTOS_EMP);
-				lector.start(mensajeLector);
-				lector.initLogin(frameParent);
+				utilHuellas.start(mensajeLector);
+				utilHuellas.initLogin(frameParent);
 				firmaEmpleado.setEnabled(false);
 				((SupervisorFrame)frameParent).primerLogueoCheck.setEnabled(false);
+				
+				if(!SUPERVISOR_VALIDADO)
+					firmaSupervisor.setEnabled(true);
 			}
 		});
 		 
@@ -155,13 +168,20 @@ public class TabbedPane extends JPanel {
 		 
 		 firmaSupervisor.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				habilitarBotonesCancelProductsPanel();
+				habilitarBotonesCancelVentaPanel();
 				((SupervisorFrame)frameParent).getFrameMensaje().setText("Sr Supervisor apoye su dedo en el lector de huellas digitales");
-				UtilLectorHuellasSingleton lector = new UtilLectorHuellasSingleton();
+				resetLector();
+				utilHuellas = new UtilLectorHuellasSingleton();
         		((SupervisorFrame)frameParent).setActualAction(SupervisorFrame.OTORGAR_DESCUENTOS_SUP);
-        		lector.start(mensajeLector);
-				lector.initLogin(frameParent);
+        		utilHuellas.start(mensajeLector);
+        		utilHuellas.initLogin(frameParent);
 				firmaSupervisor.setEnabled(false);
 				((SupervisorFrame)frameParent).primerLogueoCheck.setEnabled(false);
+				
+				if(!EMPLEADO_VALIDADO)
+					firmaEmpleado.setEnabled(true);
+					
 			}
 		});
 		 
@@ -169,6 +189,7 @@ public class TabbedPane extends JPanel {
 	        terminarButton.setMnemonic(KeyEvent.VK_V);
 	        terminarButton.addActionListener( new ActionListener() {
 				public void actionPerformed(ActionEvent arg0) {
+				resetLector();
 				((SupervisorFrame)frameParent).dispose();	
 				}
 			});
@@ -194,7 +215,6 @@ public class TabbedPane extends JPanel {
         aceptarSeleccionadosButton.setPreferredSize(new Dimension(170,30));
     	
 		//LISTA
-		 //Lista de Relaciones
     	final JScrollPane scrollRelationsPane;
 
 		scrollRelationsPane = new JScrollPane();
@@ -244,7 +264,10 @@ public class TabbedPane extends JPanel {
         		((SupervisorFrame)frameParent).getFrameMensaje().setText("Ingrese su huella digital para realizar la operación");
         		((SupervisorFrame)frameParent).setActualAction(SupervisorFrame.CANCELAR_PRODUCTOS);
         		((SupervisorFrame)frameParent).primerLogueoCheck.setEnabled(false);
-				UtilLectorHuellasSingleton utilHuellas = new UtilLectorHuellasSingleton();
+        		habilitarBotonesCancelVentaPanel();
+        		habilitarBotonesOtorgarDescuentosPanel();
+        		resetLector();
+				utilHuellas = new UtilLectorHuellasSingleton();
 				
 				utilHuellas.start(mensajeLector);
 				utilHuellas.initLogin(frameParent);
@@ -255,6 +278,7 @@ public class TabbedPane extends JPanel {
 	      terminarButton.setMnemonic(KeyEvent.VK_V);
 	      terminarButton.addActionListener( new ActionListener() {
 				public void actionPerformed(ActionEvent arg0) {
+        		resetLector();
 				((SupervisorFrame)frameParent).dispose();	
 				}
 			});
@@ -321,5 +345,23 @@ public class TabbedPane extends JPanel {
 			((SupervisorFrame)frameParent).otorgarDescuento();	
 			((SupervisorFrame)frameParent).getFrameMensaje().setText("Descuento Otorgado");
 		}
+	}
+	public void resetLector(){
+		
+		if(utilHuellas != null){
+			utilHuellas.stop(mensajeLector);
+			utilHuellas = null;
+		}
+	}
+	public void habilitarBotonesCancelProductsPanel(){
+	
+		aceptarSeleccionadosButton.setEnabled(true);
+	}
+	public void habilitarBotonesCancelVentaPanel(){
+		aceptarButton.setEnabled(true);
+	}
+	public void habilitarBotonesOtorgarDescuentosPanel(){
+		firmaEmpleado.setEnabled(true);
+		firmaSupervisor.setEnabled(true);
 	}
 }

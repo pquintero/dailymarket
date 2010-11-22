@@ -556,8 +556,8 @@ public class Telefront {
             if (internalError != null) {
                 String msg = internalError.selectSingleNode("message").getText();
                 String id  = internalError.selectSingleNode("id").getText();
-                Logger.getLogger911().error(
-                                String.format("El servidor reportó un error interno. Código: %s, msg: %s", id, msg));
+//                Logger.getLogger911().error(
+//                                String.format("El servidor reportó un error interno. Código: %s, msg: %s", id, msg));
                 throw new BusinessException(String.format("Se produjo un evento inesperado. Si el problema persiste " +
                 		"informe este id al administrador: %s", id));
             }

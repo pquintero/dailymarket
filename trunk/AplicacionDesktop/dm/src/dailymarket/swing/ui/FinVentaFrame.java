@@ -27,7 +27,7 @@ import dailymarket.model.Context;
 import dailymarket.model.ProductModel;
 
 
-public class FinVentaFrame extends JFrame {
+public class FinVentaFrame extends JDialog {
 	public JFrame parentFrame;
 	public Double montoVenta;
 	public JTextField montoPagoVenta ;
@@ -39,7 +39,7 @@ public class FinVentaFrame extends JFrame {
 	
 	public FinVentaFrame(JFrame frame, Double monto) {
 		
-//		super(frame, true);
+		super(frame, true);
 		montoVenta = monto;
 		parentFrame = frame;
 		setTitle("Fin de Sesion de Venta");

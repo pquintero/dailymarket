@@ -169,7 +169,7 @@ public class UtilLectorHuellasSingleton {
 			    		doc = TelefrontGUI.getInstance().executeMethod(CONTROLLER_CLASS, "cancelarVenta", params);
 			    		
 			            if( doc != null){
-			        		JOptionPane.showMessageDialog(null, "Operación realizada con éxito");
+//			        		JOptionPane.showMessageDialog(null, "Operación realizada con éxito");
 			            	((SupervisorFrame) frame ).cancelarVenta();
 
 			            }else{
