@@ -39,11 +39,12 @@ public class FinVentaFrame extends JDialog {
 	
 	public FinVentaFrame(JFrame frame, Double monto) {
 		
-		super(frame, true);
+		super(frame, false);
 		montoVenta = monto;
 		parentFrame = frame;
 		setTitle("Fin de Sesion de Venta");
 		setBounds(200, 200, 350, 250);
+		setAlwaysOnTop(true);
 	
 		getContentPane().setLayout(new FlowLayout(FlowLayout.CENTER));
 		

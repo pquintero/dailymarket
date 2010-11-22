@@ -691,12 +691,12 @@ public class CajeroVentaFrame extends DailyMarketFrame {
 	}
 
 	public void cancelarVenta() {
+		String[] disabledButtons = new String[2];
+		disabledButtons[0] = DailyMarketFrame.APERTURA_CAJA;
+		disabledButtons[1] = DailyMarketFrame.CERRAR_APLICACION;
+		((CajaFrame) parentFrame).deshabilitarBotones(disabledButtons);
+		parentFrame.setVisible(true);
 		dispose();
-		try {
-			new CajeroVentaFrame(parentFrame);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
 
 	}
 

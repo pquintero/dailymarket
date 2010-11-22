@@ -41,7 +41,6 @@ import com.digitalpersona.onetouch.processing.DPFPImageQualityException;
 import dailymarket.model.Context;
 import dailymarket.model.Empleado;
 import dailymarket.model.GroupEmpleado;
-import dailymarket.model.ProductModel.MyBase64;
 import dailymarket.swing.ui.AperturaCajaFrame;
 import dailymarket.swing.ui.HuellaDigitalInterface;
 
