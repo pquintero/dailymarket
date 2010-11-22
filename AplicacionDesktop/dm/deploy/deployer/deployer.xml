@@ -33,6 +33,10 @@
     <replace dir="${jar.temp}" summary="true" includes="**/*.txt,**/*.properties,**/*.xml,**/*.jnlp">
       <replacefilter token="%server.core.base.dir%" value="${server.dir}/${emergencies.dir}"/>
       <replacefilter token="%server.download.dir%" value="${download.dir}/${instance}"/>
+      <replacefilter token="%instance%" value="${instance}"/>
+      <replacefilter token="%caja%" value="${caja}"/>
+      <replacefilter token="%sucursal%" value="${sucursal}"/>
+      <replacefilter token="%monto.apertura%" value="${monto.apertura}"/>
     </replace>
 
     <replace dir="${deploy.temp}" summary="true" includes="**/*.txt,**/*.properties,**/*.xml,**/*.jnlp">
@@ -41,7 +45,7 @@
       <replacefilter token="%instance%" value="${instance}"/>
       <replacefilter token="%caja%" value="${caja}"/>
       <replacefilter token="%sucursal%" value="${sucursal}"/>
-    	<replacefilter token="%monto.apertura%" value="${monto.apertura}"/>
+      <replacefilter token="%monto.apertura%" value="${monto.apertura}"/>
 
     </replace>
 
@@ -49,7 +53,7 @@
       <zipfileset dir="${jar.temp}"/>
     </jar>
 
-    <signjar jar="${deploy.temp}\DM.jar" alias="Fahrenheit" keystore="Proyecto911.keystore" storepass="Proyecto911"/>
+    <signjar jar="${deploy.temp}\DM.jar" alias="daily" keystore="dm.keystore" storepass="proyecto"/>
 
     <delete dir="${jar.temp}" failonerror="yes"/>
 
@@ -86,7 +90,4 @@
 
   </target>
 
-    <target name="manualSign">
-        <signjar jar="c:\Dev\Java\Projects\EMERGENCIES V 1.2\client_ciudad\DM.jar" alias="Fahrenheit" keystore="Proyecto911.keystore" storepass="Proyecto911"/>
-    </target>
 </project>
