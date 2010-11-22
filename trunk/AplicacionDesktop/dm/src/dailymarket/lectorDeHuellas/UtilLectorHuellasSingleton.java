@@ -1,6 +1,5 @@
 package dailymarket.lectorDeHuellas;
 
-import java.awt.Component;
 import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.Image;
@@ -11,7 +10,6 @@ import java.util.prefs.Preferences;
 
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 
@@ -41,7 +39,6 @@ import com.digitalpersona.onetouch.processing.DPFPImageQualityException;
 import dailymarket.model.Context;
 import dailymarket.model.Empleado;
 import dailymarket.model.GroupEmpleado;
-import dailymarket.model.ProductModel.MyBase64;
 import dailymarket.swing.ui.AperturaCajaFrame;
 import dailymarket.swing.ui.CerrarCajaFrame;
 import dailymarket.swing.ui.Configuration;
@@ -169,7 +166,8 @@ public class UtilLectorHuellasSingleton {
 			    		doc = TelefrontGUI.getInstance().executeMethod(CONTROLLER_CLASS, "cancelarVenta", params);
 			    		
 			            if( doc != null){
-//			        		JOptionPane.showMessageDialog(null, "Operación realizada con éxito");
+				            mensaje.setText("Operación realizada con éxito")	;
+
 			            	((SupervisorFrame) frame ).cancelarVenta();
 
 			            }else{
@@ -332,8 +330,4 @@ public class UtilLectorHuellasSingleton {
 
 				Context.getInstance().setCurrentUser(user);
 			}
-
-
-		
-	
 	}

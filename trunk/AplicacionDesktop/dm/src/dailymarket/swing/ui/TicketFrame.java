@@ -10,89 +10,106 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import javax.swing.JButton;
+import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
-import dailymarket.model.Context;
+import org.dom4j.Document;
 
-public class TicketFrame extends JFrame {
+import telefront.TelefrontGUI;
+
+import dailymarket.model.Context;
+import dailymarket.model.Sucursal;
+
+public class TicketFrame extends JDialog {
 	
 	public JFrame parentFrame;
 	
 	String[] s;
+	private static final String CONTROLLER_CLASS = "ar.com.tsoluciones.emergencies.server.gui.core.telefront.action.CajeroVentaManagerService";
+
 	
 	public TicketFrame(HuellaDigitalInterface frame){
 		
-//		super((JFrame)frame, true);
+		super((JFrame)frame, true);
 		setAlwaysOnTop(true);
 		parentFrame = (JFrame)frame;
 		setTitle("Ticket de Cierre");
 		setLocationRelativeTo((JFrame)frame);
 		
-		s = new String[10];
+		s = new String[11];
 		s[0] = "T i c k e t  d e  C i e r r e";
-		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm");
 		
-		JLabel fechaLabel = new JLabel("Fecha:         " + sdf.format(new Date()));
-		s[1] = fechaLabel.getText();
+		s[1] = "      ";
 		
-		JLabel fechaAperturaLabel = new JLabel("Hora de Apertura: " );
-		JTextField fechaAperturaTextField = new JTextField();
-		fechaAperturaTextField.setPreferredSize(new Dimension(100,20));
-		fechaAperturaTextField.setEditable(false);
-		fechaAperturaTextField.setText("08:34");
+		Object params[] = new String[] { Configuration.getInstance().getSucursal() };
+		Document doc = TelefrontGUI.getInstance().executeMethod(CONTROLLER_CLASS, "obtenerSucursal", params);
+
+		Sucursal suc = new Sucursal();
+		suc.toSucursalModel(doc);
 		
-		s[2] = fechaAperturaLabel.getText() + fechaAperturaTextField.getText();
+		s[2] = suc.getNombre().toUpperCase();
+		s[3] = suc.getDireccion().toUpperCase();
+		
+		JLabel fechaLabel = new JLabel("Fecha:                          " + sdf.format(new Date()));
+		s[4] = fechaLabel.getText();
+		
+		JLabel cajaLabel = new JLabel("Caja: " );
+		JTextField cajaTextField = new JTextField();
+		cajaTextField.setPreferredSize(new Dimension(150,20));
+		cajaTextField.setEditable(false);
+		cajaTextField.setText(Configuration.getInstance().getCaja().toString());
+		
+		s[5] = cajaLabel.getText() + cajaTextField.getText();
 		
 		
-		JLabel fechaCierreLabel = new JLabel("Hora de Cierre: " );
-		JTextField fechaCierreTextField = new JTextField();
-		fechaCierreTextField.setPreferredSize(new Dimension(100,20));
-		fechaCierreTextField.setEditable(false);
-		fechaCierreTextField.setText("12:34");
-		
-		s[3] = fechaCierreLabel.getText() + fechaCierreTextField.getText();
+		JLabel sucursalLabel = new JLabel("Sucursal: " );
+		JTextField sucursalTextField = new JTextField();
+		sucursalTextField.setPreferredSize(new Dimension(100,20));
+		sucursalTextField.setEditable(false);
+		sucursalTextField.setText(suc.getNombre());
 		
 		
-		JLabel cajeroLabel = new JLabel("Cajero: ");
+		JLabel cajeroLabel = new JLabel("Cajero:       ");
 		JTextField cajeroTextField = new JTextField();
 		cajeroTextField.setPreferredSize(new Dimension(120,20));
 		cajeroTextField.setEditable(false);
 		cajeroTextField.setText(Context.getInstance().getCurrentUser().getName() + " " + Context.getInstance().getCurrentUser().getLastName());
 		
-		s[4] = cajeroLabel.getText()+ cajeroTextField.getText();
+		s[6] = cajeroLabel.getText()+ cajeroTextField.getText();
 		
 		
 		JLabel montoFacturadoLabel = new JLabel("Monto Facturado: ");
 		JTextField montoFacturadoTextField = new JTextField();
 		montoFacturadoTextField.setPreferredSize(new Dimension(100,20));
 		montoFacturadoTextField.setEditable(false);
-		montoFacturadoTextField.setText("1500");
+		Double montoFac = Context.getInstance().getMontoCierrAcumulado() - Double.parseDouble(Configuration.getInstance().getMontoApertura());
+		montoFacturadoTextField.setText(montoFac.toString());
 		
-		s[5] = montoFacturadoLabel.getText() + montoFacturadoTextField.getText();		
+		s[7] = montoFacturadoLabel.getText() + montoFacturadoTextField.getText();		
 		
 		JLabel montoInicioLabel = new JLabel("Monto Inicio: " );
 		JTextField montoInicioTextField = new JTextField();
 		montoInicioTextField.setPreferredSize(new Dimension(100,20));
 		montoInicioTextField.setEditable(false);
-		montoInicioTextField.setText("500");
+		montoInicioTextField.setText( Configuration.getInstance().getMontoApertura());
 		
-		s[6] = montoInicioLabel.getText() + montoFacturadoTextField.getText();
+		s[8] = montoInicioLabel.getText() + montoFacturadoTextField.getText();
 		
 		
 		JLabel montoAEntregar = new JLabel("Monto a Entregar: " );
 		JTextField montoAEntregarTextField = new JTextField();
 		montoAEntregarTextField.setPreferredSize(new Dimension(100,20));
 		montoAEntregarTextField.setEditable(false);
-		montoAEntregarTextField.setText("2000");		
+		montoAEntregarTextField.setText( Context.getInstance().getMontoCierrAcumulado().toString());		
 
-		s[7] = montoAEntregar.getText() + montoAEntregarTextField.getText();
+		s[9] = montoAEntregar.getText() + montoAEntregarTextField.getText();
 
 		
-		s[8] = "----------------------------";
-		s[9] = fechaLabel.getText();
+		s[10] = "----------------------------";
 		
 		JPanel buttonPanel = new JPanel();
 		buttonPanel.setPreferredSize(new Dimension(270, 40));
@@ -109,10 +126,10 @@ public class TicketFrame extends JFrame {
 		getContentPane().setLayout(new FlowLayout(FlowLayout.LEFT, 10, 10));
 		
 		add(fechaLabel);
-		add(fechaAperturaLabel);
-		add(fechaAperturaTextField);
-		add(fechaCierreLabel);
-		add(fechaCierreTextField);
+		add(cajaLabel);
+		add(cajaTextField);
+		add(sucursalLabel);
+		add(sucursalTextField);
 		add(cajeroLabel);
 		add(cajeroTextField);
 		add(montoFacturadoLabel);
