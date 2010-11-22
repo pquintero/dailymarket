@@ -1,5 +1,7 @@
 package ar.com.dailyMarket.services;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -11,6 +13,8 @@ import java.util.Locale;
 import java.util.Random;
 
 import org.apache.struts.action.DynaActionForm;
+import org.hibernate.Criteria;
+import org.hibernate.criterion.Restrictions;
 
 import ar.com.dailyMarket.charts.LineChart;
 import ar.com.dailyMarket.charts.MSLine;
@@ -18,6 +22,8 @@ import ar.com.dailyMarket.charts.elements.CategoryElement;
 import ar.com.dailyMarket.charts.elements.DatasetElement;
 import ar.com.dailyMarket.charts.elements.Lines;
 import ar.com.dailyMarket.charts.elements.SetElement;
+import ar.com.dailyMarket.model.HourlyBand;
+import ar.com.dailyMarket.model.SesionVenta;
 import ar.com.dailyMarket.model.User;
 
 public class IndicadoresService {
@@ -37,15 +43,18 @@ public class IndicadoresService {
 		List values = new ArrayList();
 		while(fechaPedida.get(GregorianCalendar.MONTH) == cal.get(GregorianCalendar.MONTH)){
 	      	SetElement el = new SetElement();
-	       	el.setLabel(sdf.format(cal.getTime()));//DIAS
-	      	//getValueByEmployeeByParameters (cajero y banda horaria y fecha pedida)
-	       	el.setValue(new Double(new Random().nextDouble() * 50).toString());
-	      	values.add(el);
+	       	
+	      	el.setLabel(sdf.format(cal.getTime()));//DIA
+	       	el.setValue(getVentasPorCajeroPorFechaPorDia(cajero, cal, (Long) form.get("bandaHorariaId")));
+	      	
+	       	values.add(el);
 	      	cal.add(GregorianCalendar.DATE, 1);
 	    }
 		
 		LineChart line = new LineChart(values);
-		line.setCaption("Ventas De " + cajero.getCompleteName() + ". En el mes de" + fechaPedida.getDisplayName(GregorianCalendar.MONTH,GregorianCalendar.LONG, new Locale("es")).toUpperCase());
+		line.setCaption("Ventas De " + cajero.getCompleteName() + 
+			". En el mes de " + fechaPedida.getDisplayName(GregorianCalendar.MONTH,GregorianCalendar.LONG, new Locale("es")).toUpperCase() + 
+			" de " + fechaPedida.get(GregorianCalendar.YEAR));
 		line.setXAxisName("Días");
 		line.setYAxisName("Ventas");
 		line.setNumberPrefix("");
@@ -53,6 +62,43 @@ public class IndicadoresService {
 		line.setShowValues(0);
 		
 		return line;
+	}
+	
+	/** TODO ver banda horaria: a. activo, b. desde 00 hasta 00 **/
+	private String getVentasPorCajeroPorFechaPorDia(User cajero, GregorianCalendar dia, Long bandaId) {
+		HourlyBandService bandServ = new HourlyBandService();
+		
+		Criteria ventas = HibernateHelper.currentSession().createCriteria(SesionVenta.class);
+		ventas.createCriteria("cajero").add(Restrictions.eq("id", cajero.getId()));
+		
+		GregorianCalendar from;
+		GregorianCalendar to;
+		
+		if (bandaId > 0) {
+			HourlyBand banda = bandServ.getHourlyBandByPK(bandaId);
+			from = new GregorianCalendar(dia.get(GregorianCalendar.YEAR), dia.get(GregorianCalendar.MONTH),	
+										dia.get(GregorianCalendar.DAY_OF_MONTH), Integer.valueOf(banda.getInitBand()), 0, 0);
+			to = new GregorianCalendar(dia.get(GregorianCalendar.YEAR), dia.get(GregorianCalendar.MONTH), 
+										dia.get(GregorianCalendar.DAY_OF_MONTH), Integer.valueOf(banda.getEndBand()), 0, 0);
+		} else {
+			from = new GregorianCalendar(dia.get(GregorianCalendar.YEAR), dia.get(GregorianCalendar.MONTH), 
+										dia.get(GregorianCalendar.DAY_OF_MONTH), 0,	0, 0);
+			to = new GregorianCalendar(dia.get(GregorianCalendar.YEAR), dia.get(GregorianCalendar.MONTH),
+										dia.get(GregorianCalendar.DAY_OF_MONTH), 23, 59, 59);
+		}
+		
+		ventas.add(Restrictions.between("fechaInicio", from.getTime(), to.getTime()));
+		List<SesionVenta> sesiones = ventas.list();
+		
+		if (sesiones.isEmpty())
+			return "0.00";
+		
+		Double total = 0D;
+		for (SesionVenta sesionVenta : sesiones) {
+			total += sesionVenta.getTotalVenta();
+		}
+		
+		return new BigDecimal(total).setScale(2, RoundingMode.HALF_EVEN).toString();
 	}
 	
 /******		VentasPorCajeroAnual		******/
@@ -70,10 +116,11 @@ public class IndicadoresService {
 		List values = new ArrayList();
 		while(fechaPedida.get(GregorianCalendar.YEAR) == cal.get(GregorianCalendar.YEAR)){
 	      	SetElement el = new SetElement();
-	       	el.setLabel(cal.getDisplayName(GregorianCalendar.MONTH,GregorianCalendar.LONG, new Locale("es")));
-	      	//getValueByEmployeeByParameters(con el cajero y si tiene banda Horaria y fecha pedida)
-	       	el.setValue(new Double(new Random().nextDouble() * 50).toString());
-	      	values.add(el);
+	       	
+	      	el.setLabel(cal.getDisplayName(GregorianCalendar.MONTH,GregorianCalendar.LONG, new Locale("es")));
+	       	el.setValue(getVentasPorCajeroPorFechaPorMes(cajero, cal, (Long) form.get("bandaHorariaId")));
+	      	
+	       	values.add(el);
 	      	cal.add(GregorianCalendar.MONTH, 1);
 	    }
 		
@@ -86,6 +133,42 @@ public class IndicadoresService {
 		line.setShowValues(0);
 		
 		return line;
+	}
+	
+	private String getVentasPorCajeroPorFechaPorMes(User cajero, GregorianCalendar mes, Long bandaId) {
+		HourlyBandService bandServ = new HourlyBandService();
+		
+		Criteria ventas = HibernateHelper.currentSession().createCriteria(SesionVenta.class);
+		ventas.createCriteria("cajero").add(Restrictions.eq("id", cajero.getId()));
+		
+		GregorianCalendar from;
+		GregorianCalendar to;
+		
+		if (bandaId > 0) {
+			HourlyBand banda = bandServ.getHourlyBandByPK(bandaId);
+			from = new GregorianCalendar(mes.get(GregorianCalendar.YEAR), mes.get(GregorianCalendar.MONTH),	
+										1, Integer.valueOf(banda.getInitBand()), 0, 0);
+			to = new GregorianCalendar(mes.get(GregorianCalendar.YEAR), mes.get(GregorianCalendar.MONTH), 
+										mes.getActualMaximum(GregorianCalendar.DAY_OF_MONTH), Integer.valueOf(banda.getEndBand()), 0, 0);
+		} else {
+			from = new GregorianCalendar(mes.get(GregorianCalendar.YEAR), mes.get(GregorianCalendar.MONTH), 
+										1, 0,	0, 0);
+			to = new GregorianCalendar(mes.get(GregorianCalendar.YEAR), mes.get(GregorianCalendar.MONTH),
+										mes.getActualMaximum(GregorianCalendar.DAY_OF_MONTH), 23, 59, 59);
+		}
+		
+		ventas.add(Restrictions.between("fechaInicio", from.getTime(), to.getTime()));
+		List<SesionVenta> sesiones = ventas.list();
+		
+		if (sesiones.isEmpty())
+			return "0.00";
+		
+		Double total = 0D;
+		for (SesionVenta sesionVenta : sesiones) {
+			total += sesionVenta.getTotalVenta();
+		}
+		
+		return new BigDecimal(total).setScale(2, RoundingMode.HALF_EVEN).toString();
 	}
 	
 /******		ComparativoDeVentasPorCajeroMensual		******/
@@ -216,6 +299,5 @@ public class IndicadoresService {
 	    mSLine.setNumberSuffix("");
 	    return mSLine;
 	}
-	
 	
 }

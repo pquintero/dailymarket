@@ -29,7 +29,7 @@ public class ProductService extends MailService{
 		product.setRepositionStock((Integer)form.get("repositionStock"));
 		product.setActive(new Boolean(true));
 		
-		//FIXME que pasa si actualizas un producto despues de haber mandado el mail y el estado haya pasado a enviado????
+		/** FIXME que pasa si actualizas un producto despues de haber mandado el mail y el estado haya pasado a enviado????**/
 		if (product.getActualStock() >= product.getRepositionStock()) {
 			product.setState(Product.PRODUCT_STATE_STOCK);
 		} else {
@@ -44,7 +44,7 @@ public class ProductService extends MailService{
 		//poner el codigo ingresado x el lector o usuario
 		product.setCode(product.getId().toString());
 		save(product);
-	}	
+	}
 	
 	public void update (ActionForm form, Product product) {
 		copyProperties(product, (DynaActionForm)form);

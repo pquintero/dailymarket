@@ -16,6 +16,7 @@ import ar.com.dailyMarket.services.HourlyBandService;
 import ar.com.dailyMarket.services.IndicadoresService;
 import ar.com.dailyMarket.services.UserService;
 
+/** FIXME no harcodear fechas? se puede tomar el año de la primer venta? y asi hasta el actual?**/
 public class IndicadoresAction extends BaseAction {
 
     public ActionForward initAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) {	
