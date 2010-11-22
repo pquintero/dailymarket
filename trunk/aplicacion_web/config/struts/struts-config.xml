@@ -93,6 +93,17 @@
 			<form-property name="firstTime" type="java.lang.Boolean"/>
 			<form-property name="dni" type="java.lang.String"/>
 			
+			<form-property name="attachId" type="java.lang.Long"/>
+			<form-property name="path" type="java.lang.String"/>						
+			<form-property name="parentId" type="java.lang.Long"/>
+			<form-property name="parentStr" type="java.lang.String"/>
+			<form-property name="parentType" type="java.lang.String"/>					
+			<form-property name="uploadPath" type="java.lang.String"/>			
+			<form-property name="contentType" type="java.lang.String"/>
+			<form-property name="objectType" type="java.lang.String"/>
+			<form-property name="size" type="java.lang.Integer"/>
+			<form-property name="file" type="org.apache.struts.upload.FormFile"/>
+			<form-property name="description" type="java.lang.String"/>
 			<form-property name="dsTable" type="java.lang.String" />
 			<form-property name="collectionName" type="java.lang.String" initial="" />
 		</form-bean>						
@@ -137,7 +148,7 @@
 			<form-property name="collectionName" type="java.lang.String" initial="" />
 		</form-bean>
 		
-		<form-bean name="ProductForm" type="org.apache.struts.action.DynaActionForm">
+		<form-bean name="ProductForm" type="org.apache.struts.validator.DynaValidatorForm">
             <form-property name="VirtualDispatchName" type="java.lang.String"/>
             <form-property name="saveToken" type="java.lang.String"/>
 			<form-property name="id" type="java.lang.Long" />
@@ -151,6 +162,17 @@
 			<form-property name="groupProductStr" type="java.lang.String"/>		
 			<form-property name="code" type="java.lang.String"/>
 			<form-property name="repositionStock" type="java.lang.Integer"/>			
+			
+			<form-property name="attachId" type="java.lang.Long"/>
+			<form-property name="path" type="java.lang.String"/>						
+			<form-property name="parentId" type="java.lang.Long"/>
+			<form-property name="parentStr" type="java.lang.String"/>
+			<form-property name="parentType" type="java.lang.String"/>					
+			<form-property name="uploadPath" type="java.lang.String"/>			
+			<form-property name="contentType" type="java.lang.String"/>
+			<form-property name="objectType" type="java.lang.String"/>
+			<form-property name="size" type="java.lang.Integer"/>
+			<form-property name="file" type="org.apache.struts.upload.FormFile"/>
 			
 			<form-property name="dsTable" type="java.lang.String" />
 			<form-property name="collectionName" type="java.lang.String" initial="" />
@@ -303,7 +325,24 @@
             <form-property name="saveToken" type="java.lang.String"/>			
 			<form-property name="dsTable" type="java.lang.String" />
 			<form-property name="collectionName" type="java.lang.String" initial="" />
-		</form-bean>				
+		</form-bean>	
+		
+		<form-bean name="ImageForm" type="org.apache.struts.action.DynaActionForm">
+            <form-property name="VirtualDispatchName" type="java.lang.String"/>
+            <form-property name="saveToken" type="java.lang.String"/>
+			<form-property name="id" type="java.lang.Long" initial="-1"/>
+			<form-property name="createdBy" type="java.lang.String"/>
+			<form-property name="dateCreatedDisplay" type="java.lang.String"/>
+			
+			<form-property name="imageId" type="java.lang.Long" initial="-1"/>
+			<form-property name="isImage" type="java.lang.Long" initial="1"/>
+			
+
+			<form-property name="listPage" type="java.util.List" />
+			<form-property name="dsTable" type="java.lang.String" />
+			<form-property name="selected" type="java.lang.String[]"/>
+			<form-property name="collectionName" type="java.lang.String" initial="" />
+		</form-bean>			
     </form-beans>
 
 
@@ -462,7 +501,8 @@
 			
 			<forward name="redirectFilter" path="/filterUser.do"/>
 			<forward name="showNew" path="tiles.user.new"/>
-			<forward name="showDetail" path="tiles.user.detail"/>			
+			<forward name="showDetail" path="tiles.user.detail"/>
+			<forward name="showImage" path="tiles.user.showImage"/>			
 		</action>
 		
 		<action 
@@ -560,6 +600,7 @@
 			<forward name="showDetail" path="tiles.product.detail"/>
 			<forward name="redirectFilter" path="/filterProduct.do"/>
 			<forward name="showOrdersPending" path="tiles.manager.ordersPending"/>									
+			<forward name="showImage" path="tiles.product.showImage"/>
 		</action>
 		<action 
             path="/filterHourlyBand" 
@@ -615,6 +656,15 @@
 			
 			<forward name="showConfiguration" path="tiles.showConfiguration"/>								
 		</action>
+		
+		<action path="/image" 
+                type="ar.com.dailyMarket.ui.ImageAction" 
+                parameter="VirtualDispatchName" 
+                validate="false"
+                name="ImageForm">
+                
+            <set-property property="initMethod" value="initAction"/>        	
+        </action>
 		
 		</action-mappings>
 <!-- ===================================== Controller Configuration -->

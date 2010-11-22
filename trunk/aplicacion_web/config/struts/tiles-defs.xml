@@ -111,6 +111,13 @@
         <put name="result"      value=".search.result" />
     </definition>
     
+    <definition name=".newFileLayout" path="/layouts/newFileLayout.jsp">
+        <put name="title"       value="Edit"/>
+        <put name="action"      value=".detail.action"/>
+        <put name="body"        value=".detail.body"/>
+        <put name="buttons"     value=".detail.buttons"/>
+    </definition>
+    
 	<!-- ============================================================== -->
     <!-- Generics                                                       -->
     <!-- ============================================================== -->
@@ -278,6 +285,12 @@
             <item value="common.button.back" link="initAction" classtype="org.apache.struts.tiles.beans.SimpleMenuItem"/>
         </putList>
     </definition>
+    <definition name="tiles.common.buttons.image" extends=".buttonsLayout">
+        <putList name="buttonList">
+            <item value="common.button.back" link="findByPK" classtype="org.apache.struts.tiles.beans.SimpleMenuItem"/>
+            <item value="common.button.confirm" link="confirmImage" classtype="org.apache.struts.tiles.beans.SimpleMenuItem"/>            
+        </putList>
+    </definition>    
     <!-- ============================================================== -->
     <!-- User                                                           -->
     <!-- ============================================================== -->
@@ -315,7 +328,17 @@
         <put name="body"    value="/pages/user/detail.jsp" />
         <put name="buttons" value="tiles.common.buttons.detail" />
     </definition> 
-
+	
+	<definition name="tiles.user.showImage" extends=".mainLayout">
+        <put name="title"   value="user.title.showImage" />
+        <put name="body"    value="tiles.user.showImage.body" />
+    </definition>
+    <definition name="tiles.user.showImage.body" extends=".newFileLayout">
+        <put name="title"   value="user.title" />
+        <put name="action"  value="user" />        
+        <put name="body"    value="/common/addImage.jsp" />
+        <put name="buttons" value="tiles.common.buttons.image" />
+    </definition>        
 	<!-- ============================================================== -->
     <!-- GroupUser                                                      -->
     <!-- ============================================================== -->
@@ -390,7 +413,18 @@
 		<put name="tabs"    value=""/>        
         <put name="body"    value="/pages/product/detail.jsp" />
         <put name="buttons" value="tiles.common.buttons.detail" />
-    </definition>      
+    </definition>
+        
+    <definition name="tiles.product.showImage" extends=".mainLayout">
+        <put name="title"   value="product.title.showImage" />
+        <put name="body"    value="tiles.product.showImage.body" />
+    </definition>
+    <definition name="tiles.product.showImage.body" extends=".newFileLayout">
+        <put name="title"   value="product.title" />
+        <put name="action"  value="product" />        
+        <put name="body"    value="/common/addImage.jsp" />
+        <put name="buttons" value="tiles.common.buttons.image" />
+    </definition>     
     <!-- ============================================================== -->
     <!-- GroupProduct                                                   -->
     <!-- ============================================================== -->

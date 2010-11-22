@@ -20,6 +20,7 @@
 		<mapping resource="/hibernate/SesionVenta.hbm.xml"/>
 		<mapping resource="/hibernate/ProductoVenta.hbm.xml"/>
 		<mapping resource="/hibernate/HourlyBand.hbm.xml"/>
-		<mapping resource="/hibernate/Configuration.hbm.xml"/>			
+		<mapping resource="/hibernate/Configuration.hbm.xml"/>
+		<mapping resource="/hibernate/Attach.hbm.xml"/>					
     </session-factory>
 </hibernate-configuration>

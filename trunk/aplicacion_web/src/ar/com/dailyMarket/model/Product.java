@@ -20,6 +20,7 @@ public class Product {
 	private Integer repositionStock;
 	private Date dateWithoutStock; //fecha última en q se quedo sin stock
 	private Boolean active;
+	private Image image;
 	
 	public Long getId() {
 		return id;
@@ -92,5 +93,11 @@ public class Product {
 	}
 	public void setActive(Boolean active) {
 		this.active = active;
+	}
+	public Image getImage() {
+		return image;
+	}
+	public void setImage(Image image) {
+		this.image = image;
 	}		
 }

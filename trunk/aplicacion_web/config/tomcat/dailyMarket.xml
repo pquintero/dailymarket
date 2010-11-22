@@ -6,6 +6,7 @@
 	<Environment name="usrDataBase" value="root" type="java.lang.String" override="true"/>
 	<Environment name="passDataBase" value="root" type="java.lang.String" override="true"/>
 	<Environment name="reportsFolder" value="C:\workspace\aplicacion_web\webapp" type="java.lang.String" override="true"/> 			
+	<Environment name="uploadPath" value="C:\workspace\dailyMarket\upload" type="java.lang.String" override="true"/>
 	
     <Resource   name="jdbc/dailyMarket" 
                 scope="Shareable" 

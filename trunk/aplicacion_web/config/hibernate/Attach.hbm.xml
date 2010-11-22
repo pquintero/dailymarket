@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 2.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+    <class lazy="false" name="ar.com.dailyMarket.model.Attach" table="attach" discriminator-value="ATTACHMENT">
+        <id column="attachid" name="id" type="java.lang.Long">
+            <generator class="identity" />
+        </id>       
+
+        <discriminator column="objecttype" type="java.lang.String" force="true"/>
+		
+        <property column="name" name="name" not-null="false" type="java.lang.String"/>
+        <property column="description" name="description" not-null="false" type="java.lang.String"/>
+
+        <property column="realname" name="realName" not-null="false" type="java.lang.String"/>
+     	<property column="path" name="path" not-null="false" type="java.lang.String"/>
+		<property column="contenttype" name="contentType" not-null="false" type="java.lang.String"/>
+		<property column="size" name="size" not-null="false" type="java.lang.Long"/>
+     	     	     	
+        <subclass lazy="false" name="ar.com.dailyMarket.model.Image" discriminator-value="IMAGE">
+	     	<one-to-one name="thumbnail" property-ref="image" class="ar.com.dailyMarket.model.Thumbnail" />	     	
+        </subclass>
+        
+        <subclass lazy="false" name="ar.com.dailyMarket.model.Thumbnail" discriminator-value="THUMBNAIL">
+	     	<many-to-one name="image" column="imageid" class="ar.com.dailyMarket.model.Image" not-null="false" cascade="none"/>	     	
+        </subclass>
+				
+    </class>
+</hibernate-mapping>
