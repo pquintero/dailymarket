@@ -10,6 +10,7 @@ import org.apache.struts.action.DynaActionForm;
 import org.hibernate.Criteria;
 import org.hibernate.Transaction;
 import org.hibernate.criterion.MatchMode;
+import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 
 import ar.com.dailyMarket.model.Configuration;
@@ -251,5 +252,11 @@ public class ProductService extends MailService{
 		c.add(Restrictions.eq("active", new Boolean(true)));
 		c.createCriteria("groupProduct").add(Restrictions.eq("id", groupId));
 		return c.list();
+	}
+	
+	public Product getLastProduct() {
+		Criteria c = HibernateHelper.currentSession().createCriteria(Product.class);
+		c.addOrder(Order.desc("id"));
+		return (Product)c.list().get(0);
 	}
 }

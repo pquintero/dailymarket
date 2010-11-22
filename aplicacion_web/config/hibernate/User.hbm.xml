@@ -18,6 +18,7 @@
         <property column="active" name="active" type="java.lang.Boolean"/>
         
         <many-to-one name="groupUser" column="groupuserid" class="ar.com.dailyMarket.model.GroupUser"/>
+        <many-to-one name="image" column="imageid" class="ar.com.dailyMarket.model.Image"/>
     </class>   
 </hibernate-mapping>
 

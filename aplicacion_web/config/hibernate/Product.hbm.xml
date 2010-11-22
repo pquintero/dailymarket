@@ -19,6 +19,7 @@
         <property column="active" name="active" type="java.lang.Boolean"/>
         
         <many-to-one name="groupProduct" column="groupproductid" class="ar.com.dailyMarket.model.GroupProduct"/>   	    			 
+        <many-to-one name="image" column="imageid" class="ar.com.dailyMarket.model.Image"/>
     </class>   
 </hibernate-mapping>
 

@@ -1,16 +1,26 @@
 package ar.com.dailyMarket.ui;
 
+import java.io.IOException;
+
+import javax.naming.Context;
+import javax.naming.InitialContext;
+import javax.naming.NamingException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.beanutils.DynaBean;
+import org.apache.struts.action.ActionError;
 import org.apache.struts.action.ActionErrors;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 import org.apache.struts.action.DynaActionForm;
+import org.apache.struts.upload.FormFile;
 
+import ar.com.dailyMarket.model.Image;
 import ar.com.dailyMarket.model.User;
 import ar.com.dailyMarket.services.GroupUserService;
+import ar.com.dailyMarket.services.ImageService;
 import ar.com.dailyMarket.services.UserService;
 import ar.com.dailyMarket.ui.validator.Validator;
 
@@ -62,8 +72,17 @@ public class UserAction extends BaseAction {
     
     public ActionForward findByPK (ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
     	UserService userService = new UserService();
-    	setFormProperties((DynaActionForm)form,userService.getUserByPK((Long)((DynaActionForm)form).get("id")));
+    	User user = userService.getUserByPK((Long)((DynaActionForm)form).get("id"));
+    	setFormProperties((DynaActionForm)form,user);
     	setGroupUserRequest(request);
+    	
+    	if (user.getImage() != null) {
+    		request.getSession().setAttribute("image", user.getImage());
+    		((DynaActionForm)form).set("attachId",user.getImage().getId());
+    	} else {
+    		((DynaActionForm)form).set("attachId",new Long(-1));
+    		request.getSession().setAttribute("image", null);
+    	}
     	return mapping.findForward("showDetail");
     }
     
@@ -122,4 +141,64 @@ public class UserAction extends BaseAction {
 
     	return errors;
     }
+    
+    public ActionForward initImage(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response){
+		((DynaActionForm) form).set("description", "");
+		return mapping.findForward("showImage");
+	}
+    
+    public ActionForward confirmImage(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws IOException, Exception {
+        ImageService service = new ImageService();	
+        UserService userService = new UserService();
+        
+        Context initCtx;
+        Context envCtx;
+        String uploadPath = "";
+		try {
+			initCtx = new InitialContext();
+			envCtx = (Context)initCtx.lookup("java:comp/env");
+			uploadPath = (String) envCtx.lookup("uploadPath");
+		} catch (NamingException e) {			
+			e.printStackTrace();			
+		}        
+		
+        ActionErrors errors = new ActionErrors();
+        FormFile file = (FormFile) ((DynaActionForm) form).get("file"); 
+        if (!file.getContentType().startsWith("image")) {
+   			errors.add("file", new ActionError("errors.invalid", "Archivo debe ser una imagen.")); 
+            saveErrors(request, errors);
+            return findByPK(mapping, form, request, response);
+        }
+        if (file.getFileSize() == 0 ) {
+   			errors.add("file", new ActionError("errors.required", "Archivo")); 
+            saveErrors(request, errors);
+            return findByPK(mapping, form, request, response);
+        }
+        
+		((DynaActionForm) form).set("uploadPath", uploadPath);
+        
+		User user = userService.getUserByPK((Long)((DynaActionForm)form).get("id"));
+        Image img = service.saveImage((DynaBean) form);
+        if (user.getImage() != null) {
+        	Image imgOld = user.getImage();
+        	user.setImage(null);
+        	userService.save(user);
+        	service.deleteImgAndThumbnail(imgOld);
+        }
+        user.setImage(img);
+        userService.save(user);
+		return findByPK(mapping, form, request, response);
+	}	
+    
+    public ActionForward deleteImage(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws IOException, Exception {
+    	UserService userService = new UserService();
+    	User user = userService.getUserByPK((Long)((DynaActionForm)form).get("id"));
+    	Image img = user.getImage();
+    	user.setImage(null);
+    	userService.save(user);
+    	
+    	ImageService imageService = new ImageService();
+    	imageService.deleteImgAndThumbnail(img);
+    	return findByPK(mapping, form, request, response);
+    } 
 }

@@ -1,16 +1,26 @@
 package ar.com.dailyMarket.ui;
 
+import java.io.IOException;
+
+import javax.naming.Context;
+import javax.naming.InitialContext;
+import javax.naming.NamingException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.beanutils.DynaBean;
+import org.apache.struts.action.ActionError;
 import org.apache.struts.action.ActionErrors;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 import org.apache.struts.action.DynaActionForm;
+import org.apache.struts.upload.FormFile;
 
+import ar.com.dailyMarket.model.Image;
 import ar.com.dailyMarket.model.Product;
 import ar.com.dailyMarket.services.GroupProductService;
+import ar.com.dailyMarket.services.ImageService;
 import ar.com.dailyMarket.services.ProductService;
 import ar.com.dailyMarket.ui.validator.Validator;
 
@@ -31,7 +41,8 @@ public class ProductAction extends BaseAction {
     		return super.initAction(mapping, form, request, response);
     	}
     	productService.save(form);
-    	return super.stepBack(mapping, form, request, response);
+    	((DynaActionForm)form).set("id",productService.getLastProduct().getId());
+    	return findByPK(mapping, form, request, response);
     } 
     
     public ActionForward executeFilter (ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
@@ -55,8 +66,16 @@ public class ProductAction extends BaseAction {
     
     public ActionForward findByPK (ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
     	ProductService productService = new ProductService();
-    	setFormProperties((DynaActionForm)form,productService.getProductByPK((Long)((DynaActionForm)form).get("id")));
+    	Product product = productService.getProductByPK((Long)((DynaActionForm)form).get("id"));
+    	setFormProperties((DynaActionForm)form,product);
     	setGroupUserRequest(request);
+    	if (product.getImage() != null) {
+    		((DynaActionForm)form).set("attachId",product.getImage().getId());
+    		request.getSession().setAttribute("image", product.getImage());
+    	} else {
+    		((DynaActionForm)form).set("attachId",new Long(-1));
+    		request.getSession().setAttribute("image", null);
+    	}
     	return mapping.findForward("showDetail");
     }
     
@@ -107,5 +126,65 @@ public class ProductAction extends BaseAction {
     	Validator.isInteger(form.get("repositionStock"), errors, request, getResources(request).getMessage("ProductForm.repositionStock"), true);
     			
     	return errors;
-    }
+    }        
+    
+    public ActionForward initImage(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response){
+		((DynaActionForm) form).set("description", "");
+		return mapping.findForward("showImage");
+	}
+    
+    public ActionForward confirmImage(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws IOException, Exception {
+        ImageService service = new ImageService();	
+        ProductService productService = new ProductService();
+        
+        Context initCtx;
+        Context envCtx;
+        String uploadPath = "";
+		try {
+			initCtx = new InitialContext();
+			envCtx = (Context)initCtx.lookup("java:comp/env");
+			uploadPath = (String) envCtx.lookup("uploadPath");
+		} catch (NamingException e) {			
+			e.printStackTrace();			
+		}        
+		
+        ActionErrors errors = new ActionErrors();
+        FormFile file = (FormFile) ((DynaActionForm) form).get("file"); 
+        if (!file.getContentType().startsWith("image")) {
+   			errors.add("file", new ActionError("errors.invalid", "Archivo debe ser una imagen.")); 
+            saveErrors(request, errors);
+            return findByPK(mapping, form, request, response);
+        }
+        if (file.getFileSize() == 0 ) {
+   			errors.add("file", new ActionError("errors.required", "Archivo")); 
+            saveErrors(request, errors);
+            return findByPK(mapping, form, request, response);
+        }
+        
+		((DynaActionForm) form).set("uploadPath", uploadPath);
+        
+		Product product = productService.getProductByPK((Long)((DynaActionForm)form).get("id"));
+        Image img = service.saveImage((DynaBean) form);
+        if (product.getImage() != null) {
+        	Image imgOld = product.getImage();
+        	product.setImage(null);
+        	productService.save(product);
+        	service.deleteImgAndThumbnail(imgOld);
+        }
+        product.setImage(img);
+        productService.save(product);
+		return findByPK(mapping, form, request, response);
+	}	
+    
+    public ActionForward deleteImage(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws IOException, Exception {
+    	ProductService productService = new ProductService();
+    	Product product = productService.getProductByPK((Long)((DynaActionForm)form).get("id"));
+    	Image img = product.getImage();
+    	product.setImage(null);
+    	productService.save(product);
+    	
+    	ImageService productImageService = new ImageService();
+    	productImageService.deleteImgAndThumbnail(img);
+    	return findByPK(mapping, form, request, response);
+    } 
 }

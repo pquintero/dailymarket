@@ -16,6 +16,7 @@ public class User {
 	private String email;
 	private boolean receiveNotifications;
 	private Boolean active;
+	private Image image;
 	
 	public Long getId() {
 		return id;
@@ -94,5 +95,11 @@ public class User {
 	}
 	public void setActive(Boolean active) {
 		this.active = active;
-	}	
+	}
+	public Image getImage() {
+		return image;
+	}
+	public void setImage(Image image) {
+		this.image = image;
+	}		
 }
