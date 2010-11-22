@@ -27,7 +27,6 @@
             <fileset dir="${lib.dir}">
                 <include name="**/*.jar"/>
                 <include name="**/*.zip"/>
-                <exclude name="**/javaws.jar"/>
             </fileset>
         </copy>
 
@@ -73,7 +72,7 @@
         <mkdir dir="${deploy.outdir}"/>
 
         <!-- Firmar todos los jars -->
-        <signjar alias="Fahrenheit" keystore="Proyecto911.keystore" storepass="Proyecto911">
+        <signjar alias="daily" keystore="dm.keystore" storepass="proyecto">
             <fileset dir="${deploy.temp}">
                 <include name="*.jar"/>
             </fileset>
