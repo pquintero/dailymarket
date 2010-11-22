@@ -149,7 +149,6 @@ public class UtilLectorHuellasSingleton {
 		
 		public void processLogin(DPFPSample sample,  HuellaDigitalInterface frame ){
 			String user = frame.getUserName();
-			JLabel mensajeLector = frame.getMensajeLector();
 			JLabel mensaje = frame.getFrameMensaje();
 			JPanel imageHuellaPanel = frame.getImageHuellaPanel();
 			JLabel picture = frame.getFingerPrintPicture();
@@ -211,10 +210,7 @@ public class UtilLectorHuellasSingleton {
 					            }else{
 		 	            			((SupervisorFrame)frame).getFrameMensaje().setText("Re intente nuevamente");
 		 	            			((SupervisorFrame)frame).habilitarFirmaSupervisor();
-
 					            }
-
-
 	            	}
 	            }
 	            else if( frame instanceof CerrarCajaFrame){

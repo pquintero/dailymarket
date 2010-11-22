@@ -348,15 +348,7 @@ public class CajeroVentaFrame extends DailyMarketFrame {
 			}
 
 		});
-//		JButton calcularTotal = new JButton("Calcular Total");
-//		calcularTotal.addActionListener(new ActionListener() {
-//
-//			public void actionPerformed(ActionEvent e) {
-//				totalVenta = OTORGAR_DESCUENTO ? subTotalVenta* DESCUENTO_EMPLEADO : subTotalVenta;
-//				totalVentaTextField.setText(totalVenta.toString());
-//			}
-//		});
-//		ticketPanel.add(calcularTotal);
+
 
 		footerPanel.setBorder(new TitledBorder(new LineBorder(Color.BLACK), "",TitledBorder.DEFAULT_JUSTIFICATION,
 				TitledBorder.DEFAULT_POSITION, null, null));

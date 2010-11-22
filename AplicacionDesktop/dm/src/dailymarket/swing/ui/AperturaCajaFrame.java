@@ -49,6 +49,9 @@ public class AperturaCajaFrame extends DailyMarketFrame implements HuellaDigital
 	JButton volverButton = new JButton("Volver");
 	private Double MONTO_CONSTANTE_APERTURA = new Double(575);
 	
+	UtilLectorHuellasSingleton utilHuellas = null;
+	LectorDeHuellasFirstLogin utilHuellasFirstLogin = null;
+	
 	public AperturaCajaFrame(JFrame f){
 		
 		parentFrame = f;
@@ -178,26 +181,28 @@ public class AperturaCajaFrame extends DailyMarketFrame implements HuellaDigital
 	class volverButtonListener implements ActionListener{
 
 		public void actionPerformed(ActionEvent arg0) {
+			String [] disabledButtons = new String[2];
+			
 			if(FIRMA_APERTURA){
-				String [] disabledButtons = new String[2];
 				disabledButtons[0] = DailyMarketFrame.APERTURA_CAJA;
 				disabledButtons[1] = DailyMarketFrame.CERRAR_APLICACION;
-				
-				((CajaFrame)parentFrame).deshabilitarBotones(disabledButtons);
-				parentFrame.setVisible(true);
-				dispose();
-				
 			}else{
-				
-				String [] disabledButtons = new String[2];
 				disabledButtons[0] = DailyMarketFrame.CERRAR_CAJA;
 				disabledButtons[1] = DailyMarketFrame.NUEVA_SESION;
-				
-				((CajaFrame)parentFrame).deshabilitarBotones(disabledButtons);
-				parentFrame.setVisible(true);
-				dispose();
-				
 			}
+			((CajaFrame)parentFrame).deshabilitarBotones(disabledButtons);
+			parentFrame.setVisible(true);
+			
+			if(utilHuellas != null){
+				utilHuellas.stop(mensajeLector);
+				utilHuellas = null;
+			}
+			if(utilHuellasFirstLogin!= null){
+				utilHuellasFirstLogin.stop(mensajeLector);
+				utilHuellasFirstLogin = null;
+			}
+			
+			dispose();
 		}
 	}
 	
@@ -211,12 +216,12 @@ public class AperturaCajaFrame extends DailyMarketFrame implements HuellaDigital
 					//Primer Logieo
 					passwordTextField.setEnabled(false);
 					cajero.setEnabled(false);
-					LectorDeHuellasFirstLogin utilHuellasFirstLogin = new LectorDeHuellasFirstLogin();
+					utilHuellasFirstLogin = new LectorDeHuellasFirstLogin();
 					utilHuellasFirstLogin.start(mensaje);
 					utilHuellasFirstLogin.init(frame);
 					firmar.setEnabled(false);
 					checkFirstLogon.setEnabled(false);
-					volverButton.setEnabled(false);
+//					volverButton.setEnabled(false);
 					
 				}
 			}else{
@@ -224,11 +229,11 @@ public class AperturaCajaFrame extends DailyMarketFrame implements HuellaDigital
 					mensaje.setText("Esperando su huella digital");
 					mensaje.setForeground(Color.red);
 					firmar.setEnabled(false);
-					UtilLectorHuellasSingleton utilHuellas = new UtilLectorHuellasSingleton();
+					utilHuellas = new UtilLectorHuellasSingleton();
 					utilHuellas.start(mensajeLector);
 					utilHuellas.initLogin(frame);
 					checkFirstLogon.setEnabled(false);
-					volverButton.setEnabled(false);
+//					volverButton.setEnabled(false);
 
 				}
 		}
