@@ -372,9 +372,9 @@ public class CajeroVentaFrame extends DailyMarketFrame {
 
 		java.net.URL imgURL = InitDailyMarketFrame.class
 				.getResource("vendedor.jpg");
-		// ImageIcon vendedorImg = new
-		// ImageIcon(Context.getInstance().getCurrentUser().getFoto());
-		ImageIcon vendedorImg = new ImageIcon(imgURL);
+		 ImageIcon vendedorImg = new
+		 ImageIcon(Context.getInstance().getCurrentUser().getFoto());
+//		ImageIcon vendedorImg = new ImageIcon(imgURL);
 		JLabel vendedorPicLabel = new JLabel(new ImageIcon(vendedorImg
 				.getImage().getScaledInstance(60, 60, Image.SCALE_SMOOTH)));
 
