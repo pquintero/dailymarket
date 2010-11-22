@@ -48,6 +48,10 @@
 		<jar href="xercesImpl.jar"/>
 		<jar href="xpp3-1.1.3.4d_b4_min.jar"/>
 		<jar href="xstream-1.2.jar"/>
+		<jar href="dpfpenrollment.jar"/>
+		<jar href="dpfpverification.jar"/>
+		<jar href="dpotapi.jar"/>
+		<jar href="dpotjni.jar"/>
 		
         <j2se version="1.6+" href="http://java.sun.com/products/autodl/j2se" initial-heap-size="256m" max-heap-size="512m"/>
     </resources>
