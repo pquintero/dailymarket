@@ -98,7 +98,7 @@ public class TicketFrame extends JDialog {
 		montoInicioTextField.setEditable(false);
 		montoInicioTextField.setText( Configuration.getInstance().getMontoApertura());
 		
-		s[8] = montoInicioLabel.getText() + montoFacturadoTextField.getText();
+		s[8] = montoInicioLabel.getText() + montoInicioTextField.getText();
 		
 		
 		JLabel montoAEntregar = new JLabel("Monto a Entregar: " );
