@@ -212,7 +212,18 @@ Agregar en el ABM del producto el campo código de producto
 		
 		
 	}
-		
+
+IMPORTANTE VENTAS:
+
+Al generar la ventas los horarios deben ser los de las bandas horarias no un new Date()
+
+______________________________________________________________________________________________________________________
+
+Al mandar un mail y luego actualizar el estado a enviado
+el objeto queda con el estado correcto pero como si hubiera varias instancias de ese objeto con el estado distinto
+En la base no tiene el estado correcto
 
 
-	
+CORREGIR:
+
+En cada lugar donde haya un save o un update o un saveorupdate hay que comenzar una transaccion y commitearla
