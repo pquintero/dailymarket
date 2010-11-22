@@ -39,6 +39,7 @@ public class CerrarCajaFrame extends DailyMarketFrame implements HuellaDigitalIn
 	
 	JPanel imageHuellaPanel = new JPanel();
 	JButton firmar = new JButton("Firmar");
+	UtilLectorHuellasSingleton utilHuellas = null;
 	
 	public CerrarCajaFrame(JFrame f){
 		
@@ -137,10 +138,14 @@ public class CerrarCajaFrame extends DailyMarketFrame implements HuellaDigitalIn
 				disabledButtons[1] = DailyMarketFrame.CERRAR_APLICACION;
 			}
 			
+			if(utilHuellas != null){
+				utilHuellas.stop(mensajeLector);
+				utilHuellas = null;
+			}
+			
 			((CajaFrame)parentFrame).deshabilitarBotones(disabledButtons);
 			parentFrame.setVisible(true);
 			dispose();
-			
 		}
 		
 	}
@@ -151,7 +156,7 @@ public class CerrarCajaFrame extends DailyMarketFrame implements HuellaDigitalIn
 			
 					mensaje.setText("Esperando su huella digital");
 					mensaje.setForeground(Color.red);
-					UtilLectorHuellasSingleton utilHuellas = new UtilLectorHuellasSingleton();
+					utilHuellas = new UtilLectorHuellasSingleton();
 					utilHuellas.start(mensajeLector);				
 					utilHuellas.initLogin(frame);
 

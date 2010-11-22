@@ -237,6 +237,7 @@ public class SupervisorFrame extends  DailyMarketFrame implements HuellaDigitalI
 
 	public void cancelarVenta() {
 		((CajeroVentaFrame)parentFrame).cancelarVenta();
+		dispose();
 		
 	}
 }

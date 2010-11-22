@@ -72,16 +72,12 @@ public class LectorDeHuellasFirstLogin {
 	
 		public void drawPicture(Image image, JPanel imageHuellaPanel, JLabel picture) {
 			imageHuellaPanel.remove(picture);
-		
 
 			picture = new JLabel(new ImageIcon(image.getScaledInstance(140, 90, Image.SCALE_SMOOTH)));
 			GridBagConstraints constraintHuella = new GridBagConstraints();
 			constraintHuella.gridx = 0;
 			constraintHuella.gridy = 0;
 			imageHuellaPanel.add(picture, constraintHuella);
-			
-//			imageHuellaPanel.firePropertyChange(null,true, true);
-//			imageHuellaPanel.setVisible(true);
 
 		}
 		
