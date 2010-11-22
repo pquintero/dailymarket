@@ -115,6 +115,10 @@ public class FinVentaFrame extends JDialog {
 								((CajeroVentaFrame)parentFrame).pagoVenta =  montoPago;
 								((CajeroVentaFrame)parentFrame).habilitarImprimirVenta();
 								
+								//Se actualiza el monto de cierre de la caja sumando al acumulado cada venta
+								double montoAcumulado = Context.getInstance().getMontoCierrAcumulado().doubleValue() + montoVenta.doubleValue();
+								Context.getInstance().setMontoCierrAcumulado(montoAcumulado);
+								
 								Element root = doc.getRootElement();
 								Long id = Long.valueOf(root.selectSingleNode("sesion").getStringValue());
 								((CajeroVentaFrame)parentFrame).idSesionVenta =  id;

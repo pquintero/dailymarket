@@ -41,6 +41,7 @@
       <replacefilter token="%instance%" value="${instance}"/>
       <replacefilter token="%caja%" value="${caja}"/>
       <replacefilter token="%sucursal%" value="${sucursal}"/>
+    	<replacefilter token="%monto.apertura%" value="${monto.apertura}"/>
 
     </replace>
 
