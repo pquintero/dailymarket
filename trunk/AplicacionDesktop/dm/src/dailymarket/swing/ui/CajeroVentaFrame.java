@@ -393,9 +393,8 @@ public class CajeroVentaFrame extends DailyMarketFrame {
 
 		JLabel nombreVendedorLabel = new JLabel();
 
-		// nombreVendedorLabel.setText(Context.getInstance().getCurrentUser().getName()
-		// + " " + Context.getInstance().getCurrentUser().getLastName());
-		nombreVendedorLabel.setText("abe");
+		 nombreVendedorLabel.setText(Context.getInstance().getCurrentUser().getName()
+		 + " " + Context.getInstance().getCurrentUser().getLastName());
 		vendedorPanel.add(nombreVendedorLabel);
 
 		// DAILYMARKET PANEL
@@ -422,9 +421,8 @@ public class CajeroVentaFrame extends DailyMarketFrame {
 
 		JLabel vendedorLabel = new JLabel();
 
-		// vendedorLabel.setText("Cajero DNI: " +
-		// Context.getInstance().getCurrentUser().getDni());
-		vendedorLabel.setText("Cajero DNI: " + 30886291);
+		vendedorLabel.setText("Cajero DNI: " +
+		Context.getInstance().getCurrentUser().getDni());
 		cajaPanel.add(vendedorLabel);
 
 		JLabel fechaLabel = new JLabel();
@@ -707,6 +705,10 @@ public class CajeroVentaFrame extends DailyMarketFrame {
 			nD = Math.ceil(nD * Math.pow(10, nDec)) / Math.pow(10, nDec);
 
 		return nD;
+	}
+
+	public boolean isDescuentoOtorgado() {
+		return OTORGAR_DESCUENTO;
 	}
 	
 }

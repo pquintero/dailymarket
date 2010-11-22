@@ -56,7 +56,8 @@ public class TabbedPane extends JPanel {
     UtilLectorHuellasSingleton utilHuellas = null;
 	
     public TabbedPane(DefaultTableModel productsList, HuellaDigitalInterface supervisorFrame, JLabel mensajeLector, JLabel imgHuella, List<ProductModel> products,  CajeroVentaFrame cajeroFrame) {
-        frameParent = supervisorFrame;
+    	frameParent = supervisorFrame;
+
         tableModelProducts = productsList;
         cajaFrame = cajeroFrame;
         JTabbedPane tabbedPane = new JTabbedPane();
@@ -81,7 +82,15 @@ public class TabbedPane extends JPanel {
         
         tabbedPane.setTabLayoutPolicy(JTabbedPane.SCROLL_TAB_LAYOUT);
         productos = products;
-       
+        
+    	if( ((SupervisorFrame)frameParent).isDescuentoOtorgado()){
+    		deshabilitarBotones();
+    	}else{
+    		EMPLEADO_VALIDADO = false;
+    		SUPERVISOR_VALIDADO = false;
+    	}
+    	
+
    }
     
     protected JComponent makeCancelarVentaPanel(String text) {
@@ -145,8 +154,15 @@ public class TabbedPane extends JPanel {
 		JLabel lectorImgLabel = new JLabel(new ImageIcon(lectorImg.getImage().getScaledInstance(120, 120, Image.SCALE_SMOOTH)));
 	 
 		descuentosPanel.add(lectorImgLabel);
-		descuentosPanel.add(new JLabel(" D E S C U E N T O S     A     E M P L E A D O S"));
-    	 firmaEmpleado.addActionListener(new ActionListener() {
+    	if( ((SupervisorFrame)frameParent).isDescuentoOtorgado()){
+    		JLabel message = new JLabel(" E L    D E S C U E N T O    Y A    S E    O T O R G O");
+    		message.setForeground(Color.red);
+    		descuentosPanel.add(message);
+    		descuentosPanel.setEnabled(false);
+    	}else
+    		descuentosPanel.add(new JLabel(" D E S C U E N T O S     A     E M P L E A D O S"));
+    	 
+    	firmaEmpleado.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				habilitarBotonesCancelProductsPanel();
 				habilitarBotonesCancelVentaPanel();
@@ -363,5 +379,10 @@ public class TabbedPane extends JPanel {
 	public void habilitarBotonesOtorgarDescuentosPanel(){
 		firmaEmpleado.setEnabled(true);
 		firmaSupervisor.setEnabled(true);
+	}
+	public void deshabilitarBotones(){
+		firmaEmpleado.setEnabled(false);
+		firmaSupervisor.setEnabled(false);
+		
 	}
 }
