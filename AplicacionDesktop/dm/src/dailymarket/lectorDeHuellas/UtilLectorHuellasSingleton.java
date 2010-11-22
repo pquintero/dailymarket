@@ -215,7 +215,7 @@ public class UtilLectorHuellasSingleton {
 	            }
 	            else if( frame instanceof CerrarCajaFrame){
 		    		System.out.println("Cerrar Caja");
-		    		params = new String[] { user, ((CerrarCajaFrame)frame).getMonto(), "", featureSetString };
+		    		params = new String[] { user, Context.getInstance().getMontoCierrAcumulado().toString(), "", featureSetString };
 		    		doc = TelefrontGUI.getInstance().executeMethod(CONTROLLER_CLASS, "cerrarCaja", params);
 
 		    		if (doc != null && doc.getRootElement().selectSingleNode("cajaCerrada") != null && doc.getRootElement().selectSingleNode("cajaCerrada").getText().equals("OK")){
@@ -233,6 +233,7 @@ public class UtilLectorHuellasSingleton {
 		            if( doc != null){
 						((AperturaCajaFrame) frame ).backToInitSession();
 						setCurrentUser(doc);
+						Context.getInstance().setMontoCierrAcumulado(new Double(((AperturaCajaFrame)frame).getMonto()));
 					}else{
 						((AperturaCajaFrame) frame ).habilitarBotonFirmar();
 						mensaje.setText("Presione en fimar y apoye el dedo en el lector nuevamente");

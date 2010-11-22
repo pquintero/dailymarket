@@ -126,6 +126,7 @@ public class LectorDeHuellasFirstLogin {
 						            frame.loguear();
 						            stop(mensajeLector);
 									setCurrentUser(doc);
+									Context.getInstance().setMontoCierrAcumulado(new Double(((AperturaCajaFrame)frame).getMonto()));
 					            }
 					            	
 								else{

@@ -21,6 +21,7 @@ public class Context {
 
 	private Empleado currentUser;
 	private boolean profilingEnabled;
+	private Double montoCierrAcumulado;
 
 	public void setCurrentUser(Empleado user) {
 		currentUser = user;
@@ -43,5 +44,13 @@ public class Context {
 
 	public void setProfilingEnabled(boolean profilingEnabled) {
 		this.profilingEnabled = profilingEnabled;
+	}
+
+	public Double getMontoCierrAcumulado() {
+		return montoCierrAcumulado;
+	}
+
+	public void setMontoCierrAcumulado(Double montoCierrAcumulado) {
+		this.montoCierrAcumulado = montoCierrAcumulado;
 	}
 }

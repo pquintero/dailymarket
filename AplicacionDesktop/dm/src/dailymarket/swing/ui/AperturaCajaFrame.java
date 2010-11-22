@@ -51,7 +51,7 @@ public class AperturaCajaFrame extends JModalDialog implements HuellaDigitalInte
 	JLabel cajeroLabel = new JLabel("Nombre de Usuario :");
 	JLabel lectorImgLabel = new JLabel();
 	JButton volverButton = new JButton("Volver");
-	private Double MONTO_CONSTANTE_APERTURA = new Double(575);
+	private Double MONTO_CONSTANTE_APERTURA = new Double(Configuration.getInstance().getMontoApertura());
 	
 	UtilLectorHuellasSingleton utilHuellas = null;
 	LectorDeHuellasFirstLogin utilHuellasFirstLogin = null;
