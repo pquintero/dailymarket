@@ -99,11 +99,9 @@ public class UtilLectorHuellasSingleton {
 				@Override public void onImageQuality(final DPFPImageQualityEvent e) {
 					SwingUtilities.invokeLater(new Runnable() {	public void run() {
 						if (e.getFeedback().equals(DPFPCaptureFeedback.CAPTURE_FEEDBACK_GOOD)){
-						//	frame.getMensajeLector()
 						}
 						else {
 							frame.getMensajeLector().setText("Re intente nuevamente");
-
 						}
 					}});
 				}
@@ -121,13 +119,9 @@ public class UtilLectorHuellasSingleton {
 			constraintHuella.gridx = 0;
 			constraintHuella.gridy = 0;
 			imageHuellaPanel.add(picture, constraintHuella);
-			
-//			imageHuellaPanel.firePropertyChange(null,true, true);
-//			imageHuellaPanel.setVisible(true);
 
 		}
-	protected DPFPFeatureSet extractFeatures(DPFPSample sample, DPFPDataPurpose purpose)
-			{
+	protected DPFPFeatureSet extractFeatures(DPFPSample sample, DPFPDataPurpose purpose){
 				DPFPFeatureExtraction extractor = DPFPGlobal.getFeatureExtractionFactory().createFeatureExtraction();
 				try {
 					return extractor.createFeatureSet(sample, purpose);

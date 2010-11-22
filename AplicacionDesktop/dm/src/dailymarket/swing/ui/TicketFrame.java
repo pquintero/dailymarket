@@ -87,6 +87,7 @@ public class TicketFrame extends JDialog {
 		montoFacturadoTextField.setPreferredSize(new Dimension(100,20));
 		montoFacturadoTextField.setEditable(false);
 		Double montoFac = Context.getInstance().getMontoCierrAcumulado() - Double.parseDouble(Configuration.getInstance().getMontoApertura());
+		montoFac = Truncar(montoFac, 2);
 		montoFacturadoTextField.setText(montoFac.toString());
 		
 		s[7] = montoFacturadoLabel.getText() + montoFacturadoTextField.getText();		
@@ -159,5 +160,13 @@ public class TicketFrame extends JDialog {
 	public static void main(String[] args){
 		new TicketFrame(null);
 	   }
+	private double Truncar(double nD, int nDec) {
+		if (nD > 0)
+			nD = Math.floor(nD * Math.pow(10, nDec)) / Math.pow(10, nDec);
+		else
+			nD = Math.ceil(nD * Math.pow(10, nDec)) / Math.pow(10, nDec);
+
+		return nD;
+	}
 
 }

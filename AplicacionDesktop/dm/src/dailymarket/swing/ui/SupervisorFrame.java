@@ -243,6 +243,10 @@ public class SupervisorFrame extends  JModalDialog implements HuellaDigitalInter
 		dispose();
 		
 	}
+	public boolean isDescuentoOtorgado(){
+		return ((CajeroVentaFrame)parentFrame).isDescuentoOtorgado();
+
+	}
 
 	public void stopLector() {
 		if(utilHuellasFirstLogin!= null){
