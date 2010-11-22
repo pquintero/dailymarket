@@ -9,10 +9,12 @@ import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
+import java.awt.event.WindowAdapter;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
+import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -22,13 +24,15 @@ import javax.swing.JTextField;
 import javax.swing.border.LineBorder;
 import javax.swing.border.TitledBorder;
 
+import nl.jj.swingx.gui.modal.JModalDialog;
+
 
 import dailymarket.lectorDeHuellas.UtilLectorHuellasSingleton;
 import dailymarket.lectorDeHuellas.LectorDeHuellasFirstLogin;
 
 
 @SuppressWarnings("serial")
-public class AperturaCajaFrame extends DailyMarketFrame implements HuellaDigitalInterface{
+public class AperturaCajaFrame extends JModalDialog implements HuellaDigitalInterface{
 
 	protected JFrame parentFrame;
 	protected JLabel imgHuella = new JLabel();
@@ -53,11 +57,18 @@ public class AperturaCajaFrame extends DailyMarketFrame implements HuellaDigital
 	LectorDeHuellasFirstLogin utilHuellasFirstLogin = null;
 	
 	public AperturaCajaFrame(JFrame f){
-		
 		parentFrame = f;
 		frame = this;
-//		setAlwaysOnTop(true);
-//		
+
+		JFrame.setDefaultLookAndFeelDecorated(true);
+     	this.setDefaultCloseOperation(0);
+	    
+		setResizable(false);
+		
+		java.net.URL img = InitDailyMarketFrame.class.getResource("dm.ico");
+		ImageIcon logoImg = new ImageIcon(img);
+		this.setIconImage(logoImg.getImage());
+		
 		setTitle("Apertura  Caja ");
 		setLocationRelativeTo(parentFrame);
 		JPanel mainPanel = new JPanel();

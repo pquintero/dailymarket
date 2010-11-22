@@ -123,6 +123,7 @@ public class CajeroVentaFrame extends DailyMarketFrame {
 
 		mainPanel.setLayout(flowLayout_6);
 		mainPanel.setBounds(0, 0, 950, 730);
+		setAlwaysOnTop(true);
 
 		listPanel.setBorder(new TitledBorder(new LineBorder(Color.BLACK),
 				"Lista de Productos", TitledBorder.CENTER,
