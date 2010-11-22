@@ -370,11 +370,14 @@ public class CajeroVentaFrame extends DailyMarketFrame {
 
 		// ======VENDEDORPANEL
 
-		java.net.URL imgURL = InitDailyMarketFrame.class
-				.getResource("vendedor.jpg");
-		 ImageIcon vendedorImg = new
-		 ImageIcon(Context.getInstance().getCurrentUser().getFoto());
-//		ImageIcon vendedorImg = new ImageIcon(imgURL);
+		ImageIcon vendedorImg = null;
+		if(Context.getInstance().getCurrentUser().getFoto()!=null){
+			vendedorImg = new ImageIcon(Context.getInstance().getCurrentUser().getFoto());
+		}else{
+			java.net.URL imgURL = InitDailyMarketFrame.class
+				.getResource("sinImg.jpg");
+			vendedorImg = new ImageIcon(imgURL);
+		}
 		JLabel vendedorPicLabel = new JLabel(new ImageIcon(vendedorImg
 				.getImage().getScaledInstance(60, 60, Image.SCALE_SMOOTH)));
 
