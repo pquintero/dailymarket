@@ -94,7 +94,9 @@ public class CajeroVentaFrame extends DailyMarketFrame {
 
 	JPanel listPanel = new JPanel();
 	JButton ingresarProdButton = new JButton("Ingresar Producto Manualmente") ;
+	JTextField vueltoTextField = new JTextField();
 
+	
 	public CajeroVentaFrame(JFrame p) throws IOException {
 
 		parentFrame = p;
@@ -162,7 +164,7 @@ public class CajeroVentaFrame extends DailyMarketFrame {
 
 		productoPanel.add(scanCodProducto);
 
-		JLabel descProductoLabel = new JLabel("Descripcion ");
+		JLabel descProductoLabel = new JLabel("Descripción ");
 		productoPanel.add(descProductoLabel);
 
 		descProducto = new JTextField();
@@ -199,13 +201,7 @@ public class CajeroVentaFrame extends DailyMarketFrame {
 				TitledBorder.DEFAULT_JUSTIFICATION,
 				TitledBorder.DEFAULT_POSITION, null, null));
 
-		JLabel nroTicketLabel = new JLabel("Nro Ticket ");
-		ticketPanel.add(nroTicketLabel);
 
-		JTextField nroTicket = new JTextField();
-		nroTicket.setPreferredSize(new Dimension(180, 20));
-		nroTicket.setEditable(false);
-		ticketPanel.add(nroTicket);
 
 		JLabel subtotalVentaLabel = new JLabel("SubTotal       ");
 		subtotalVentaLabel.setFont(new Font("Serif", Font.BOLD, 20));
@@ -235,8 +231,23 @@ public class CajeroVentaFrame extends DailyMarketFrame {
 		totalVentaTextField.setText(totalVenta.toString());
 
 		ticketPanel.add(totalVentaTextField);
+		
+		JLabel vueltoLabel = new JLabel("Su Vuelto      ");
+		vueltoLabel.setFont(new Font("Serif", Font.BOLD, 20));
+		vueltoLabel.setForeground(Color.BLACK);
+		ticketPanel.add(vueltoLabel);
 
-		imprimirTicket = new JButton("IMPRIMIR TICKET");
+		vueltoTextField.setFont(new Font("Serif", Font.BOLD, 25));
+		vueltoTextField.setForeground(Color.BLACK);
+		vueltoTextField.setBackground(new Color(0xFFFF99));
+		vueltoTextField.setEditable(false);
+		vueltoTextField.setPreferredSize(new Dimension(140, 40));
+		vueltoTextField.setText(subTotalVenta.toString());
+		 
+		vueltoTextField.setText(" ");
+		ticketPanel.add(vueltoTextField);
+		
+		imprimirTicket = new JButton("Imprimir Ticket");
 		imprimirTicket.setEnabled(false);
 		ticketPanel.add(imprimirTicket);
 		imprimirTicket.addActionListener(new ActionListener() {
@@ -252,10 +263,8 @@ public class CajeroVentaFrame extends DailyMarketFrame {
 
 			private String[] makeTicket(Ticket t) {
 
-				Object params[] = new String[] { Configuration.getInstance()
-						.getSucursal() };
-				Document doc = TelefrontGUI.getInstance().executeMethod(
-						CONTROLLER_CLASS, "obtenerSucursal", params);
+				Object params[] = new String[] { Configuration.getInstance().getSucursal() };
+				Document doc = TelefrontGUI.getInstance().executeMethod(CONTROLLER_CLASS, "obtenerSucursal", params);
 
 				Sucursal suc = new Sucursal();
 				suc.toSucursalModel(doc);
@@ -339,24 +348,21 @@ public class CajeroVentaFrame extends DailyMarketFrame {
 			}
 
 		});
-		JButton calcularTotal = new JButton("Calcular Total");
-		calcularTotal.addActionListener(new ActionListener() {
+//		JButton calcularTotal = new JButton("Calcular Total");
+//		calcularTotal.addActionListener(new ActionListener() {
+//
+//			public void actionPerformed(ActionEvent e) {
+//				totalVenta = OTORGAR_DESCUENTO ? subTotalVenta* DESCUENTO_EMPLEADO : subTotalVenta;
+//				totalVentaTextField.setText(totalVenta.toString());
+//			}
+//		});
+//		ticketPanel.add(calcularTotal);
 
-			public void actionPerformed(ActionEvent e) {
-				totalVenta = OTORGAR_DESCUENTO ? subTotalVenta
-						* DESCUENTO_EMPLEADO : subTotalVenta;
-				totalVentaTextField.setText(totalVenta.toString());
-			}
-		});
-		ticketPanel.add(calcularTotal);
-
-		footerPanel.setBorder(new TitledBorder(new LineBorder(Color.BLACK), "",
-				TitledBorder.DEFAULT_JUSTIFICATION,
+		footerPanel.setBorder(new TitledBorder(new LineBorder(Color.BLACK), "",TitledBorder.DEFAULT_JUSTIFICATION,
 				TitledBorder.DEFAULT_POSITION, null, null));
 		footerPanel.setPreferredSize(new Dimension(930, 90));
 
-		headerPanel.setBorder(new TitledBorder(new LineBorder(Color.BLACK), "",
-				TitledBorder.DEFAULT_JUSTIFICATION,
+		headerPanel.setBorder(new TitledBorder(new LineBorder(Color.BLACK), "",TitledBorder.DEFAULT_JUSTIFICATION,
 				TitledBorder.DEFAULT_POSITION, null, Color.BLACK));
 		headerPanel.setPreferredSize(new Dimension(930, 80));
 		flowLayout_6.setVgap(5);
@@ -435,15 +441,12 @@ public class CajeroVentaFrame extends DailyMarketFrame {
 		mainPanel.add(ventaProductoPanel);
 		mainPanel.add(footerPanel);
 
-		// java.net.URL imgURLprod =
-		// InitDailyMarketFrame.class.getResource("pepsi.jpg");
-
+	
 		imagePanel.add(picLabel);
 
 		getContentPane().add(mainPanel);
 
 		// LISTA
-		// Lista de Relaciones
 		scrollRelationsPane = new JScrollPane();
 		scrollRelationsPane.setBorder(new EtchedBorder(EtchedBorder.LOWERED));
 		scrollRelationsPane.setPreferredSize(new Dimension(580, 465));
@@ -460,9 +463,8 @@ public class CajeroVentaFrame extends DailyMarketFrame {
 			}
 		};
 		tableRelations.setModel(tableModelProducts);
-		tableModelProducts.setDataVector(new Object[][] {}, new Object[] {
-				"Cancel", "Descripcion", "Cantidad", "Precio", "Total" });
-
+		tableModelProducts.setDataVector(new Object[][] {}, 
+				new Object[] {"Cancel", "Descripcion", "Cantidad", "Precio", "Total" });
 		tableRelations.getColumnModel().getColumn(0).setPreferredWidth(3);
 		tableRelations.getColumnModel().getColumn(1).setPreferredWidth(190);
 		tableRelations.getColumnModel().getColumn(2).setPreferredWidth(5);
@@ -487,8 +489,7 @@ public class CajeroVentaFrame extends DailyMarketFrame {
 		mensajesPanel.add(message);
 		mensajesPanel.setLayout(new FlowLayout(FlowLayout.LEFT));
 		mensajesPanel.setBorder(new TitledBorder(new LineBorder(Color.BLACK),
-				"Mensajes", TitledBorder.LEFT, TitledBorder.DEFAULT_POSITION,
-				null, null));
+				"Mensajes", TitledBorder.LEFT, TitledBorder.DEFAULT_POSITION,null, null));
 
 		mensajesPanel.setPreferredSize(new Dimension(600, 70));
 		accionesPanel.setPreferredSize(new Dimension(300, 70));
@@ -499,11 +500,8 @@ public class CajeroVentaFrame extends DailyMarketFrame {
 		modificarSesionVenta.addActionListener(new ActionListener() {
 
 			public void actionPerformed(ActionEvent arg0) {
-				// new ModificacionSesionVentaFrame(frame);
-				new SupervisorFrame(tableModelProducts,
-						(CajeroVentaFrame) frame, productos);
+				new SupervisorFrame(tableModelProducts,(CajeroVentaFrame) frame, productos);
 				scanCodProducto.requestFocus();
-
 			}
 		});
 		accionesPanel.add(modificarSesionVenta);
@@ -512,11 +510,8 @@ public class CajeroVentaFrame extends DailyMarketFrame {
 		nuevaVentaButton.setPreferredSize(new Dimension(130, 25));
 		nuevaVentaButton.setMnemonic(KeyEvent.VK_N);
 		nuevaVentaButton.setEnabled(false);
-
 		nuevaVentaButton.addActionListener(new ActionListener() {
-
 			public void actionPerformed(ActionEvent arg0) {
-
 				try {
 					new CajeroVentaFrame(parentFrame);
 				} catch (IOException e) {
@@ -531,36 +526,29 @@ public class CajeroVentaFrame extends DailyMarketFrame {
 		finVentaButton.setPreferredSize(new Dimension(130, 25));
 		finVentaButton.setMnemonic(KeyEvent.VK_F);
 		finVentaButton.addActionListener(new ActionListener() {
-
 			public void actionPerformed(ActionEvent arg0) {
-				// totalVentaTextField.setText("345");
-
-				new FinVentaFrame(frame, Double.parseDouble(totalVentaTextField
-						.getText()));
-
+				if(		tableRelations.getRowCount()> 0 )
+					new FinVentaFrame(frame, Double.parseDouble(totalVentaTextField.getText()));
+				else
+					message.setText("No se puede finalizar la Venta por que no hay productos facturados ");
 			}
 		});
 		accionesPanel.add(finVentaButton);
 
 		salirButton = new JButton("Salir");
-		salirButton.setEnabled(false);
+		salirButton.setEnabled(true);
 		salirButton.setPreferredSize(new Dimension(130, 25));
 		salirButton.addActionListener(new ActionListener() {
-
 			public void actionPerformed(ActionEvent arg0) {
 				String[] disabledButtons = new String[2];
 				disabledButtons[0] = DailyMarketFrame.APERTURA_CAJA;
 				disabledButtons[1] = DailyMarketFrame.CERRAR_APLICACION;
-
 				((CajaFrame) parentFrame).deshabilitarBotones(disabledButtons);
 				parentFrame.setVisible(true);
-
 				dispose();
-
 			}
 		});
 		accionesPanel.add(salirButton);
-
 	
 		setBounds(20, 0, 943, 740);
 		setTitle("DailyMarket - VENTA ");
@@ -593,6 +581,9 @@ public class CajeroVentaFrame extends DailyMarketFrame {
 		ingresarProdButton.setEnabled(false);
 		descProducto.setEditable(false);
 		descProducto.setEnabled(false);
+		
+		vueltoTextField.setText(( new Double ((Truncar((pagoVenta - totalVenta),2 )))).toString());
+
 	}
 
 	public static void main(String[] args) throws IOException, SQLException {
@@ -625,42 +616,34 @@ public class CajeroVentaFrame extends DailyMarketFrame {
 
 	private void agregarProductoSesion() {
 
-		if (cantProd.getText() == null || "".equals(cantProd.getText()))
+		if (cantProd.getText() == null || "".equals(cantProd.getText()) || scanCodProducto.getText().equals(""))
 			return;
 
 		Object params[] = new String[] { scanCodProducto.getText() };
-		Document doc = TelefrontGUI.getInstance().executeMethod(
-				CONTROLLER_CLASS, "obtenerProducto", params);
+		Document doc = TelefrontGUI.getInstance().executeMethod(CONTROLLER_CLASS, "obtenerProducto", params);
 		ProductModel productModel = new ProductModel();
+		
 		if (doc != null) {
 			message.setText("");
 			productModel.toProductModel(doc);
+			salirButton.setEnabled(false);
 
-			subTotalVenta += Double.valueOf(productModel.getPrice())
-					* Double.parseDouble(cantProd.getText());
-			tableModelProducts.addRow(new Object[] {
-					new Boolean(false),
-					productModel.getDescription(),
-					cantProd.getText(),
-					Double.valueOf(productModel.getPrice()),
-					Double.valueOf(productModel.getPrice())
-							* Double.parseDouble(cantProd.getText()) });
+			subTotalVenta += Double.valueOf(productModel.getPrice())* Double.parseDouble(cantProd.getText());
+			tableModelProducts.addRow(new Object[] {new Boolean(false),productModel.getDescription(),cantProd.getText(),
+					Double.valueOf(productModel.getPrice()),Double.valueOf(productModel.getPrice())* Double.parseDouble(cantProd.getText()) });
 			productModel.setCantidad(Integer.parseInt(cantProd.getText()));
 			agregarAProductsCode(productModel.getCode());
 
 			agregarProducto(productModel);
 
 			descProducto.setText(productModel.getDescription());
-
-			tableRelations.getColumn("Cancel").setCellRenderer(
-					new MultiRenderer());
+			tableRelations.getColumn("Cancel").setCellRenderer(new MultiRenderer());
 			tableRelations.getColumn("Cancel").setCellEditor(new MultiEditor());
 
 			subTotalVenta = Truncar(subTotalVenta, 2);
 			subtotalVentaTextfield.setText(subTotalVenta.toString());
 
-			totalVenta = OTORGAR_DESCUENTO ? subTotalVenta * DESCUENTO_EMPLEADO
-					: subTotalVenta;
+			totalVenta = OTORGAR_DESCUENTO ? subTotalVenta * DESCUENTO_EMPLEADO: subTotalVenta;
 			totalVenta = Truncar(totalVenta, 2);
 			totalVentaTextField.setText(totalVenta.toString());
 
@@ -702,7 +685,6 @@ public class CajeroVentaFrame extends DailyMarketFrame {
 		totalVenta = OTORGAR_DESCUENTO ? subTotalVenta * DESCUENTO_EMPLEADO: subTotalVenta;
 		totalVenta = Truncar(totalVenta, 2);
 		totalVentaTextField.setText(totalVenta.toString());
-
 	}
 
 	public void otorgarDescuento() {
@@ -722,7 +704,7 @@ public class CajeroVentaFrame extends DailyMarketFrame {
 
 	}
 
-	public double Truncar(double nD, int nDec) {
+	private double Truncar(double nD, int nDec) {
 		if (nD > 0)
 			nD = Math.floor(nD * Math.pow(10, nDec)) / Math.pow(10, nDec);
 		else
