@@ -3,7 +3,6 @@
 	<property name="ireport.zoom" value="1.2100000000000042"/>
 	<property name="ireport.x" value="0"/>
 	<property name="ireport.y" value="0"/>
-	<parameter name="imgs" class="java.lang.String"/>
 	<field name="code" class="java.lang.String"/>
 	<field name="price" class="java.lang.String"/>
 	<field name="name" class="java.lang.String"/>
@@ -12,6 +11,7 @@
 	<field name="description" class="java.lang.String"/>
 	<field name="repositionStock" class="java.lang.String"/>
 	<field name="actualStock" class="java.lang.String"/>
+	<field name="urlImg" class="java.lang.String"/>
 	<background>
 		<band splitType="Stretch"/>
 	</background>
@@ -19,7 +19,7 @@
 		<band height="68" splitType="Stretch">
 			<image>
 				<reportElement x="0" y="0" width="555" height="58"/>
-				<imageExpression class="java.lang.String"><![CDATA["C:\\workspace\\aplicacion_web\\webapp\\images\\header\\pdfHeader.jpg"]]></imageExpression>
+				<imageExpression class="java.lang.String"><![CDATA[$F{urlImg}]]></imageExpression>
 			</image>
 		</band>
 	</title>

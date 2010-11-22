@@ -46,25 +46,12 @@ public class BillingReportService extends BaseReportService{
 		} catch (NamingException e1) {
 			e1.printStackTrace();
 		}
-        parameters.put("reportsFolder", imgs); 
 		
         try {
 		    JasperReport jasperReport = (JasperReport) JRLoader.loadObject(BillingReportService.class.getResourceAsStream("/reports/" + report + ".jasper"));
 			setDataReport(col, filters, tipo);
-		    //Para probar
-//		    if (tipo.equals("Anual")) {
-//		    	col.add(new Billing(new Integer(58), new Double(764.3), "2007", new Integer(1345)));
-//			    col.add(new Billing(new Integer(58), new Double(678.6), "2008", new Integer(2145)));
-//			    col.add(new Billing(new Integer(58), new Double(813.2), "2009", new Integer(2456)));
-//			    col.add(new Billing(new Integer(58), new Double(1351.5), "2010",new Integer(2897)));
-//		    } else {
-//		    	col.add(new Billing(new Integer(58), new Double(764.3), "09/09", new Integer(1345)));
-//			    col.add(new Billing(new Integer(58), new Double(678.6), "10/09", new Integer(2145)));
-//			    col.add(new Billing(new Integer(58), new Double(813.2), "11/09", new Integer(2456)));
-//			    col.add(new Billing(new Integer(58), new Double(1351.5), "12/09",new Integer(2897)));
-//		    }
 		    
-		    return JasperRunManager.runReportToPdf(jasperReport, parameters, getDataSource(col, filters, tipo));			
+		    return JasperRunManager.runReportToPdf(jasperReport, parameters, getDataSource(col, filters, tipo, imgs));			
         } catch (Throwable e) {
 			e.printStackTrace();
 			throw new Exception(e);
@@ -127,8 +114,8 @@ public class BillingReportService extends BaseReportService{
 	}
 	
     @SuppressWarnings("unchecked")
-	private JRDataSource getDataSource(Collection results, Map<String, String> filters, String tipo) {
-        return new CustomDS(results, filters, tipo);
+	private JRDataSource getDataSource(Collection results, Map<String, String> filters, String tipo, String img) {
+        return new CustomDS(results, filters, tipo, img);
     }
     
     protected class CustomDS implements JRDataSource  {		
@@ -136,12 +123,14 @@ public class BillingReportService extends BaseReportService{
         protected Object currentValue; 
         protected Map<String, String> filters;
         protected String tipo;
+        protected String img;
         
         @SuppressWarnings("unchecked")
-		public CustomDS(Collection c, Map<String, String> filters, String tipo) {
+		public CustomDS(Collection c, Map<String, String> filters, String tipo, String img) {
         	this.iterator = c.iterator();
         	this.filters = filters;
         	this.tipo = tipo;
+        	this.img = img;
         }
         
         public Object getFieldValue(JRField field) {
@@ -170,6 +159,8 @@ public class BillingReportService extends BaseReportService{
         		return tipo;
         	} else if("tipoPeriodo".equals(field.getName())) {
         		return tipo.equals("Anual") ? "Año" : "Mes";
+        	} else if("urlImg".equals(field.getName())) {
+        		return img;
         	}
         	return null;
         }

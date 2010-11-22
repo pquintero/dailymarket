@@ -3,7 +3,6 @@
 	<property name="ireport.zoom" value="1.2100000000000042"/>
 	<property name="ireport.x" value="0"/>
 	<property name="ireport.y" value="0"/>
-	<parameter name="imgs" class="java.lang.String"/>
 	<field name="producto" class="java.lang.Integer"/>
 	<field name="ventas" class="java.lang.Number"/>
 	<field name="periodo" class="java.lang.String"/>
@@ -14,6 +13,7 @@
 	<field name="hourlyBand" class="java.lang.String"/>
 	<field name="tipo" class="java.lang.String"/>
 	<field name="tipoPeriodo" class="java.lang.String"/>
+	<field name="urlImg" class="java.lang.String"/>
 	<background>
 		<band splitType="Stretch"/>
 	</background>
@@ -21,7 +21,7 @@
 		<band height="58" splitType="Stretch">
 			<image>
 				<reportElement x="0" y="0" width="555" height="58"/>
-				<imageExpression class="java.lang.String"><![CDATA["C:\\workspace\\aplicacion_web\\webapp\\images\\header\\pdfHeader.jpg"]]></imageExpression>
+				<imageExpression class="java.lang.String"><![CDATA[$F{urlImg}]]></imageExpression>
 			</image>
 		</band>
 	</title>

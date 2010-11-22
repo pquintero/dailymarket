@@ -35,29 +35,30 @@ public class ListPricesReportService extends BaseReportService{
 		} catch (NamingException e1) {
 			e1.printStackTrace();
 		}
-        parameters.put("reportsFolder", imgs); 
 		
         try {
 		    JasperReport jasperReport = (JasperReport) JRLoader.loadObject(ListPricesReportService.class.getResourceAsStream("/reports/" + report + ".jasper"));					    
-		    return JasperRunManager.runReportToPdf(jasperReport, parameters, getDataSource(getListProduct(filters), filters));			
+		    return JasperRunManager.runReportToPdf(jasperReport, parameters, getDataSource(getListProduct(filters), filters, imgs));			
         } catch (Throwable e) {
 			e.printStackTrace();
 			throw new Exception(e);
 		}
 	}			
 	
-    private JRDataSource getDataSource(Collection results, Map<String, Object> filters) {
-        return new CustomDS(results, filters);
+    private JRDataSource getDataSource(Collection results, Map<String, Object> filters, String imgs) {
+        return new CustomDS(results, filters, imgs);
     }
     
     protected class CustomDS implements JRDataSource  {		
         protected Iterator<Object> iterator; 
         protected Object currentValue; 
         protected Map<String, Object> filters;
+        protected String imgs;
         
-        public CustomDS(Collection c, Map<String, Object> filters) {
+        public CustomDS(Collection c, Map<String, Object> filters, String imgs) {
         	this.iterator = c.iterator();
         	this.filters = filters;
+        	this.imgs = imgs;
         }
         
         public Object getFieldValue(JRField field) {
@@ -79,6 +80,8 @@ public class ListPricesReportService extends BaseReportService{
         		return product.getActualStock().toString();
         	} else if("repositionStock".equals(field.getName())) {
         		return product.getRepositionStock().toString();
+        	} else if("urlImg".equals(field.getName())) {
+        		return imgs;
         	}
         	return null;
         }

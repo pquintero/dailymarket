@@ -52,16 +52,16 @@ public class BaseReportService {
     	GroupProductService groupProductService = new GroupProductService();
     	Product product = null;
     	GroupProduct groupProduct = null;
-    	
+
+    	Map<String, Object> filters = new HashMap<String, Object>();
     	if (((Long)(form.get("productId"))).longValue() != new Long(-1).longValue()) {
     		product = productService.getProductByPK((Long)form.get("productId"));
     	}
     	if (((Long)(form.get("groupProductId"))).longValue() != new Long(-1).longValue()) {
     		groupProduct = groupProductService.getGroupProductByPK((Long)form.get("groupProductId"));
-    	}
-    	Map<String, Object> filters = new HashMap<String, Object>();
+    	}    	
     	filters.put("productFilter", product != null ? product : null);
-    	filters.put("groupProduct", groupProduct != null ? groupProduct : null);    	
+    	filters.put("groupProduct", groupProduct != null ? groupProduct : null);       	    	
     	return filters;
     }
 	
@@ -69,7 +69,7 @@ public class BaseReportService {
 	@SuppressWarnings("unchecked")
 	public List<Product> getListProduct(Map<String,Object> filters) {		
 		Criteria c = HibernateHelper.currentSession().createCriteria(Product.class); 
-		if (filters.get("product") != null) {
+		if (filters.get("productFilter") != null) {
 			c.add(Restrictions.eq("id", ((Product)filters.get("productFilter")).getId()));
 		} else if (filters.get("groupProduct") != null) {
 			c.add(Restrictions.eq("groupProduct.id", ((GroupProduct)filters.get("groupProduct")).getId()));
