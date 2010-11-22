@@ -3,12 +3,13 @@
 	<property name="ireport.zoom" value="1.2100000000000042"/>
 	<property name="ireport.x" value="0"/>
 	<property name="ireport.y" value="0"/>
-	<parameter name="imgs" class="java.lang.String"/>
 	<field name="groupProduct" class="java.lang.String"/>
 	<field name="productFilter" class="java.lang.String"/>
 	<field name="code" class="java.lang.String"/>
 	<field name="price" class="java.lang.String"/>
 	<field name="name" class="java.lang.String"/>
+	<field name="urlBarcode" class="java.lang.String"/>
+	<field name="urlImg" class="java.lang.String"/>
 	<background>
 		<band splitType="Stretch"/>
 	</background>
@@ -16,7 +17,7 @@
 		<band height="58" splitType="Stretch">
 			<image>
 				<reportElement x="0" y="0" width="555" height="58"/>
-				<imageExpression class="java.lang.String"><![CDATA[$P{imgs}.toString() + "\\images\\header\\pdfHeader.jpg"]]></imageExpression>
+				<imageExpression class="java.lang.String"><![CDATA[$F{urlImg}]]></imageExpression>
 			</image>
 		</band>
 	</title>
@@ -38,29 +39,33 @@
 				<textFieldExpression class="java.lang.String"><![CDATA[$F{groupProduct}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="275" y="10" width="265" height="20"/>
+				<reportElement x="275" y="11" width="265" height="20"/>
 				<textElement/>
 				<textFieldExpression class="java.lang.String"><![CDATA[$F{productFilter}]]></textFieldExpression>
 			</textField>
 		</band>
 	</pageHeader>
 	<detail>
-		<band height="104" splitType="Stretch">
+		<band height="66" splitType="Stretch">
 			<staticText>
-				<reportElement x="5" y="78" width="23" height="20"/>
+				<reportElement x="3" y="31" width="23" height="20"/>
 				<textElement/>
 				<text><![CDATA[     $]]></text>
 			</staticText>
 			<textField>
-				<reportElement x="28" y="78" width="173" height="20"/>
+				<reportElement x="25" y="31" width="173" height="20"/>
 				<textElement/>
 				<textFieldExpression class="java.lang.String"><![CDATA[$F{price}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="5" y="58" width="196" height="20"/>
+				<reportElement x="3" y="10" width="196" height="20"/>
 				<textElement/>
 				<textFieldExpression class="java.lang.String"><![CDATA[$F{name}]]></textFieldExpression>
 			</textField>
+			<image>
+				<reportElement x="202" y="10" width="242" height="41"/>
+				<imageExpression class="java.lang.String"><![CDATA[$F{urlBarcode} + $F{code}+".jpg"]]></imageExpression>
+			</image>
 		</band>
 	</detail>
 	<columnFooter>

@@ -5,8 +5,9 @@
 	<Environment name="urlDataBase" value="jdbc:mysql://localhost/dailyMarket" type="java.lang.String" override="true"/>
 	<Environment name="usrDataBase" value="root" type="java.lang.String" override="true"/>
 	<Environment name="passDataBase" value="root" type="java.lang.String" override="true"/>
-	<Environment name="reportsFolder" value="C:\workspace\aplicacion_web\webapp" type="java.lang.String" override="true"/> 			
+	<Environment name="reportsFolder" value="C:\workspace\aplicacion_web\webapp\images\header\pdfHeader.jpg" type="java.lang.String" override="true"/> 			
 	<Environment name="uploadPath" value="C:\workspace\dailyMarket\upload" type="java.lang.String" override="true"/>
+	<Environment name="barcode" value="C:\workspace\dailyMarket\barcode" type="java.lang.String" override="true"/>
 	
     <Resource   name="jdbc/dailyMarket" 
                 scope="Shareable" 

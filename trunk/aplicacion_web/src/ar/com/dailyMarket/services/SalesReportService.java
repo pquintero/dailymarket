@@ -32,6 +32,7 @@ import ar.com.dailyMarket.model.SesionVenta;
 
 public class SalesReportService extends BaseReportService{
 	
+	@SuppressWarnings("unchecked")
 	public byte[] runReport(DynaBean reportData, Collection col, String report, Map<String, String> filters,String tipo)throws Exception {
         Map<String, String> parameters = new HashMap<String, String>();		
         String imgs = "";
@@ -44,13 +45,12 @@ public class SalesReportService extends BaseReportService{
 		} catch (NamingException e1) {
 			e1.printStackTrace();
 		}
-        parameters.put("reportsFolder", imgs); 
 		
         try {
 		    JasperReport jasperReport = (JasperReport) JRLoader.loadObject(SalesReportService.class.getResourceAsStream("/reports/" + report + ".jasper"));
 			
 		    setDataReport(col, filters, tipo);
-		    return JasperRunManager.runReportToPdf(jasperReport, parameters, getDataSource(col, filters, tipo));			
+		    return JasperRunManager.runReportToPdf(jasperReport, parameters, getDataSource(col, filters, tipo, imgs));			
         } catch (Throwable e) {
 			e.printStackTrace();
 			throw new Exception(e);
@@ -96,8 +96,8 @@ public class SalesReportService extends BaseReportService{
 		}			
 	}
 	
-    private JRDataSource getDataSource(Collection results, Map<String, String> filters, String tipo) {
-        return new CustomDS(results, filters, tipo);
+    private JRDataSource getDataSource(Collection results, Map<String, String> filters, String tipo, String imgs) {
+        return new CustomDS(results, filters, tipo, imgs);
     }
     
     protected class CustomDS implements JRDataSource  {		
@@ -105,11 +105,13 @@ public class SalesReportService extends BaseReportService{
         protected Object currentValue; 
         protected Map<String, String> filters;
         protected String tipo;
+        protected String imgs;
         
-        public CustomDS(Collection c, Map<String, String> filters, String tipo) {
+        public CustomDS(Collection c, Map<String, String> filters, String tipo, String imgs) {
         	this.iterator = c.iterator();
         	this.filters = filters;
         	this.tipo = tipo;
+        	this.imgs = imgs;
         }
         
         public Object getFieldValue(JRField field) {
@@ -134,6 +136,8 @@ public class SalesReportService extends BaseReportService{
         		return tipo;
         	} else if("tipoPeriodo".equals(field.getName())) {
         		return tipo.equals("Anual") ? "Año" : "Mes";
+        	} else if("urlImg".equals(field.getName())) {
+        		return imgs;
         	}        	
         	return null;
         }
