@@ -6,9 +6,8 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import net.sf.json.*;
+import net.sf.json.JSONArray;
 
-import org.apache.commons.lang.StringUtils;
 import org.apache.struts.action.ActionErrors;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
@@ -36,7 +35,7 @@ public class SimulatorAction extends BaseAction {
 		((DynaActionForm)form).initialize(mapping);
 		((DynaActionForm)form).set("margen","");
 		((DynaActionForm)form).set("yearFrom","2009");
-		((DynaActionForm)form).set("days",0);
+		((DynaActionForm)form).set("days","0");
 		((DynaActionForm)form).set("simuladorArray", new String[0]);
 		
 		List<GroupProduct> gp = new GroupProductService().getAllGroupProduct();
@@ -105,8 +104,8 @@ public class SimulatorAction extends BaseAction {
 	
 	private ActionErrors validateForm(DynaActionForm form, HttpServletRequest request) {
 		ActionErrors errors = new ActionErrors();
-    	Validator.isInteger(form.get("margen"), errors, request, getResources(request).getMessage("SimulatorForm.daysSimulator"), true);
-    	Validator.isInteger(form.get("days"), errors, request, getResources(request).getMessage("SimulatorForm.margen"), true);
+    	Validator.isInteger(form.get("margen"), errors, request, "Margen de Días", true);
+    	Validator.isInteger(form.get("days"), errors, request, "Días a Simular", true);
     	return errors;
 	}
 }

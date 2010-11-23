@@ -33,7 +33,7 @@ public class ConfigurationAction extends BaseAction {
 		ConfigurationService configurationService = new ConfigurationService();
 		Configuration conf = configurationService.getConfiguration();
 		if (conf != null) {
-			form.set("timer", conf.getTimer());
+			form.set("timer", conf.getTimer().toString());
 			form.set("emailDeposito", conf.getEmailDeposito());
 		}
 	}
@@ -64,7 +64,7 @@ public class ConfigurationAction extends BaseAction {
 	
 	private ActionErrors validateForm(DynaActionForm form, HttpServletRequest request) {    	
     	ActionErrors errors = new ActionErrors();
-    	Validator.isInteger(form.get("timer"), errors, request, getResources(request).getMessage("ConfigrationForm.timerAlarm"), true);    	
+    	Validator.isInteger(form.get("timer"), errors, request, "Período", true);    	
     	return errors;
     }
 }

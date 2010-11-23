@@ -26,7 +26,15 @@ import ar.com.dailyMarket.ui.validator.Validator;
 
 public class UserAction extends BaseAction {         
     
-    public ActionForward showFilter (ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {    	    
+    @Override
+    public ActionForward initAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) {
+    	((DynaActionForm)form).set("attachId",new Long(-1));
+    	((DynaActionForm)form).set("id",new Long(-1));
+    	request.getSession().setAttribute("image", null);
+    	return super.initAction(mapping, form, request, response);
+    }
+	
+	public ActionForward showFilter (ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {    	    
     	initForm((DynaActionForm)form);
     	setGroupUserRequest(request);
     	return mapping.findForward("filter");
@@ -49,6 +57,9 @@ public class UserAction extends BaseAction {
     	if (!errors.isEmpty()) {	
     		saveErrors(request, errors);
     		setGroupUserRequest(request);
+    		((DynaActionForm)form).set("id",new Long(-1));
+    		((DynaActionForm)form).set("attachId",new Long(-1));
+    		request.getSession().setAttribute("image", null);
     		return mapping.findForward("filter");
     	}
     	request.setAttribute("items", userService.executeFilter((DynaActionForm)form));
@@ -65,6 +76,14 @@ public class UserAction extends BaseAction {
     	if (!errors.isEmpty()) {	
     		saveErrors(request, errors);
     		setGroupUserRequest(request);
+    		User user = userService.getUserByPK((Long)((DynaActionForm)form).get("id"));
+    		if (user.getImage() != null) {
+        		request.getSession().setAttribute("image", user.getImage());
+        		((DynaActionForm)form).set("attachId",user.getImage().getId());
+        	} else {
+        		((DynaActionForm)form).set("attachId",new Long(-1));
+        		request.getSession().setAttribute("image", null);
+        	}
     		return mapping.findForward("showDetail");
     	}
     	return super.stepBack(mapping, form, request, response);

@@ -22,12 +22,12 @@ public class ProductService extends MailService{
 		Product product = (Product)obj;
 		product.setName((String)form.get("name"));
 		product.setDescription((String)form.get("description"));
-		product.setActualStock((Integer)form.get("actualStock"));
-		product.setPrice((Double)form.get("price"));
-		product.setSizeOfPurchase((Integer)form.get("sizeOfPurchase"));
+		product.setActualStock(Integer.parseInt((String)form.get("actualStock")));
+		product.setPrice(Double.parseDouble((String)form.get("price")));
+		product.setSizeOfPurchase(Integer.parseInt((String)form.get("sizeOfPurchase")));
 		GroupProductService groupProductService = new GroupProductService();
 		product.setGroupProduct(groupProductService.getGroupProductByPK((Long)form.get("groupProductId")));
-		product.setRepositionStock((Integer)form.get("repositionStock"));
+		product.setRepositionStock(Integer.parseInt((String)form.get("repositionStock")));
 		product.setActive(new Boolean(true));
 		
 		/** FIXME que pasa si actualizas un producto despues de haber mandado el mail y el estado haya pasado a enviado????**/
