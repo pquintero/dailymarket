@@ -15,7 +15,11 @@ import ar.com.dailyMarket.services.HourlyBandService;
 import ar.com.dailyMarket.services.ProductService;
 
 public class EstadisticasAction extends BaseAction {
-
+	
+	/**
+	 * FIXME No hardcodear meses ni anios
+	 */
+	
     public ActionForward initAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) {	
     	return mapping.findForward("showEstadisticasHome");
     }

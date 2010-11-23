@@ -4,6 +4,8 @@
 <%@ taglib uri="/tags/struts-html" prefix="html" %>
 <%@ taglib uri="/tags/struts-bean" prefix="bean" %>
 <%@ page import="java.net.URLEncoder" %>
+<%@ page import="java.lang.Long" %>
+<%@ page import="java.util.Date" %>
 
 <bean:define id="year" property="year" name="IndicadoresForm" type="java.lang.String"/>
 <bean:define id="cajeroId" property="cajeroId" name="IndicadoresForm" type="java.lang.Long"/>
@@ -24,7 +26,8 @@
 								"VirtualDispatchName=getVPCAChart" + 
 								"&year="+   URLEncoder.encode(year) + 
 								"&cajeroId=" + cajeroId + 
-								"&bandaHorariaId=" + bandaHorariaId;
+								"&bandaHorariaId=" + bandaHorariaId +
+								"&noCache=" + new Long(new Date().getTime()).toString();
 						%>
 						<embed src="charts/Line.swf"
 		 					flashVars="dataURL=<%=URLEncoder.encode(url)%>"

@@ -2,15 +2,12 @@ package ar.com.dailyMarket.services;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
-import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Locale;
-import java.util.Random;
 
 import org.apache.struts.action.DynaActionForm;
 import org.hibernate.Criteria;
@@ -28,6 +25,10 @@ import ar.com.dailyMarket.model.User;
 
 public class IndicadoresService {
 	
+	/**
+	 * TODO ventas por cajero yo lo tome como ventas en dinero, no en catidad de operaciones de venta ver cual es la correcta
+	 */
+	
 /******		VentasPorCajeroMensual		******/
 	public LineChart getVPCMChart(DynaActionForm form) {
 		UserService us = new UserService();
@@ -40,7 +41,7 @@ public class IndicadoresService {
 		cal.set(fechaPedida.get(GregorianCalendar.YEAR), fechaPedida.get(GregorianCalendar.MONTH), 1);
 		SimpleDateFormat sdf = new SimpleDateFormat("dd");
 		
-		List values = new ArrayList();
+		List<SetElement> values = new ArrayList<SetElement>();
 		while(fechaPedida.get(GregorianCalendar.MONTH) == cal.get(GregorianCalendar.MONTH)){
 	      	SetElement el = new SetElement();
 	       	
@@ -64,7 +65,174 @@ public class IndicadoresService {
 		return line;
 	}
 	
-	/** TODO ver banda horaria: a. activo, b. desde 00 hasta 00 **/
+/******		VentasPorCajeroAnual		******/
+	public LineChart getVPCAChart(DynaActionForm form) {
+		UserService us = new UserService();
+		User cajero = us.getUserByPK((Long)form.get("cajeroId"));
+		
+		GregorianCalendar fechaPedida = new GregorianCalendar();
+		fechaPedida.set(Integer.valueOf((String)form.get("year")), 0, 1);
+		
+		GregorianCalendar cal = new GregorianCalendar();
+		cal.set(fechaPedida.get(GregorianCalendar.YEAR), 0 , 1);
+		
+		List<SetElement> values = new ArrayList<SetElement>();
+		while(fechaPedida.get(GregorianCalendar.YEAR) == cal.get(GregorianCalendar.YEAR)){
+	      	SetElement el = new SetElement();
+	       	
+	      	el.setLabel(cal.getDisplayName(GregorianCalendar.MONTH,GregorianCalendar.LONG, new Locale("es")));
+	       	el.setValue(getVentasPorCajeroPorFechaPorMes(cajero, cal, (Long) form.get("bandaHorariaId")));
+	      	
+	       	values.add(el);
+	      	cal.add(GregorianCalendar.MONTH, 1);
+	    }
+		
+		LineChart line = new LineChart(values);
+		line.setCaption("Ventas De " + cajero.getCompleteName() + ". En el año " + fechaPedida.get(GregorianCalendar.YEAR));
+		line.setXAxisName("Meses");
+		line.setYAxisName("Ventas");
+		line.setNumberPrefix("");
+		line.setNumberSuffix("");
+		line.setShowValues(0);
+		
+		return line;
+	}
+	
+/******		ComparativoDeVentasPorCajeroMensual		******/
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	public MSLine getCVPCMChart(DynaActionForm form, String[] cajeros) {
+		UserService us = new UserService();
+		
+	    List values = new ArrayList();
+	    List<CategoryElement> subValues = new ArrayList<CategoryElement>();
+	    
+		GregorianCalendar fechaPedida = new GregorianCalendar();
+		fechaPedida.set(Integer.valueOf((String)form.get("year")), Integer.valueOf((String)form.get("month")), 1);
+		
+		GregorianCalendar cal = new GregorianCalendar();
+		cal.set(fechaPedida.get(GregorianCalendar.YEAR), fechaPedida.get(GregorianCalendar.MONTH), 1);
+		
+		SimpleDateFormat sdf = new SimpleDateFormat("dd");
+		Integer dias = 0;
+		
+	   	//Se ponen los distintos puntos del eje X
+	   	
+	    while(fechaPedida.get(GregorianCalendar.MONTH) == cal.get(GregorianCalendar.MONTH)) {
+			CategoryElement ce = new CategoryElement(sdf.format(cal.getTime()));
+			subValues.add(ce);
+			cal.add(GregorianCalendar.DATE, 1);
+			dias++;
+	    }
+		values.add(subValues);
+		
+		for(Integer i = 0; i < cajeros.length; i++) {
+			User cajero = us.getUserByPK(Long.valueOf(cajeros[i]));
+			
+			DatasetElement curva = new DatasetElement();
+			curva.setSeriesname(cajero.getCompleteName());
+			curva.setShowValues(0);
+			
+			LinkedList<Lines> puntos = new LinkedList<Lines>();
+			for (Integer aux = 1; aux <= dias; aux++) {
+		      	SetElement el = new SetElement();
+	       		
+		      	cal.set(fechaPedida.get(GregorianCalendar.YEAR), fechaPedida.get(GregorianCalendar.MONTH), aux);
+		      	el.setValue(getVentasPorCajeroPorFechaPorDia(cajero, cal, (Long) form.get("bandaHorariaId")));
+		       	
+		       	puntos.add(el);
+		    }
+			curva.setSets(puntos);
+			values.add(curva);
+		}
+		
+		
+	    MSLine mSLine = new MSLine(values);
+	    mSLine.setPalette(3);
+	    
+	    mSLine.setCaption("Comparativa de Ventas Por Cajero en el mes de " + 
+	    		(fechaPedida.getDisplayName(GregorianCalendar.MONTH,GregorianCalendar.LONG, new Locale("es"))).toUpperCase() +
+	    		" de " + fechaPedida.get(GregorianCalendar.YEAR));
+	    mSLine.setShowLabels(1);
+	    mSLine.setYAxisMinValue(0d);
+	    mSLine.setShowValues(0);
+	    mSLine.setDecimals(0);
+	    mSLine.setRotateLabels(0);
+	    mSLine.setXAxisName("Dias");
+	    mSLine.setYAxisName("Ventas");
+	    mSLine.setNumberPrefix("");
+	    mSLine.setNumberSuffix("");
+	    return mSLine;
+	}
+		
+/******		ComparativoDeVentasPorCajeroAnual		******/
+	
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	public MSLine getCVPCAChart(DynaActionForm form, String[] cajeros) {
+		UserService us = new UserService();
+		
+		List values = new ArrayList();
+	    List<CategoryElement> subValues = new ArrayList<CategoryElement>();
+	    
+	    GregorianCalendar fechaPedida = new GregorianCalendar();
+		fechaPedida.set(Integer.valueOf((String)form.get("year")), 0, 1);
+		
+		GregorianCalendar cal = new GregorianCalendar();
+		cal.set(fechaPedida.get(GregorianCalendar.YEAR), 0 , 1);
+		
+		Integer meses = 0;
+		
+	   	//Se ponen los distintos puntos del eje X
+	    while(fechaPedida.get(GregorianCalendar.YEAR) == cal.get(GregorianCalendar.YEAR)) {
+			CategoryElement ce = new CategoryElement(cal.getDisplayName(GregorianCalendar.MONTH,GregorianCalendar.LONG, new Locale("es")));
+			subValues.add(ce);
+			cal.add(GregorianCalendar.MONTH, 1);
+			meses++;
+	    }
+		values.add(subValues);
+		
+		for(Integer i = 0; i < cajeros.length; i++) {
+			User cajero = us.getUserByPK(Long.valueOf(cajeros[i]));
+			
+			DatasetElement curva = new DatasetElement();
+			curva.setSeriesname(cajero.getCompleteName());
+			curva.setShowValues(0);
+			
+			/** Obtener los puntos de un cajero, debe tener puntos sin valor si no tiene ventas un mes, la curva debe tener siempre 12 puntos **/
+			LinkedList<Lines> puntos = new LinkedList<Lines>();
+			for (Integer aux = 0; aux < meses; aux++) {
+		      	SetElement el = new SetElement();
+		      	
+		      	cal.set(fechaPedida.get(GregorianCalendar.YEAR), aux , 1);
+	       		el.setValue(getVentasPorCajeroPorFechaPorMes(cajero, cal, (Long) form.get("bandaHorariaId")));
+		       	
+		       	puntos.add(el);
+		    }
+			curva.setSets(puntos);
+			values.add(curva);
+		}
+		
+	    MSLine mSLine = new MSLine(values);
+	    mSLine.setPalette(3);
+	    
+	    mSLine.setCaption("Comparativa de Ventas Por Cajero del año " + fechaPedida.get(GregorianCalendar.YEAR));
+	    mSLine.setShowLabels(1);
+	    mSLine.setYAxisMinValue(0d);
+	    mSLine.setShowValues(0);
+	    mSLine.setDecimals(0);
+	    mSLine.setRotateLabels(0);
+	    mSLine.setXAxisName("Meses");
+	    mSLine.setYAxisName("Ventas");
+	    mSLine.setNumberPrefix("");
+	    mSLine.setNumberSuffix("");
+	    return mSLine;
+	}
+	
+	/**
+	 * TODO ver banda horaria minutos y segundos
+	 * Metodos para obtener values 
+	 */
+	
+	@SuppressWarnings("unchecked")
 	private String getVentasPorCajeroPorFechaPorDia(User cajero, GregorianCalendar dia, Long bandaId) {
 		HourlyBandService bandServ = new HourlyBandService();
 		
@@ -95,46 +263,13 @@ public class IndicadoresService {
 		
 		Double total = 0D;
 		for (SesionVenta sesionVenta : sesiones) {
-			total += sesionVenta.getTotalVenta();
+			total += sesionVenta.getTotalVenta() != null ? sesionVenta.getTotalVenta() : 0D;
 		}
 		
 		return new BigDecimal(total).setScale(2, RoundingMode.HALF_EVEN).toString();
 	}
 	
-/******		VentasPorCajeroAnual		******/
-	public LineChart getVPCAChart(DynaActionForm form) {
-		UserService us = new UserService();
-		User cajero = us.getUserByPK((Long)form.get("cajeroId"));
-		
-		GregorianCalendar fechaPedida = new GregorianCalendar();
-		fechaPedida.set(Integer.valueOf((String)form.get("year")), 0, 1);
-		
-		GregorianCalendar cal = new GregorianCalendar();
-		cal.set(fechaPedida.get(GregorianCalendar.YEAR), 0 , 1);
-		SimpleDateFormat sdf = new SimpleDateFormat("MM");
-		
-		List values = new ArrayList();
-		while(fechaPedida.get(GregorianCalendar.YEAR) == cal.get(GregorianCalendar.YEAR)){
-	      	SetElement el = new SetElement();
-	       	
-	      	el.setLabel(cal.getDisplayName(GregorianCalendar.MONTH,GregorianCalendar.LONG, new Locale("es")));
-	       	el.setValue(getVentasPorCajeroPorFechaPorMes(cajero, cal, (Long) form.get("bandaHorariaId")));
-	      	
-	       	values.add(el);
-	      	cal.add(GregorianCalendar.MONTH, 1);
-	    }
-		
-		LineChart line = new LineChart(values);
-		line.setCaption("Ventas De " + cajero.getCompleteName() + ". En el año " + fechaPedida.get(GregorianCalendar.YEAR));
-		line.setXAxisName("Meses");
-		line.setYAxisName("Ventas");
-		line.setNumberPrefix("");
-		line.setNumberSuffix("");
-		line.setShowValues(0);
-		
-		return line;
-	}
-	
+	@SuppressWarnings("unchecked")
 	private String getVentasPorCajeroPorFechaPorMes(User cajero, GregorianCalendar mes, Long bandaId) {
 		HourlyBandService bandServ = new HourlyBandService();
 		
@@ -165,139 +300,9 @@ public class IndicadoresService {
 		
 		Double total = 0D;
 		for (SesionVenta sesionVenta : sesiones) {
-			total += sesionVenta.getTotalVenta();
+			total += sesionVenta.getTotalVenta() != null ? sesionVenta.getTotalVenta() : 0D;
 		}
 		
 		return new BigDecimal(total).setScale(2, RoundingMode.HALF_EVEN).toString();
 	}
-	
-/******		ComparativoDeVentasPorCajeroMensual		******/
-	public MSLine getCVPCMChart(DynaActionForm form, String[] cajeros) {
-		UserService us = new UserService();
-		
-	    List values = new ArrayList();
-	    List subValues = new ArrayList();
-	    
-	    GregorianCalendar hoy = new GregorianCalendar();
-		hoy.setTime(new Date());//ESTO VIENE DEL FORM mes, año
-		
-		GregorianCalendar cal = new GregorianCalendar();
-		cal.set(hoy.get(GregorianCalendar.YEAR), hoy.get(GregorianCalendar.MONTH), 1);
-		
-		SimpleDateFormat sdf = new SimpleDateFormat("dd");
-		Integer dias = 0;
-		
-	   	//Se ponen los distintos puntos del eje X
-	   	
-	    while(hoy.get(GregorianCalendar.MONTH) == cal.get(GregorianCalendar.MONTH)) {
-			CategoryElement ce = new CategoryElement(sdf.format(cal.getTime()));
-			subValues.add(ce);
-			cal.add(GregorianCalendar.DATE, 1);
-			dias++;
-	    }
-		values.add(subValues);
-		
-		NumberFormat nf = NumberFormat.getInstance();
-		nf.setMaximumFractionDigits(0);
-		for(Integer i = 0; i < cajeros.length; i++) {
-			User cajero = us.getUserByPK(Long.valueOf(cajeros[i]));
-			
-			DatasetElement curva = new DatasetElement();
-			curva.setSeriesname(cajero.getCompleteName());
-			curva.setShowValues(0);
-			
-			/** Obtener los puntos de un cajero, debe tener puntos sin valor si no tiene ventas un dia, la curva debe tener siempre tantos puntos como 
-			dias el mes **/
-			LinkedList<Lines> puntos = new LinkedList<Lines>();
-			for (Integer aux = 1; aux <= dias; aux++) {
-		      	SetElement el = new SetElement();
-		      	//getValueByEmployeeByParameters ()
-	       		el.setValue(nf.format(new Double(new Random().nextDouble() * 50)));
-		       	
-		       	puntos.add(el);
-		    }
-			curva.setSets(puntos);
-			values.add(curva);
-		}
-		
-		
-	    MSLine mSLine = new MSLine(values);
-	    mSLine.setPalette(3);
-	    
-	    mSLine.setCaption("Comparativa de Ventas Por Cajero en el mes de " + (hoy.getDisplayName(GregorianCalendar.MONTH,GregorianCalendar.LONG, new Locale("es"))).toUpperCase());
-	    mSLine.setShowLabels(1);
-	    mSLine.setYAxisMinValue(0d);
-	    mSLine.setShowValues(0);
-	    mSLine.setDecimals(0);
-	    mSLine.setRotateLabels(0);
-	    mSLine.setXAxisName("Dias");
-	    mSLine.setYAxisName("Ventas");
-	    mSLine.setNumberPrefix("");
-	    mSLine.setNumberSuffix("");
-	    return mSLine;
-	}
-		
-/******		ComparativoDeVentasPorCajeroAnual		******/
-	public MSLine getCVPCAChart(DynaActionForm form, String[] cajeros) {
-		UserService us = new UserService();
-		
-		List values = new ArrayList();
-	    List subValues = new ArrayList();
-	    
-	    GregorianCalendar hoy = new GregorianCalendar();
-		hoy.setTime(new Date());//ESTO VIENE DEL FORM año
-		
-		GregorianCalendar cal = new GregorianCalendar();
-		cal.set(hoy.get(GregorianCalendar.YEAR), 0 , 1);
-		SimpleDateFormat sdf = new SimpleDateFormat("MM");
-		Integer meses = 0;
-		
-	   	//Se ponen los distintos puntos del eje X
-	   	
-	    while(hoy.get(GregorianCalendar.YEAR) == cal.get(GregorianCalendar.YEAR)) {
-			CategoryElement ce = new CategoryElement(cal.getDisplayName(GregorianCalendar.MONTH,GregorianCalendar.LONG, new Locale("es")));
-			subValues.add(ce);
-			cal.add(GregorianCalendar.MONTH, 1);
-			meses++;
-	    }
-		values.add(subValues);
-		
-		NumberFormat nf = NumberFormat.getInstance();
-		nf.setMaximumFractionDigits(0);
-		for(Integer i = 0; i< cajeros.length; i++) {
-			User cajero = us.getUserByPK(Long.valueOf(cajeros[i]));
-			
-			DatasetElement curva = new DatasetElement();
-			curva.setSeriesname(cajero.getCompleteName());
-			curva.setShowValues(0);
-			
-			/** Obtener los puntos de un cajero, debe tener puntos sin valor si no tiene ventas un mes, la curva debe tener siempre 12 puntos **/
-			LinkedList<Lines> puntos = new LinkedList<Lines>();
-			for (Integer aux = 1; aux <= meses; aux++) {
-		      	SetElement el = new SetElement();
-		      	//getValueByEmployeeByParameters
-	       		el.setValue(nf.format(new Double(new Random().nextDouble() * 50)));
-		       	
-		       	puntos.add(el);
-		    }
-			curva.setSets(puntos);
-			values.add(curva);
-		}
-		
-	    MSLine mSLine = new MSLine(values);
-	    mSLine.setPalette(3);
-	    
-	    mSLine.setCaption("Comparativa de Ventas Por Cajero del año " + hoy.get(GregorianCalendar.YEAR));
-	    mSLine.setShowLabels(1);
-	    mSLine.setYAxisMinValue(0d);
-	    mSLine.setShowValues(0);
-	    mSLine.setDecimals(0);
-	    mSLine.setRotateLabels(0);
-	    mSLine.setXAxisName("Meses");
-	    mSLine.setYAxisName("Ventas");
-	    mSLine.setNumberPrefix("");
-	    mSLine.setNumberSuffix("");
-	    return mSLine;
-	}
-	
 }

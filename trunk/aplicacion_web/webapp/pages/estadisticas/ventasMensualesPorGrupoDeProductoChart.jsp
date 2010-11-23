@@ -4,6 +4,8 @@
 <%@ taglib uri="/tags/struts-html" prefix="html" %>
 <%@ taglib uri="/tags/struts-bean" prefix="bean" %>
 <%@ page import="java.net.URLEncoder" %>
+<%@ page import="java.lang.Long" %>
+<%@ page import="java.util.Date" %>
 
 <bean:define id="month" property="month" name="EstadisticasForm" type="java.lang.String"/>
 <bean:define id="year" property="year" name="EstadisticasForm" type="java.lang.String"/>
@@ -25,7 +27,8 @@
 								"&year="+ URLEncoder.encode(year) +
 								"&month="+ URLEncoder.encode(month) +
 								"&groupProductId=" + groupProductId +
-								"&bandaHorariaId=" + bandaHorariaId;
+								"&bandaHorariaId=" + bandaHorariaId +
+								"&noCache=" + new Long(new Date().getTime()).toString();
 						%>
 						<embed src="charts/Column2D.swf"
 		 					flashVars="dataURL=<%=URLEncoder.encode(url)%>"

@@ -4,6 +4,8 @@
 <%@ taglib uri="/tags/struts-html" prefix="html" %>
 <%@ taglib uri="/tags/struts-bean" prefix="bean" %>
 <%@ page import="java.net.URLEncoder" %>
+<%@ page import="java.lang.Long" %>
+<%@ page import="java.util.Date" %>
 
 <bean:define id="year" property="year" name="EstadisticasForm" type="java.lang.String"/>
 <bean:define id="bandaHorariaId" property="bandaHorariaId" name="EstadisticasForm" type="java.lang.Long"/>
@@ -23,7 +25,8 @@
 								"VirtualDispatchName=getVAPPChart" + 
 								"&year="+ URLEncoder.encode(year) +
 								"&productId=" + productId +
-								"&bandaHorariaId=" + bandaHorariaId;
+								"&bandaHorariaId=" + bandaHorariaId +
+								"&noCache=" + new Long(new Date().getTime()).toString();
 						%>
 						<embed src="charts/Column2D.swf"
 		 					flashVars="dataURL=<%=URLEncoder.encode(url)%>"

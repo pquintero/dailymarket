@@ -4,6 +4,7 @@
 <%@ taglib uri="/tags/struts-html" prefix="html" %>
 <%@ taglib uri="/tags/struts-bean" prefix="bean" %>
 <%@ page import="java.net.URLEncoder" %>
+<%@ page import="java.lang.Long" %>
 <%@ page import="java.util.Date" %>
 
 <bean:define id="month" property="month" name="IndicadoresForm" type="java.lang.String"/>
@@ -11,7 +12,7 @@
 <bean:define id="cajeroId" property="cajeroId" name="IndicadoresForm" type="java.lang.Long"/>
 <bean:define id="bandaHorariaId" property="bandaHorariaId" name="IndicadoresForm" type="java.lang.Long"/>
 
-<TABLE class="form"  border="0" cellpadding="0" cellspacing="0">	
+<TABLE class="body"  border="0" cellpadding="0" cellspacing="0">	
 	<tr>
 		<td>&nbsp;</td>
 	</tr>
@@ -27,7 +28,8 @@
 								"VirtualDispatchName=getCVPCMChart" + 
 								"&month="+ URLEncoder.encode(month) + 
 								"&year="+ URLEncoder.encode(year) +
-								"&bandaHorariaId=" + bandaHorariaId;
+								"&bandaHorariaId=" + bandaHorariaId +
+								"&noCache=" + new Long(new Date().getTime()).toString();
 						%>
 						<embed src="charts/MSLine.swf"
 		 					flashVars="dataURL=<%=URLEncoder.encode(url)%>"
