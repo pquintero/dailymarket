@@ -1,5 +1,7 @@
 package ar.com.dailyMarket.ui;
 
+import java.util.Date;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -16,7 +18,9 @@ import ar.com.dailyMarket.services.HourlyBandService;
 import ar.com.dailyMarket.services.IndicadoresService;
 import ar.com.dailyMarket.services.UserService;
 
-/** FIXME no harcodear fechas? se puede tomar el año de la primer venta? y asi hasta el actual?**/
+/** FIXME no harcodear fechas? se puede tomar el año de la primer venta? y asi hasta el actual?
+ * Ver cache de los graficos, buscar como hacer que la peticion no sea igual, sino pasar un new date como parametro tal como cajeroid y month
+ * **/
 public class IndicadoresAction extends BaseAction {
 
     public ActionForward initAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) {	
@@ -119,7 +123,7 @@ public class IndicadoresAction extends BaseAction {
     		ActionErrors errors = new ActionErrors();
             errors.add("", new ActionError("errors.cajerosComparativa"));
             saveErrors(request, errors);
-            return doIndicadoresComparativaDeVentasPorCajeroMensual(mapping, form, request, response);
+            return doIndicadoresComparativaDeVentasPorCajeroAnual(mapping, form, request, response);
     	}
     	request.getSession().setAttribute("cajerosComparar", (String[])((DynaActionForm)form).get("cajerosArray"));
     	return mapping.findForward("showIndicadoresComparativaDeVentasPorCajeroAnualChart");

@@ -288,6 +288,7 @@
 			<form-property name="product" type="java.lang.String" initial=""/>
 			<form-property name="productId" type="java.lang.Long" initial="-1"/>
 			
+			<form-property name="noCache" type="java.lang.String" initial=""/>
 			<form-property name="queryDispatchName" type="java.lang.String" initial=""/>
 			<form-property name="collectionName" type="java.lang.String" initial="" />
 		</form-bean>
@@ -311,6 +312,7 @@
 			<form-property name="cajerosArray" type="java.lang.String[]" />
 			<form-property name="cajerosList" type="java.util.List" />
 			
+			<form-property name="noCache" type="java.lang.String" initial=""/>
 			<form-property name="queryDispatchName" type="java.lang.String" initial=""/>
 			<form-property name="collectionName" type="java.lang.String" initial="" />
 		</form-bean>
