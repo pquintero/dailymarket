@@ -1,0 +1,257 @@
+-- MySQL dump 10.11
+--
+-- Host: localhost    Database: dailymarket
+-- ------------------------------------------------------
+-- Server version	5.0.45-community-nt
+
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
+/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
+/*!40101 SET NAMES utf8 */;
+/*!40103 SET @OLD_TIME_ZONE=@@TIME_ZONE */;
+/*!40103 SET TIME_ZONE='+00:00' */;
+/*!40014 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0 */;
+/*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
+/*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
+/*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
+
+--
+-- Table structure for table `attach`
+--
+
+DROP TABLE IF EXISTS `attach`;
+CREATE TABLE `attach` (
+  `attachid` int(10) unsigned NOT NULL auto_increment,
+  `objecttype` varchar(85) default NULL,
+  `name` varchar(80) default NULL,
+  `description` varchar(100) default NULL,
+  `realname` varchar(100) default NULL,
+  `path` varchar(100) default NULL,
+  `contenttype` varchar(100) default NULL,
+  `size` bigint(20) unsigned default NULL,
+  `imageid` bigint(20) unsigned default NULL,
+  PRIMARY KEY  (`attachid`)
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `attach`
+--
+
+LOCK TABLES `attach` WRITE;
+/*!40000 ALTER TABLE `attach` DISABLE KEYS */;
+INSERT INTO `attach` VALUES (1,'IMAGE','IMAGE_1_1290392433218','Yerba mate','roman argentina.jpg','C:\\workspace\\dailyMarket\\uploadIMAGE_1_1290392433218','image/jpeg',7325,NULL),(2,'THUMBNAIL','THUMBNAIL_1_1290392446693','(thumb) Yerba mate','roman argentina.jpg_thumb','C:\\workspace\\dailyMarket\\uploadTHUMBNAIL_1_1290392446693','image/jpeg',0,1),(4,'IMAGE','IMAGE_1_1290394176467','Yerba mate','roman argentina 2.jpg','C:\\workspace\\dailyMarket\\uploadIMAGE_1_1290394176467','image/jpeg',10607,NULL),(5,'THUMBNAIL','THUMBNAIL_4_1290394176615','(thumb) Yerba mate','roman argentina 2.jpg_thumb','C:\\workspace\\dailyMarket\\uploadTHUMBNAIL_4_1290394176615','image/jpeg',0,4);
+/*!40000 ALTER TABLE `attach` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `configuration`
+--
+
+DROP TABLE IF EXISTS `configuration`;
+CREATE TABLE `configuration` (
+  `id` int(10) unsigned NOT NULL auto_increment,
+  `timer` int(10) unsigned default NULL,
+  `emaildeposito` varchar(60) default NULL,
+  PRIMARY KEY  (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `configuration`
+--
+
+LOCK TABLES `configuration` WRITE;
+/*!40000 ALTER TABLE `configuration` DISABLE KEYS */;
+INSERT INTO `configuration` VALUES (1,1,'juanmelo25@gmail.com');
+/*!40000 ALTER TABLE `configuration` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `groupproduct`
+--
+
+DROP TABLE IF EXISTS `groupproduct`;
+CREATE TABLE `groupproduct` (
+  `id` int(10) unsigned NOT NULL auto_increment,
+  `name` varchar(45) default NULL,
+  `description` varchar(45) default NULL,
+  `active` tinyint(3) unsigned default '1',
+  PRIMARY KEY  (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `groupproduct`
+--
+
+LOCK TABLES `groupproduct` WRITE;
+/*!40000 ALTER TABLE `groupproduct` DISABLE KEYS */;
+INSERT INTO `groupproduct` VALUES (1,'Lacteos ','Productos lacteos',1),(2,'Quesos','Quesos',1),(3,'Golosina','Golosina',1),(4,'Yerbas','Yerbas mates',1),(7,'Carnes','Carnes',1);
+/*!40000 ALTER TABLE `groupproduct` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `groupuser`
+--
+
+DROP TABLE IF EXISTS `groupuser`;
+CREATE TABLE `groupuser` (
+  `id` int(10) unsigned NOT NULL auto_increment,
+  `name` varchar(45) default NULL,
+  `description` varchar(45) default NULL,
+  `active` tinyint(3) unsigned default '1',
+  PRIMARY KEY  (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `groupuser`
+--
+
+LOCK TABLES `groupuser` WRITE;
+/*!40000 ALTER TABLE `groupuser` DISABLE KEYS */;
+INSERT INTO `groupuser` VALUES (1,'Admin','Administrador',0),(2,'Manager','Manager',1),(3,'Cajero','Cajero',1);
+/*!40000 ALTER TABLE `groupuser` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `hourlyband`
+--
+
+DROP TABLE IF EXISTS `hourlyband`;
+CREATE TABLE `hourlyband` (
+  `id` int(10) unsigned NOT NULL auto_increment,
+  `name` varchar(45) default NULL,
+  `description` varchar(45) default NULL,
+  `initband` int(10) unsigned default NULL,
+  `endband` int(10) unsigned default NULL,
+  `active` tinyint(3) unsigned default NULL,
+  PRIMARY KEY  (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `hourlyband`
+--
+
+LOCK TABLES `hourlyband` WRITE;
+/*!40000 ALTER TABLE `hourlyband` DISABLE KEYS */;
+INSERT INTO `hourlyband` VALUES (2,'Mediodia-Tarde','Turno de la tarde',12,15,1),(3,'Mañana','Turno mañana',9,12,1),(4,'Media tarde','Media tarde',15,18,1),(5,'Tarde-Noche','Tarde Noche',18,21,1),(6,'wesa','sda',0,21,0);
+/*!40000 ALTER TABLE `hourlyband` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `product`
+--
+
+DROP TABLE IF EXISTS `product`;
+CREATE TABLE `product` (
+  `id` int(10) unsigned NOT NULL auto_increment,
+  `name` varchar(45) default NULL,
+  `description` varchar(45) default NULL,
+  `sizeofpurchase` int(10) unsigned default NULL,
+  `price` double default NULL,
+  `actualstock` int(10) unsigned default NULL,
+  `code` varchar(45) default NULL,
+  `groupproductid` int(10) unsigned default NULL,
+  `repositionstock` int(11) default NULL,
+  `datewithoutstock` datetime default NULL,
+  `state` varchar(50) default NULL,
+  `active` tinyint(3) unsigned default '1',
+  `imageid` bigint(20) unsigned default NULL,
+  PRIMARY KEY  (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `product`
+--
+
+LOCK TABLES `product` WRITE;
+/*!40000 ALTER TABLE `product` DISABLE KEYS */;
+INSERT INTO `product` VALUES (1,'Yerba','Yerba mate',34,12.3,45,'1',4,12,NULL,'product.state.stock',1,NULL),(2,'Alfajor jorgito','Alfajor jorgito',20,2,12,'2',3,11,NULL,'product.state.stock',1,NULL),(3,'Queso rallado la serenisima','Queso rallado la serenima',100,12,23,'3',2,30,NULL,'product.state.send',1,NULL),(4,'Leche Sancor','Leche sancor 1L',189,2.3,45,'4',1,54,NULL,'product.state.pending',1,NULL),(5,'Chicle Beldent','Chicle Beldent 6 unidades',80,2,34,'5',3,0,NULL,'product.state.stock',1,NULL),(6,'prueb','1',12,12,12,'6',1,12,NULL,'product.state.stock',1,NULL),(7,'1','11',111,111,111,'7',1,111,NULL,'product.state.stock',1,NULL);
+/*!40000 ALTER TABLE `product` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `productoventa`
+--
+
+DROP TABLE IF EXISTS `productoventa`;
+CREATE TABLE `productoventa` (
+  `id` int(10) unsigned NOT NULL auto_increment,
+  `idProduct` int(10) unsigned NOT NULL,
+  `idSesion` int(10) unsigned NOT NULL,
+  PRIMARY KEY  (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=19 DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `productoventa`
+--
+
+LOCK TABLES `productoventa` WRITE;
+/*!40000 ALTER TABLE `productoventa` DISABLE KEYS */;
+INSERT INTO `productoventa` VALUES (1,1,1),(2,1,1),(3,1,1),(4,2,1),(5,2,1),(6,3,1),(7,1,2),(8,2,2),(9,3,2),(10,2,3),(11,1,3),(12,1,4),(13,1,5),(14,1,6),(15,1,6),(16,2,6),(17,2,6),(18,1,7);
+/*!40000 ALTER TABLE `productoventa` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `sesionventa`
+--
+
+DROP TABLE IF EXISTS `sesionventa`;
+CREATE TABLE `sesionventa` (
+  `idSesion` int(10) unsigned NOT NULL auto_increment,
+  `cajeroid` int(10) unsigned default NULL,
+  `totalventa` double default NULL,
+  `idcaja` int(10) unsigned default NULL,
+  `fechainicio` timestamp NOT NULL default CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP,
+  PRIMARY KEY  (`idSesion`)
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `sesionventa`
+--
+
+LOCK TABLES `sesionventa` WRITE;
+/*!40000 ALTER TABLE `sesionventa` DISABLE KEYS */;
+INSERT INTO `sesionventa` VALUES (1,3,10,1,'2010-10-10 03:00:00'),(2,3,12,1,'2010-10-11 03:00:00'),(3,3,25,1,'2009-10-10 03:00:00'),(4,3,13,1,'2009-10-10 13:10:00'),(5,3,14,1,'2009-01-01 03:00:00'),(6,3,35,1,'2009-02-12 13:10:10'),(7,3,45,1,'2009-02-01 02:30:00');
+/*!40000 ALTER TABLE `sesionventa` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `user`
+--
+
+DROP TABLE IF EXISTS `user`;
+CREATE TABLE `user` (
+  `id` int(10) unsigned NOT NULL auto_increment,
+  `name` varchar(45) default NULL,
+  `lastname` varchar(45) default NULL,
+  `user` varchar(45) default NULL,
+  `password` varchar(20) default NULL,
+  `dni` varchar(20) default NULL,
+  `datecreated` datetime default NULL,
+  `groupuserid` int(10) unsigned default NULL,
+  `email` varchar(50) default NULL,
+  `receiveNotifications` tinyint(1) default '0',
+  `active` tinyint(3) unsigned default '1',
+  `imageid` bigint(20) unsigned default NULL,
+  PRIMARY KEY  (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `user`
+--
+
+LOCK TABLES `user` WRITE;
+/*!40000 ALTER TABLE `user` DISABLE KEYS */;
+INSERT INTO `user` VALUES (1,'Juan','Melo','juani','juani','30862616','2010-11-14 18:15:50',1,'juanmelo25@hotmail.com',1,1,NULL),(2,'Ezequiel','Pallich','eze','eze','30129121','2010-09-13 16:52:00',2,'epallich@gmail.com',1,1,NULL),(3,'Abelardo','Pallich','abe','abe','12345678','2010-11-21 19:47:42',3,NULL,0,1,NULL),(4,'Gabriel','Ottaviano','gabi','gabi','','2010-10-12 22:18:39',3,NULL,0,1,NULL),(5,'Pepito','Peréz','pepe','pepe','','2010-11-14 14:22:38',3,NULL,0,1,NULL);
+/*!40000 ALTER TABLE `user` ENABLE KEYS */;
+UNLOCK TABLES;
+/*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
+
+/*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
+/*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
+/*!40014 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS */;
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
+/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
+/*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
+
+-- Dump completed on 2010-11-23  2:57:44
