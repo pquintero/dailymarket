@@ -48,7 +48,7 @@ public class SimulatorService extends MailService{
 		List<String> checks =  Arrays.asList(((String[]) form.get("simuladorArray")));
 		String[] ssopa = new String[productsIds.length];
 		String[] srsa = new String[productsIds.length];
-		Integer dias = (Integer) form.get("days");
+		Integer dias = (Integer) Integer.parseInt((String)form.get("days"));
 		String margen = (String) form.get("margen");
 		String yearFrom = (String) form.get("yearFrom");
 		DateFormat df = new SimpleDateFormat("dd/MM/yyyy");

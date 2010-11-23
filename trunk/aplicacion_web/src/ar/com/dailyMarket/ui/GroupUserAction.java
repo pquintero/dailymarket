@@ -73,8 +73,8 @@ public class GroupUserAction extends BaseAction {
     
     private ActionErrors validateForm(DynaActionForm form, HttpServletRequest request) {    	
     	ActionErrors errors = new ActionErrors();
-    	Validator.isEmpty(form.get("name"), errors, request, getResources(request).getMessage("GroupUserForm.name"));
-    	Validator.isEmpty(form.get("description"), errors, request, getResources(request).getMessage("GroupUserForm.description"));
+    	Validator.isEmpty(form.get("name"), errors, request, "Nombre");
+    	Validator.isEmpty(form.get("description"), errors, request, "Descripción");
     	
     	return errors;
     }

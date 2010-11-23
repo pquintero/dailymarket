@@ -26,6 +26,13 @@ import ar.com.dailyMarket.ui.validator.Validator;
 
 public class ProductAction extends BaseAction {
 	
+	public ActionForward initAction (ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) {
+		((DynaActionForm)form).set("attachId",new Long(-1));
+		((DynaActionForm)form).set("id",new Long(-1));
+		request.getSession().setAttribute("image", null);
+		return super.initAction(mapping, form, request, response);
+	}
+	
 	public ActionForward showFilter (ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {    	    
     	initForm((DynaActionForm)form);
     	setGroupUserRequest(request);
@@ -38,6 +45,9 @@ public class ProductAction extends BaseAction {
     	if (!errors.isEmpty()) {
     		saveErrors(request, errors);
     		setGroupUserRequest(request);
+    		((DynaActionForm)form).set("attachId",new Long(-1));
+    		((DynaActionForm)form).set("id",new Long(-1));
+    		request.getSession().setAttribute("image", null);
     		return super.initAction(mapping, form, request, response);
     	}
     	productService.save(form);
@@ -58,6 +68,14 @@ public class ProductAction extends BaseAction {
     	if (!errors.isEmpty()) {
     		saveErrors(request, errors);
     		setGroupUserRequest(request);
+    		Product product = productService.getProductByPK((Long)((DynaActionForm)form).get("id"));
+    		if (product.getImage() != null) {
+        		((DynaActionForm)form).set("attachId",product.getImage().getId());
+        		request.getSession().setAttribute("image", product.getImage());
+        	} else {
+        		((DynaActionForm)form).set("attachId",new Long(-1));
+        		request.getSession().setAttribute("image", null);
+        	}
         	return mapping.findForward("showDetail");
     	}
     	productService.update(form,productService.getProductByPK((Long)((DynaActionForm)form).get("id")));
@@ -89,13 +107,13 @@ public class ProductAction extends BaseAction {
     private void setFormProperties(DynaActionForm form, Product product) {
     	form.set("id", product.getId());
     	form.set("name", product.getName());
-    	form.set("actualStock", product.getActualStock());
-    	form.set("price", product.getPrice());
-    	form.set("sizeOfPurchase", product.getSizeOfPurchase());
+    	form.set("actualStock", product.getActualStock().toString());
+    	form.set("price", product.getPrice().toString());
+    	form.set("sizeOfPurchase", product.getSizeOfPurchase().toString());
     	form.set("code", product.getCode());
     	form.set("description", product.getDescription());
     	form.set("groupProductId", product.getGroupProduct() != null ? product.getGroupProduct().getId() : null);
-    	form.set("repositionStock", product.getRepositionStock() != null ? product.getRepositionStock() : null);
+    	form.set("repositionStock", product.getRepositionStock() != null ? product.getRepositionStock().toString() : null);
     }
     
     private void setGroupUserRequest (HttpServletRequest request) {
@@ -117,13 +135,13 @@ public class ProductAction extends BaseAction {
     
     private ActionErrors validateForm(DynaActionForm form, HttpServletRequest request) {    	
     	ActionErrors errors = new ActionErrors();
-    	Validator.isEmpty(form.get("code"), errors, request, getResources(request).getMessage("ProductForm.code"));
-    	Validator.isEmpty(form.get("name"), errors, request, getResources(request).getMessage("ProductForm.name"));
-    	Validator.isEmpty(form.get("description"), errors, request, getResources(request).getMessage("ProductForm.description"));
-    	Validator.isDouble(form.get("price"), errors, request, getResources(request).getMessage("ProductForm.price"), true);
-    	Validator.isInteger(form.get("sizeOfPurchase"), errors, request, getResources(request).getMessage("ProductForm.sizeOfPurchase"), true);
-    	Validator.isInteger(form.get("actualStock"), errors, request, getResources(request).getMessage("ProductForm.actualStock"), true);
-    	Validator.isInteger(form.get("repositionStock"), errors, request, getResources(request).getMessage("ProductForm.repositionStock"), true);
+    	Validator.isEmpty(form.get("code"), errors, request, "Código");
+    	Validator.isEmpty(form.get("name"), errors, request, "Nombre");
+    	Validator.isEmpty(form.get("description"), errors, request, "Descripción");
+    	Validator.isDouble(form.get("price"), errors, request, "Precio", true);
+    	Validator.isInteger(form.get("sizeOfPurchase"), errors, request, "Tamaño de compra", true);
+    	Validator.isInteger(form.get("actualStock"), errors, request, "Stock Actual", true);
+    	Validator.isInteger(form.get("repositionStock"), errors, request, "Stock de Reposición", true);
     			
     	return errors;
     }        

@@ -91,9 +91,9 @@ public class HourlyBandAction extends BaseAction {
     
     private ActionErrors validateForm(DynaActionForm form, HttpServletRequest request) {    	
     	ActionErrors errors = new ActionErrors();
-    	Validator.isEmpty(form.get("name"), errors, request, getResources(request).getMessage("GroupUserForm.name"));
-    	Validator.isEmpty(form.get("description"), errors, request, getResources(request).getMessage("GroupUserForm.description"));
-    	if (((Integer)form.get("initBand")).intValue() >= ((Integer)form.get("endBand")).intValue()) {
+    	Validator.isEmpty(form.get("name"), errors, request, "Nombre");
+    	Validator.isEmpty(form.get("description"), errors, request, "Descripción");
+    	if ((Integer.parseInt((String)form.get("initBand"))) >= (Integer.parseInt((String)form.get("endBand")))) {
     		errors.add("initBand", new ActionError("errors.incorrectBand"));
     	}
     	return errors;

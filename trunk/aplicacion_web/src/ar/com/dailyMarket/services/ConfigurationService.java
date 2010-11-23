@@ -8,7 +8,7 @@ public class ConfigurationService {
 	
 	public void copyProperties(Object obj, DynaActionForm form) {
 		Configuration configuration = (Configuration)obj;
-		configuration.setTimer((Integer)form.get("timer"));	
+		configuration.setTimer(Integer.parseInt((String)form.get("timer")));	
 		configuration.setEmailDeposito((String)form.get("emailDeposito"));
 	}
 	
