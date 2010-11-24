@@ -60,6 +60,11 @@ public class CajeroVentaService implements CajeroVentaServiceInterface {
 			
 			//Se actualiza el stock del producto
 			int stockActualizado = producto.getActualStock()-1;
+			
+			if(stockActualizado<= producto.getRepositionStock() && producto.getState().equalsIgnoreCase(Product.PRODUCT_STATE_STOCK)){
+				producto.setState(Product.PRODUCT_STATE_PENDING);
+			}
+			
 			producto.setActualStock(stockActualizado);
 			HibernateService.updateObject(producto);
 			
