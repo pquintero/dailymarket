@@ -1,5 +1,8 @@
 package ar.com.dailyMarket.ui;
 
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
+import java.io.FileInputStream;
 import java.io.IOException;
 
 import javax.naming.Context;
@@ -167,7 +170,7 @@ public class ProductAction extends BaseAction {
 		}        
 		
         ActionErrors errors = new ActionErrors();
-        FormFile file = (FormFile) ((DynaActionForm) form).get("file"); 
+        FormFile file = (FormFile) ((DynaActionForm) form).get("file");                                
         if (!file.getContentType().startsWith("image")) {
    			errors.add("file", new ActionError("errors.invalid", "Archivo debe ser una imagen.")); 
             saveErrors(request, errors);
@@ -190,6 +193,7 @@ public class ProductAction extends BaseAction {
         	service.deleteImgAndThumbnail(imgOld);
         }
         product.setImage(img);
+        product.setFoto(file.getFileData());
         productService.save(product);
 		return findByPK(mapping, form, request, response);
 	}	

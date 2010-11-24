@@ -88,12 +88,7 @@
 					<a href="image.do?VirtualDispatchName=getImage&isImage=1&imageId=<%=image.getId().toString()%>" class="highslide" onclick="return hs.expand(this)">								
 					<img src="image.do?VirtualDispatchName=getImage&isImage=0&imageId=<%=image.getThumbnail().getId().toString()%>" alt="<%=image.getDescription() %>"
 						title="<%=((Image)image).getDescription() %>" /></a>
-						<div class="highslide-caption">															
-						<img 												
-							src="images/common/eliminar.gif" 
-							onclick="confirmar('product.do?VirtualDispatchName=deleteImage&id=<%=id%>','¿Esta seguro que desea eliminar?');" 
-							alt="Eliminar"
-							style="cursor: pointer;"/>																	
+						<div class="highslide-caption">																																				
 					</div>
 			</div>
 		</TH>	
