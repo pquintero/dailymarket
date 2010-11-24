@@ -1,6 +1,7 @@
 package ar.com.dailyMarket.services;
 
 import org.apache.struts.action.DynaActionForm;
+import org.hibernate.Transaction;
 
 import ar.com.dailyMarket.model.Configuration;
 
@@ -13,13 +14,26 @@ public class ConfigurationService {
 	}
 	
 	public void save(DynaActionForm form) {
-		Configuration conf = getConfiguration();
-		if (conf == null) {
-			conf  = new Configuration();
+		Transaction tx = null;
+		try {
+			tx = HibernateHelper.currentSession().beginTransaction();
+		
+			Configuration conf = getConfiguration();
+			if (conf == null) {
+				conf  = new Configuration();
+			}
+			copyProperties(conf, form);
+			HibernateHelper.currentSession().saveOrUpdate(conf);
+			
+			tx.commit();
 		}
-		copyProperties(conf, form);
-		HibernateHelper.currentSession().saveOrUpdate(conf);
-		HibernateHelper.currentSession().flush();
+		catch (RuntimeException e) {
+			if (tx != null) tx.rollback();
+			e.printStackTrace();
+		}
+		finally {
+			tx = null;
+		}
 	}
 	
 	public Configuration getConfiguration() {

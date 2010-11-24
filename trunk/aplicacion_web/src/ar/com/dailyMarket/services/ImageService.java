@@ -12,51 +12,70 @@ import java.util.List;
 import org.apache.commons.beanutils.DynaBean;
 import org.apache.struts.upload.FormFile;
 import org.hibernate.Criteria;
+import org.hibernate.Transaction;
 import org.hibernate.criterion.Expression;
 
 import ar.com.dailyMarket.model.Image;
+import ar.com.dailyMarket.model.Product;
 import ar.com.dailyMarket.model.Thumbnail;
+import ar.com.dailyMarket.model.User;
 import ar.com.dailyMarket.services.util.ThumbnailUtil;
 
 public class ImageService {
 	
 	public Image saveImage(DynaBean data) {
-		Image img = new Image();
-		img.setContentType("image/jpeg");
-		img.setDescription((String)data.get("description"));
-				
-		FormFile file = (FormFile) data.get("file");        
+		Image img = null;
+		Transaction tx = null;
+		try {
+			tx = HibernateHelper.currentSession().beginTransaction();
+			
+			img = new Image();
+			img.setContentType("image/jpeg");
+			img.setDescription((String)data.get("description"));
+					
+			FormFile file = (FormFile) data.get("file");        
 
-        Long parentId = (Long) data.get("id");
-        String fileName = "IMAGE_" + parentId + "_" + new Date().getTime();
-        String filePath = ((String) data.get("uploadPath")) + fileName;
+	        Long parentId = (Long) data.get("id");
+	        String fileName = "IMAGE_" + parentId + "_" + new Date().getTime();
+	        String filePath = ((String) data.get("uploadPath")) + fileName;
 
-        try {
-            BufferedInputStream bis = new BufferedInputStream(new ByteArrayInputStream(file.getFileData()));
-            BufferedOutputStream bos = new BufferedOutputStream(new FileOutputStream(filePath));
+	        try {
+	            BufferedInputStream bis = new BufferedInputStream(new ByteArrayInputStream(file.getFileData()));
+	            BufferedOutputStream bos = new BufferedOutputStream(new FileOutputStream(filePath));
 
-            int len = 0;
-            for (byte []buffer = new byte[1024]; (len = bis.read(buffer, 0, 1024)) != -1; ) {
-            	bos.write(buffer, 0, len);
-            }
-            
-            bos.flush();
-            bos.close();
-            bis.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+	            int len = 0;
+	            for (byte []buffer = new byte[1024]; (len = bis.read(buffer, 0, 1024)) != -1; ) {
+	            	bos.write(buffer, 0, len);
+	            }
+	            
+	            bos.flush();
+	            bos.close();
+	            bis.close();
+	        } catch (IOException e) {
+	            e.printStackTrace();
+	        }
 
-        img.setRealName(file.getFileName());
-        img.setName(fileName);
-        img.setPath(filePath);        
-        img.setSize(new Long (file.getFileSize()));        
-        
-        HibernateHelper.currentSession().save(img);
-        
-        saveThumbnail(img, ((String) data.get("uploadPath")));
-        HibernateHelper.currentSession().refresh(img);
-        
+	        img.setRealName(file.getFileName());
+	        img.setName(fileName);
+	        img.setPath(filePath);        
+	        img.setSize(new Long (file.getFileSize()));        
+	        
+	        HibernateHelper.currentSession().save(img);
+	        
+	        saveThumbnail(img, ((String) data.get("uploadPath")));
+	        
+	        //TODO Por que este refresh??????????????
+	        HibernateHelper.currentSession().refresh(img);
+			
+			tx.commit();
+		}
+		catch (RuntimeException e) {
+			if (tx != null) tx.rollback();
+			e.printStackTrace();
+		}
+		finally {
+			tx = null;
+		}
         return img;
 	}
 	
@@ -81,7 +100,6 @@ public class ImageService {
         thumb.setPath(filePath);        
         thumb.setSize(new Long (0));
         
-        
         thumb.setImage(img);
         
         HibernateHelper.currentSession().save(thumb);
@@ -104,6 +122,48 @@ public class ImageService {
 		return (Thumbnail) HibernateHelper.currentSession().load(Thumbnail.class, id);		
 	}
 	
+	public void deleteImg(Product product) {
+		Transaction tx = null;
+		try {
+			tx = HibernateHelper.currentSession().beginTransaction();
+			
+			Image img = product.getImage();
+	    	product.setImage(null);
+	    	HibernateHelper.currentSession().update(product);
+	    	deleteImgAndThumbnail(img);
+			
+			tx.commit();
+		}
+		catch (Exception e) {
+			if (tx != null) tx.rollback();
+			e.printStackTrace();
+		}
+		finally {
+			tx = null;
+		}
+	}
+	
+	public void deleteImg(User user) {
+		Transaction tx = null;
+		try {
+			tx = HibernateHelper.currentSession().beginTransaction();
+			
+			Image img = user.getImage();
+	    	user.setImage(null);
+	    	HibernateHelper.currentSession().update(user);
+	    	deleteImgAndThumbnail(img);
+			
+			tx.commit();
+		}
+		catch (Exception e) {
+			if (tx != null) tx.rollback();
+			e.printStackTrace();
+		}
+		finally {
+			tx = null;
+		}
+	}
+	
 	public void deleteImgAndThumbnail(Image img) throws IOException {				              
         File file = new File(img.getPath());        
 		Thumbnail thumbnail = img.getThumbnail();
@@ -111,7 +171,6 @@ public class ImageService {
 		
 		HibernateHelper.currentSession().delete(img);
 		HibernateHelper.currentSession().delete(thumbnail);
-		HibernateHelper.currentSession().flush();
 		
 		if(!file.delete() || !fileThumbnail.delete()){
             throw new IOException();

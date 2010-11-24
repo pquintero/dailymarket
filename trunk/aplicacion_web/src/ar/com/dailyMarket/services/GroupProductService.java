@@ -6,6 +6,7 @@ import java.util.List;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.DynaActionForm;
 import org.hibernate.Criteria;
+import org.hibernate.Transaction;
 import org.hibernate.criterion.MatchMode;
 import org.hibernate.criterion.Restrictions;
 
@@ -20,20 +21,67 @@ public class GroupProductService {
 		groupProduct.setActive(new Boolean(true));
 	}
 	
-	public void save (ActionForm form) {	
-		GroupProduct groupProduct = new GroupProduct();
-		copyProperties(groupProduct, (DynaActionForm)form);
-		save(groupProduct);		
+	public void save (ActionForm form) {
+		Transaction tx = null;
+		try {
+			tx = HibernateHelper.currentSession().beginTransaction();
+		
+			GroupProduct groupProduct = new GroupProduct();
+			copyProperties(groupProduct, (DynaActionForm)form);
+			save(groupProduct);
+			
+			tx.commit();
+		}
+		catch (RuntimeException e) {
+			if (tx != null) tx.rollback();
+			e.printStackTrace();
+		}
+		finally {
+			tx = null;
+		}
 	}	
 	
 	public void update (ActionForm form, GroupProduct groupProduct) {
-		copyProperties(groupProduct, (DynaActionForm)form);
-		save(groupProduct);
+		Transaction tx = null;
+		try {
+			tx = HibernateHelper.currentSession().beginTransaction();
+			
+			copyProperties(groupProduct, (DynaActionForm)form);
+			save(groupProduct);
+			
+			tx.commit();
+		}
+		catch (RuntimeException e) {
+			if (tx != null) tx.rollback();
+			e.printStackTrace();
+		}
+		finally {
+			tx = null;
+		}
+	}
+	
+	public void delete (Long id) {
+		Transaction tx = null;
+		try {
+			tx = HibernateHelper.currentSession().beginTransaction();
+		
+			GroupProduct groupProduct = getGroupProductByPK(id);
+			groupProduct.setActive(false);
+			save(groupProduct);
+			
+			tx.commit();
+		}
+		catch (RuntimeException e) {
+			if (tx != null) tx.rollback();
+			e.printStackTrace();
+		}
+		finally {
+			tx = null;
+		}
 	}
 	
 	public void save (GroupProduct groupProduct) {
 		HibernateHelper.currentSession().saveOrUpdate(groupProduct);
-		HibernateHelper.currentSession().flush();		
 	}
 	
 	public GroupProduct getGroupProductByPK (Long id) {
@@ -53,19 +101,13 @@ public class GroupProductService {
 			c.add(Restrictions.ilike("description", description,MatchMode.ANYWHERE));
 		}		
 		c.add(Restrictions.eq("active", new Boolean(true)));
-		List groups = (List)c.list();		
-		return groups.isEmpty() ? new ArrayList() : groups;
+		List<GroupProduct> groups = (List<GroupProduct>)c.list();		
+		return groups.isEmpty() ? new ArrayList<GroupProduct>() : groups;
 	}
 	
 	@SuppressWarnings("unchecked")
 	public List<GroupProduct> getAllGroupProduct() {
-		return (List)HibernateHelper.currentSession().createCriteria(GroupProduct.class)
+		return (List<GroupProduct>)HibernateHelper.currentSession().createCriteria(GroupProduct.class)
 		.add(Restrictions.eq("active", new Boolean(true))).list();
-	}
-	
-	public void delete (Long id) {
-		GroupProduct groupProduct = getGroupProductByPK(id);
-		groupProduct.setActive(false);
-		save(groupProduct);
 	}
 }

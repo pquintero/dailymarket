@@ -6,6 +6,7 @@ import java.util.List;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.DynaActionForm;
 import org.hibernate.Criteria;
+import org.hibernate.Transaction;
 import org.hibernate.criterion.Restrictions;
 
 import ar.com.dailyMarket.model.HourlyBand;
@@ -21,20 +22,67 @@ public class HourlyBandService {
 		hourlyBand.setActive(new Boolean(true));
 	}
 	
-	public void save (ActionForm form) {	
-		HourlyBand hourlyBand = new HourlyBand();
-		copyProperties(hourlyBand, (DynaActionForm)form);
-		save(hourlyBand);		
+	public void save (ActionForm form) {
+		Transaction tx = null;
+		try {
+			tx = HibernateHelper.currentSession().beginTransaction();
+			
+			HourlyBand hourlyBand = new HourlyBand();
+			copyProperties(hourlyBand, (DynaActionForm)form);
+			save(hourlyBand);
+			
+			tx.commit();
+		}
+		catch (RuntimeException e) {
+			if (tx != null) tx.rollback();
+			e.printStackTrace();
+		}
+		finally {
+			tx = null;
+		}
 	}	
 	
 	public void update (ActionForm form, HourlyBand hourlyBand) {
-		copyProperties(hourlyBand, (DynaActionForm)form);
-		save(hourlyBand);
+		Transaction tx = null;
+		try {
+			tx = HibernateHelper.currentSession().beginTransaction();
+			
+			copyProperties(hourlyBand, (DynaActionForm)form);
+			save(hourlyBand);
+			
+			tx.commit();
+		}
+		catch (RuntimeException e) {
+			if (tx != null) tx.rollback();
+			e.printStackTrace();
+		}
+		finally {
+			tx = null;
+		}
+	}
+	
+	public void delete (Long id) {
+		Transaction tx = null;
+		try {
+			tx = HibernateHelper.currentSession().beginTransaction();
+			
+			HourlyBand hourlyBand = getHourlyBandByPK(id);
+			hourlyBand.setActive(false);
+			save(hourlyBand);
+			
+			tx.commit();
+		}
+		catch (RuntimeException e) {
+			if (tx != null) tx.rollback();
+			e.printStackTrace();
+		}
+		finally {
+			tx = null;
+		}
 	}
 	
 	public void save (HourlyBand hourlyBand) {
 		HibernateHelper.currentSession().saveOrUpdate(hourlyBand);
-		HibernateHelper.currentSession().flush();		
 	}
 	
 	public HourlyBand getHourlyBandByPK (Long id) {
@@ -50,19 +98,13 @@ public class HourlyBandService {
 			c.add(Restrictions.eq("id", id));
 		}		
 		c.add(Restrictions.eq("active", new Boolean(true)));
-		List hourlyBands = (List)c.list();		
-		return hourlyBands.isEmpty() ? new ArrayList() : hourlyBands;
+		List<HourlyBand> hourlyBands = (List<HourlyBand>)c.list();		
+		return hourlyBands.isEmpty() ? new ArrayList<HourlyBand>() : hourlyBands;
 	}
 	
 	@SuppressWarnings("unchecked")
 	public List<HourlyBand> getAllHourlyBands() {
 		return (List<HourlyBand>)HibernateHelper.currentSession().createCriteria(HourlyBand.class)
 		.add(Restrictions.eq("active", new Boolean(true))).list();
-	}
-	
-	public void delete (Long id) {
-		HourlyBand hourlyBand = getHourlyBandByPK(id);
-		hourlyBand.setActive(false);
-		save(hourlyBand);
 	}
 }

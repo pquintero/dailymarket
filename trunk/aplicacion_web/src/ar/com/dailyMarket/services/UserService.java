@@ -1,23 +1,20 @@
 package ar.com.dailyMarket.services;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.GregorianCalendar;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Random;
 
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.DynaActionForm;
+import org.apache.struts.upload.FormFile;
 import org.hibernate.Criteria;
+import org.hibernate.Transaction;
 import org.hibernate.criterion.MatchMode;
 import org.hibernate.criterion.Restrictions;
 
 import ar.com.dailyMarket.model.GroupUser;
-import ar.com.dailyMarket.model.Product;
-import ar.com.dailyMarket.model.ProductoVenta;
-import ar.com.dailyMarket.model.SesionVenta;
+import ar.com.dailyMarket.model.Image;
 import ar.com.dailyMarket.model.User;
 
 public class UserService {
@@ -37,19 +34,66 @@ public class UserService {
 	}
 	
 	public void save (ActionForm form) {	
-		User user = new User();
-		copyProperties(user, (DynaActionForm)form);
-		save(user);		
+		Transaction tx = null;
+		try {
+			tx = HibernateHelper.currentSession().beginTransaction();
+			
+			User user = new User();
+			copyProperties(user, (DynaActionForm)form);
+			save(user);		
+			
+			tx.commit();
+		}
+		catch (RuntimeException e) {
+			if (tx != null) tx.rollback();
+			e.printStackTrace();
+		}
+		finally {
+			tx = null;
+		}
 	}	
 	
 	public void update (ActionForm form, User user) {
-		copyProperties(user, (DynaActionForm)form);
-		save(user);
+		Transaction tx = null;
+		try {
+			tx = HibernateHelper.currentSession().beginTransaction();
+			
+			copyProperties(user, (DynaActionForm)form);
+			save(user);
+			
+			tx.commit();
+		}
+		catch (RuntimeException e) {
+			if (tx != null) tx.rollback();
+			e.printStackTrace();
+		}
+		finally {
+			tx = null;
+		}
+	}
+	
+	public void delete(String userStr) {
+		Transaction tx = null;
+		try {
+			tx = HibernateHelper.currentSession().beginTransaction();
+			
+			User user = (User)HibernateHelper.currentSession().createCriteria(User.class).add(Restrictions.eq("user", userStr)).uniqueResult();
+			user.setActive(false);
+			save(user);
+			
+			tx.commit();
+		}
+		catch (RuntimeException e) {
+			if (tx != null) tx.rollback();
+			e.printStackTrace();
+		}
+		finally {
+			tx = null;
+		}
 	}
 	
 	public void save (User user) {
 		HibernateHelper.currentSession().saveOrUpdate(user);
-		HibernateHelper.currentSession().flush();		
 	}
 	
 	public User getUserByPK (Long id) {
@@ -91,8 +135,8 @@ public class UserService {
 			c.createCriteria("groupUser").add(Restrictions.eq("id", groupUser));
 		}
 		c.add(Restrictions.eq("active", new Boolean(true)));
-		List users = (List)c.list();		
-		return users.isEmpty() ? new ArrayList() : users;
+		List<User> users = (List<User>)c.list();		
+		return users.isEmpty() ? new ArrayList<User>() : users;
 	}			
 	
 	public String getRoleInUser(String user) {
@@ -115,9 +159,23 @@ public class UserService {
 	}
 	
 	public void addNotificationInUser(Long idUser) {
-		User user = getUserByPK(idUser);
-		user.setReceiveNotifications(new Boolean(true));
-		save(user);
+		Transaction tx = null;
+		try {
+			tx = HibernateHelper.currentSession().beginTransaction();
+			
+			User user = getUserByPK(idUser);
+			user.setReceiveNotifications(new Boolean(true));
+			save(user);
+			
+			tx.commit();
+		}
+		catch (RuntimeException e) {
+			if (tx != null) tx.rollback();
+			e.printStackTrace();
+		}
+		finally {
+			tx = null;
+		}
 	}
 	
 	public String[] getEmailsToNotifications() {
@@ -131,11 +189,24 @@ public class UserService {
 	}
 	
 	public void deleteNotificationInUser(Long idUser) {
-		User user = getUserByPK(idUser);
-		user.setReceiveNotifications(new Boolean(false));
-		save(user);
+		Transaction tx = null;
+		try {
+			tx = HibernateHelper.currentSession().beginTransaction();
+			
+			User user = getUserByPK(idUser);
+			user.setReceiveNotifications(new Boolean(false));
+			save(user);
+			
+			tx.commit();
+		}
+		catch (RuntimeException e) {
+			if (tx != null) tx.rollback();
+			e.printStackTrace();
+		}
+		finally {
+			tx = null;
+		}
 	}
-	
 	
 	@SuppressWarnings("unchecked")
 	public List<User> getCajeros() {
@@ -145,72 +216,23 @@ public class UserService {
 		return c.list();
 	}
 	
-	public void delete(String userStr) {
-		User user = (User)HibernateHelper.currentSession().createCriteria(User.class).add(Restrictions.eq("user", userStr)).uniqueResult();
-		user.setActive(false);
-		save(user);
-	}
-	
-	public void cargaMasivaDeSesiones(int maximoVentasPorDia, int anio) {
-		
+	public void saveImage(User user, Image img, FormFile file) {
+		Transaction tx = null;
 		try {
-			GregorianCalendar gc = new GregorianCalendar(anio,0,1);
-			SimpleDateFormat sf = new SimpleDateFormat("dd/MM/yyyy");
-			System.out.println("Se crean ventas desde " + sf.format(gc.getTime()));
-			GregorianCalendar gcUltima = new GregorianCalendar(anio, 11, 31);
+			tx = HibernateHelper.currentSession().beginTransaction();
 			
-			int cantidadVentasPorDia = (1 +new Random().nextInt(maximoVentasPorDia));  
-			UserService userService = new UserService();
-			ProductService productService = new ProductService();
+			user.setFoto(file.getFileData());
+	        user.setImage(img);
+	        save(user);
 			
-			User user = userService.getUser("abe");
-			
-			while (gc.getTime().before(gcUltima.getTime())) {
-					
-					for (int i = 0; i < cantidadVentasPorDia; i++) {
-						
-						Double totalVenta = new Double(0);
-						
-						SesionVenta sesionVenta = new SesionVenta();
-						sesionVenta.setCajero(user);
-						sesionVenta.setFechaInicio(gc.getTime());
-						sesionVenta.setIdCaja(new Long(1));
-						
-						HibernateHelper.currentSession().save(sesionVenta);
-						
-						for (int j = 1; j < 9; j++) {
-							Product product = productService.getProductByPK(new Long(j));
-							int cant = (new Random().nextInt(11)); 
-							for (int k = 0; k < cant; k++) {	//cantidad del mismo producto
-								
-								ProductoVenta productoVenta = new ProductoVenta();
-								productoVenta.setProducto(product);
-								productoVenta.setSesionVenta(sesionVenta);
-								HibernateHelper.currentSession().save(productoVenta);
-								
-								totalVenta+= product.getPrice();
-							}
-
-							
-						}
-						
-						sesionVenta.setTotalVenta(totalVenta);
-						
-						HibernateHelper.currentSession().update(sesionVenta);
-						HibernateHelper.currentSession().flush();
-						
-					}
-					
-					gc.add(GregorianCalendar.DAY_OF_YEAR, 1);
-				
-			}
-		} catch (Exception e) {
+			tx.commit();
 		}
-		
-
-		
-		
-		
-		
+		catch (Exception e) {
+			if (tx != null) tx.rollback();
+			e.printStackTrace();
+		}
+		finally {
+			tx = null;
+		}
 	}
 }

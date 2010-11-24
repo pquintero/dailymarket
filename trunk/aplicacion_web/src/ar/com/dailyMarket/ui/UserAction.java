@@ -167,7 +167,7 @@ public class UserAction extends BaseAction {
 	}
     
     public ActionForward confirmImage(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws IOException, Exception {
-        ImageService service = new ImageService();	
+        ImageService imageService = new ImageService();	
         UserService userService = new UserService();
         
         Context initCtx;
@@ -197,28 +197,20 @@ public class UserAction extends BaseAction {
 		((DynaActionForm) form).set("uploadPath", uploadPath);
         
 		User user = userService.getUserByPK((Long)((DynaActionForm)form).get("id"));
-        Image img = service.saveImage((DynaBean) form);
+        Image img = imageService.saveImage((DynaBean) form);
         if (user.getImage() != null) {
-        	Image imgOld = user.getImage();
-        	user.setImage(null);
-        	userService.save(user);
-        	service.deleteImgAndThumbnail(imgOld);
+        	imageService.deleteImg(user);
         }
-        user.setFoto(file.getFileData());
-        user.setImage(img);
-        userService.save(user);
+        userService.saveImage(user, img, file);
 		return findByPK(mapping, form, request, response);
 	}	
     
     public ActionForward deleteImage(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws IOException, Exception {
     	UserService userService = new UserService();
     	User user = userService.getUserByPK((Long)((DynaActionForm)form).get("id"));
-    	Image img = user.getImage();
-    	user.setImage(null);
-    	userService.save(user);
     	
     	ImageService imageService = new ImageService();
-    	imageService.deleteImgAndThumbnail(img);
+    	imageService.deleteImg(user);
     	return findByPK(mapping, form, request, response);
     } 
 }
