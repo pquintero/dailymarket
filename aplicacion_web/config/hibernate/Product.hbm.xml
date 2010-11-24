@@ -17,6 +17,7 @@
         <property column="repositionstock" name="repositionStock"  type="java.lang.Integer"/>
         <property column="state" name="state"  type="java.lang.String"/>
         <property column="active" name="active" type="java.lang.Boolean"/>
+        <property column="foto" name="fotoBlob"  type="blob"/>
         
         <many-to-one name="groupProduct" column="groupproductid" class="ar.com.dailyMarket.model.GroupProduct"/>   	    			 
         <many-to-one name="image" column="imageid" class="ar.com.dailyMarket.model.Image"/>

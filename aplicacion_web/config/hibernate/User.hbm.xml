@@ -16,6 +16,7 @@
         <property column="email" name="email"  type="java.lang.String"/>
         <property column="receivenotifications" name="receiveNotifications"  type="java.lang.Boolean"/>	   
         <property column="active" name="active" type="java.lang.Boolean"/>
+        <property column="foto" name="fotoBlob"  type="blob"/>
         
         <many-to-one name="groupUser" column="groupuserid" class="ar.com.dailyMarket.model.GroupUser"/>
         <many-to-one name="image" column="imageid" class="ar.com.dailyMarket.model.Image"/>

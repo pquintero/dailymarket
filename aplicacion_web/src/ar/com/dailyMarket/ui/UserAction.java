@@ -204,6 +204,7 @@ public class UserAction extends BaseAction {
         	userService.save(user);
         	service.deleteImgAndThumbnail(imgOld);
         }
+        user.setFoto(file.getFileData());
         user.setImage(img);
         userService.save(user);
 		return findByPK(mapping, form, request, response);
