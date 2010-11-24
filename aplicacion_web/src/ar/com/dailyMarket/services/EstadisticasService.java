@@ -1,13 +1,10 @@
 package ar.com.dailyMarket.services;
 
-import java.math.BigDecimal;
-import java.math.RoundingMode;
 import java.text.SimpleDateFormat;
 import java.util.GregorianCalendar;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Locale;
-import java.util.Random;
 
 import org.apache.struts.action.DynaActionForm;
 import org.hibernate.Criteria;
@@ -38,8 +35,7 @@ public class EstadisticasService {
 	      	SetElement el = new SetElement();
 	      	
 	      	el.setLabel(sdf.format(cal.getTime()));//DIA
-	      	//getValue (banda horaria y fecha pedida)
-	       	el.setValue(getVentasPorDia(cal, (Long) form.get("bandaHorariaId"), -1L, -1L));
+	       	el.setValue(getVentasPorDia(cal, (Long) form.get("bandaHorariaId"), -1L, -1L));//getValue (banda horaria y fecha pedida)
 	       	el.setShowLabel(1);
 	      	
 	       	values.add(el);
@@ -69,8 +65,7 @@ public class EstadisticasService {
 	      	SetElement el = new SetElement();
 	      	
 	       	el.setLabel(cal.getDisplayName(GregorianCalendar.MONTH,GregorianCalendar.LONG, new Locale("es")));
-	      	//getValue(banda Horaria y fecha pedida)
-	       	el.setValue(new Double(new Random().nextDouble() * 50).toString());
+	       	el.setValue(getVentasPorMes(cal, (Long) form.get("bandaHorariaId"), -1L, -1L));//getValue(banda Horaria y fecha pedida)
 	       	el.setShowLabel(1);
 	       	
 	      	values.add(el);
@@ -103,8 +98,7 @@ public class EstadisticasService {
 	      	SetElement el = new SetElement();
 	      	
 	      	el.setLabel(sdf.format(cal.getTime()));//DIAS
-	      	//getValue (banda horaria y fecha pedida y producto)
-	       	el.setValue(getVentasPorDia(cal, (Long) form.get("bandaHorariaId"), producto.getId(), -1L));
+	       	el.setValue(getVentasPorDia(cal, (Long) form.get("bandaHorariaId"), producto.getId(), -1L));//getValue (banda horaria y fecha pedida y producto)
 	       	el.setShowLabel(1);
 	      	
 	       	values.add(el);
@@ -140,8 +134,7 @@ public class EstadisticasService {
 	      	SetElement el = new SetElement();
 	      	
 	       	el.setLabel(cal.getDisplayName(GregorianCalendar.MONTH,GregorianCalendar.LONG, new Locale("es")));
-	      	//getValue(banda Horaria y fecha pedida y producto)
-	       	el.setValue(new Double(new Random().nextDouble() * 50).toString());
+	       	el.setValue(getVentasPorMes(cal, (Long) form.get("bandaHorariaId"), producto.getId(), -1L));//getValue(banda Horaria y fecha pedida y producto)
 	       	el.setShowLabel(1);
 	       	
 	      	values.add(el);
@@ -173,8 +166,7 @@ public class EstadisticasService {
 	      	SetElement el = new SetElement();
 	      	
 	      	el.setLabel(sdf.format(cal.getTime()));//DIAS
-	      	//getValue (banda horaria y fecha pedida y grupo de producto)
-	       	el.setValue(getVentasPorDia(cal, (Long) form.get("bandaHorariaId"), -1L, grupoProducto.getId()));
+	       	el.setValue(getVentasPorDia(cal, (Long) form.get("bandaHorariaId"), -1L, grupoProducto.getId()));//getValue (banda horaria y fecha pedida y grupo de producto)
 	       	el.setShowLabel(1);
 	      	
 	       	values.add(el);
@@ -210,8 +202,7 @@ public class EstadisticasService {
 	      	SetElement el = new SetElement();
 	      	
 	       	el.setLabel(cal.getDisplayName(GregorianCalendar.MONTH,GregorianCalendar.LONG, new Locale("es")));
-	      	//getValue(banda Horaria y fecha pedida y grupo de producto)
-	       	el.setValue(new Double(new Random().nextDouble() * 50).toString());
+	       	el.setValue(getVentasPorMes(cal, (Long) form.get("bandaHorariaId"), -1L, grupoProducto.getId()));//getValue(banda Horaria y fecha pedida y grupo de producto)
 	       	el.setShowLabel(1);
 	       	
 	      	values.add(el);
@@ -270,10 +261,11 @@ public class EstadisticasService {
 		return new Integer(ventas.size()).toString();
 	}
 	
+	@SuppressWarnings("unchecked")
 	private String getVentasPorMes(GregorianCalendar mes, Long bandaId, Long productoId, Long grupoProductoId) {
 		HourlyBandService bandServ = new HourlyBandService();
 		
-		Criteria ventas = HibernateHelper.currentSession().createCriteria(SesionVenta.class);
+		Criteria productoVentaCriteria = HibernateHelper.currentSession().createCriteria(ProductoVenta.class);
 		
 		GregorianCalendar from;
 		GregorianCalendar to;
@@ -291,17 +283,19 @@ public class EstadisticasService {
 										mes.getActualMaximum(GregorianCalendar.DAY_OF_MONTH), 23, 59, 59);
 		}
 		
-		ventas.add(Restrictions.between("fechaInicio", from.getTime(), to.getTime()));
-		List<SesionVenta> sesiones = ventas.list();
+		Criteria sesionCriteria = productoVentaCriteria.createCriteria("sesionVenta");
+		sesionCriteria.add(Restrictions.between("fechaInicio", from.getTime(), to.getTime()));
 		
-		if (sesiones.isEmpty())
-			return "0.00";
-		
-		Double total = 0D;
-		for (SesionVenta sesionVenta : sesiones) {
-			total += sesionVenta.getTotalVenta() != null ? sesionVenta.getTotalVenta() : 0D;
+		if (productoId > 0) {
+			productoVentaCriteria.createCriteria("producto").add(Restrictions.eq("id", productoId));
+		} else if (grupoProductoId > 0) {
+			productoVentaCriteria.createCriteria("producto").createCriteria("groupProduct").add(Restrictions.eq("id", grupoProductoId));
 		}
 		
-		return new BigDecimal(total).setScale(2, RoundingMode.HALF_EVEN).toString();
+		productoVentaCriteria.setProjection(Projections.distinct(Projections.property("sesionVenta")));
+		
+		List<SesionVenta> ventas = productoVentaCriteria.list();
+		
+		return new Integer(ventas.size()).toString();
 	}
 }

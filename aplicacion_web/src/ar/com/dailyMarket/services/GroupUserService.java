@@ -6,6 +6,7 @@ import java.util.List;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.DynaActionForm;
 import org.hibernate.Criteria;
+import org.hibernate.Transaction;
 import org.hibernate.criterion.MatchMode;
 import org.hibernate.criterion.Restrictions;
 
@@ -21,19 +22,66 @@ public class GroupUserService {
 	}
 	
 	public void save (ActionForm form) {	
-		GroupUser groupUser = new GroupUser();
-		copyProperties(groupUser, (DynaActionForm)form);
-		save(groupUser);		
+		Transaction tx = null;
+		try {
+			tx = HibernateHelper.currentSession().beginTransaction();
+			
+			GroupUser groupUser = new GroupUser();
+			copyProperties(groupUser, (DynaActionForm)form);
+			save(groupUser);
+			
+			tx.commit();
+		}
+		catch (RuntimeException e) {
+			if (tx != null) tx.rollback();
+			e.printStackTrace();
+		}
+		finally {
+			tx = null;
+		}
 	}	
 	
 	public void update (ActionForm form, GroupUser groupUser) {
-		copyProperties(groupUser, (DynaActionForm)form);
-		save(groupUser);
+		Transaction tx = null;
+		try {
+			tx = HibernateHelper.currentSession().beginTransaction();
+			
+			copyProperties(groupUser, (DynaActionForm)form);
+			save(groupUser);
+			
+			tx.commit();
+		}
+		catch (RuntimeException e) {
+			if (tx != null) tx.rollback();
+			e.printStackTrace();
+		}
+		finally {
+			tx = null;
+		}
+	}
+	
+	public void delete (Long id) {
+		Transaction tx = null;
+		try {
+			tx = HibernateHelper.currentSession().beginTransaction();
+			
+			GroupUser groupUser = getGroupUserByPK(id);
+			groupUser.setActive(false);
+			save(groupUser);
+			
+			tx.commit();
+		}
+		catch (RuntimeException e) {
+			if (tx != null) tx.rollback();
+			e.printStackTrace();
+		}
+		finally {
+			tx = null;
+		}
 	}
 	
 	public void save (GroupUser groupUser) {
 		HibernateHelper.currentSession().saveOrUpdate(groupUser);
-		HibernateHelper.currentSession().flush();		
 	}
 	
 	public GroupUser getGroupUserByPK (Long id) {
@@ -53,19 +101,13 @@ public class GroupUserService {
 			c.add(Restrictions.ilike("description", description,MatchMode.ANYWHERE));
 		}		
 		c.add(Restrictions.eq("active", new Boolean(true)));
-		List groups = (List)c.list();		
-		return groups.isEmpty() ? new ArrayList() : groups;
+		List<GroupUser> groups = (List<GroupUser>)c.list();		
+		return groups.isEmpty() ? new ArrayList<GroupUser>() : groups;
 	}
 	
 	@SuppressWarnings("unchecked")
 	public List<GroupUser> getAllGroupsUsers () {
-		return (List)HibernateHelper.currentSession().createCriteria(GroupUser.class)
+		return (List<GroupUser>)HibernateHelper.currentSession().createCriteria(GroupUser.class)
 		.add(Restrictions.eq("active", new Boolean(true))).list();
-	}
-	
-	public void delete (Long id) {
-		GroupUser groupUser = getGroupUserByPK(id);
-		groupUser.setActive(false);
-		save(groupUser);
 	}
 }

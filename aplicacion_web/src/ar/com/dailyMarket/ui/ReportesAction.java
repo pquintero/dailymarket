@@ -9,6 +9,8 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import net.sf.json.JSONArray;
+
 import org.apache.commons.beanutils.DynaBean;
 import org.apache.struts.action.ActionError;
 import org.apache.struts.action.ActionErrors;
@@ -17,6 +19,8 @@ import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 import org.apache.struts.action.DynaActionForm;
 
+import ar.com.dailyMarket.model.GroupProduct;
+import ar.com.dailyMarket.model.Product;
 import ar.com.dailyMarket.services.BillingReportService;
 import ar.com.dailyMarket.services.GroupProductService;
 import ar.com.dailyMarket.services.HourlyBandService;
@@ -24,6 +28,7 @@ import ar.com.dailyMarket.services.ListCodesReportService;
 import ar.com.dailyMarket.services.ListPricesReportService;
 import ar.com.dailyMarket.services.ProductService;
 import ar.com.dailyMarket.services.SalesReportService;
+import ar.com.dailyMarket.util.CombSelect;
 
 public class ReportesAction extends BaseAction {
 
@@ -33,35 +38,35 @@ public class ReportesAction extends BaseAction {
     
     public ActionForward doReporteVentasAnuales(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) {	
     	setHourlyBandInRequest(request);
-    	setProductAndGroupInRequest(request);    
+    	setGroupInRequestAndComboProductsInForm(request, (DynaActionForm) form);    
     	return mapping.findForward("showReporteVentasAnualesFilter");
     }
     
     public ActionForward doReporteVentasMensuales(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) {	
     	setHourlyBandInRequest(request);
-    	setProductAndGroupInRequest(request);
+    	setGroupInRequestAndComboProductsInForm(request, (DynaActionForm) form); 
     	return mapping.findForward("showReporteVentasMensualesFilter");
     }
     
     public ActionForward doReporteFacturacionAnual(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) {	
     	setHourlyBandInRequest(request);
-    	setProductAndGroupInRequest(request);
+    	setGroupInRequestAndComboProductsInForm(request, (DynaActionForm) form); 
     	return mapping.findForward("showReporteFacturacionAnualFilter");
     }
     
     public ActionForward doReporteFacturacionMensual(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) {	    	
     	setHourlyBandInRequest(request);
-    	setProductAndGroupInRequest(request);
+    	setGroupInRequestAndComboProductsInForm(request, (DynaActionForm) form); 
     	return mapping.findForward("showReporteFacturacionMensualFilter");
     }
 
     public ActionForward doReporteListadoPrecios(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) {	
-    	setProductAndGroupInRequest(request);
+    	setGroupInRequestAndComboProductsInForm(request, (DynaActionForm) form); 
     	return mapping.findForward("showReporteListadoPreciosFilter");
     }
     
     public ActionForward doReporteListadoCodigos(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) {	
-    	setProductAndGroupInRequest(request);
+    	setGroupInRequestAndComboProductsInForm(request, (DynaActionForm) form); 
     	return mapping.findForward("showReporteListadoCodigosFilter");
     }
     
@@ -185,12 +190,24 @@ public class ReportesAction extends BaseAction {
       	}
     }
     
-    public void setProductAndGroupInRequest (HttpServletRequest request) {
+    public void setGroupInRequestAndComboProductsInForm (HttpServletRequest request, DynaActionForm form) {
     	GroupProductService groupProductService = new GroupProductService();
-    	ProductService productService = new ProductService();
-    	
+    	ProductService productService = new ProductService()
+    	;
     	request.setAttribute("groupsProduct", groupProductService.getAllGroupProduct());
-    	request.setAttribute("products", productService.getAllProducts());
+
+    	List<GroupProduct> gp = new GroupProductService().getAllGroupProduct();
+    	JSONArray json = new JSONArray();
+    	for (GroupProduct groupProduct : gp) {
+			for (Product product : productService.getProductsByGroup(groupProduct.getId())) {
+    			json.add(new CombSelect(groupProduct.getName(), 
+    					groupProduct.getId(), 
+    					product.getName(), 
+    					product.getId())
+    			);
+    		}
+    	}
+    	((DynaActionForm)form).set("comboProductos", json.toString());
     }  
     
     public void setHourlyBandInRequest (HttpServletRequest request) {

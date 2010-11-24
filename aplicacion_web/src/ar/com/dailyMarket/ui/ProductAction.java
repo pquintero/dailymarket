@@ -1,8 +1,5 @@
 package ar.com.dailyMarket.ui;
 
-import java.io.BufferedInputStream;
-import java.io.BufferedOutputStream;
-import java.io.FileInputStream;
 import java.io.IOException;
 
 import javax.naming.Context;
@@ -155,7 +152,7 @@ public class ProductAction extends BaseAction {
 	}
     
     public ActionForward confirmImage(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws IOException, Exception {
-        ImageService service = new ImageService();	
+        ImageService imageService = new ImageService();	
         ProductService productService = new ProductService();
         
         Context initCtx;
@@ -185,28 +182,21 @@ public class ProductAction extends BaseAction {
 		((DynaActionForm) form).set("uploadPath", uploadPath);
         
 		Product product = productService.getProductByPK((Long)((DynaActionForm)form).get("id"));
-        Image img = service.saveImage((DynaBean) form);
+        Image img = imageService.saveImage((DynaBean) form);
         if (product.getImage() != null) {
-        	Image imgOld = product.getImage();
-        	product.setImage(null);
-        	productService.save(product);
-        	service.deleteImgAndThumbnail(imgOld);
+        	imageService.deleteImg(product);
         }
-        product.setImage(img);
-        product.setFoto(file.getFileData());
-        productService.save(product);
+        
+        productService.saveImage(product, img, file);
 		return findByPK(mapping, form, request, response);
 	}	
     
     public ActionForward deleteImage(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws IOException, Exception {
     	ProductService productService = new ProductService();
     	Product product = productService.getProductByPK((Long)((DynaActionForm)form).get("id"));
-    	Image img = product.getImage();
-    	product.setImage(null);
-    	productService.save(product);
     	
-    	ImageService productImageService = new ImageService();
-    	productImageService.deleteImgAndThumbnail(img);
+    	ImageService imageService = new ImageService();
+    	imageService.deleteImg(product);
     	return findByPK(mapping, form, request, response);
     } 
 }

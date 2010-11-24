@@ -7,6 +7,7 @@ import java.util.StringTokenizer;
 
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.DynaActionForm;
+import org.apache.struts.upload.FormFile;
 import org.hibernate.Criteria;
 import org.hibernate.Transaction;
 import org.hibernate.criterion.MatchMode;
@@ -14,6 +15,7 @@ import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 
 import ar.com.dailyMarket.model.Configuration;
+import ar.com.dailyMarket.model.Image;
 import ar.com.dailyMarket.model.Product;
 
 public class ProductService extends MailService{
@@ -38,23 +40,72 @@ public class ProductService extends MailService{
 		}
 	}
 	
-	public void save (ActionForm form) {	
-		Product product = new Product();
-		copyProperties(product, (DynaActionForm)form);
-		save(product);	
-		//poner el codigo ingresado x el lector o usuario
-		product.setCode(product.getId().toString());
-		save(product);
+	public void save (ActionForm form) {
+		Transaction tx = null;
+		try {
+			tx = HibernateHelper.currentSession().beginTransaction();
+			
+			Product product = new Product();
+			copyProperties(product, (DynaActionForm)form);
+			/**
+			 * FIXME poner el codigo ingresado x el lector o usuario
+			 * pasar al copy properties ???? porque juani lo puso aca????
+			 */
+			product.setCode("FALTA PONER CODIGO");
+			save(product);
+			
+			tx.commit();
+		}
+		catch (RuntimeException e) {
+			if (tx != null) tx.rollback();
+			e.printStackTrace();
+		}
+		finally {
+			tx = null;
+		}
 	}
 	
 	public void update (ActionForm form, Product product) {
-		copyProperties(product, (DynaActionForm)form);
-		save(product);
+		Transaction tx = null;
+		try {
+			tx = HibernateHelper.currentSession().beginTransaction();
+			
+			copyProperties(product, (DynaActionForm)form);
+			save(product);
+			
+			tx.commit();
+		}
+		catch (RuntimeException e) {
+			if (tx != null) tx.rollback();
+			e.printStackTrace();
+		}
+		finally {
+			tx = null;
+		}
+	}
+	
+	public void delete (Long id) {
+		Transaction tx = null;
+		try {
+			tx = HibernateHelper.currentSession().beginTransaction();
+			
+			Product product = getProductByPK(id);
+			product.setActive(false);
+			save(product);
+			
+			tx.commit();
+		}
+		catch (RuntimeException e) {
+			if (tx != null) tx.rollback();
+			e.printStackTrace();
+		}
+		finally {
+			tx = null;
+		}
 	}
 	
 	public void save (Product product) {
 		HibernateHelper.currentSession().saveOrUpdate(product);
-		HibernateHelper.currentSession().flush();		
 	}
 	
 	public Product getProductByPK (Long id) {
@@ -91,27 +142,9 @@ public class ProductService extends MailService{
 		/* actualizo el estado antes de verlo
 		*  lo tengo q hacer xq NO tengo forma de saber cuando recibi mercaderia
 		*/				
-//		try {
-//			Context initCtx = new InitialContext();
-//			Context envCtx = (Context)initCtx.lookup("java:comp/env");
-//		    String url = (String) envCtx.lookup("urlDataBase"); //obtengo del contexto la url de la base
-//		    String usr = (String) envCtx.lookup("usrDataBase");
-//		    String pass = (String) envCtx.lookup("passDataBase");
-//		    
-//			Class.forName("com.mysql.jdbc.Driver");
-//			Connection con = DriverManager.getConnection(url, usr, pass);
-//			Statement stmt = (Statement) con.createStatement();
-//			stmt.executeUpdate("update product set state = \"" + Product.PRODUCT_STATE_STOCK + "\" where actualstock >= repositionstock;");
-//		} catch (SQLException e) {			
-//			e.printStackTrace();
-//		} catch (ClassNotFoundException e) {
-//			e.printStackTrace();
-//		} catch (NamingException e) {
-//			e.printStackTrace();
-//		}
-		
 		Transaction tx = null;
 		try {
+			//TODO sacar el closesession y probar si anda bien
 			HibernateHelper.closeSession();
 		    tx = HibernateHelper.currentSession().beginTransaction();
 		    
@@ -231,11 +264,7 @@ public class ProductService extends MailService{
 		.add(Restrictions.eq("active", new Boolean(true))).list();
 	}
 	
-	public void delete (Long id) {
-		Product product = getProductByPK(id);
-		product.setActive(false);
-		save(product);
-	}
+
 
 	public String getMaildestinataries() {
 		ConfigurationService configurationService = new ConfigurationService();
@@ -258,5 +287,25 @@ public class ProductService extends MailService{
 		Criteria c = HibernateHelper.currentSession().createCriteria(Product.class);
 		c.addOrder(Order.desc("id"));
 		return (Product)c.list().get(0);
+	}
+
+	public void saveImage(Product product, Image img, FormFile file) {
+		Transaction tx = null;
+		try {
+			tx = HibernateHelper.currentSession().beginTransaction();
+			
+			product.setImage(img);
+	        product.setFoto(file.getFileData());
+	        save(product);
+			
+			tx.commit();
+		}
+		catch (Exception e) {
+			if (tx != null) tx.rollback();
+			e.printStackTrace();
+		}
+		finally {
+			tx = null;
+		}
 	}
 }

@@ -29,7 +29,6 @@ import ar.com.dailyMarket.model.HourlyBand;
 import ar.com.dailyMarket.model.Product;
 import ar.com.dailyMarket.model.ProductoVenta;
 import ar.com.dailyMarket.model.SesionVenta;
-import ar.com.dailyMarket.services.SalesReportService.Ventas;
 
 public class BillingReportService extends BaseReportService{
 	
