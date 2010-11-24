@@ -620,48 +620,52 @@ public class CajeroVentaFrame extends DailyMarketFrame {
 		if (doc != null) {
 			message.setText("");
 			productModel.toProductModel(doc);
-			salirButton.setEnabled(false);
-
-			subTotalVenta += Double.valueOf(productModel.getPrice())* Double.parseDouble(cantProd.getText());
-			tableModelProducts.addRow(new Object[] {new Boolean(false),productModel.getDescription(),cantProd.getText(),
-					Double.valueOf(productModel.getPrice()),Double.valueOf(productModel.getPrice())* Double.parseDouble(cantProd.getText()) });
-			productModel.setCantidad(Integer.parseInt(cantProd.getText()));
-			agregarAProductsCode(productModel.getCode());
-
-			agregarProducto(productModel);
-
-			descProducto.setText(productModel.getDescription());
-			tableRelations.getColumn("Cancel").setCellRenderer(new MultiRenderer());
-			tableRelations.getColumn("Cancel").setCellEditor(new MultiEditor());
-
-			subTotalVenta = Truncar(subTotalVenta, 2);
-			subtotalVentaTextfield.setText(subTotalVenta.toString());
-
-			totalVenta = OTORGAR_DESCUENTO ? subTotalVenta * DESCUENTO_EMPLEADO: subTotalVenta;
-			totalVenta = Truncar(totalVenta, 2);
-			totalVentaTextField.setText(totalVenta.toString());
-
-			imagePanel.remove(picLabel);
-			ImageIcon productoImg = null;
-
-			if (productModel.getFoto() != null) {
-				productoImg = new ImageIcon(productModel.getFoto());
+			if(productModel.getId()!=null){
+				salirButton.setEnabled(false);
+	
+				subTotalVenta += Double.valueOf(productModel.getPrice())* Double.parseDouble(cantProd.getText());
+				tableModelProducts.addRow(new Object[] {new Boolean(false),productModel.getDescription(),cantProd.getText(),
+						Double.valueOf(productModel.getPrice()),Double.valueOf(productModel.getPrice())* Double.parseDouble(cantProd.getText()) });
+				productModel.setCantidad(Integer.parseInt(cantProd.getText()));
+				agregarAProductsCode(productModel.getCode());
+	
+				agregarProducto(productModel);
+	
+				descProducto.setText(productModel.getDescription());
+				tableRelations.getColumn("Cancel").setCellRenderer(new MultiRenderer());
+				tableRelations.getColumn("Cancel").setCellEditor(new MultiEditor());
+	
+				subTotalVenta = Truncar(subTotalVenta, 2);
+				subtotalVentaTextfield.setText(subTotalVenta.toString());
+	
+				totalVenta = OTORGAR_DESCUENTO ? subTotalVenta * DESCUENTO_EMPLEADO: subTotalVenta;
+				totalVenta = Truncar(totalVenta, 2);
+				totalVentaTextField.setText(totalVenta.toString());
+	
+				imagePanel.remove(picLabel);
+				ImageIcon productoImg = null;
+	
+				if (productModel.getFoto() != null) {
+					productoImg = new ImageIcon(productModel.getFoto());
+				} else {
+					java.net.URL imgURL = InitDailyMarketFrame.class
+							.getResource("sinImg.jpg");
+					productoImg = new ImageIcon(imgURL);
+				}
+	
+				picLabel = new JLabel(new ImageIcon(productoImg.getImage()
+						.getScaledInstance(180, 140, Image.SCALE_SMOOTH)));
+				imagePanel.add(picLabel);
+				picLabel.repaint();
+				imagePanel.repaint();
+				ventaProductoPanel.repaint();
+				picLabel.validate();
+				imagePanel.validate();
+				ventaProductoPanel.validate();
 			} else {
-				java.net.URL imgURL = InitDailyMarketFrame.class
-						.getResource("sinImg.jpg");
-				productoImg = new ImageIcon(imgURL);
+				message.setText("No existe el producto con código "
+						+ scanCodProducto.getText());
 			}
-
-			picLabel = new JLabel(new ImageIcon(productoImg.getImage()
-					.getScaledInstance(180, 140, Image.SCALE_SMOOTH)));
-			imagePanel.add(picLabel);
-			picLabel.repaint();
-			imagePanel.repaint();
-			ventaProductoPanel.repaint();
-			picLabel.validate();
-			imagePanel.validate();
-			ventaProductoPanel.validate();
-
 		} else {
 			message.setText("No existe el producto con código "
 					+ scanCodProducto.getText());
