@@ -34,6 +34,10 @@ public class CajeroVentaManagerService extends TelefrontServiceFactory {
   public XmlSerializable obtenerProducto(String code) throws ServiceException {
 		CajeroVentaServiceInterface cajeroService = (CajeroVentaServiceInterface) new CajeroVentaFactory().newInstance();
 		Product producto = cajeroService.getProductByCode(code);
+		if(producto== null  ){
+			producto = new Product();
+		}
+		
 		return new XmlSerializableImpl(producto.toXml().asXML());
 	}
   

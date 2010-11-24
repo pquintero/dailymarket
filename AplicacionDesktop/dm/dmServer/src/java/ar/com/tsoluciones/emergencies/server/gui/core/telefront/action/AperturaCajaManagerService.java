@@ -73,7 +73,7 @@ public class AperturaCajaManagerService extends TelefrontServiceFactory {
 					break;
 			}
 			if(!existUser)
-				throw new ServiceException("El usuario o la huella digital no son validos. Reintente nuevamente");
+				throw new ServiceException("El usuario o la huella digital no son válidos. Reintente nuevamente");
 			return user;
 	  }
 
@@ -95,7 +95,7 @@ public class AperturaCajaManagerService extends TelefrontServiceFactory {
 		User user = userInterface.getUserByUserName(username);
 		
 		if (! user.authenticate(huellaDigital))
-			throw new ServiceException("El usuario que quiere cerrar la caja no es el usuario que la abrio. Reintente");
+			throw new ServiceException("El usuario que quiere cerrar la caja no es el usuario que la abrió. Reintente");
 		
 		Document document = DocumentHelper.createDocument();
 	    Element rootElement = document.addElement("cerrarCaja");
@@ -103,10 +103,11 @@ public class AperturaCajaManagerService extends TelefrontServiceFactory {
 	    CajeroVentaServiceInterface cajeroVentaServiceInterface = (CajeroVentaServiceInterface) new CajeroVentaFactory().newInstance();
 		
 	    LoginHistory loginHistory = cajeroVentaServiceInterface.getLoginHistory(user);
-		loginHistory.setFechaCierre(new Date());
-		loginHistory.setMontoCierre(new Double(montoCierre));
-		
-		cajeroVentaServiceInterface.updateLoginHistory(loginHistory);
+	    if(loginHistory!=null){
+	    	loginHistory.setFechaCierre(new Date());
+			loginHistory.setMontoCierre(new Double(montoCierre));
+			cajeroVentaServiceInterface.updateLoginHistory(loginHistory);
+	    }
 			
 	    rootElement.addElement("cajaCerrada").setText("OK");
 	    return new XmlSerializableImpl(document.asXML());
@@ -121,10 +122,8 @@ public class AperturaCajaManagerService extends TelefrontServiceFactory {
 		
 		//Validar que ese Usuario sea ademas un supervisor
 		if(!user.getGroupUser().getName().equals(GroupUser.ROLE_SUPERVISOR))
-			throw new ServiceException("El usuario que intenta realizar la operacion no tiene ROL \"Supervisor\"");
-
-		//TODO persistir la operacion
-		
+			throw new ServiceException("El usuario que intenta realizar la operación no tiene ROL \"Supervisor\"");
+	
 		    return new XmlSerializableImpl(user.toXml().asXML());
 		}
 	
@@ -133,7 +132,7 @@ public class AperturaCajaManagerService extends TelefrontServiceFactory {
 		User user = searchUserByFingerPrint(huellaDigital, userInterface);
 		
 		if(!user.getGroupUser().getName().equals(GroupUser.ROLE_SUPERVISOR))
-			throw new ServiceException("El usuario que intenta realizar la operacion no tiene ROL \"Supervisor\"");
+			throw new ServiceException("El usuario que intenta realizar la operación no tiene ROL \"Supervisor\"");
 		
 		    return new XmlSerializableImpl(user.toXml().asXML());
 		}

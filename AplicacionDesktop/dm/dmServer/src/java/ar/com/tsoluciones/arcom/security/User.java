@@ -291,7 +291,7 @@ public class User {
 	 
 
 	 public static class MyBase64 {
-	     private static class MyPreferences extends AbstractPreferences {
+	     public static class MyPreferences extends AbstractPreferences {
 	         private Map<String,String> map = new HashMap<String,String>();
 	         MyPreferences() { super(null,""); }
 	         protected void putSpi(String key,String value) { map.put(key,value); }
@@ -305,6 +305,7 @@ public class User {
 	         protected void flushSpi() {}
 	     }
 	     static String encode(byte[] ba) {
+	    	 System.out.println("long" + ba.length);
 	         Preferences p = new MyPreferences();
 	         p.putByteArray("",ba);
 	         return p.get("",null);

@@ -175,7 +175,7 @@ public class Product {
 		doc.setRootElement(DocumentHelper.createElement("product"));
 		
 		Element root = doc.getRootElement();
-		root.addElement("id").setText(id.toString());
+		root.addElement("id").setText(id!=null ?id.toString():"");
 		root.addElement("description").setText(description !=null ?String.valueOf(description):"");
 		root.addElement("name").setText(name !=null ?String.valueOf(name):"");
 		root.addElement("actualStock").setText(actualStock !=null ? String.valueOf(actualStock) :"");
@@ -187,9 +187,9 @@ public class Product {
 		root.addElement("dateWithoutStock").setText( dateWithoutStock != null ? String.valueOf(dateWithoutStock):"");
 		
 		Element groupUserEl = root.addElement("groupProduct");
-		groupUserEl.addElement("id").setText(groupProduct.getId().toString());
-		groupUserEl.addElement("name").setText(groupProduct.getName());
-		groupUserEl.addElement("description").setText(groupProduct.getDescription());
+		groupUserEl.addElement("id").setText(groupProduct!=null ?groupProduct.getId().toString():"");
+		groupUserEl.addElement("name").setText(groupProduct!=null ?groupProduct.getName():"");
+		groupUserEl.addElement("description").setText(groupProduct!=null ?groupProduct.getDescription():"");
 		
 		root.addElement("foto").setText( foto != null ? MyBase64.encode(foto):"");
 
