@@ -26,7 +26,7 @@ ArrayList<String> listaAnios = (ArrayList<String>) request.getAttribute("aniosLi
 	</tr>	
 	<TR>
 		<TD colspan="4">
-			<h1 class="formtitle"><bean:message key="estadisticas.ventasMensualesPorGrupoDeProductoFilter"/></h1>
+			<h1 class="formtitle"><bean:message key="estadisticas.ventasAnualesPorGrupoDeProductoFilter"/></h1>
 		</TD>		
 	</TR>		
 	<tr align="left">
