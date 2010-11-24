@@ -109,6 +109,10 @@ public class ProductModel {
 		
 		Element root = doc.getRootElement();
 		
+		if("".equals(root.selectSingleNode("id").getStringValue())){
+			return;
+		}
+		
 		Long id = Long.valueOf(root.selectSingleNode("id").getStringValue());
 		String description = root.selectSingleNode("description").getStringValue();
 		String name = root.selectSingleNode("name").getStringValue();
