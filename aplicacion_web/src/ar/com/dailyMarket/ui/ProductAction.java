@@ -51,7 +51,7 @@ public class ProductAction extends BaseAction {
     		return super.initAction(mapping, form, request, response);
     	}
     	productService.save(form);
-    	((DynaActionForm)form).set("id",productService.getLastProduct().getId());
+    	((DynaActionForm)form).set("id",productService.getLastProduct() != null ? productService.getLastProduct().getId() : -1L);
     	return findByPK(mapping, form, request, response);
     } 
     

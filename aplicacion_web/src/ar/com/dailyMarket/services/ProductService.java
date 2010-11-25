@@ -15,6 +15,7 @@ import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 
 import ar.com.dailyMarket.model.Configuration;
+import ar.com.dailyMarket.model.GroupProduct;
 import ar.com.dailyMarket.model.Image;
 import ar.com.dailyMarket.model.Product;
 
@@ -27,12 +28,11 @@ public class ProductService extends MailService{
 		product.setActualStock(Integer.parseInt((String)form.get("actualStock")));
 		product.setPrice(Double.parseDouble((String)form.get("price")));
 		product.setSizeOfPurchase(Integer.parseInt((String)form.get("sizeOfPurchase")));
-		GroupProductService groupProductService = new GroupProductService();
-		product.setGroupProduct(groupProductService.getGroupProductByPK((Long)form.get("groupProductId")));
+		product.setGroupProduct((GroupProduct)HibernateHelper.currentSession().load(GroupProduct.class, ((Long)form.get("groupProductId"))));
 		product.setRepositionStock(Integer.parseInt((String)form.get("repositionStock")));
 		product.setActive(new Boolean(true));
+		product.setCode((String)form.get("code"));
 		
-		/** FIXME que pasa si actualizas un producto despues de haber mandado el mail y el estado haya pasado a enviado????**/
 		if (product.getActualStock() >= product.getRepositionStock()) {
 			product.setState(Product.PRODUCT_STATE_STOCK);
 		} else {
@@ -43,16 +43,12 @@ public class ProductService extends MailService{
 	public void save (ActionForm form) {
 		Transaction tx = null;
 		try {
+			HibernateHelper.closeSession();
 			tx = HibernateHelper.currentSession().beginTransaction();
 			
 			Product product = new Product();
 			copyProperties(product, (DynaActionForm)form);
-			/**
-			 * FIXME poner el codigo ingresado x el lector o usuario
-			 * pasar al copy properties ???? porque juani lo puso aca????
-			 */
-			product.setCode("FALTA PONER CODIGO");
-			save(product);
+			HibernateHelper.currentSession().save(product);
 			
 			tx.commit();
 		}
@@ -62,16 +58,18 @@ public class ProductService extends MailService{
 		}
 		finally {
 			tx = null;
+			HibernateHelper.closeSession();
 		}
 	}
 	
 	public void update (ActionForm form, Product product) {
 		Transaction tx = null;
 		try {
+			HibernateHelper.closeSession();
 			tx = HibernateHelper.currentSession().beginTransaction();
 			
 			copyProperties(product, (DynaActionForm)form);
-			save(product);
+			HibernateHelper.currentSession().update(product);
 			
 			tx.commit();
 		}
@@ -81,17 +79,19 @@ public class ProductService extends MailService{
 		}
 		finally {
 			tx = null;
+			HibernateHelper.closeSession();
 		}
 	}
 	
 	public void delete (Long id) {
 		Transaction tx = null;
 		try {
+			HibernateHelper.closeSession();
 			tx = HibernateHelper.currentSession().beginTransaction();
 			
-			Product product = getProductByPK(id);
+			Product product = (Product) HibernateHelper.currentSession().load(Product.class, id);
 			product.setActive(false);
-			save(product);
+			HibernateHelper.currentSession().update(product);
 			
 			tx.commit();
 		}
@@ -101,40 +101,73 @@ public class ProductService extends MailService{
 		}
 		finally {
 			tx = null;
+			HibernateHelper.closeSession();
 		}
 	}
 	
-	public void save (Product product) {
-		HibernateHelper.currentSession().saveOrUpdate(product);
-	}
-	
 	public Product getProductByPK (Long id) {
-		return (Product)HibernateHelper.currentSession().load(Product.class, id);
+		Transaction tx = null;
+		Product product = null;
+		try {
+			HibernateHelper.closeSession();
+			tx = HibernateHelper.currentSession().beginTransaction();
+			
+			product = (Product)HibernateHelper.currentSession().load(Product.class, id);
+			
+			tx.commit();
+		}
+		catch (RuntimeException e) {
+			if (tx != null) tx.rollback();
+			e.printStackTrace();
+		}
+		finally {
+			tx = null;
+			HibernateHelper.closeSession();
+		}
+		return product;
 	}
 	
 	@SuppressWarnings("unchecked")
 	public List<Product> executeFilter(DynaActionForm form) {
-		String code = !((String)form.get("code")).equals("") ? (String)form.get("code") : null;
-		String name = !((String)form.get("name")).equals("") ? (String)form.get("name") : null;
-		String description = !((String)form.get("description")).equals("") ? (String)form.get("description") : null;			
-		Long groupProduct = form.get("groupProductId") != null && ((Long)form.get("groupProductId")).longValue() != new Long(-1).longValue() ? (Long)form.get("groupProductId") : null;
+		Transaction tx = null;
+		List<Product> products = new ArrayList<Product>();
+		try {
+			HibernateHelper.closeSession();
+			tx = HibernateHelper.currentSession().beginTransaction();
+			
+			String code = !((String)form.get("code")).equals("") ? (String)form.get("code") : null;
+			String name = !((String)form.get("name")).equals("") ? (String)form.get("name") : null;
+			String description = !((String)form.get("description")).equals("") ? (String)form.get("description") : null;			
+			Long groupProduct = form.get("groupProductId") != null && ((Long)form.get("groupProductId")).longValue() != new Long(-1).longValue() ? (Long)form.get("groupProductId") : null;
+			
+			Criteria c = HibernateHelper.currentSession().createCriteria(Product.class);
+			if (code != null) {
+				c.add(Restrictions.eq("code", code));
+			}
+			if (name != null) {
+				c.add(Restrictions.ilike("name", name,MatchMode.ANYWHERE));
+			}
+			if (description != null) {
+				c.add(Restrictions.ilike("description", description,MatchMode.ANYWHERE));
+			}
+			if (groupProduct != null) {
+				c.createCriteria("groupProduct").add(Restrictions.eq("id", groupProduct));
+			}
+			c.add(Restrictions.eq("active", new Boolean(true)));
+			products = c.list();
+			
+			tx.commit();
+		}
+		catch (RuntimeException e) {
+			if (tx != null) tx.rollback();
+			e.printStackTrace();
+		}
+		finally {
+			tx = null;
+			HibernateHelper.closeSession();
+		}
 		
-		Criteria c = HibernateHelper.currentSession().createCriteria(Product.class);
-		if (code != null) {
-			c.add(Restrictions.eq("code", code));
-		}
-		if (name != null) {
-			c.add(Restrictions.ilike("name", name,MatchMode.ANYWHERE));
-		}
-		if (description != null) {
-			c.add(Restrictions.ilike("description", description,MatchMode.ANYWHERE));
-		}
-		if (groupProduct != null) {
-			c.createCriteria("groupProduct").add(Restrictions.eq("id", groupProduct));
-		}
-		c.add(Restrictions.eq("active", new Boolean(true)));
-		List<Product> products = c.list();		
-		return products.isEmpty() ? new ArrayList<Product>() : products;
+		return products;
 	}
 	
 	@SuppressWarnings("unchecked")
@@ -143,12 +176,11 @@ public class ProductService extends MailService{
 		*  lo tengo q hacer xq NO tengo forma de saber cuando recibi mercaderia
 		*/				
 		Transaction tx = null;
+		List<Product> productos = new ArrayList<Product>();
 		try {
-			//TODO sacar el closesession y probar si anda bien
 			HibernateHelper.closeSession();
 		    tx = HibernateHelper.currentSession().beginTransaction();
 		    
-		    //TODO ACTUALIZO ESTADO A LOS PRODUCTOS CON STOCK (Mayor estricto????? o mayor o igual???)
 		    Criteria productosCriteria = HibernateHelper.currentSession().createCriteria(Product.class)
 		    							.add(Restrictions.gtProperty("actualStock", "repositionStock"));
 		    List<Product> productList = productosCriteria.list();
@@ -159,6 +191,11 @@ public class ProductService extends MailService{
 	    		HibernateHelper.currentSession().update(product);
 			}
 		    
+			Criteria c = HibernateHelper.currentSession().createCriteria(Product.class);
+			c.add(Restrictions.leProperty("actualStock", "repositionStock"));
+			c.add(Restrictions.eq("active", new Boolean(true)));
+			productos = c.list();
+		    
 		    tx.commit();
 		}
 		catch (RuntimeException e) {
@@ -167,12 +204,9 @@ public class ProductService extends MailService{
 		}
 		finally {
 		    tx = null;
+		    HibernateHelper.closeSession();
 		}
-		//TODO Menor o igual???? o solo menor????
-		Criteria c = HibernateHelper.currentSession().createCriteria(Product.class);
-		c.add(Restrictions.leProperty("actualStock", "repositionStock"));
-		c.add(Restrictions.eq("active", new Boolean(true)));
-		return c.list();
+		return productos;
 	}
 	
 	public String[] getProductsIdsArray(List<Product> list) {
@@ -227,7 +261,7 @@ public class ProductService extends MailService{
 		    for (int i = 0; i < idsStr.length; i++) {
 	    		Long id = Long.valueOf(idsStr[i]);
 				if (id > 0) {
-		    		Product product = getProductByPK(id);
+		    		Product product = (Product) HibernateHelper.currentSession().load(Product.class, id);
 		    		product.setState(Product.PRODUCT_STATE_SEND);
 		    		HibernateHelper.currentSession().update(product);
 				}
@@ -240,6 +274,7 @@ public class ProductService extends MailService{
 		}
 		finally {
 		    tx = null;
+		    HibernateHelper.closeSession();
 		}
 	}
 	
@@ -260,8 +295,27 @@ public class ProductService extends MailService{
 	
 	@SuppressWarnings("unchecked")
 	public List<Product> getAllProducts() {
-		return (List<Product>)HibernateHelper.currentSession().createCriteria(Product.class)
-		.add(Restrictions.eq("active", new Boolean(true))).list();
+		Transaction tx = null;
+		List<Product> productos = new ArrayList<Product>();
+		try {
+			HibernateHelper.closeSession();
+			tx = HibernateHelper.currentSession().beginTransaction();
+			
+			Criteria c = HibernateHelper.currentSession().createCriteria(Product.class)
+						.add(Restrictions.eq("active", new Boolean(true)));
+			productos = c.list();
+			
+			tx.commit();
+		}
+		catch (RuntimeException e) {
+			if (tx != null) tx.rollback();
+			e.printStackTrace();
+		}
+		finally {
+			tx = null;
+			HibernateHelper.closeSession();
+		}
+		return productos;
 	}
 	
 
@@ -277,26 +331,63 @@ public class ProductService extends MailService{
 	
 	@SuppressWarnings("unchecked")
 	public List<Product> getProductsByGroup(Long groupId) {
-		Criteria c = HibernateHelper.currentSession().createCriteria(Product.class);
-		c.add(Restrictions.eq("active", new Boolean(true)));
-		c.createCriteria("groupProduct").add(Restrictions.eq("id", groupId));
-		return c.list();
+		Transaction tx = null;
+		List<Product> productos = new ArrayList<Product>();
+		try {
+			HibernateHelper.closeSession();
+			tx = HibernateHelper.currentSession().beginTransaction();
+			
+			Criteria c = HibernateHelper.currentSession().createCriteria(Product.class);
+			c.add(Restrictions.eq("active", new Boolean(true)));
+			c.createCriteria("groupProduct").add(Restrictions.eq("id", groupId));
+			productos = c.list();
+			
+			tx.commit();
+		}
+		catch (RuntimeException e) {
+			if (tx != null) tx.rollback();
+			e.printStackTrace();
+		}
+		finally {
+			tx = null;
+			HibernateHelper.closeSession();
+		}
+		return productos;
 	}
 	
 	public Product getLastProduct() {
-		Criteria c = HibernateHelper.currentSession().createCriteria(Product.class);
-		c.addOrder(Order.desc("id"));
-		return (Product)c.list().get(0);
+		Transaction tx = null;
+		Product prod = null;
+		try {
+			HibernateHelper.closeSession();
+			tx = HibernateHelper.currentSession().beginTransaction();
+			
+			Criteria c = HibernateHelper.currentSession().createCriteria(Product.class);
+			c.addOrder(Order.desc("id"));
+			prod = (Product)c.list().get(0);
+			
+			tx.commit();
+		}
+		catch (RuntimeException e) {
+			if (tx != null) tx.rollback();
+			e.printStackTrace();
+		}
+		finally {
+			tx = null;
+			HibernateHelper.closeSession();
+		}
+		return prod;
 	}
-
+	
 	public void saveImage(Product product, Image img, FormFile file) {
 		Transaction tx = null;
 		try {
+			HibernateHelper.closeSession();
 			tx = HibernateHelper.currentSession().beginTransaction();
 			
 			product.setImage(img);
 	        product.setFoto(file.getFileData());
-	        save(product);
+	        HibernateHelper.currentSession().saveOrUpdate(product);
 			
 			tx.commit();
 		}
@@ -306,6 +397,7 @@ public class ProductService extends MailService{
 		}
 		finally {
 			tx = null;
+			HibernateHelper.closeSession();
 		}
 	}
 }

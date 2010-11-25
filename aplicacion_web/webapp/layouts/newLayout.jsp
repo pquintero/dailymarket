@@ -18,16 +18,6 @@
 
 <TABLE class="body" border="0" cellpadding="0" cellspacing="0" >
 <TR> 
-    <TD align="left" valign="top"> 
-		<table cellpadding="0" cellspacing="0" border="0"  width="100%">
-			<tr>
-				<td  class="tabAct"><%=retVal%></td>
-				<td width="80%" class="borderTab">&nbsp;</td>
-			</tr>
-		</table>
-    </TD> 
-</TR>
-<TR> 
     <TD  align="left" valign="top"> 
         <html:form action="<%=action%>">
             <html:hidden property="VirtualDispatchName"/>

@@ -1,11 +1,13 @@
 package ar.com.dailyMarket.services;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import org.apache.struts.action.DynaActionForm;
 import org.hibernate.Criteria;
+import org.hibernate.Transaction;
 import org.hibernate.criterion.Restrictions;
 
 import ar.com.dailyMarket.model.GroupProduct;
@@ -67,13 +69,32 @@ public class BaseReportService {
 	
 	//PRE: los productos filtrados y/o grupo de producto estan activos en la base
 	@SuppressWarnings("unchecked")
-	public List<Product> getListProduct(Map<String,Object> filters) {		
-		Criteria c = HibernateHelper.currentSession().createCriteria(Product.class); 
-		if (filters.get("productFilter") != null) {
-			c.add(Restrictions.eq("id", ((Product)filters.get("productFilter")).getId()));
-		} else if (filters.get("groupProduct") != null) {
-			c.add(Restrictions.eq("groupProduct.id", ((GroupProduct)filters.get("groupProduct")).getId()));
+	public List<Product> getListProduct(Map<String,Object> filters) {
+		Transaction tx = null;
+		List<Product> prod = new ArrayList<Product>();
+		try {
+			HibernateHelper.closeSession();
+			tx = HibernateHelper.currentSession().beginTransaction();
+			
+			Criteria c = HibernateHelper.currentSession().createCriteria(Product.class); 
+			if (filters.get("productFilter") != null) {
+				c.add(Restrictions.eq("id", ((Product)filters.get("productFilter")).getId()));
+			} else if (filters.get("groupProduct") != null) {
+				c.add(Restrictions.eq("groupProduct.id", ((GroupProduct)filters.get("groupProduct")).getId()));
+			}
+			prod = c.list();
+			
+			tx.commit();
 		}
-		return c.list();
+		catch (RuntimeException e) {
+			if (tx != null) tx.rollback();
+			e.printStackTrace();
+		}
+		finally {
+			tx = null;
+			HibernateHelper.closeSession();
+		}
+		
+		return prod;
 	}
 }

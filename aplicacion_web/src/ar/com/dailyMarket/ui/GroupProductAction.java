@@ -44,7 +44,7 @@ public class GroupProductAction extends BaseAction {
     		saveErrors(request, errors);
     		return mapping.findForward("showDetail");
     	}
-    	groupProductService.update(form,groupProductService.getGroupProductByPK((Long)((DynaActionForm)form).get("id")));
+    	groupProductService.update(form, groupProductService.getGroupProductByPK((Long)((DynaActionForm)form).get("id")));
     	return super.stepBack(mapping, form, request, response);
     }
     
