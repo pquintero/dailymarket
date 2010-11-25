@@ -48,8 +48,8 @@ public class Validator extends FieldChecks {
 			try {
 				Double.parseDouble(value.toString());
 			} catch (NumberFormatException e) {
-				ActionMessage message = new ActionMessage("El campo " + propertyName + " debe ser un número");
-				errors.add("propertyName", message);
+				ActionError error = new ActionError("errors.isDouble", propertyName);
+				errors.add("propertyName", error);
 			}						
 		}
 	}

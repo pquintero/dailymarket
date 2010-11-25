@@ -25,22 +25,36 @@ public class SimulatorService extends MailService{
 			
 	@SuppressWarnings("unchecked")
 	public List<Product> executeFilter(DynaActionForm form) {		
-		Long productId = form.get("productId") != null && ((Long)form.get("productId")).longValue() != new Long(-1) ? (Long)form.get("productId") : null;				
-		Long groupProductId = form.get("groupProductId") != null && ((Long)form.get("groupProductId")).longValue() != new Long(-1).longValue() ? (Long)form.get("groupProductId") : null;
-		
-		HibernateHelper.closeSession();
-		
-		Criteria c = HibernateHelper.currentSession().createCriteria(Product.class);
-		if (productId != null) {
-			c.add(Restrictions.eq("id", productId));
-		} 
-		if (groupProductId != null) {
-			c.createCriteria("groupProduct").add(Restrictions.eq("id", groupProductId));
+		Transaction tx = null;
+		List<Product> products = new ArrayList<Product>();
+		try {
+			HibernateHelper.closeSession();
+			tx = HibernateHelper.currentSession().beginTransaction();
+			
+			Long productId = form.get("productId") != null && ((Long)form.get("productId")).longValue() != new Long(-1) ? (Long)form.get("productId") : null;				
+			Long groupProductId = form.get("groupProductId") != null && ((Long)form.get("groupProductId")).longValue() != new Long(-1).longValue() ? (Long)form.get("groupProductId") : null;
+			
+			Criteria c = HibernateHelper.currentSession().createCriteria(Product.class);
+			if (productId != null) {
+				c.add(Restrictions.eq("id", productId));
+			} 
+			if (groupProductId != null) {
+				c.createCriteria("groupProduct").add(Restrictions.eq("id", groupProductId));
+			}
+			c.add(Restrictions.eq("active", new Boolean(true)));
+			products = c.list();
+			
+			tx.commit();
 		}
-		c.add(Restrictions.eq("active", new Boolean(true)));
-		c.setCacheMode(CacheMode.IGNORE);
-		List products = (List)c.list();		
-		return products.isEmpty() ? new ArrayList() : products;
+		catch (RuntimeException e) {
+			if (tx != null) tx.rollback();
+			e.printStackTrace();
+		}
+		finally {
+			tx = null;
+			HibernateHelper.closeSession();
+		}
+		return products;
 	}
 	
 	public void executeSimulation(DynaActionForm form) {
@@ -101,11 +115,35 @@ public class SimulatorService extends MailService{
 		
 		return sumatoria/(ventas.size() - 1);
 	}
-
+	
+	protected Product getProduct (Long id) {
+		Product prod = null;
+		Transaction tx = null;
+		try {
+			HibernateHelper.closeSession();
+			tx = HibernateHelper.currentSession().beginTransaction();
+			
+			prod = (Product) HibernateHelper.currentSession().load(Product.class, id);
+			
+			tx.commit();
+		}
+		catch (RuntimeException e) {
+			if (tx != null) tx.rollback();
+			e.printStackTrace();
+		}
+		finally {
+			tx = null;
+			HibernateHelper.closeSession();
+		}
+		
+		return prod;
+	}
+	
+	
 	//Devuelve el promedio de ventas en los años pedidos
 	private String[] simularProducto(String productoId, Integer dias, Integer margen, String yearFrom, Double porcentaje, Date simulated) {
 		String[] res = {"",""};
-		Product producto = (Product) HibernateHelper.currentSession().load(Product.class, Long.valueOf(productoId));
+		Product producto = getProduct(Long.valueOf(productoId));
 		GregorianCalendar hoy = new GregorianCalendar();
 		hoy.setTime(simulated);
 		GregorianCalendar cal = new GregorianCalendar(Integer.valueOf(yearFrom), 
@@ -164,23 +202,59 @@ public class SimulatorService extends MailService{
 	}
 
 	private Integer ventasDia(Product producto, Date date) {
-		Criteria c = HibernateHelper.currentSession().createCriteria(ProductoVenta.class);
-		c.createCriteria("producto").add(Restrictions.eq("id", producto.getId()));
-		c.createCriteria("sesionVenta").add(Restrictions.eq("fechaInicio", date));
-		
-		return c.list().size();
+		Transaction tx = null;
+		Integer vent = new Integer(0);
+		try {
+			HibernateHelper.closeSession();
+			tx = HibernateHelper.currentSession().beginTransaction();
+			
+			Criteria c = HibernateHelper.currentSession().createCriteria(ProductoVenta.class);
+			c.createCriteria("producto").add(Restrictions.eq("id", producto.getId()));
+			c.createCriteria("sesionVenta").add(Restrictions.eq("fechaInicio", date));
+			
+			vent = c.list().size();
+			
+			tx.commit();
+		}
+		catch (RuntimeException e) {
+			if (tx != null) tx.rollback();
+			e.printStackTrace();
+		}
+		finally {
+			tx = null;
+			HibernateHelper.closeSession();
+		}
+		return vent;
 	}
 	
 	private Integer ventasAnio(Integer year) {
-		GregorianCalendar desde = new GregorianCalendar(year.intValue(), 0, 1);
-		GregorianCalendar hasta = new GregorianCalendar(year.intValue(), 11, 31);
-		
-		Criteria c = HibernateHelper.currentSession().createCriteria(ProductoVenta.class);
-		Criteria c2 = c.createCriteria("sesionVenta");
-		c2.add(Restrictions.ge("fechaInicio", desde.getTime()));
-		c2.add(Restrictions.le("fechaInicio", hasta.getTime()));
-		
-		return c.list().size();
+		Integer vent = new Integer(0);
+		Transaction tx = null;
+		try {
+			HibernateHelper.closeSession();
+			tx = HibernateHelper.currentSession().beginTransaction();
+			
+			GregorianCalendar desde = new GregorianCalendar(year.intValue(), 0, 1);
+			GregorianCalendar hasta = new GregorianCalendar(year.intValue(), 11, 31);
+			
+			Criteria c = HibernateHelper.currentSession().createCriteria(ProductoVenta.class);
+			Criteria c2 = c.createCriteria("sesionVenta");
+			c2.add(Restrictions.ge("fechaInicio", desde.getTime()));
+			c2.add(Restrictions.le("fechaInicio", hasta.getTime()));
+			
+			vent = c.list().size();			
+			
+			tx.commit();
+		}
+		catch (RuntimeException e) {
+			if (tx != null) tx.rollback();
+			e.printStackTrace();
+		}
+		finally {
+			tx = null;
+			HibernateHelper.closeSession();
+		}
+		return vent;
 	}
 	
 	public void aplicarCambios(ActionForm form) {
@@ -188,7 +262,6 @@ public class SimulatorService extends MailService{
 		List<String> checks =  Arrays.asList(((String[]) ((DynaActionForm)form).get("simuladorArray")));
 		String[] ssopa = (String[]) ((DynaActionForm)form).get("simulatedSizeOfPurchaseArray");
 		String[] srsa = (String[]) ((DynaActionForm)form).get("simulatedRepositionStockArray");
-		ProductService ps = new ProductService();
 		
 		Transaction tx = null;
 		try {
@@ -197,7 +270,7 @@ public class SimulatorService extends MailService{
 		    
 		    for (int i = 0; i < productsIds.length; i++) {
 				if (checks.contains(productsIds[i])) {
-					Product pr = ps.getProductByPK(Long.valueOf(productsIds[i]));
+					Product pr = (Product)HibernateHelper.currentSession().load(Product.class, Long.valueOf(productsIds[i]));
 					if (StringUtils.isNumeric(ssopa[i]) && StringUtils.isNotEmpty(ssopa[i]) && Integer.valueOf(ssopa[i])>0) {
 						pr.setSizeOfPurchase(Integer.valueOf(ssopa[i]));
 					}
@@ -205,15 +278,12 @@ public class SimulatorService extends MailService{
 						pr.setRepositionStock(Integer.valueOf(srsa[i]));
 					}
 					
-					//TODO ver el signo < o <=????? del primero
-					// Ver 2
-					if (StringUtils.equals(Product.PRODUCT_STATE_STOCK, pr.getState()) && pr.getActualStock() < pr.getRepositionStock()) {
+					if (StringUtils.equals(Product.PRODUCT_STATE_STOCK, pr.getState()) && pr.getActualStock() <= pr.getRepositionStock()) {
 						pr.setState(Product.PRODUCT_STATE_PENDING);
 					} else if ((StringUtils.equals(Product.PRODUCT_STATE_PENDING, pr.getState()) || StringUtils.equals(Product.PRODUCT_STATE_SEND, pr.getState())) 
-							&& pr.getActualStock() >= pr.getRepositionStock()) {
+							&& pr.getActualStock() > pr.getRepositionStock()) {
 						pr.setState(Product.PRODUCT_STATE_STOCK);
 					}
-					
 					
 					HibernateHelper.currentSession().update(pr);
 				}
@@ -227,6 +297,7 @@ public class SimulatorService extends MailService{
 		}
 		finally {
 		    tx = null;
+		    HibernateHelper.closeSession();
 		}
 	}
 }

@@ -20,7 +20,6 @@
 
 <html:form action="<%=action%>">			
 <TABLE class="searchform" border="0" cellpadding="0" cellspacing="0" valign="top">
-<TR> 
     <TR> 
 		<TD align="left" valign="top"><tiles:insert attribute="tabs"/></TD>
 		<td  class="borderTab">&nbsp;</td>

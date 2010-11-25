@@ -3,6 +3,7 @@ package ar.com.dailyMarket.ui;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.struts.action.ActionError;
 import org.apache.struts.action.ActionErrors;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
@@ -24,7 +25,9 @@ public class ConfigurationAction extends BaseAction {
 	
 	public ActionForward addSendNotification (ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) {
 		UserService userService = new UserService();
-		userService.addNotificationInUser((Long)((DynaActionForm)form).get("userId"));		
+		Long userId = (Long)((DynaActionForm)form).get("userId");
+		if(userId > 0)
+			userService.addNotificationInUser(userId);		
 		return initAction(mapping, form, request, response);
 	}
 	
@@ -64,7 +67,11 @@ public class ConfigurationAction extends BaseAction {
 	
 	private ActionErrors validateForm(DynaActionForm form, HttpServletRequest request) {    	
     	ActionErrors errors = new ActionErrors();
-    	Validator.isInteger(form.get("timer"), errors, request, "Período", true);    	
+    	Validator.isInteger(form.get("timer"), errors, request, "Período", true);
+    	if (errors.isEmpty() && Integer.valueOf((String)form.get("timer")) < 0) {
+    		ActionError error = new ActionError("errors.integerNegativo", "Período");
+			errors.add("Período", error);
+		}
     	return errors;
     }
 }

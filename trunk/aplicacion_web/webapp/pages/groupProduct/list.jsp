@@ -6,8 +6,8 @@
 
 <ds:table name="items" sort="list"  prop="formDisplaytag" export="false" id="row" pagesize="40" class="list"  cellspacing="0" cellpadding="3">
 
-        <ds:column titleKey="GroupProductForm.name" headerClass="listTitle" sortable="true" property="name"/>
-        <ds:column titleKey="GroupProductForm.description" headerClass="listTitle" sortable="true" property="description"/>
+        <ds:column titleKey="GroupProductForm.name" headerClass="listTitle" property="name"/>
+        <ds:column titleKey="GroupProductForm.description" headerClass="listTitle" property="description"/>
 		<ds:column headerClass="listTitle"  title="&nbsp;">
 			<img 
 				src="images/common/editar.gif" 

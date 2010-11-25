@@ -1,6 +1,7 @@
 package ar.com.dailyMarket.services;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.GregorianCalendar;
 import java.util.LinkedList;
 import java.util.List;
@@ -8,6 +9,7 @@ import java.util.Locale;
 
 import org.apache.struts.action.DynaActionForm;
 import org.hibernate.Criteria;
+import org.hibernate.Transaction;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 
@@ -225,77 +227,105 @@ public class EstadisticasService {
 	
 	@SuppressWarnings("unchecked")
 	private String getVentasPorDia(GregorianCalendar dia, Long bandaId, Long productoId, Long grupoProductoId) {
-		HourlyBandService bandServ = new HourlyBandService();
-		
-		Criteria productoVentaCriteria = HibernateHelper.currentSession().createCriteria(ProductoVenta.class);
-		
-		GregorianCalendar from;
-		GregorianCalendar to;
-		
-		if (bandaId > 0) {
-			HourlyBand banda = bandServ.getHourlyBandByPK(bandaId);
-			from = new GregorianCalendar(dia.get(GregorianCalendar.YEAR), dia.get(GregorianCalendar.MONTH),	
-										dia.get(GregorianCalendar.DAY_OF_MONTH), Integer.valueOf(banda.getInitBand()), 0, 0);
-			to = new GregorianCalendar(dia.get(GregorianCalendar.YEAR), dia.get(GregorianCalendar.MONTH), 
-										dia.get(GregorianCalendar.DAY_OF_MONTH), Integer.valueOf(banda.getEndBand()), 0, 0);
-		} else {
-			from = new GregorianCalendar(dia.get(GregorianCalendar.YEAR), dia.get(GregorianCalendar.MONTH), 
-										dia.get(GregorianCalendar.DAY_OF_MONTH), 0,	0, 0);
-			to = new GregorianCalendar(dia.get(GregorianCalendar.YEAR), dia.get(GregorianCalendar.MONTH),
-										dia.get(GregorianCalendar.DAY_OF_MONTH), 23, 59, 59);
+		Transaction tx = null;
+		List<SesionVenta> ventas = new ArrayList<SesionVenta>();
+		try {
+			HibernateHelper.closeSession();
+			tx = HibernateHelper.currentSession().beginTransaction();
+			
+			Criteria productoVentaCriteria = HibernateHelper.currentSession().createCriteria(ProductoVenta.class);
+			GregorianCalendar from;
+			GregorianCalendar to;
+			
+			if (bandaId > 0) {
+				HourlyBand banda = (HourlyBand)HibernateHelper.currentSession().load(HourlyBand.class, bandaId);
+				from = new GregorianCalendar(dia.get(GregorianCalendar.YEAR), dia.get(GregorianCalendar.MONTH),	
+											dia.get(GregorianCalendar.DAY_OF_MONTH), Integer.valueOf(banda.getInitBand()), 0, 0);
+				to = new GregorianCalendar(dia.get(GregorianCalendar.YEAR), dia.get(GregorianCalendar.MONTH), 
+											dia.get(GregorianCalendar.DAY_OF_MONTH), Integer.valueOf(banda.getEndBand()), 0, 0);
+			} else {
+				from = new GregorianCalendar(dia.get(GregorianCalendar.YEAR), dia.get(GregorianCalendar.MONTH), 
+											dia.get(GregorianCalendar.DAY_OF_MONTH), 0,	0, 0);
+				to = new GregorianCalendar(dia.get(GregorianCalendar.YEAR), dia.get(GregorianCalendar.MONTH),
+											dia.get(GregorianCalendar.DAY_OF_MONTH), 23, 59, 59);
+			}
+			
+			Criteria sesionCriteria = productoVentaCriteria.createCriteria("sesionVenta");
+			sesionCriteria.add(Restrictions.between("fechaInicio", from.getTime(), to.getTime()));
+			
+			if (productoId > 0) {
+				productoVentaCriteria.createCriteria("producto").add(Restrictions.eq("id", productoId));
+			} else if (grupoProductoId > 0) {
+				productoVentaCriteria.createCriteria("producto").createCriteria("groupProduct").add(Restrictions.eq("id", grupoProductoId));
+			}
+			
+			productoVentaCriteria.setProjection(Projections.distinct(Projections.property("sesionVenta")));
+			
+			ventas = productoVentaCriteria.list();
+			
+			tx.commit();
 		}
-		
-		Criteria sesionCriteria = productoVentaCriteria.createCriteria("sesionVenta");
-		sesionCriteria.add(Restrictions.between("fechaInicio", from.getTime(), to.getTime()));
-		
-		if (productoId > 0) {
-			productoVentaCriteria.createCriteria("producto").add(Restrictions.eq("id", productoId));
-		} else if (grupoProductoId > 0) {
-			productoVentaCriteria.createCriteria("producto").createCriteria("groupProduct").add(Restrictions.eq("id", grupoProductoId));
+		catch (RuntimeException e) {
+			if (tx != null) tx.rollback();
+			e.printStackTrace();
+			return "0";
 		}
-		
-		productoVentaCriteria.setProjection(Projections.distinct(Projections.property("sesionVenta")));
-		
-		List<SesionVenta> ventas = productoVentaCriteria.list();
-		
+		finally {
+			tx = null;
+			HibernateHelper.closeSession();
+		}
 		return new Integer(ventas.size()).toString();
 	}
 	
 	@SuppressWarnings("unchecked")
 	private String getVentasPorMes(GregorianCalendar mes, Long bandaId, Long productoId, Long grupoProductoId) {
-		HourlyBandService bandServ = new HourlyBandService();
-		
-		Criteria productoVentaCriteria = HibernateHelper.currentSession().createCriteria(ProductoVenta.class);
-		
-		GregorianCalendar from;
-		GregorianCalendar to;
-		
-		if (bandaId > 0) {
-			HourlyBand banda = bandServ.getHourlyBandByPK(bandaId);
-			from = new GregorianCalendar(mes.get(GregorianCalendar.YEAR), mes.get(GregorianCalendar.MONTH),	
-										1, Integer.valueOf(banda.getInitBand()), 0, 0);
-			to = new GregorianCalendar(mes.get(GregorianCalendar.YEAR), mes.get(GregorianCalendar.MONTH), 
-										mes.getActualMaximum(GregorianCalendar.DAY_OF_MONTH), Integer.valueOf(banda.getEndBand()), 0, 0);
-		} else {
-			from = new GregorianCalendar(mes.get(GregorianCalendar.YEAR), mes.get(GregorianCalendar.MONTH), 
-										1, 0,	0, 0);
-			to = new GregorianCalendar(mes.get(GregorianCalendar.YEAR), mes.get(GregorianCalendar.MONTH),
-										mes.getActualMaximum(GregorianCalendar.DAY_OF_MONTH), 23, 59, 59);
+		Transaction tx = null;
+		List<SesionVenta> ventas = new ArrayList<SesionVenta>();
+		try {
+			HibernateHelper.closeSession();
+			tx = HibernateHelper.currentSession().beginTransaction();
+			
+			Criteria productoVentaCriteria = HibernateHelper.currentSession().createCriteria(ProductoVenta.class);
+			GregorianCalendar from;
+			GregorianCalendar to;
+			
+			if (bandaId > 0) {
+				HourlyBand banda = (HourlyBand) HibernateHelper.currentSession().load(HourlyBand.class, bandaId);
+				from = new GregorianCalendar(mes.get(GregorianCalendar.YEAR), mes.get(GregorianCalendar.MONTH),	
+											1, Integer.valueOf(banda.getInitBand()), 0, 0);
+				to = new GregorianCalendar(mes.get(GregorianCalendar.YEAR), mes.get(GregorianCalendar.MONTH), 
+											mes.getActualMaximum(GregorianCalendar.DAY_OF_MONTH), Integer.valueOf(banda.getEndBand()), 0, 0);
+			} else {
+				from = new GregorianCalendar(mes.get(GregorianCalendar.YEAR), mes.get(GregorianCalendar.MONTH), 
+											1, 0,	0, 0);
+				to = new GregorianCalendar(mes.get(GregorianCalendar.YEAR), mes.get(GregorianCalendar.MONTH),
+											mes.getActualMaximum(GregorianCalendar.DAY_OF_MONTH), 23, 59, 59);
+			}
+			
+			Criteria sesionCriteria = productoVentaCriteria.createCriteria("sesionVenta");
+			sesionCriteria.add(Restrictions.between("fechaInicio", from.getTime(), to.getTime()));
+			
+			if (productoId > 0) {
+				productoVentaCriteria.createCriteria("producto").add(Restrictions.eq("id", productoId));
+			} else if (grupoProductoId > 0) {
+				productoVentaCriteria.createCriteria("producto").createCriteria("groupProduct").add(Restrictions.eq("id", grupoProductoId));
+			}
+			
+			productoVentaCriteria.setProjection(Projections.distinct(Projections.property("sesionVenta")));
+			
+			ventas = productoVentaCriteria.list();
+			
+			tx.commit();
 		}
-		
-		Criteria sesionCriteria = productoVentaCriteria.createCriteria("sesionVenta");
-		sesionCriteria.add(Restrictions.between("fechaInicio", from.getTime(), to.getTime()));
-		
-		if (productoId > 0) {
-			productoVentaCriteria.createCriteria("producto").add(Restrictions.eq("id", productoId));
-		} else if (grupoProductoId > 0) {
-			productoVentaCriteria.createCriteria("producto").createCriteria("groupProduct").add(Restrictions.eq("id", grupoProductoId));
+		catch (RuntimeException e) {
+			if (tx != null) tx.rollback();
+			e.printStackTrace();
+			return "0";
 		}
-		
-		productoVentaCriteria.setProjection(Projections.distinct(Projections.property("sesionVenta")));
-		
-		List<SesionVenta> ventas = productoVentaCriteria.list();
-		
+		finally {
+			tx = null;
+			HibernateHelper.closeSession();
+		}
 		return new Integer(ventas.size()).toString();
 	}
 }

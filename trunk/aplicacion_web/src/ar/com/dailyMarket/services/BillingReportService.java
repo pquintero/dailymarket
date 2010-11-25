@@ -22,6 +22,7 @@ import net.sf.jasperreports.engine.util.JRLoader;
 
 import org.apache.commons.beanutils.DynaBean;
 import org.hibernate.Criteria;
+import org.hibernate.Transaction;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 
@@ -32,7 +33,6 @@ import ar.com.dailyMarket.model.SesionVenta;
 
 public class BillingReportService extends BaseReportService{
 	
-	@SuppressWarnings("unchecked")
 	public byte[] runReport(DynaBean reportData, Collection col, String report, Map<String, String> filters, String tipo)throws Exception {
         Map<String, String> parameters = new HashMap<String, String>();		
         String imgs = "";
@@ -277,11 +277,28 @@ public class BillingReportService extends BaseReportService{
     	String groupProductId = filters.get("groupProductId");
     	String hourlyBandId = filters.get("hourlyBandId");
     	
-    	Criteria c = HibernateHelper.currentSession().createCriteria(SesionVenta.class);
-    	c.add(Restrictions.between("fechaInicio", calDesde.getTime(), calHasta.getTime()));    	
-    	c.addOrder(Order.asc("fechaInicio"));
-    	    	
-    	List<SesionVenta> ventas = c.list();
+    	Transaction tx = null;
+    	List<SesionVenta> ventas = new ArrayList<SesionVenta>();
+    	try {
+    		HibernateHelper.closeSession();
+    		tx = HibernateHelper.currentSession().beginTransaction();
+    		
+    		Criteria c = HibernateHelper.currentSession().createCriteria(SesionVenta.class);
+        	c.add(Restrictions.between("fechaInicio", calDesde.getTime(), calHasta.getTime()));    	
+        	c.addOrder(Order.asc("fechaInicio"));
+        	    	
+        	ventas = c.list();
+    		
+    		tx.commit();
+    	}
+    	catch (RuntimeException e) {
+    		if (tx != null) tx.rollback();
+    		e.printStackTrace();
+    	}
+    	finally {
+    		tx = null;
+    		HibernateHelper.closeSession();
+    	}
     	
     	if (!hourlyBandId.equals("-1")){ //si filtre por banda horaria
     		HourlyBand hb = new HourlyBandService().getHourlyBandByPK(Long.parseLong(hourlyBandId));

@@ -6,28 +6,6 @@
 <%@page import="ar.com.dailyMarket.model.Image;"%>
 
 
-<script type="text/javascript">
-	hs.graphicsDir = 'highslide/graphics/';
-	hs.align = 'center';
-	hs.transitions = ['expand', 'crossfade'];
-	hs.outlineType = 'rounded-white';
-	hs.fadeInOut = true;
-	//hs.dimmingOpacity = 0.75;
-
-	// Add the controlbar
-	if (hs.addSlideshow) hs.addSlideshow({
-		//slideshowGroup: 'group1',
-		interval: 5000,
-		repeat: false,
-		useControls: true,
-		fixedControls: true,
-		overlayOptions: {
-			opacity: .75,
-			position: 'top center',
-			hideOnMouseOut: true
-		}
-	});
-</script>
 
 <bean:define id="id" property="id" name="ProductForm" type="java.lang.Long"/>
 <bean:define id="attachId" property="attachId" name="ProductForm" type="java.lang.Long"/>
@@ -53,7 +31,6 @@
 					<%
 						Image image = (Image)request.getSession().getAttribute("image");
 					%>						
-					<a href="image.do?VirtualDispatchName=getImage&isImage=1&imageId=<%=image.getId().toString()%>" class="highslide" onclick="return hs.expand(this)">								
 					<img src="image.do?VirtualDispatchName=getImage&isImage=0&imageId=<%=image.getThumbnail().getId().toString()%>" alt="<%=image.getDescription() %>"
 						title="<%=((Image)image).getDescription() %>" /></a>
 						<div class="highslide-caption">																																				

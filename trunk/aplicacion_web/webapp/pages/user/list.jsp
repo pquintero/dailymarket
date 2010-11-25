@@ -5,12 +5,12 @@
 <%@ page import="ar.com.dailyMarket.model.User" %>
 
 <ds:table name="items" sort="list"  prop="formDisplaytag" export="false" id="row" pagesize="40" class="list"  cellspacing="0" cellpadding="3">
-		<ds:column titleKey="UserForm.id" headerClass="listTitle" sortable="true" property="id"/>
-		<ds:column titleKey="UserForm.user" headerClass="listTitle" sortable="true" property="user"/>
-        <ds:column titleKey="UserForm.name" headerClass="listTitle" sortable="true" property="name"/>
-        <ds:column titleKey="UserForm.lastName" headerClass="listTitle" sortable="true" property="lastName"/>
-        <ds:column titleKey="UserForm.dni" headerClass="listTitle" sortable="true" property="dni"/>
-        <ds:column titleKey="UserForm.groupUser" headerClass="listTitle" sortable="true" property="groupUser.name"/>
+		<ds:column titleKey="UserForm.id" headerClass="listTitle" property="id"/>
+		<ds:column titleKey="UserForm.user" headerClass="listTitle" property="user"/>
+        <ds:column titleKey="UserForm.name" headerClass="listTitle" property="name"/>
+        <ds:column titleKey="UserForm.lastName" headerClass="listTitle" property="lastName"/>
+        <ds:column titleKey="UserForm.dni" headerClass="listTitle" property="dni"/>
+        <ds:column titleKey="UserForm.groupUser" headerClass="listTitle" property="groupUser.name"/>
         <ds:column headerClass="listTitle"  title="&nbsp;">
 			<img 
 				src="images/common/editar.gif" 

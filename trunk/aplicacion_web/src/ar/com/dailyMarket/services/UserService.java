@@ -27,8 +27,7 @@ public class UserService {
 		user.setUser((String)form.get("user"));
 		user.setDni((String)form.get("dni"));
 		user.setDateCreated(new Date());
-		GroupUserService groupUserService = new GroupUserService();
-		user.setGroupUser(groupUserService.getGroupUserByPK((Long)form.get("groupUserId")));
+		user.setGroupUser((GroupUser)HibernateHelper.currentSession().load(GroupUser.class, ((Long)form.get("groupUserId"))));
 		user.setReceiveNotifications(new Boolean(false));
 		user.setActive(new Boolean(true));
 	}
@@ -36,11 +35,12 @@ public class UserService {
 	public void save (ActionForm form) {	
 		Transaction tx = null;
 		try {
+			HibernateHelper.closeSession();
 			tx = HibernateHelper.currentSession().beginTransaction();
 			
 			User user = new User();
 			copyProperties(user, (DynaActionForm)form);
-			save(user);		
+			HibernateHelper.currentSession().save(user);
 			
 			tx.commit();
 		}
@@ -50,16 +50,18 @@ public class UserService {
 		}
 		finally {
 			tx = null;
+			HibernateHelper.closeSession();
 		}
 	}	
 	
 	public void update (ActionForm form, User user) {
 		Transaction tx = null;
 		try {
+			HibernateHelper.closeSession();
 			tx = HibernateHelper.currentSession().beginTransaction();
 			
 			copyProperties(user, (DynaActionForm)form);
-			save(user);
+			HibernateHelper.currentSession().update(user);
 			
 			tx.commit();
 		}
@@ -69,17 +71,19 @@ public class UserService {
 		}
 		finally {
 			tx = null;
+			HibernateHelper.closeSession();
 		}
 	}
 	
 	public void delete(String userStr) {
 		Transaction tx = null;
 		try {
+			HibernateHelper.closeSession();
 			tx = HibernateHelper.currentSession().beginTransaction();
 			
-			User user = (User)HibernateHelper.currentSession().createCriteria(User.class).add(Restrictions.eq("user", userStr)).uniqueResult();
+			User user = (User) HibernateHelper.currentSession().createCriteria(User.class).add(Restrictions.eq("user", userStr)).uniqueResult();
 			user.setActive(false);
-			save(user);
+			HibernateHelper.currentSession().saveOrUpdate(user);
 			
 			tx.commit();
 		}
@@ -89,83 +93,172 @@ public class UserService {
 		}
 		finally {
 			tx = null;
+			HibernateHelper.closeSession();
 		}
 	}
 	
-	public void save (User user) {
-		HibernateHelper.currentSession().saveOrUpdate(user);
-	}
-	
 	public User getUserByPK (Long id) {
-		return (User)HibernateHelper.currentSession().load(User.class, id);
+		Transaction tx = null;
+		User user = null;
+		try {
+			HibernateHelper.closeSession();
+			tx = HibernateHelper.currentSession().beginTransaction();
+			
+			user = (User)HibernateHelper.currentSession().load(User.class, id);
+			
+			tx.commit();
+		}
+		catch (RuntimeException e) {
+			if (tx != null) tx.rollback();
+			e.printStackTrace();
+		}
+		finally {
+			tx = null;
+			HibernateHelper.closeSession();
+		}
+		return user;
 	}
 	
-	public User getUser (String user) {
-		Criteria c = HibernateHelper.currentSession().createCriteria(User.class);
-		c.add(Restrictions.eq("user", user));
-		return (User)c.uniqueResult();
+	public User getUser (String userStr) {
+		Transaction tx = null;
+		User user = null;
+		try {
+			HibernateHelper.closeSession();
+			tx = HibernateHelper.currentSession().beginTransaction();
+			
+			Criteria c = HibernateHelper.currentSession().createCriteria(User.class);
+			c.add(Restrictions.eq("user", userStr));
+			user = (User)c.uniqueResult();
+			
+			tx.commit();
+		}
+		catch (RuntimeException e) {
+			if (tx != null) tx.rollback();
+			e.printStackTrace();
+		}
+		finally {
+			tx = null;
+			HibernateHelper.closeSession();
+		}
+		return user;
 	}
 	
 	@SuppressWarnings("unchecked")
 	public List<User> executeFilter(DynaActionForm form) {
-		String user = !((String)form.get("user")).equals("") ? (String)form.get("user") : null;
-		String name = !((String)form.get("name")).equals("") ? (String)form.get("name") : null;
-		String lastName = !((String)form.get("lastName")).equals("") ? (String)form.get("lastName") : null;
-		String dni = !((String)form.get("dni")).equals("") ? (String)form.get("dni") : null;
-		String id = !((String)form.get("idStr")).equals("") ? (String)form.get("idStr") : null;		
-		Long groupUser = form.get("groupUserId") != null && ((Long)form.get("groupUserId")).longValue() != new Long(-1).longValue() ? (Long)form.get("groupUserId") : null;
+		Transaction tx = null;
+		List<User>  users = new ArrayList<User>();
+		try {
+			HibernateHelper.closeSession();
+			tx = HibernateHelper.currentSession().beginTransaction();
+			
+			String user = !((String)form.get("user")).equals("") ? (String)form.get("user") : null;
+			String name = !((String)form.get("name")).equals("") ? (String)form.get("name") : null;
+			String lastName = !((String)form.get("lastName")).equals("") ? (String)form.get("lastName") : null;
+			String dni = !((String)form.get("dni")).equals("") ? (String)form.get("dni") : null;
+			String id = !((String)form.get("idStr")).equals("") ? (String)form.get("idStr") : null;		
+			Long groupUser = form.get("groupUserId") != null && ((Long)form.get("groupUserId")).longValue() != new Long(-1).longValue() ? (Long)form.get("groupUserId") : null;
+			
+			Criteria c = HibernateHelper.currentSession().createCriteria(User.class);
+			if (user != null) {
+				c.add(Restrictions.ilike("user", user,MatchMode.ANYWHERE));
+			}
+			if (name != null) {
+				c.add(Restrictions.ilike("name", name,MatchMode.ANYWHERE));
+			}
+			if (lastName != null) {
+				c.add(Restrictions.ilike("lastName", lastName,MatchMode.ANYWHERE));
+			}
+			if (id != null) {
+				c.add(Restrictions.eq("id", Long.parseLong(id)));
+			}
+			if (dni != null) {
+				c.add(Restrictions.eq("dni", dni));
+			}
+			if (groupUser != null) {
+				c.createCriteria("groupUser").add(Restrictions.eq("id", groupUser));
+			}
+			c.add(Restrictions.eq("active", new Boolean(true)));
+			users = c.list();		
+			
+			tx.commit();
+		}
+		catch (RuntimeException e) {
+			if (tx != null) tx.rollback();
+			e.printStackTrace();
+		}
+		finally {
+			tx = null;
+			HibernateHelper.closeSession();
+		}
 		
-		Criteria c = HibernateHelper.currentSession().createCriteria(User.class);
-		if (user != null) {
-			c.add(Restrictions.ilike("user", user,MatchMode.ANYWHERE));
-		}
-		if (name != null) {
-			c.add(Restrictions.ilike("name", name,MatchMode.ANYWHERE));
-		}
-		if (lastName != null) {
-			c.add(Restrictions.ilike("lastName", lastName,MatchMode.ANYWHERE));
-		}
-		if (id != null) {
-			c.add(Restrictions.eq("id", Long.parseLong(id)));
-		}
-		if (dni != null) {
-			c.add(Restrictions.eq("dni", dni));
-		}
-		if (groupUser != null) {
-			c.createCriteria("groupUser").add(Restrictions.eq("id", groupUser));
-		}
-		c.add(Restrictions.eq("active", new Boolean(true)));
-		List<User> users = (List<User>)c.list();		
-		return users.isEmpty() ? new ArrayList<User>() : users;
+		return users;
 	}			
 	
-	public String getRoleInUser(String user) {
-		Criteria c = HibernateHelper.currentSession().createCriteria(User.class);
-		c.add(Restrictions.eq("user", user));
-		return ((User)c.uniqueResult()).getGroupUser().getName();
+	public String getRoleInUser(String userStr) {
+		Transaction tx = null;
+		User user = null;
+		try {
+			HibernateHelper.closeSession();
+			tx = HibernateHelper.currentSession().beginTransaction();
+			
+			Criteria c = HibernateHelper.currentSession().createCriteria(User.class);
+			c.add(Restrictions.eq("user", userStr));
+			user = (User)c.uniqueResult();
+			
+			tx.commit();
+		}
+		catch (RuntimeException e) {
+			if (tx != null) tx.rollback();
+			e.printStackTrace();
+		}
+		finally {
+			tx = null;
+			HibernateHelper.closeSession();
+		}
+		return user != null ? user.getGroupUser().getName() : "";
 	}	
 	
 	@SuppressWarnings("unchecked")
 	public List<User> getUserToNotifications(Boolean value) {
-		String[] listRestrictions = new String[3];
-		listRestrictions[0] = GroupUser.ROLE_ADMIN;
-		listRestrictions[1] = GroupUser.ROLE_MANAGER;
-		listRestrictions[2] = GroupUser.ROLE_SUPERVISOR;
+		Transaction tx = null;
+		List<User> users = new ArrayList<User>();
+		try {
+			HibernateHelper.closeSession();
+			tx = HibernateHelper.currentSession().beginTransaction();
+			
+			String[] listRestrictions = new String[3];
+			listRestrictions[0] = GroupUser.ROLE_ADMIN;
+			listRestrictions[1] = GroupUser.ROLE_MANAGER;
+			listRestrictions[2] = GroupUser.ROLE_SUPERVISOR;
+			
+			Criteria c = HibernateHelper.currentSession().createCriteria(User.class);
+			c.add(Restrictions.eq("receiveNotifications", value));
+			c.createCriteria("groupUser").add(Restrictions.in("name", listRestrictions));
+			users = c.list();
+			
+			tx.commit();
+		}
+		catch (RuntimeException e) {
+			if (tx != null) tx.rollback();
+			e.printStackTrace();
+		}
+		finally {
+			tx = null;
+			HibernateHelper.closeSession();
+		}
+		return users;
 		
-		Criteria c = HibernateHelper.currentSession().createCriteria(User.class);
-		c.add(Restrictions.eq("receiveNotifications", value));
-		c.createCriteria("groupUser").add(Restrictions.in("name", listRestrictions));
-		return c.list();
 	}
 	
 	public void addNotificationInUser(Long idUser) {
 		Transaction tx = null;
 		try {
+			HibernateHelper.closeSession();
 			tx = HibernateHelper.currentSession().beginTransaction();
 			
-			User user = getUserByPK(idUser);
+			User user = (User)HibernateHelper.currentSession().load(User.class, idUser);
 			user.setReceiveNotifications(new Boolean(true));
-			save(user);
+			HibernateHelper.currentSession().saveOrUpdate(user);
 			
 			tx.commit();
 		}
@@ -175,6 +268,7 @@ public class UserService {
 		}
 		finally {
 			tx = null;
+			HibernateHelper.closeSession();
 		}
 	}
 	
@@ -191,11 +285,12 @@ public class UserService {
 	public void deleteNotificationInUser(Long idUser) {
 		Transaction tx = null;
 		try {
+			HibernateHelper.closeSession();
 			tx = HibernateHelper.currentSession().beginTransaction();
 			
-			User user = getUserByPK(idUser);
+			User user = (User)HibernateHelper.currentSession().load(User.class, idUser);
 			user.setReceiveNotifications(new Boolean(false));
-			save(user);
+			HibernateHelper.currentSession().saveOrUpdate(user);
 			
 			tx.commit();
 		}
@@ -205,25 +300,46 @@ public class UserService {
 		}
 		finally {
 			tx = null;
+			HibernateHelper.closeSession();
 		}
 	}
 	
 	@SuppressWarnings("unchecked")
 	public List<User> getCajeros() {
-		Criteria c = HibernateHelper.currentSession().createCriteria(User.class)
-					.createCriteria("groupUser").add(Restrictions.eq("name", GroupUser.ROLE_CAJERO))
-					.add(Restrictions.eq("active", new Boolean(true)));
-		return c.list();
+		Transaction tx = null;
+		List<User> cajeros = new ArrayList<User>();
+		try {
+			HibernateHelper.closeSession();
+			tx = HibernateHelper.currentSession().beginTransaction();
+			
+			Criteria c = HibernateHelper.currentSession().createCriteria(User.class)
+			.createCriteria("groupUser").add(Restrictions.eq("name", GroupUser.ROLE_CAJERO))
+			.add(Restrictions.eq("active", new Boolean(true)));
+			cajeros = c.list();
+			
+			tx.commit();
+		}
+		catch (RuntimeException e) {
+			if (tx != null) tx.rollback();
+			e.printStackTrace();
+		}
+		finally {
+			tx = null;
+			HibernateHelper.closeSession();
+		}
+		
+		return cajeros;
 	}
 	
 	public void saveImage(User user, Image img, FormFile file) {
 		Transaction tx = null;
 		try {
+			HibernateHelper.closeSession();
 			tx = HibernateHelper.currentSession().beginTransaction();
 			
 			user.setFoto(file.getFileData());
 	        user.setImage(img);
-	        save(user);
+	        HibernateHelper.currentSession().saveOrUpdate(user);
 			
 			tx.commit();
 		}
@@ -233,6 +349,7 @@ public class UserService {
 		}
 		finally {
 			tx = null;
+			HibernateHelper.closeSession();
 		}
 	}
 }

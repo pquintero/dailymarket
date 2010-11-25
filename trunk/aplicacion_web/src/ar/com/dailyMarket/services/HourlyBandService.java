@@ -25,11 +25,12 @@ public class HourlyBandService {
 	public void save (ActionForm form) {
 		Transaction tx = null;
 		try {
+			HibernateHelper.closeSession();
 			tx = HibernateHelper.currentSession().beginTransaction();
 			
 			HourlyBand hourlyBand = new HourlyBand();
 			copyProperties(hourlyBand, (DynaActionForm)form);
-			save(hourlyBand);
+			HibernateHelper.currentSession().save(hourlyBand);
 			
 			tx.commit();
 		}
@@ -39,16 +40,18 @@ public class HourlyBandService {
 		}
 		finally {
 			tx = null;
+			HibernateHelper.closeSession();
 		}
 	}	
 	
 	public void update (ActionForm form, HourlyBand hourlyBand) {
 		Transaction tx = null;
 		try {
+			HibernateHelper.closeSession();
 			tx = HibernateHelper.currentSession().beginTransaction();
 			
 			copyProperties(hourlyBand, (DynaActionForm)form);
-			save(hourlyBand);
+			HibernateHelper.currentSession().update(hourlyBand);
 			
 			tx.commit();
 		}
@@ -58,17 +61,19 @@ public class HourlyBandService {
 		}
 		finally {
 			tx = null;
+			HibernateHelper.closeSession();
 		}
 	}
 	
 	public void delete (Long id) {
 		Transaction tx = null;
 		try {
+			HibernateHelper.closeSession();
 			tx = HibernateHelper.currentSession().beginTransaction();
 			
-			HourlyBand hourlyBand = getHourlyBandByPK(id);
+			HourlyBand hourlyBand = (HourlyBand)HibernateHelper.currentSession().load(HourlyBand.class, id);
 			hourlyBand.setActive(false);
-			save(hourlyBand);
+			HibernateHelper.currentSession().update(hourlyBand);
 			
 			tx.commit();
 		}
@@ -78,33 +83,84 @@ public class HourlyBandService {
 		}
 		finally {
 			tx = null;
+			HibernateHelper.closeSession();
 		}
 	}
 	
-	public void save (HourlyBand hourlyBand) {
-		HibernateHelper.currentSession().saveOrUpdate(hourlyBand);
-	}
-	
 	public HourlyBand getHourlyBandByPK (Long id) {
-		return (HourlyBand)HibernateHelper.currentSession().load(HourlyBand.class, id);
+		Transaction tx = null;
+		HourlyBand banda = null;
+		try {
+			HibernateHelper.closeSession();
+			tx = HibernateHelper.currentSession().beginTransaction();
+			
+			banda = (HourlyBand)HibernateHelper.currentSession().load(HourlyBand.class, id);
+			
+			tx.commit();
+		}
+		catch (RuntimeException e) {
+			if (tx != null) tx.rollback();
+			e.printStackTrace();
+		}
+		finally {
+			tx = null;
+			HibernateHelper.closeSession();
+		}
+		return banda;
 	}
 	
 	@SuppressWarnings("unchecked")
 	public List<HourlyBand> executeFilter(DynaActionForm form) {		
-		Long id = ((Long)form.get("id")).longValue() != new Long(-1).longValue() ? (Long)form.get("id") : null;			
-		
-		Criteria c = HibernateHelper.currentSession().createCriteria(HourlyBand.class);
-		if (id != null) {
-			c.add(Restrictions.eq("id", id));
-		}		
-		c.add(Restrictions.eq("active", new Boolean(true)));
-		List<HourlyBand> hourlyBands = (List<HourlyBand>)c.list();		
-		return hourlyBands.isEmpty() ? new ArrayList<HourlyBand>() : hourlyBands;
+		Transaction tx = null;
+		List<HourlyBand> hourlyBands = new ArrayList<HourlyBand>();
+		try {
+			HibernateHelper.closeSession();
+			tx = HibernateHelper.currentSession().beginTransaction();
+			
+			Long id = ((Long)form.get("id")).longValue() != new Long(-1).longValue() ? (Long)form.get("id") : null;			
+			Criteria c = HibernateHelper.currentSession().createCriteria(HourlyBand.class);
+			if (id != null) {
+				c.add(Restrictions.eq("id", id));
+			}
+			c.add(Restrictions.eq("active", new Boolean(true)));
+			hourlyBands = c.list();
+			
+			tx.commit();
+		}
+		catch (RuntimeException e) {
+			if (tx != null) tx.rollback();
+			e.printStackTrace();
+		}
+		finally {
+			tx = null;
+			HibernateHelper.closeSession();
+		}
+				
+		return hourlyBands;
 	}
 	
 	@SuppressWarnings("unchecked")
 	public List<HourlyBand> getAllHourlyBands() {
-		return (List<HourlyBand>)HibernateHelper.currentSession().createCriteria(HourlyBand.class)
-		.add(Restrictions.eq("active", new Boolean(true))).list();
+		Transaction tx = null;
+		List<HourlyBand> bandas = new ArrayList<HourlyBand>();
+		try {
+			HibernateHelper.closeSession();
+			tx = HibernateHelper.currentSession().beginTransaction();
+			
+			Criteria c = HibernateHelper.currentSession().createCriteria(HourlyBand.class)
+						.add(Restrictions.eq("active", new Boolean(true)));
+			bandas = c.list();
+			
+			tx.commit();
+		}
+		catch (RuntimeException e) {
+			if (tx != null) tx.rollback();
+			e.printStackTrace();
+		}
+		finally {
+			tx = null;
+			HibernateHelper.closeSession();
+		}
+		return bandas;
 	}
 }

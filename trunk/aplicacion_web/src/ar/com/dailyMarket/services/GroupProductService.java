@@ -24,11 +24,12 @@ public class GroupProductService {
 	public void save (ActionForm form) {
 		Transaction tx = null;
 		try {
+			HibernateHelper.closeSession();
 			tx = HibernateHelper.currentSession().beginTransaction();
 		
 			GroupProduct groupProduct = new GroupProduct();
 			copyProperties(groupProduct, (DynaActionForm)form);
-			save(groupProduct);
+			HibernateHelper.currentSession().save(groupProduct);
 			
 			tx.commit();
 		}
@@ -38,16 +39,18 @@ public class GroupProductService {
 		}
 		finally {
 			tx = null;
+			HibernateHelper.closeSession();
 		}
 	}	
 	
 	public void update (ActionForm form, GroupProduct groupProduct) {
 		Transaction tx = null;
 		try {
+			HibernateHelper.closeSession();
 			tx = HibernateHelper.currentSession().beginTransaction();
 			
 			copyProperties(groupProduct, (DynaActionForm)form);
-			save(groupProduct);
+			HibernateHelper.currentSession().update(groupProduct);
 			
 			tx.commit();
 		}
@@ -57,17 +60,19 @@ public class GroupProductService {
 		}
 		finally {
 			tx = null;
+			HibernateHelper.closeSession();
 		}
 	}
 	
 	public void delete (Long id) {
 		Transaction tx = null;
 		try {
+			HibernateHelper.closeSession();
 			tx = HibernateHelper.currentSession().beginTransaction();
 		
-			GroupProduct groupProduct = getGroupProductByPK(id);
+			GroupProduct groupProduct = (GroupProduct) HibernateHelper.currentSession().load(GroupProduct.class, id);
 			groupProduct.setActive(false);
-			save(groupProduct);
+			HibernateHelper.currentSession().update(groupProduct);
 			
 			tx.commit();
 		}
@@ -77,37 +82,87 @@ public class GroupProductService {
 		}
 		finally {
 			tx = null;
+			HibernateHelper.closeSession();
 		}
 	}
 	
-	public void save (GroupProduct groupProduct) {
-		HibernateHelper.currentSession().saveOrUpdate(groupProduct);
-	}
-	
 	public GroupProduct getGroupProductByPK (Long id) {
-		return (GroupProduct)HibernateHelper.currentSession().load(GroupProduct.class, id);
+		Transaction tx = null;
+		GroupProduct group = null;
+		try {
+			HibernateHelper.closeSession();
+			tx = HibernateHelper.currentSession().beginTransaction();
+			
+			group = (GroupProduct) HibernateHelper.currentSession().load(GroupProduct.class, id);
+			
+			tx.commit();
+		}
+		catch (RuntimeException e) {
+			if (tx != null) tx.rollback();
+			e.printStackTrace();
+		}
+		finally {
+			tx = null;
+			HibernateHelper.closeSession();
+		}
+		return group;
 	}
 	
 	@SuppressWarnings("unchecked")
 	public List<GroupProduct> executeFilter(DynaActionForm form) {
-		String name = !((String)form.get("name")).equals("") ? (String)form.get("name") : null;
-		String description = !((String)form.get("description")).equals("") ? (String)form.get("description") : null;		
-		
-		Criteria c = HibernateHelper.currentSession().createCriteria(GroupProduct.class);
-		if (name != null) {
-			c.add(Restrictions.ilike("name", name,MatchMode.ANYWHERE));
+		List<GroupProduct> groups = new ArrayList<GroupProduct>();
+		Transaction tx = null;
+		try {
+			HibernateHelper.closeSession();
+			tx = HibernateHelper.currentSession().beginTransaction();
+			
+			String name = !((String)form.get("name")).equals("") ? (String)form.get("name") : null;
+			String description = !((String)form.get("description")).equals("") ? (String)form.get("description") : null;		
+			
+			Criteria c = HibernateHelper.currentSession().createCriteria(GroupProduct.class);
+			if (name != null) {
+				c.add(Restrictions.ilike("name", name,MatchMode.ANYWHERE));
+			}
+			if (description != null) {
+				c.add(Restrictions.ilike("description", description,MatchMode.ANYWHERE));
+			}		
+			c.add(Restrictions.eq("active", new Boolean(true)));
+			groups = c.list();		
+			
+			tx.commit();
 		}
-		if (description != null) {
-			c.add(Restrictions.ilike("description", description,MatchMode.ANYWHERE));
-		}		
-		c.add(Restrictions.eq("active", new Boolean(true)));
-		List<GroupProduct> groups = (List<GroupProduct>)c.list();		
-		return groups.isEmpty() ? new ArrayList<GroupProduct>() : groups;
+		catch (RuntimeException e) {
+			if (tx != null) tx.rollback();
+			e.printStackTrace();
+		}
+		finally {
+			tx = null;
+			HibernateHelper.closeSession();
+		}
+		return groups;
 	}
 	
 	@SuppressWarnings("unchecked")
 	public List<GroupProduct> getAllGroupProduct() {
-		return (List<GroupProduct>)HibernateHelper.currentSession().createCriteria(GroupProduct.class)
-		.add(Restrictions.eq("active", new Boolean(true))).list();
+		Transaction tx = null;
+		List<GroupProduct> groupProd = new ArrayList<GroupProduct>();
+		try {
+			HibernateHelper.closeSession();
+			tx = HibernateHelper.currentSession().beginTransaction();
+			
+			groupProd = (List<GroupProduct>) HibernateHelper.currentSession().createCriteria(GroupProduct.class)
+											.add(Restrictions.eq("active", new Boolean(true))).list();
+			
+			tx.commit();
+		}
+		catch (RuntimeException e) {
+			if (tx != null) tx.rollback();
+			e.printStackTrace();
+		}
+		finally {
+			tx = null;
+			HibernateHelper.closeSession();
+		}
+		return groupProd;
 	}
 }

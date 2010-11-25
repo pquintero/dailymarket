@@ -6,6 +6,7 @@ import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -27,6 +28,7 @@ public class ImageService {
 		Image img = null;
 		Transaction tx = null;
 		try {
+			HibernateHelper.closeSession();
 			tx = HibernateHelper.currentSession().beginTransaction();
 			
 			img = new Image();
@@ -38,11 +40,11 @@ public class ImageService {
 	        Long parentId = (Long) data.get("id");
 	        String fileName = "IMAGE_" + parentId + "_" + new Date().getTime();
 	        String filePath = ((String) data.get("uploadPath")) + fileName;
-
+	        
 	        try {
 	            BufferedInputStream bis = new BufferedInputStream(new ByteArrayInputStream(file.getFileData()));
 	            BufferedOutputStream bos = new BufferedOutputStream(new FileOutputStream(filePath));
-
+	            
 	            int len = 0;
 	            for (byte []buffer = new byte[1024]; (len = bis.read(buffer, 0, 1024)) != -1; ) {
 	            	bos.write(buffer, 0, len);
@@ -64,7 +66,6 @@ public class ImageService {
 	        
 	        saveThumbnail(img, ((String) data.get("uploadPath")));
 	        
-	        //TODO Por que este refresh??????????????
 	        HibernateHelper.currentSession().refresh(img);
 			
 			tx.commit();
@@ -75,6 +76,7 @@ public class ImageService {
 		}
 		finally {
 			tx = null;
+			HibernateHelper.closeSession();
 		}
         return img;
 	}
@@ -108,23 +110,79 @@ public class ImageService {
 
 	@SuppressWarnings("unchecked")
 	public List<Image> getImages(DynaBean data) {
-		Long id = (Long) data.get("id");
-		Criteria c = HibernateHelper.currentSession().createCriteria(Image.class);
-		c.createCriteria("order").add(Expression.eq("id", id));		
-		return c.list();
+		Transaction tx = null;
+		List<Image> images = new ArrayList<Image>();
+		try {
+			HibernateHelper.closeSession();
+			tx = HibernateHelper.currentSession().beginTransaction();
+			
+			Long id = (Long) data.get("id");
+			Criteria c = HibernateHelper.currentSession().createCriteria(Image.class);
+			c.createCriteria("order").add(Expression.eq("id", id));
+			images = c.list();
+			
+			tx.commit();
+		}
+		catch (RuntimeException e) {
+			if (tx != null) tx.rollback();
+			e.printStackTrace();
+		}
+		finally {
+			tx = null;
+			HibernateHelper.closeSession();
+		}
+				
+		return images;
 	}
 	
 	public Image getImage(Long id) {
-		return (Image) HibernateHelper.currentSession().load(Image.class, id);		
+		Transaction tx = null;
+		Image image = null;
+		try {
+			HibernateHelper.closeSession();
+			tx = HibernateHelper.currentSession().beginTransaction();
+			
+			image = (Image) HibernateHelper.currentSession().load(Image.class, id);	
+			
+			tx.commit();
+		}
+		catch (RuntimeException e) {
+			if (tx != null) tx.rollback();
+			e.printStackTrace();
+		}
+		finally {
+			tx = null;
+			HibernateHelper.closeSession();
+		}
+		return image;
 	}
 	
 	public Thumbnail getThumbnail(Long id) {
-		return (Thumbnail) HibernateHelper.currentSession().load(Thumbnail.class, id);		
+		Transaction tx = null;
+		Thumbnail thumb = null;
+		try {
+			HibernateHelper.closeSession();
+			tx = HibernateHelper.currentSession().beginTransaction();
+			
+			thumb = (Thumbnail) HibernateHelper.currentSession().load(Thumbnail.class, id);
+			
+			tx.commit();
+		}
+		catch (RuntimeException e) {
+			if (tx != null) tx.rollback();
+			e.printStackTrace();
+		}
+		finally {
+			tx = null;
+			HibernateHelper.closeSession();
+		}
+		return thumb;
 	}
 	
 	public void deleteImg(Product product) {
 		Transaction tx = null;
 		try {
+			HibernateHelper.closeSession();
 			tx = HibernateHelper.currentSession().beginTransaction();
 			
 			Image img = product.getImage();
@@ -140,12 +198,14 @@ public class ImageService {
 		}
 		finally {
 			tx = null;
+			HibernateHelper.closeSession();
 		}
 	}
 	
 	public void deleteImg(User user) {
 		Transaction tx = null;
 		try {
+			HibernateHelper.closeSession();
 			tx = HibernateHelper.currentSession().beginTransaction();
 			
 			Image img = user.getImage();
@@ -161,6 +221,7 @@ public class ImageService {
 		}
 		finally {
 			tx = null;
+			HibernateHelper.closeSession();
 		}
 	}
 	

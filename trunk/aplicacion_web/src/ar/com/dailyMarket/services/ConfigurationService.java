@@ -16,9 +16,10 @@ public class ConfigurationService {
 	public void save(DynaActionForm form) {
 		Transaction tx = null;
 		try {
+			HibernateHelper.closeSession();
 			tx = HibernateHelper.currentSession().beginTransaction();
 		
-			Configuration conf = getConfiguration();
+			Configuration conf = (Configuration) HibernateHelper.currentSession().createCriteria(Configuration.class).uniqueResult();
 			if (conf == null) {
 				conf  = new Configuration();
 			}
@@ -33,10 +34,29 @@ public class ConfigurationService {
 		}
 		finally {
 			tx = null;
+			HibernateHelper.closeSession();
 		}
 	}
 	
 	public Configuration getConfiguration() {
-		return (Configuration)HibernateHelper.currentSession().createCriteria(Configuration.class).uniqueResult();		
+		Transaction tx = null;
+		Configuration conf = null;
+		try {
+			HibernateHelper.closeSession();
+			tx = HibernateHelper.currentSession().beginTransaction();
+			
+			conf = (Configuration) HibernateHelper.currentSession().createCriteria(Configuration.class).uniqueResult();
+			
+			tx.commit();
+		}
+		catch (RuntimeException e) {
+			if (tx != null) tx.rollback();
+			e.printStackTrace();
+		}
+		finally {
+			tx = null;
+			HibernateHelper.closeSession();
+		}
+		return conf;
 	}	
 }

@@ -93,7 +93,7 @@ public class HourlyBandAction extends BaseAction {
     	ActionErrors errors = new ActionErrors();
     	Validator.isEmpty(form.get("name"), errors, request, "Nombre");
     	Validator.isEmpty(form.get("description"), errors, request, "Descripción");
-    	if ((Integer.parseInt((String)form.get("initBand"))) >= (Integer.parseInt((String)form.get("endBand")))) {
+    	if ((Integer)form.get("initBand") >= (Integer)form.get("endBand")) {
     		errors.add("initBand", new ActionError("errors.incorrectBand"));
     	}
     	return errors;

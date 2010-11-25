@@ -11,6 +11,7 @@ import java.util.Locale;
 
 import org.apache.struts.action.DynaActionForm;
 import org.hibernate.Criteria;
+import org.hibernate.Transaction;
 import org.hibernate.criterion.Restrictions;
 
 import ar.com.dailyMarket.charts.LineChart;
@@ -26,7 +27,7 @@ import ar.com.dailyMarket.model.User;
 public class IndicadoresService {
 	
 	/**
-	 * TODO ventas por cajero yo lo tome como ventas en dinero, no en catidad de operaciones de venta ver cual es la correcta
+	 * FIXME ventas por cajero yo lo tome como ventas en dinero, no en catidad de operaciones de venta ver cual es la correcta
 	 */
 	
 /******		VentasPorCajeroMensual		******/
@@ -234,29 +235,45 @@ public class IndicadoresService {
 	
 	@SuppressWarnings("unchecked")
 	private String getVentasPorCajeroPorFechaPorDia(User cajero, GregorianCalendar dia, Long bandaId) {
-		HourlyBandService bandServ = new HourlyBandService();
-		
-		Criteria ventas = HibernateHelper.currentSession().createCriteria(SesionVenta.class);
-		ventas.createCriteria("cajero").add(Restrictions.eq("id", cajero.getId()));
-		
-		GregorianCalendar from;
-		GregorianCalendar to;
-		
-		if (bandaId > 0) {
-			HourlyBand banda = bandServ.getHourlyBandByPK(bandaId);
-			from = new GregorianCalendar(dia.get(GregorianCalendar.YEAR), dia.get(GregorianCalendar.MONTH),	
-										dia.get(GregorianCalendar.DAY_OF_MONTH), Integer.valueOf(banda.getInitBand()), 0, 0);
-			to = new GregorianCalendar(dia.get(GregorianCalendar.YEAR), dia.get(GregorianCalendar.MONTH), 
-										dia.get(GregorianCalendar.DAY_OF_MONTH), Integer.valueOf(banda.getEndBand()), 0, 0);
-		} else {
-			from = new GregorianCalendar(dia.get(GregorianCalendar.YEAR), dia.get(GregorianCalendar.MONTH), 
-										dia.get(GregorianCalendar.DAY_OF_MONTH), 0,	0, 0);
-			to = new GregorianCalendar(dia.get(GregorianCalendar.YEAR), dia.get(GregorianCalendar.MONTH),
-										dia.get(GregorianCalendar.DAY_OF_MONTH), 23, 59, 59);
+		List<SesionVenta> sesiones = new ArrayList<SesionVenta>();
+		Transaction tx = null;
+		try {
+			HibernateHelper.closeSession();
+			tx = HibernateHelper.currentSession().beginTransaction();
+			
+			Criteria ventas = HibernateHelper.currentSession().createCriteria(SesionVenta.class);
+			ventas.createCriteria("cajero").add(Restrictions.eq("id", cajero.getId()));
+			
+			GregorianCalendar from;
+			GregorianCalendar to;
+			
+			if (bandaId > 0) {
+				HourlyBand banda = (HourlyBand) HibernateHelper.currentSession().load(HourlyBand.class, (bandaId));
+				from = new GregorianCalendar(dia.get(GregorianCalendar.YEAR), dia.get(GregorianCalendar.MONTH),	
+											dia.get(GregorianCalendar.DAY_OF_MONTH), Integer.valueOf(banda.getInitBand()), 0, 0);
+				to = new GregorianCalendar(dia.get(GregorianCalendar.YEAR), dia.get(GregorianCalendar.MONTH), 
+											dia.get(GregorianCalendar.DAY_OF_MONTH), Integer.valueOf(banda.getEndBand()), 0, 0);
+			} else {
+				from = new GregorianCalendar(dia.get(GregorianCalendar.YEAR), dia.get(GregorianCalendar.MONTH), 
+											dia.get(GregorianCalendar.DAY_OF_MONTH), 0,	0, 0);
+				to = new GregorianCalendar(dia.get(GregorianCalendar.YEAR), dia.get(GregorianCalendar.MONTH),
+											dia.get(GregorianCalendar.DAY_OF_MONTH), 23, 59, 59);
+			}
+			
+			ventas.add(Restrictions.between("fechaInicio", from.getTime(), to.getTime()));
+			sesiones = ventas.list();
+			
+			tx.commit();
+		}
+		catch (RuntimeException e) {
+			if (tx != null) tx.rollback();
+			e.printStackTrace();
+		}
+		finally {
+			tx = null;
+			HibernateHelper.closeSession();
 		}
 		
-		ventas.add(Restrictions.between("fechaInicio", from.getTime(), to.getTime()));
-		List<SesionVenta> sesiones = ventas.list();
 		
 		if (sesiones.isEmpty())
 			return "0.00";
@@ -271,29 +288,44 @@ public class IndicadoresService {
 	
 	@SuppressWarnings("unchecked")
 	private String getVentasPorCajeroPorFechaPorMes(User cajero, GregorianCalendar mes, Long bandaId) {
-		HourlyBandService bandServ = new HourlyBandService();
-		
-		Criteria ventas = HibernateHelper.currentSession().createCriteria(SesionVenta.class);
-		ventas.createCriteria("cajero").add(Restrictions.eq("id", cajero.getId()));
-		
-		GregorianCalendar from;
-		GregorianCalendar to;
-		
-		if (bandaId > 0) {
-			HourlyBand banda = bandServ.getHourlyBandByPK(bandaId);
-			from = new GregorianCalendar(mes.get(GregorianCalendar.YEAR), mes.get(GregorianCalendar.MONTH),	
-										1, Integer.valueOf(banda.getInitBand()), 0, 0);
-			to = new GregorianCalendar(mes.get(GregorianCalendar.YEAR), mes.get(GregorianCalendar.MONTH), 
-										mes.getActualMaximum(GregorianCalendar.DAY_OF_MONTH), Integer.valueOf(banda.getEndBand()), 0, 0);
-		} else {
-			from = new GregorianCalendar(mes.get(GregorianCalendar.YEAR), mes.get(GregorianCalendar.MONTH), 
-										1, 0,	0, 0);
-			to = new GregorianCalendar(mes.get(GregorianCalendar.YEAR), mes.get(GregorianCalendar.MONTH),
-										mes.getActualMaximum(GregorianCalendar.DAY_OF_MONTH), 23, 59, 59);
+		List<SesionVenta> sesiones = new ArrayList<SesionVenta>();
+		Transaction tx = null;
+		try {
+			HibernateHelper.closeSession();
+			tx = HibernateHelper.currentSession().beginTransaction();
+			
+			Criteria ventas = HibernateHelper.currentSession().createCriteria(SesionVenta.class);
+			ventas.createCriteria("cajero").add(Restrictions.eq("id", cajero.getId()));
+			
+			GregorianCalendar from;
+			GregorianCalendar to;
+			
+			if (bandaId > 0) {
+				HourlyBand banda = (HourlyBand) HibernateHelper.currentSession().load(HourlyBand.class, (bandaId));
+				from = new GregorianCalendar(mes.get(GregorianCalendar.YEAR), mes.get(GregorianCalendar.MONTH),	
+											1, Integer.valueOf(banda.getInitBand()), 0, 0);
+				to = new GregorianCalendar(mes.get(GregorianCalendar.YEAR), mes.get(GregorianCalendar.MONTH), 
+											mes.getActualMaximum(GregorianCalendar.DAY_OF_MONTH), Integer.valueOf(banda.getEndBand()), 0, 0);
+			} else {
+				from = new GregorianCalendar(mes.get(GregorianCalendar.YEAR), mes.get(GregorianCalendar.MONTH), 
+											1, 0,	0, 0);
+				to = new GregorianCalendar(mes.get(GregorianCalendar.YEAR), mes.get(GregorianCalendar.MONTH),
+											mes.getActualMaximum(GregorianCalendar.DAY_OF_MONTH), 23, 59, 59);
+			}
+			
+			ventas.add(Restrictions.between("fechaInicio", from.getTime(), to.getTime()));
+			sesiones = ventas.list();
+			
+			tx.commit();
 		}
-		
-		ventas.add(Restrictions.between("fechaInicio", from.getTime(), to.getTime()));
-		List<SesionVenta> sesiones = ventas.list();
+		catch (RuntimeException e) {
+			if (tx != null) tx.rollback();
+			e.printStackTrace();
+		}
+		finally {
+			tx = null;
+			HibernateHelper.closeSession();
+		}
 		
 		if (sesiones.isEmpty())
 			return "0.00";

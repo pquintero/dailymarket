@@ -5,30 +5,6 @@
 <%@ taglib uri="/tags/struts-logic" prefix="logic" %>
 <%@page import="ar.com.dailyMarket.model.Image;"%>
 
-
-<script type="text/javascript">
-	hs.graphicsDir = 'highslide/graphics/';
-	hs.align = 'center';
-	hs.transitions = ['expand', 'crossfade'];
-	hs.outlineType = 'rounded-white';
-	hs.fadeInOut = true;
-	//hs.dimmingOpacity = 0.75;
-
-	// Add the controlbar
-	if (hs.addSlideshow) hs.addSlideshow({
-		//slideshowGroup: 'group1',
-		interval: 5000,
-		repeat: false,
-		useControls: true,
-		fixedControls: true,
-		overlayOptions: {
-			opacity: .75,
-			position: 'top center',
-			hideOnMouseOut: true
-		}
-	});
-</script>
-
 <bean:define id="id" property="id" name="UserForm" type="java.lang.Long"/>
 <bean:define id="attachId" property="attachId" name="UserForm" type="java.lang.Long"/>
 
@@ -43,6 +19,26 @@
 			<html:errors/>
 		</TD>
 	</TR> 
+	
+	<logic:notEqual name="attachId" value="-1">
+		<TR>	
+			<TH style="width:100px;padding-left:40px;" rowspan="5">
+				&nbsp;
+				<div>					
+						<%
+							Image image = (Image)request.getSession().getAttribute("image");
+						%>						
+						<img src="image.do?VirtualDispatchName=getImage&isImage=0&imageId=<%=image.getThumbnail().getId().toString()%>" alt="<%=image.getDescription() %>"
+							title="<%=image.getDescription() %>" /></a>
+							<div class="highslide-caption">																																				
+						</div>
+				</div>
+			</TH>	
+			<TD width="100px;"></TD>
+			<TH style="width:100px;padding-left:40px;"></TH>
+			<TD></TD>
+		</TR>
+	</logic:notEqual>
 	
 	<TR> 
 		<TH style="width:100px;padding-left:40px;"><bean:message key="UserForm.lastName"/></TH>
@@ -71,39 +67,20 @@
 			</html:select>
 		</TD>
 	</TR>	
-	<logic:notEqual name="attachId" value="-1">
-	<TR>	
-		<TH style="width:100px;padding-left:40px;">
-			&nbsp;
-			<div>					
-					<%
-						Image image = (Image)request.getSession().getAttribute("image");
-					%>						
-					<a href="image.do?VirtualDispatchName=getImage&isImage=1&imageId=<%=image.getId().toString()%>" class="highslide" onclick="return hs.expand(this)">								
-					<img src="image.do?VirtualDispatchName=getImage&isImage=0&imageId=<%=image.getThumbnail().getId().toString()%>" alt="<%=image.getDescription() %>"
-						title="<%=image.getDescription() %>" /></a>
-						<div class="highslide-caption">																																				
-					</div>
-			</div>
-		</TH>	
-		<TD width="100px;"></TD>
-		<TH style="width:100px;padding-left:40px;"></TH>
-		<TD></TD>
-	</TR>
-</logic:notEqual>
-<logic:notEqual name="id" value="-1">
-	<tr>
-		<TH colspan="2" style="width:100px;padding-left:40px;"></TH>
-			<TABLE align="left" class="buttons" border="0" cellspacing="0" cellpadding="3">
-				<TR>	
-					<td width="100%">&nbsp;</td>
-			        <TD align="right"  width="130px" >        				
-			     	   <input width="130px" class="btn" value="Adjuntar Imagen" readonly="readonly"
-							 onclick="forms[0].VirtualDispatchName.value='initImage';forms[0].submit();">
-			        </TD>	
-				</TR>
-			</TABLE>
-		</th>
-	</tr>
-</logic:notEqual>
+	
+	<logic:notEqual name="id" value="-1">
+		<tr>
+			<TH colspan="2" style="width:100px;padding-left:40px;"></TH>
+				<TABLE align="left" class="buttons" border="0" cellspacing="0" cellpadding="3">
+					<TR>	
+						<td width="100%">&nbsp;</td>
+				        <TD align="right"  width="130px" >        				
+				     	   <input width="130px" class="btn" value="Adjuntar Imagen" readonly="readonly"
+								 onclick="forms[0].VirtualDispatchName.value='initImage';forms[0].submit();">
+				        </TD>	
+					</TR>
+				</TABLE>
+			</th>
+		</tr>
+	</logic:notEqual>
 </TABLE>

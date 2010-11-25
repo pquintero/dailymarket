@@ -6,10 +6,10 @@
 
 <ds:table name="items" sort="list"  prop="formDisplaytag" export="false" id="row" pagesize="40" class="list"  cellspacing="0" cellpadding="3">
 
-        <ds:column titleKey="HourlyBandForm.name" headerClass="listTitle" sortable="true" property="name"/>
-        <ds:column titleKey="HourlyBandForm.description" headerClass="listTitle" sortable="true" property="description"/>
-        <ds:column titleKey="HourlyBandForm.initHour" headerClass="listTitle" sortable="true" property="initBand"/>
-        <ds:column titleKey="HourlyBandForm.endHour" headerClass="listTitle" sortable="true" property="endBand"/>
+        <ds:column titleKey="HourlyBandForm.name" headerClass="listTitle" property="name"/>
+        <ds:column titleKey="HourlyBandForm.description" headerClass="listTitle" property="description"/>
+        <ds:column titleKey="HourlyBandForm.initHour" headerClass="listTitle" property="initBand"/>
+        <ds:column titleKey="HourlyBandForm.endHour" headerClass="listTitle" property="endBand"/>
         <ds:column headerClass="listTitle"  title="&nbsp;">
 			<img 
 				src="images/common/editar.gif" 

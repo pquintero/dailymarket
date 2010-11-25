@@ -1,6 +1,7 @@
 package ar.com.dailyMarket.ui;
 
 import java.io.IOException;
+import java.util.Locale;
 
 import javax.naming.Context;
 import javax.naming.InitialContext;
@@ -45,6 +46,10 @@ public class UserAction extends BaseAction {
     	ActionErrors errors = validateForm((DynaActionForm)form, request);
     	if (!errors.isEmpty()) {	
     		saveErrors(request, errors);
+    		setGroupUserRequest(request);
+    		((DynaActionForm)form).set("id",new Long(-1));
+    		((DynaActionForm)form).set("attachId",new Long(-1));
+    		request.getSession().setAttribute("image", null);
     		return super.initAction(mapping, form, request, response);
     	}
     	userService.save(form);
@@ -70,7 +75,7 @@ public class UserAction extends BaseAction {
     
     public ActionForward update (ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
     	UserService userService = new UserService();
-    	userService.update(form,userService.getUserByPK((Long)((DynaActionForm)form).get("id")));
+    	userService.update(form, userService.getUserByPK((Long)((DynaActionForm)form).get("id")));
     	
     	ActionErrors errors = validateForm((DynaActionForm)form, request);
     	if (!errors.isEmpty()) {	
@@ -144,11 +149,12 @@ public class UserAction extends BaseAction {
     
     private ActionErrors validateForm(DynaActionForm form, HttpServletRequest request) {    	
     	ActionErrors errors = new ActionErrors();
-    	Validator.isEmpty(form.get("name"), errors, request, getResources(request).getMessage("UserForm.name"));
-    	Validator.isEmpty(form.get("lastName"), errors, request, getResources(request).getMessage("UserForm.lastName"));
-    	Validator.isInteger(form.get("dni"), errors, request, getResources(request).getMessage("UserForm.dni"), true);
-    	Validator.isEmpty(form.get("user"), errors, request, getResources(request).getMessage("UserForm.user"));
-    	Validator.isEmpty(form.get("password"), errors, request, getResources(request).getMessage("UserForm.password"));
+    	Locale locale = new Locale("es");
+    	Validator.isEmpty(form.get("name"), errors, request, getResources(request).getMessage(locale, "UserForm.name"));
+    	Validator.isEmpty(form.get("lastName"), errors, request, getResources(request).getMessage(locale, "UserForm.lastName"));
+    	Validator.isInteger(form.get("dni"), errors, request, getResources(request).getMessage(locale, "UserForm.dni"), true);
+    	Validator.isEmpty(form.get("user"), errors, request, getResources(request).getMessage(locale, "UserForm.user"));
+    	Validator.isEmpty(form.get("password"), errors, request, getResources(request).getMessage(locale, "UserForm.password"));
     	
     	return errors;
     }
