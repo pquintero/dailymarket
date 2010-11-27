@@ -182,7 +182,6 @@ public class ImageService {
 	public void deleteImg(Product product) {
 		Transaction tx = null;
 		try {
-			HibernateHelper.closeSession();
 			tx = HibernateHelper.currentSession().beginTransaction();
 			
 			Image img = product.getImage();
@@ -198,14 +197,12 @@ public class ImageService {
 		}
 		finally {
 			tx = null;
-			HibernateHelper.closeSession();
 		}
 	}
 	
 	public void deleteImg(User user) {
 		Transaction tx = null;
 		try {
-			HibernateHelper.closeSession();
 			tx = HibernateHelper.currentSession().beginTransaction();
 			
 			Image img = user.getImage();
@@ -221,7 +218,6 @@ public class ImageService {
 		}
 		finally {
 			tx = null;
-			HibernateHelper.closeSession();
 		}
 	}
 	

@@ -27,6 +27,14 @@ function init() {
 			}
 		}
     }
+    
+   	var checks = document.SimulatorForm.simuladorArray;
+	var val = document.SimulatorForm.all;
+	if (checks != undefined){
+		onchecks();
+	} else {
+		val.disabled = true
+	}
 }
 
 YAHOO.util.Event.onDOMReady(init);
@@ -58,6 +66,43 @@ function changeCombo(grupoProd) {
 	}
 }
 
+
+
+
+
+
+
+function checkOrUncheckAll(){
+	var checks = document.SimulatorForm.simuladorArray;
+	var val = document.SimulatorForm.all;
+	if (val.checked)
+		checkAll(checks);
+	else
+		uncheckAll(checks);
+}
+
+function checkAll(checks) {
+	for (i = 0; i < checks.length; i++)
+		checks[i].checked = true;
+}
+
+function uncheckAll(checks) {
+	for (i = 0; i < checks.length; i++)
+		checks[i].checked = false;
+}
+
+function onchecks() {
+	var checks = document.SimulatorForm.simuladorArray;
+	var val = document.SimulatorForm.all;
+	for (i = 0; i < checks.length; i++) {
+		if(checks[i].checked) {
+			val.checked = true;
+			break;
+		}
+	}
+	if(i==checks.length)
+		val.checked = false;
+}
 </script>
 
 <TABLE class="form" cellSpacing="0" cellPadding="0" border="0">
@@ -122,6 +167,7 @@ function changeCombo(grupoProd) {
 				<html:select property="yearFrom">
 					<html:option value="2009">2009</html:option>
 					<html:option value="2008">2008</html:option>
+					<html:option value="2008">2007</html:option>
 				</html:select>
 			</TD>
 			<TH style="width:100px;padding-left:40px;"><bean:message key="SimulatorForm.simulatedDate"/></TH>
@@ -178,9 +224,10 @@ function changeCombo(grupoProd) {
 					        	<html:text property="simulatedRepositionStockArray" value="<%= srs[i] %>"/>
 					        </ds:column>
 					        
-					        <ds:column headerClass="listTitle" titleKey="empty">
+					        <ds:column headerClass="listTitle" title="<input type='checkbox' name='all' value='1' onClick='checkOrUncheckAll()'>">
 					        	<html:hidden property="productsArray" value="<%= ((Product)row).getId().toString() %>"/>
-					        	<html:multibox property="simuladorArray" value="<%= ((Product)row).getId().toString() %>"/>
+					        	<html:multibox property="simuladorArray" value="<%= ((Product)row).getId().toString() %>" onclick="onchecks()"/>
+					        	<html:hidden property="simuladorArray" value="-1"/>
 					        </ds:column>
 					        
 					        <% i++; %>

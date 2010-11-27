@@ -24,7 +24,6 @@ public class GroupProductService {
 	public void save (ActionForm form) {
 		Transaction tx = null;
 		try {
-			HibernateHelper.closeSession();
 			tx = HibernateHelper.currentSession().beginTransaction();
 		
 			GroupProduct groupProduct = new GroupProduct();
@@ -39,7 +38,6 @@ public class GroupProductService {
 		}
 		finally {
 			tx = null;
-			HibernateHelper.closeSession();
 		}
 	}	
 	
@@ -67,7 +65,6 @@ public class GroupProductService {
 	public void delete (Long id) {
 		Transaction tx = null;
 		try {
-			HibernateHelper.closeSession();
 			tx = HibernateHelper.currentSession().beginTransaction();
 		
 			GroupProduct groupProduct = (GroupProduct) HibernateHelper.currentSession().load(GroupProduct.class, id);
@@ -82,7 +79,6 @@ public class GroupProductService {
 		}
 		finally {
 			tx = null;
-			HibernateHelper.closeSession();
 		}
 	}
 	
@@ -90,7 +86,6 @@ public class GroupProductService {
 		Transaction tx = null;
 		GroupProduct group = null;
 		try {
-			HibernateHelper.closeSession();
 			tx = HibernateHelper.currentSession().beginTransaction();
 			
 			group = (GroupProduct) HibernateHelper.currentSession().load(GroupProduct.class, id);
@@ -103,7 +98,6 @@ public class GroupProductService {
 		}
 		finally {
 			tx = null;
-			HibernateHelper.closeSession();
 		}
 		return group;
 	}
@@ -113,7 +107,6 @@ public class GroupProductService {
 		List<GroupProduct> groups = new ArrayList<GroupProduct>();
 		Transaction tx = null;
 		try {
-			HibernateHelper.closeSession();
 			tx = HibernateHelper.currentSession().beginTransaction();
 			
 			String name = !((String)form.get("name")).equals("") ? (String)form.get("name") : null;
@@ -137,7 +130,6 @@ public class GroupProductService {
 		}
 		finally {
 			tx = null;
-			HibernateHelper.closeSession();
 		}
 		return groups;
 	}
@@ -147,7 +139,6 @@ public class GroupProductService {
 		Transaction tx = null;
 		List<GroupProduct> groupProd = new ArrayList<GroupProduct>();
 		try {
-			HibernateHelper.closeSession();
 			tx = HibernateHelper.currentSession().beginTransaction();
 			
 			groupProd = (List<GroupProduct>) HibernateHelper.currentSession().createCriteria(GroupProduct.class)
@@ -161,7 +152,6 @@ public class GroupProductService {
 		}
 		finally {
 			tx = null;
-			HibernateHelper.closeSession();
 		}
 		return groupProd;
 	}

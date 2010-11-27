@@ -13,7 +13,6 @@ import java.util.List;
 import org.apache.commons.lang.StringUtils;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.DynaActionForm;
-import org.hibernate.CacheMode;
 import org.hibernate.Criteria;
 import org.hibernate.Transaction;
 import org.hibernate.criterion.Restrictions;
@@ -252,7 +251,6 @@ public class SimulatorService extends MailService{
 		}
 		finally {
 			tx = null;
-			HibernateHelper.closeSession();
 		}
 		return vent;
 	}
@@ -271,10 +269,10 @@ public class SimulatorService extends MailService{
 		    for (int i = 0; i < productsIds.length; i++) {
 				if (checks.contains(productsIds[i])) {
 					Product pr = (Product)HibernateHelper.currentSession().load(Product.class, Long.valueOf(productsIds[i]));
-					if (StringUtils.isNumeric(ssopa[i]) && StringUtils.isNotEmpty(ssopa[i]) && Integer.valueOf(ssopa[i])>0) {
+					if (StringUtils.isNotBlank(ssopa[i]) && StringUtils.isNumeric(ssopa[i]) && Integer.valueOf(ssopa[i])>0) {
 						pr.setSizeOfPurchase(Integer.valueOf(ssopa[i]));
 					}
-					if (StringUtils.isNumeric(srsa[i]) && StringUtils.isNotEmpty(srsa[i]) && Integer.valueOf(srsa[i]) > 0) {
+					if (StringUtils.isNotBlank(srsa[i]) && StringUtils.isNumeric(srsa[i]) && Integer.valueOf(srsa[i]) > 0) {
 						pr.setRepositionStock(Integer.valueOf(srsa[i]));
 					}
 					

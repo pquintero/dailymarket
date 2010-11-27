@@ -242,6 +242,7 @@
 			<form-property name="simulatedRepositionStockArray" type="java.lang.String[]"/>
 			<form-property name="simuladorArray" type="java.lang.String[]"/>
 			<form-property name="comboProductos" type="java.lang.String"/>
+			<form-property name="all" type="java.lang.String"/>
 			
 			<form-property name="dsTable" type="java.lang.String" />
 			<form-property name="collectionName" type="java.lang.String" initial="" />

@@ -5,6 +5,12 @@
 <%@ taglib uri="/tags/struts-logic" prefix="logic" %>
 
 <TABLE class="form" cellSpacing="0" cellPadding="0" border="0">
+	<TR> 
+		<TD colspan="2"> 
+			<html:errors/>
+		</TD>
+	</TR>
+	<tr><td>&nbsp;</td></tr>
 	<tr>
 		<td colspan="2">
 			<h1 class="formtitle">PRODUCTOS PENDIENTES DE PEDIDO</h1>

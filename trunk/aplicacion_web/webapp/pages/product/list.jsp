@@ -4,7 +4,7 @@
 
 <%@ page import="ar.com.dailyMarket.model.Product" %>
 
-<ds:table name="items" sort="list"  prop="formDisplaytag" export="false" id="row" pagesize="40" class="list"  cellspacing="0" cellpadding="3">
+<ds:table name="items" sort="list"  prop="formDisplaytag" export="false" id="row" pagesize="100" class="list"  cellspacing="0" cellpadding="3">
 
         <ds:column titleKey="ProductForm.code" headerClass="listTitle" property="code"/>
         <ds:column titleKey="ProductForm.name" headerClass="listTitle" property="name"/>
