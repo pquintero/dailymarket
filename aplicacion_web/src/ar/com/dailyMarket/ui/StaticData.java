@@ -1,6 +1,15 @@
 package ar.com.dailyMarket.ui;
 
 import java.util.ArrayList;
+import java.util.GregorianCalendar;
+import java.util.List;
+
+import org.hibernate.Criteria;
+import org.hibernate.Transaction;
+import org.hibernate.criterion.Order;
+
+import ar.com.dailyMarket.model.SesionVenta;
+import ar.com.dailyMarket.services.HibernateHelper;
 
 public class StaticData {
 	
@@ -22,9 +31,34 @@ public class StaticData {
 	
 	public static ArrayList<String> anios = new ArrayList<String>();
 	static {
-		anios.add("2010");
-		anios.add("2009");
-		anios.add("2008");
+		Transaction tx = null;
+		List<SesionVenta> sesiones = new ArrayList<SesionVenta>();
+		try {
+			tx = HibernateHelper.currentSession().beginTransaction();
+			
+			Criteria c = HibernateHelper.currentSession().createCriteria(SesionVenta.class).addOrder(Order.asc("fechaInicio"));
+			sesiones = c.list();
+			
+			SesionVenta first = sesiones.get(0);
+			SesionVenta last = sesiones.get(sesiones.size() - 1);
+			
+			GregorianCalendar aux = new GregorianCalendar();
+			aux.setTime(last.getFechaInicio());
+			
+			GregorianCalendar firstCal = new GregorianCalendar();
+			firstCal.setTime(first.getFechaInicio());
+			
+			while (aux.get(GregorianCalendar.YEAR) >= firstCal.get(GregorianCalendar.YEAR)) {
+				anios.add(new Integer(aux.get(GregorianCalendar.YEAR)).toString());
+				aux.add(GregorianCalendar.YEAR, -1);
+			}
+			
+			tx.commit();
+		} catch (Exception e) {
+			anios = new ArrayList<String>();
+			anios.add("2010");
+			anios.add("2009");
+			anios.add("2008");
+		}
 	}
-	
 }

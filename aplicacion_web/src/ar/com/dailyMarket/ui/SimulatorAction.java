@@ -8,6 +8,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import net.sf.json.JSONArray;
 
+import org.apache.struts.action.ActionError;
 import org.apache.struts.action.ActionErrors;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
@@ -29,13 +30,13 @@ public class SimulatorAction extends BaseAction {
 		return mapping.findForward("showSimulator");
 	}
 	
-	//TODO no Harcodear nada
 	public void initialize(ActionMapping mapping, ActionForm form, HttpServletRequest request) {
 		ProductService productService = new ProductService();
 		((DynaActionForm)form).initialize(mapping);
 		((DynaActionForm)form).set("margen","");
+		((DynaActionForm)form).set("all","");
 		((DynaActionForm)form).set("yearFrom","2009");
-		((DynaActionForm)form).set("days","0");
+		((DynaActionForm)form).set("days","");
 		((DynaActionForm)form).set("simuladorArray", new String[0]);
 		
 		List<GroupProduct> gp = new GroupProductService().getAllGroupProduct();
@@ -68,6 +69,7 @@ public class SimulatorAction extends BaseAction {
     	((DynaActionForm)form).set("simulatedSizeOfPurchaseArray", array);
     	((DynaActionForm)form).set("simulatedRepositionStockArray", array);
     	
+    	((DynaActionForm)form).set("all","");
     	setGroupProduct(request);
     	return mapping.findForward("showSimulator");
     }
@@ -106,6 +108,21 @@ public class SimulatorAction extends BaseAction {
 		ActionErrors errors = new ActionErrors();
     	Validator.isInteger(form.get("margen"), errors, request, "Margen de Días", true);
     	Validator.isInteger(form.get("days"), errors, request, "Días a Simular", true);
+    	if(errors.isEmpty()) {
+    		Integer dias = Integer.valueOf((String) form.get("days"));
+    		Integer margen = Integer.valueOf((String)form.get("margen"));
+    		
+    		if(dias < 1) {
+    			errors.add("", new ActionError("errors.integerChico","Días a Simular"));
+    		}
+    		if(margen < 1){
+    			errors.add("", new ActionError("errors.integerChico", "Margen de Días"));
+    		}
+    		if(margen > dias) {
+    			errors.add("", new ActionError("errors.margenGrande"));
+    		}
+    	}
+    	
     	return errors;
 	}
 }

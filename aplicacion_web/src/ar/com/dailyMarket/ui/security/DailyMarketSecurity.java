@@ -31,6 +31,12 @@ public class DailyMarketSecurity extends SimpleSecurityRealmBase {
                 log.info("booleanAuthenticate: usuario inválido");
                 return false;
             }
+            
+            //Porque los usuarios de la aplicacione web tiran un error al intentar loguearlos en isUserInRol --> medida desesperada!!
+            GroupUser groupUser = user.getGroupUser();            
+            if (groupUser != null && !groupUser.getName().equals("Admin") && !groupUser.getName().equals("Manager")) {            	
+            	return false;       	
+            }
 
             log.info("booleanAuthenticate: usuario logueado: " + user.getUser());
         } catch (Exception e) {
@@ -57,7 +63,6 @@ public class DailyMarketSecurity extends SimpleSecurityRealmBase {
             log.info("isUserInRole: " + e.toString());
             return false;
         }
-	
         return false;
     }
 }

@@ -81,13 +81,17 @@ function changeCombo(grupoProd) {
 		<th style="width:100px;padding-left:40px;"><bean:message key="commons.yearDesde"/></th>		
 		<td width="100px;">
 			<html:select property="yearFrom">
-				<html:option value="2009">2009</html:option>				
+				<html:option value="2010">2010</html:option>
+				<html:option value="2009">2009</html:option>
+				<html:option value="2008">2008</html:option>			
 			</html:select>
 		</td>
 		<th style="width:100px;padding-left:40px;"><bean:message key="commons.yearHasta"/></th>
 		<td>
 			<html:select property="yearTo">
 				<html:option value="2010">2010</html:option>
+				<html:option value="2009">2009</html:option>
+				<html:option value="2008">2008</html:option>
 			</html:select>
 		</td>
 	</tr>

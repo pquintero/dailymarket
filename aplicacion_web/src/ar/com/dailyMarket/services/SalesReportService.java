@@ -24,10 +24,10 @@ import org.apache.commons.beanutils.DynaBean;
 import org.hibernate.Criteria;
 import org.hibernate.Transaction;
 import org.hibernate.criterion.Order;
+import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 
 import ar.com.dailyMarket.model.HourlyBand;
-import ar.com.dailyMarket.model.Product;
 import ar.com.dailyMarket.model.ProductoVenta;
 import ar.com.dailyMarket.model.SesionVenta;
 
@@ -230,37 +230,50 @@ public class SalesReportService extends BaseReportService{
     
     private void setFilterFechas(Map<String, String> filters, String tipo, Calendar fechaDesde, Calendar fechaHasta) {    	    	    	    	    	        	    	   
     	if (tipo.equals("Anual")) {
-    		fechaDesde.set(Calendar.MONTH, 0);
-    		fechaHasta.set(Calendar.MONTH, 11);
+    		fechaDesde.set(Integer.parseInt(filters.get("anioDesde")), 0, 1, 0, 0);
+    		fechaHasta.set(Integer.parseInt(filters.get("anioHasta")), 11, 31, 23, 59);
     	} else {
-    		fechaDesde.set(Calendar.MONTH, Integer.parseInt(filters.get("mesDesde"))-1); //los meses los toma desde 0
+    		fechaDesde.set(Integer.parseInt(filters.get("anioDesde")), Integer.parseInt(filters.get("mesDesde"))-1, 1, 0, 0);
+    		fechaHasta.set(Calendar.YEAR, Integer.parseInt(filters.get("anioHasta")));
     		fechaHasta.set(Calendar.MONTH, Integer.parseInt(filters.get("mesHasta"))-1);
-    	}    	
-    	fechaDesde.set(Calendar.YEAR, Integer.parseInt(filters.get("anioDesde")));
-    	fechaHasta.set(Calendar.YEAR, Integer.parseInt(filters.get("anioHasta")));
-    	fechaDesde.set(Calendar.DAY_OF_MONTH, fechaDesde.getActualMinimum(Calendar.DAY_OF_MONTH));    	    
-    	fechaHasta.set(Calendar.DAY_OF_MONTH, fechaHasta.getActualMaximum(Calendar.DAY_OF_MONTH));
-    	fechaDesde.set(Calendar.HOUR, 01);
-    	fechaHasta.set(Calendar.HOUR, 23);
+    		fechaHasta.set(Calendar.DAY_OF_MONTH, fechaHasta.getActualMaximum(Calendar.DAY_OF_MONTH));
+    		fechaHasta.set(Calendar.HOUR_OF_DAY, 23);
+    		fechaHasta.set(Calendar.MINUTE, 59);
+    	}
     }
     
     @SuppressWarnings("unchecked")
 	private List<SesionVenta> getVentas (Calendar calDesde, Calendar calHasta, Map<String, String> filters) {
-    	String productId = filters.get("productId");
-    	String groupProductId = filters.get("groupProductId");
-    	String hourlyBandId = filters.get("hourlyBandId");
+    	Long productId = Long.valueOf(filters.get("productId"));
+    	Long groupProductId = Long.valueOf(filters.get("groupProductId"));
+    	Long hourlyBandId = Long.valueOf(filters.get("hourlyBandId"));
     	
     	List<SesionVenta> ventas = new ArrayList<SesionVenta>();
     	Transaction tx = null;
     	try {
-    		HibernateHelper.closeSession();
     		tx = HibernateHelper.currentSession().beginTransaction();
-    		
-    		Criteria c = HibernateHelper.currentSession().createCriteria(SesionVenta.class);
-        	c.add(Restrictions.between("fechaInicio", calDesde.getTime(), calHasta.getTime()));    	
-        	c.addOrder(Order.asc("fechaInicio"));
-        	    	
-        	ventas = c.list();
+    		Criteria productoVentaCriteria = HibernateHelper.currentSession().createCriteria(ProductoVenta.class);
+			
+			if (hourlyBandId > 0) {
+				HourlyBand banda = (HourlyBand) HibernateHelper.currentSession().load(HourlyBand.class, hourlyBandId);
+				calDesde.set(calDesde.get(GregorianCalendar.YEAR), calDesde.get(GregorianCalendar.MONTH),	
+							calDesde.get(GregorianCalendar.DAY_OF_MONTH), Integer.valueOf(banda.getInitBand()), 0, 0);
+				calHasta.set(calHasta.get(GregorianCalendar.YEAR), calHasta.get(GregorianCalendar.MONTH), 
+							calHasta.get(GregorianCalendar.DAY_OF_MONTH), Integer.valueOf(banda.getEndBand()), 0, 0);
+			}
+			
+			Criteria sesionCriteria = productoVentaCriteria.createCriteria("sesionVenta");
+			sesionCriteria.add(Restrictions.between("fechaInicio", calDesde.getTime(), calHasta.getTime()));
+			sesionCriteria.addOrder(Order.asc("fechaInicio"));
+			
+			if (productId > 0) {
+				productoVentaCriteria.createCriteria("producto").add(Restrictions.eq("id", productId));
+			} else if (groupProductId > 0) {
+				productoVentaCriteria.createCriteria("producto").createCriteria("groupProduct").add(Restrictions.eq("id", groupProductId));
+			}
+			
+			productoVentaCriteria.setProjection(Projections.distinct(Projections.property("sesionVenta")));
+			ventas = productoVentaCriteria.list();
     		
     		tx.commit();
     	}
@@ -270,53 +283,8 @@ public class SalesReportService extends BaseReportService{
     	}
     	finally {
     		tx = null;
-    		HibernateHelper.closeSession();
     	}
     	
-    	
-    	if (!hourlyBandId.equals("-1")){ //si filtre por banda horaria
-    		HourlyBand hb = new HourlyBandService().getHourlyBandByPK(Long.parseLong(hourlyBandId));
-    		List<SesionVenta> ventasFilter = new ArrayList<SesionVenta>();
-    		for (Iterator<SesionVenta> it = ventas.iterator(); it.hasNext(); ){
-    			SesionVenta venta = it.next();
-    			Calendar calVenta = new GregorianCalendar();
-    			calVenta.setTime(venta.getFechaInicio());
-    			//me fijo si la venta esta en el rango de la banda horaria ingresada en el filtro
-    			if (calVenta.get(Calendar.HOUR_OF_DAY) >= hb.getInitBand() && calVenta.get(Calendar.HOUR_OF_DAY) <= hb.getEndBand()){
-    				ventasFilter.add(venta);
-    			}
-    		}
-    		ventas = ventasFilter;
-    	}
-    	if (!productId.equals("-1")) { //si filtre por producto
-    		List<SesionVenta> ventasFilter = new ArrayList<SesionVenta>();
-    		Product product = new ProductService().getProductByPK(Long.parseLong(productId)); 
-    		for (Iterator<SesionVenta> it = ventas.iterator(); it.hasNext(); ) {
-    			SesionVenta venta = it.next();
-    			for (Iterator<ProductoVenta> pv = venta.getProductos().iterator(); it.hasNext(); ) {
-    				ProductoVenta pVenta = pv.next();
-    				if (pVenta.getProducto().getId().longValue() == product.getId().longValue()) {
-    					ventasFilter.add(venta);
-    					break;
-    				}   
-    			}
-    		}
-    		return ventasFilter;
-    	} else if (!groupProductId.equals("-1")) { //si filtre por grupo de producto
-    		List<SesionVenta> ventasFilter = new ArrayList<SesionVenta>();
-    		for (Iterator<SesionVenta> it = ventas.iterator(); it.hasNext(); ) {
-    			SesionVenta venta = it.next();
-    			List<Product> products = new ProductService().getProductsByGroup(Long.parseLong(groupProductId));    			
-    			for (Iterator<ProductoVenta> it2 = venta.getProductos().iterator(); it2.hasNext(); ) {
-    				if (products.contains(((ProductoVenta)it2.next()).getProducto())) {
-    					ventasFilter.add(venta);
-    					break;
-    				}    			    			    				
-    			}
-    		}
-    		return ventasFilter;
-    	} else {
-    		return ventas;
-    	}    	
-    }        
+		return ventas;
+    }
 }

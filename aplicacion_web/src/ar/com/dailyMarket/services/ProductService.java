@@ -252,7 +252,7 @@ public class ProductService extends MailService{
     	
 		super.sendMail(emailTo, new StringBuffer(body), subject);
     	
-		//Actualizo estado LUEGO DE ENVIAR MAIL
+		//Actualizo estado y dias withoutstock LUEGO DE ENVIAR MAIL
 		Transaction tx = null;
 		try {
 			HibernateHelper.closeSession();
@@ -263,6 +263,7 @@ public class ProductService extends MailService{
 				if (id > 0) {
 		    		Product product = (Product) HibernateHelper.currentSession().load(Product.class, id);
 		    		product.setState(Product.PRODUCT_STATE_SEND);
+		    		product.setDateWithoutStock(null);
 		    		HibernateHelper.currentSession().update(product);
 				}
 	    	}

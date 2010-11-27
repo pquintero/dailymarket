@@ -73,7 +73,6 @@ public class BaseReportService {
 		Transaction tx = null;
 		List<Product> prod = new ArrayList<Product>();
 		try {
-			HibernateHelper.closeSession();
 			tx = HibernateHelper.currentSession().beginTransaction();
 			
 			Criteria c = HibernateHelper.currentSession().createCriteria(Product.class); 
@@ -92,7 +91,6 @@ public class BaseReportService {
 		}
 		finally {
 			tx = null;
-			HibernateHelper.closeSession();
 		}
 		
 		return prod;

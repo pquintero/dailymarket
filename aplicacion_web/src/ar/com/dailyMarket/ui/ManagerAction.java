@@ -13,6 +13,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.lang.StringUtils;
+import org.apache.struts.action.ActionError;
+import org.apache.struts.action.ActionErrors;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
@@ -31,7 +33,6 @@ public class ManagerAction extends BaseAction {
     	List<Product> productos = productService.getProductWithoutStock();
     	request.setAttribute("products", productos);    	
     	((DynaActionForm)form).set("productsIds", productService.getProductsIdsArray(productos));
-    	//FIXME IMPORTANTE ver porque cada ves que se refresca viene distinto el estado de los Productos
     	return mapping.findForward("showManagerHome");
     }
     
@@ -85,9 +86,9 @@ public class ManagerAction extends BaseAction {
     	String body = (String)((DynaActionForm)form).get("mailBody");
     	String to = (String) ((DynaActionForm)form).get("mailTo");
     	String subject = (String) ((DynaActionForm)form).get("mailSubject");
-    	
-    	if(!validarSendOrder(body, to, subject)) {
-    		//TODO save errors
+    	ActionErrors errors = validarSendOrder(body, to, subject);
+    	if(!errors.isEmpty()) {
+    		saveErrors(request, errors);
     		return redirectToConfirmSendOrder(mapping, form, request, response);
     	}
     	
@@ -95,15 +96,16 @@ public class ManagerAction extends BaseAction {
     	return initAction(mapping, form, request, response);
     }
     
-    public boolean validarSendOrder(String body, String to, String subject) {
-    	//TODO errors
-    	if(!StringUtils.isNotEmpty(body)) {
+    public ActionErrors validarSendOrder(String body, String to, String subject) {
+    	ActionErrors errors = new ActionErrors();
+		
+    	if(StringUtils.isEmpty(body)) {
     		//body vacio
-    		return false;
+    		errors.add("", new ActionError("errors.bodyEmpty"));
     	}    	
-    	if(!StringUtils.isNotEmpty(to)) {
+    	if(StringUtils.isEmpty(to)) {
     		//to vacio
-    		return false;
+    		errors.add("", new ActionError("errors.toEmpty"));
     	}
     	
     	StringTokenizer st = new StringTokenizer(to, ";");
@@ -111,11 +113,10 @@ public class ManagerAction extends BaseAction {
 			String next = st.nextToken();
 			if (!isEmail(next)) {
 	    		//mail de emisor invalido
-				return false;
+				errors.add("", new ActionError("errors.invalidMail", next));
 			}
 		}
-    	
-    	return true;
+    	return errors;
     }
     
     //metodo para validar correo electronio

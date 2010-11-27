@@ -25,7 +25,6 @@ public class HourlyBandService {
 	public void save (ActionForm form) {
 		Transaction tx = null;
 		try {
-			HibernateHelper.closeSession();
 			tx = HibernateHelper.currentSession().beginTransaction();
 			
 			HourlyBand hourlyBand = new HourlyBand();
@@ -40,14 +39,12 @@ public class HourlyBandService {
 		}
 		finally {
 			tx = null;
-			HibernateHelper.closeSession();
 		}
 	}	
 	
 	public void update (ActionForm form, HourlyBand hourlyBand) {
 		Transaction tx = null;
 		try {
-			HibernateHelper.closeSession();
 			tx = HibernateHelper.currentSession().beginTransaction();
 			
 			copyProperties(hourlyBand, (DynaActionForm)form);
@@ -61,14 +58,12 @@ public class HourlyBandService {
 		}
 		finally {
 			tx = null;
-			HibernateHelper.closeSession();
 		}
 	}
 	
 	public void delete (Long id) {
 		Transaction tx = null;
 		try {
-			HibernateHelper.closeSession();
 			tx = HibernateHelper.currentSession().beginTransaction();
 			
 			HourlyBand hourlyBand = (HourlyBand)HibernateHelper.currentSession().load(HourlyBand.class, id);
@@ -83,7 +78,6 @@ public class HourlyBandService {
 		}
 		finally {
 			tx = null;
-			HibernateHelper.closeSession();
 		}
 	}
 	
@@ -91,7 +85,6 @@ public class HourlyBandService {
 		Transaction tx = null;
 		HourlyBand banda = null;
 		try {
-			HibernateHelper.closeSession();
 			tx = HibernateHelper.currentSession().beginTransaction();
 			
 			banda = (HourlyBand)HibernateHelper.currentSession().load(HourlyBand.class, id);
@@ -104,7 +97,6 @@ public class HourlyBandService {
 		}
 		finally {
 			tx = null;
-			HibernateHelper.closeSession();
 		}
 		return banda;
 	}
@@ -114,7 +106,6 @@ public class HourlyBandService {
 		Transaction tx = null;
 		List<HourlyBand> hourlyBands = new ArrayList<HourlyBand>();
 		try {
-			HibernateHelper.closeSession();
 			tx = HibernateHelper.currentSession().beginTransaction();
 			
 			Long id = ((Long)form.get("id")).longValue() != new Long(-1).longValue() ? (Long)form.get("id") : null;			
@@ -133,7 +124,6 @@ public class HourlyBandService {
 		}
 		finally {
 			tx = null;
-			HibernateHelper.closeSession();
 		}
 				
 		return hourlyBands;
@@ -144,7 +134,6 @@ public class HourlyBandService {
 		Transaction tx = null;
 		List<HourlyBand> bandas = new ArrayList<HourlyBand>();
 		try {
-			HibernateHelper.closeSession();
 			tx = HibernateHelper.currentSession().beginTransaction();
 			
 			Criteria c = HibernateHelper.currentSession().createCriteria(HourlyBand.class)
@@ -159,7 +148,6 @@ public class HourlyBandService {
 		}
 		finally {
 			tx = null;
-			HibernateHelper.closeSession();
 		}
 		return bandas;
 	}

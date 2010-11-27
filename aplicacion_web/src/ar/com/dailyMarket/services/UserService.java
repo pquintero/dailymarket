@@ -229,7 +229,6 @@ public class UserService {
 			String[] listRestrictions = new String[3];
 			listRestrictions[0] = GroupUser.ROLE_ADMIN;
 			listRestrictions[1] = GroupUser.ROLE_MANAGER;
-			listRestrictions[2] = GroupUser.ROLE_SUPERVISOR;
 			
 			Criteria c = HibernateHelper.currentSession().createCriteria(User.class);
 			c.add(Restrictions.eq("receiveNotifications", value));

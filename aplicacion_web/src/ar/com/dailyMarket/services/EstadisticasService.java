@@ -230,7 +230,6 @@ public class EstadisticasService {
 		Transaction tx = null;
 		List<SesionVenta> ventas = new ArrayList<SesionVenta>();
 		try {
-			HibernateHelper.closeSession();
 			tx = HibernateHelper.currentSession().beginTransaction();
 			
 			Criteria productoVentaCriteria = HibernateHelper.currentSession().createCriteria(ProductoVenta.class);
@@ -272,7 +271,6 @@ public class EstadisticasService {
 		}
 		finally {
 			tx = null;
-			HibernateHelper.closeSession();
 		}
 		return new Integer(ventas.size()).toString();
 	}
@@ -282,7 +280,6 @@ public class EstadisticasService {
 		Transaction tx = null;
 		List<SesionVenta> ventas = new ArrayList<SesionVenta>();
 		try {
-			HibernateHelper.closeSession();
 			tx = HibernateHelper.currentSession().beginTransaction();
 			
 			Criteria productoVentaCriteria = HibernateHelper.currentSession().createCriteria(ProductoVenta.class);
@@ -324,7 +321,6 @@ public class EstadisticasService {
 		}
 		finally {
 			tx = null;
-			HibernateHelper.closeSession();
 		}
 		return new Integer(ventas.size()).toString();
 	}

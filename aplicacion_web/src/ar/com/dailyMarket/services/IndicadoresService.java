@@ -1,7 +1,5 @@
 package ar.com.dailyMarket.services;
 
-import java.math.BigDecimal;
-import java.math.RoundingMode;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.GregorianCalendar;
@@ -25,10 +23,6 @@ import ar.com.dailyMarket.model.SesionVenta;
 import ar.com.dailyMarket.model.User;
 
 public class IndicadoresService {
-	
-	/**
-	 * FIXME ventas por cajero yo lo tome como ventas en dinero, no en catidad de operaciones de venta ver cual es la correcta
-	 */
 	
 /******		VentasPorCajeroMensual		******/
 	public LineChart getVPCMChart(DynaActionForm form) {
@@ -228,17 +222,11 @@ public class IndicadoresService {
 	    return mSLine;
 	}
 	
-	/**
-	 * TODO ver banda horaria minutos y segundos
-	 * Metodos para obtener values 
-	 */
-	
 	@SuppressWarnings("unchecked")
 	private String getVentasPorCajeroPorFechaPorDia(User cajero, GregorianCalendar dia, Long bandaId) {
 		List<SesionVenta> sesiones = new ArrayList<SesionVenta>();
 		Transaction tx = null;
 		try {
-			HibernateHelper.closeSession();
 			tx = HibernateHelper.currentSession().beginTransaction();
 			
 			Criteria ventas = HibernateHelper.currentSession().createCriteria(SesionVenta.class);
@@ -271,19 +259,9 @@ public class IndicadoresService {
 		}
 		finally {
 			tx = null;
-			HibernateHelper.closeSession();
 		}
 		
-		
-		if (sesiones.isEmpty())
-			return "0.00";
-		
-		Double total = 0D;
-		for (SesionVenta sesionVenta : sesiones) {
-			total += sesionVenta.getTotalVenta() != null ? sesionVenta.getTotalVenta() : 0D;
-		}
-		
-		return new BigDecimal(total).setScale(2, RoundingMode.HALF_EVEN).toString();
+		return new Integer(sesiones.size()).toString();
 	}
 	
 	@SuppressWarnings("unchecked")
@@ -291,7 +269,6 @@ public class IndicadoresService {
 		List<SesionVenta> sesiones = new ArrayList<SesionVenta>();
 		Transaction tx = null;
 		try {
-			HibernateHelper.closeSession();
 			tx = HibernateHelper.currentSession().beginTransaction();
 			
 			Criteria ventas = HibernateHelper.currentSession().createCriteria(SesionVenta.class);
@@ -324,17 +301,8 @@ public class IndicadoresService {
 		}
 		finally {
 			tx = null;
-			HibernateHelper.closeSession();
 		}
 		
-		if (sesiones.isEmpty())
-			return "0.00";
-		
-		Double total = 0D;
-		for (SesionVenta sesionVenta : sesiones) {
-			total += sesionVenta.getTotalVenta() != null ? sesionVenta.getTotalVenta() : 0D;
-		}
-		
-		return new BigDecimal(total).setScale(2, RoundingMode.HALF_EVEN).toString();
+		return new Integer(sesiones.size()).toString();
 	}
 }

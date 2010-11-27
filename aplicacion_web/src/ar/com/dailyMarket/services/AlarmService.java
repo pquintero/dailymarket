@@ -8,16 +8,13 @@ import ar.com.dailyMarket.model.Product;
 
 public class AlarmService extends MailService {
 	
-	public void sendMail() throws ClassNotFoundException, SQLException {
-		ProductService productService = new ProductService();
-		UserService userService = new UserService();
-		ar.com.dailyMarket.model.Configuration conf = new ConfigurationService().getConfiguration();
-		String time = conf != null ? conf.getTimer().toString() : null;
-		if (time != null) {
+	public void sendMail(List<Product> toSend, String time) throws ClassNotFoundException, SQLException {
+		if (!toSend.isEmpty()) {
+			UserService userService = new UserService();
 			String[] emails = userService.getEmailsToNotifications();    	     	    	    
-			super.sendMail(emails, new StringBuffer(createMessage(productService.getProductWithoutStock(), time)), "");
-		}		
-	}				
+			super.sendMail(emails, new StringBuffer(createMessage(toSend, time)), "");
+		}
+	}
 
 	public StringBuffer createMessage (List<Product> products, String timer) {
 		StringBuffer message = new StringBuffer();		
