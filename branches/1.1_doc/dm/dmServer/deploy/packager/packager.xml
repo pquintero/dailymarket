@@ -1,0 +1,163 @@
+<project name="DM Server Packager" default="package" basedir="../..">
+
+	<!--======================================================================-->
+	<!-- Publico -->
+	<!-- Utilice el ant solo mediante estos target publicos -->
+	<!--======================================================================-->
+
+	<!-- Deploys -->
+	<target name="package" depends="clean, init, compile, resources">
+	</target>
+
+	<!--======================================================================-->
+	<!-- Privado -->
+	<!--======================================================================-->
+
+	<property file="./deploy/packager/packager.properties"/>
+
+	<property name="app.name" value="DM" />
+
+	<property name="build.outdir" value="deploy/package"/>
+	<property name="src.dir" value="src/java"/>
+	<property name="res.dir" value="${basedir}/res"/>
+	<property name="conf.dir" value="deploy/conf"/>
+	<property name="page.dir" value="WebRoot"/>
+	<property name="web.inf" value="${page.dir}/WEB-INF"/>
+	<property name="lib.dir" value="${web.inf}/lib"/>
+	<property name="sql.dir" value="scripts"/>
+	<property name="sql.outdir" value="${build.outdir}/SQL"/>
+	<property name="auto.dir" value="${basedir}/src/auto"/>
+	<property name="reports.dir" value="ar/com/tsoluciones/emergencies/server/businesslogic/reports/data/jasper"/>
+	<property name="jasper.src.dir" value="${src.dir}/${reports.dir}"/>
+	<property name="reports.dir" value="ar/com/tsoluciones/emergencies/server/businesslogic/reports/data/jasper"/>
+	<property name="jasper.src.dir" value="${src.dir}/${reports.dir}"/>
+
+	<!-- Directorios para distribuir la aplicación -->
+
+	<property name="app.dir" value="${build.outdir}/${app.name}"/>
+	<property name="app.dir.webinf" value="${app.dir}/WEB-INF"/>
+	<property name="app.dir.classes" value="${app.dir.webinf}/classes"/>
+	<property name="app.dir.lib" value="${app.dir.webinf}/lib"/>
+	<property name="jasper.dest.dir" value="${app.dir.classes}/${reports.dir}"/>
+
+
+	<!-- Variables de ambiente -->
+	<property environment="env"/>
+	<property name="catalina.home" value="${env.CATALINA_HOME}"/>
+
+	<!-- El classpath de la aplicacion -->
+	<path id="classpath">
+		<pathelement path="${app.dir.classes}"/>
+		<fileset dir="${lib.dir}">
+			<include name="**/*.jar"/>
+		</fileset>
+		<fileset dir="${catalina.home}/common/lib">
+			<include name="**/*.jar"/>
+		</fileset>
+	</path>
+
+	<target name="init">
+		<mkdir dir="${app.dir.webinf}"/>
+		<mkdir dir="${app.dir.lib}"/>
+		<mkdir dir="${app.dir.classes}"/>
+	</target>
+
+	<!-- Limpia el directorio temporal -->
+	<target name="clean">
+		<echo message="Borrando temporales" />
+		<delete dir="${build.outdir}" failonerror="true" />
+	</target>
+
+	<target name="compile">
+		<javac destdir="${app.dir.classes}" debug="on" failonerror="yes">
+			<classpath refid="classpath"/>
+			<src path="${src.dir}"/>
+		</javac>
+
+		<!-- copiar los archivos asociados -->
+		<copy todir="${app.dir.classes}" failonerror="yes" overwrite="true">
+			<fileset dir="${src.dir}">
+				<include name="**/*.xml"/>
+				<include name="**/*.hbm"/>
+				<include name="**/*.properties"/>
+				<include name="**/*.png"/>
+				<include name="**/*.gif"/>
+				<include name="**/*.jpg"/>
+			</fileset>
+		</copy>
+
+		<!-- copiar configuraciones parametrizables para produccion -->
+		<copy todir="${app.dir.classes}" failonerror="yes" overwrite="true">
+			<fileset dir="${conf.dir}">
+				<include name="**/*.xml"/>
+				<include name="**/*.properties"/>
+			</fileset>
+		</copy>
+
+		<!-- Reemplazar la version -->
+		<replace dir="${app.dir.classes}" summary="true" includes="**/version_config.xml">
+			<replacefilter token="%version%" value="${version}"/>
+		</replace>
+
+	</target>
+
+	<target name="resources">
+		<echo message="Copiando bibliotecas y recursos estáticos"/>
+		<copy overwrite="true" todir="${app.dir.classes}">
+			<fileset dir="${src.dir}">
+				<include name="schema-checker.bat"/>
+				<include name="schema-update.bat"/>
+				<include name="run-app.bat"/>
+			</fileset>
+		</copy>
+		<copy overwrite="true" todir="${app.dir.webinf}">
+			<fileset dir="${web.inf}">
+				<include name="*.*"/>
+			</fileset>
+			<fileset dir=".">
+				<include name="revision.txt"/>
+			</fileset>
+		</copy>
+		<copy overwrite="true" todir="${app.dir.lib}">
+			<fileset dir="${lib.dir}"/>
+		</copy>
+	</target>
+
+	<!-- Genera el war de la aplicacion para realizar el deploy -->
+	<target name="war" depends="compile">
+		<echo message="Construyendo deploy de DM Server"/>
+
+		<mkdir dir="${build.outdir}"/>
+
+		<jar destfile="${build.outdir}/${app.name}.zip" compress="true">
+			<zipfileset dir=".">
+				<include name="revision.txt" />
+			</zipfileset>
+			<!-- Clases -->
+			<zipfileset dir="${classes.outdir}" prefix="WEB-INF/classes">
+				<include name="**/*.*"/>
+			</zipfileset>
+
+			<!-- Bibliotecas -->
+			<zipfileset dir="${lib.dir}" prefix="WEB-INF/lib">
+				<exclude name="**/servlet.jar"/>
+			</zipfileset>
+
+			<!-- WEB-INF -->
+			<zipfileset dir="${web.inf}" prefix="WEB-INF">
+				<include name="*.*"/>
+			</zipfileset>
+		</jar>
+	</target>
+
+	<target name="javadoc" depends="init">
+		<javadoc destdir="${build.outdir}/docs"
+			access="protected" charset="ISO-8859-1" encoding="ISO-8859-1"
+			classpathref="classpath">
+			<packageset dir="${src.dir}">
+				<include name="ar/**"/>
+			</packageset>
+		</javadoc>
+	</target>
+
+</project>

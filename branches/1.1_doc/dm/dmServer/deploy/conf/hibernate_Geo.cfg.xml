@@ -1,0 +1,41 @@
+<!DOCTYPE hibernate-configuration PUBLIC
+        "-//Hibernate/Hibernate Configuration DTD 3.0//EN"
+        "http://hibernate.sourceforge.net/hibernate-configuration-3.0.dtd">
+
+<hibernate-configuration>
+	<session-factory>
+		<!-- Base de datos -->
+		<property name="hibernate.dialect">
+			org.hibernatespatial.postgis.PostgisDialect
+		</property>
+		<property name="hibernate.connection.driver_class">org.postgresql.Driver</property>
+		<property name="hibernate.connection.url">jdbc:postgresql://%geo.server%/%geo.database%</property>
+		<property name="hibernate.connection.username">%geo.username%</property>
+		<property name="hibernate.connection.password">%geo.password%</property>
+		<!-- Pool de conexiones -->
+		<property name="hibernate.connection.provider_class">ar.com.tsoluciones.emergencies.server.hibernate.C3P0ConnectionProvider</property>
+		<property name="hibernate.c3p0.max_size">25</property>
+		<property name="hibernate.c3p0.min_size">5</property>
+		<property name="hibernate.c3p0.timeout">10000</property>
+		<property name="hibernate.c3p0.max_statements">100</property>
+		<property name="hibernate.c3p0.idle_test_period">3000</property>
+		<property name="hibernate.c3p0.acquire_increment">2</property>
+		<property name="hibernate.c3p0.validate">true</property>
+		<!-- Isolation -->
+		<property name="hibernate.connection.isolation">2</property>
+		<!-- Configuracion JDBC -->
+		<property name="hibernate.jdbc.batch_size">0</property>
+		<property name="hibernate.jdbc.use_streams_for_binary">true</property>
+		<!-- Usar outer joins ? -->
+		<property name="hibernate.use_outer_join">true</property>
+		<property name="hibernate.max_fetch_depth">3</property>
+		<!-- Optimizadores de performance -->
+		<property name="hibernate.bytecode.use_reflection_optimizer">true</property>
+
+		<!-- Debug -->
+		<property name="hibernate.show_sql">false</property>
+		<!-- GeoDatabase -->
+		<mapping resource="ar/com/tsoluciones/emergencies/server/businesslogic/gis/model/GeoPolygonZone.hbm.xml" />
+		<mapping resource="ar/com/tsoluciones/emergencies/server/businesslogic/gis/model/GeoPolygon.hbm.xml" />
+    </session-factory>
+</hibernate-configuration>

@@ -1,0 +1,101 @@
+<project name="DM server deployer" default="deploy" basedir=".">
+
+	<property file="deployer.properties"/>
+
+	<!--======================================================================= -->
+	<!-- Publico 																-->
+	<!-- Utilice el ant solo mediante estos target publicos 					-->
+	<!--======================================================================= -->
+
+	<property name="temp.dir" value="temp"/>
+	<property name="DM.dir" value="${temp.dir}\${context.DM}"/>
+
+	<!-- Destino del deploy -->
+	<property environment="env"/>
+	<property name="catalina.home" value="${env.CATALINA_HOME}"/>
+	<property name="webapps.dir" value="${catalina.home}\webapps"/>
+	<property name="DM.dest" value="${webapps.dir}\${context.DM}" />
+	
+	<!-- Fecha -->
+	<tstamp>
+		<format property="today" pattern="yyyyMMddHHmmss" locale="es"/>
+	</tstamp>
+
+	<target name="clean">
+		<delete dir="${temp.dir}" />
+	</target>
+
+	<!-- Deploys -->
+	<target name="deploy" depends="clean">
+
+		<mkdir dir="${DM.dir}"/>
+
+		<!--unzip src="../package/DM.zip" dest="${DM.dir}"/-->
+
+		<copy overwrite="true" todir="${DM.dir}">
+			<fileset dir="../package/DM">
+				<include name="**/*.*"/>
+			</fileset>
+		</copy>
+
+		
+		<!-- Reemplazos de configuracion -->
+		<antcall target="procesar-filtros">
+			<param name="dir-classes" value="${DM.dir}"/>
+		</antcall>
+
+
+		<!-- Backup de previos paquetes, si existen -->
+		<available file="${DM.dest}" type="dir" property="previous.F911.exists"/>
+
+		<antcall target="F911.backup" />
+
+		<!-- Vaciar previas aplicaciones -->
+		<delete dir="${DM.dest}" />
+
+		<!-- Recrear directorios -->
+		<mkdir dir="${DM.dest}" />
+
+		<!-- Copiar paquetes parametrizados -->
+		<move file="${DM.dir}" todir="${webapps.dir}" />
+		<antcall target="clean" />
+	</target>
+
+	<target name="F911.backup" if="previous.F911.exists">
+		<zip destfile="${webapps.dir}\${today}-${context.DM}.zip">
+			<fileset dir="${DM.dest}">
+				<include name="**/*.*"/>
+			</fileset>
+		</zip>
+	</target>
+	
+	<target name="procesar-filtros">
+		<!-- Reemplazos de configuracion -->
+
+		<replace dir="${dir-classes}" summary="true">
+			<exclude name="**/*.class" />
+			<exclude name="**/*.jasper" />
+
+			<replacefilter token="%app.version%" value="${app.version}"/>
+		
+
+			<replacefilter token="%sql.server%" value="${sql.server}"/>
+			<replacefilter token="%sql.emergenciesDatabase%" value="${sql.emergenciesDatabase}"/>
+			<replacefilter token="%sql.username%" value="${sql.username}"/>
+			<replacefilter token="%sql.password%" value="${sql.password}"/>
+			<replacefilter token="%context.name%" value="${context.DM}"/>
+			<replacefilter token="%emergencies.log%" value="${catalina.home}\logs\${context.DM}.log"/>
+			<replacefilter token="%hibernate.log%" value="${catalina.home}\logs\${context.DM}-hibernate.log"/>
+			<replacefilter token="%cache.log%" value="${catalina.home}\logs\${context.DM}-cache.log"/>
+			<replacefilter token="%sql.log%" value="${catalina.home}\logs\${context.DM}-sql.log"/>
+			<replacefilter token="%exceededOperations.log%" value="${catalina.home}\logs\${context.DM}-exceededOperations.log"/>
+
+		</replace>
+
+		<!-- Escapar en log4j.properties las barras -->
+		<replace dir="${dir-classes}" summary="true" includes="**\log4j.properties">
+			<replacefilter token="\" value="/"/>
+		</replace>
+	</target>
+
+</project>

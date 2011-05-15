@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+	"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+	"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping default-lazy="false" package="ar.com.tsoluciones.arcom.security" default-cascade="none">
+	<!-- ar.com.tsoluciones.arcom.security.Role root -->
+	<class name="Group" table="Groups">
+		<id name="id" type="long" column="id" unsaved-value="null">
+			<generator class="native"/>
+		</id>
+
+		<property name="name" column="name" type="string" unique="true" />
+
+		<set name="users" table="group_users">
+			<key column="group_id" foreign-key="FK_group_user_group_id" />
+			<many-to-many class="ar.com.tsoluciones.arcom.security.User" foreign-key="FK_user_group_user_id">
+				<column name="user_id" not-null="true"/>
+			</many-to-many>
+		</set>
+	</class>
+</hibernate-mapping>
