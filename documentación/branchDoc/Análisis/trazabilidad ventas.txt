@@ -1,0 +1,18 @@
+-Abrir sesión de venta
+	•	RFCV001 
+-Leer código del Producto
+  *validar producto •	RFCV002
+  *rechazar producto •	RFCV003
+  *salida de producto •	RFCV005
+
+- Ingresar producto manualmente
+  *validar •	RFCV002
+  *rechazar producto •	RFCV003
+  *salida de producto •	RFCV005
+ 
+-Finalizar sesión de venta (Fin de sesión de venta) 
+	•	RFCV007
+	•	RFCV008 
+
+-Solicitar modificacion de sesión de venta
+	•	RFCV006
