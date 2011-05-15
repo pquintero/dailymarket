@@ -1,0 +1,12 @@
+•	Ejecutar simulacion(Actor=Usuario WEB)
+	- RFCSC002, RFCSC001, RFCSC004
+	-
+	-
+
+•	Actualizar stock de reposicion (segun los productos que se desee)
+	- RFCSC003
+
+
+
+antes de simular seleccionar los productos sobre los cuales simular??? para eficiencia
+Tabla de pedidos por producto??? donde se actualizaria el tamaño de pedido de acuerdo a la simulacion
